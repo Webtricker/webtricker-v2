@@ -7,6 +7,7 @@ import { loginApi } from "./features/auth/LoginApiSlice";
 import { logosApi } from "./features/logos/logosApiSlice";
 import siteLogo from "./features/logos/siteLogoSlice";
 import { uploadApi } from "./features/upload/uploadApiSlice";
+import { menuApi } from "./features/menu/menuApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -19,19 +20,21 @@ export const store = configureStore({
     modalToggler: ModalToggler,
 
     // site logo
-    siteLogo:siteLogo.reducer,
+    siteLogo: siteLogo.reducer,
 
     // api slices can be added here
     [contactApi.reducerPath]: contactApi.reducer,
-    [loginApi.reducerPath]:loginApi.reducer,
-    [logosApi.reducerPath]:logosApi.reducer,
-    [uploadApi.reducerPath]:uploadApi.reducer,
+    [loginApi.reducerPath]: loginApi.reducer,
+    [logosApi.reducerPath]: logosApi.reducer,
+    [uploadApi.reducerPath]: uploadApi.reducer,
+    [menuApi.reducerPath]: menuApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
-  concat(loginApi.middleware).
-  concat(logosApi.middleware).
-  concat(uploadApi.middleware)
+      concat(loginApi.middleware).
+      concat(logosApi.middleware).
+      concat(uploadApi.middleware).
+      concat(menuApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

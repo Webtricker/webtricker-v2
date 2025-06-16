@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     domains: ['liko.foxthemes.me','webtricker.com','res.cloudinary.com'],
   },
   compiler:{
-     removeConsole: process.env.NODE_ENV === 'production',
+    //  removeConsole: process.env.NODE_ENV === 'production',
   }
 };
 

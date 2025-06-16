@@ -20,7 +20,7 @@ export const settingsLinks: TLink[] = [
   { label: "About", href: "/settings/about" },
   { label: "Services", href: "/settings/services" },
   { label: "Portfolios", href: "/settings/portfolios" },
-  // { label: "Blog", href: "/settings/blog" },
+  { label: "Blogs", href: "/settings/blogs" },
   // { label: "Career", href: "/settings/career" },
   { label: "Contact", href: "/settings/contact" },
   {

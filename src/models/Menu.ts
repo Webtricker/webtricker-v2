@@ -1,27 +1,40 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import { DbMenuLink, DbMenuType } from '@/types/menu';
+import mongoose, { Schema, Document, model } from 'mongoose';
 
-export interface IMenuItem extends Document {
-  label: string;
-  url: string;
-  order: number;
-  target?: '_self' | '_blank';
-  menuType: 'header' | 'footer';
+export interface IMenu extends Document {
+  menuType: DbMenuType;
+  links: DbMenuLink[];
+  defaultLinks: DbMenuLink[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-const MenuItemSchema = new Schema<IMenuItem>(
+const linkSchema = new Schema<DbMenuLink>(
   {
     label: { type: String, required: true },
     url: { type: String, required: true },
-    order: { type: Number, required: true },
     target: { type: String, enum: ['_self', '_blank'], default: '_self' },
-    menuType: { type: String, enum: ['header', 'footer'], required: true },
   },
-  { timestamps: true }
+  { _id: false } // no _id for subdocs
 );
 
-const MenuItem: Model<IMenuItem> =
-  mongoose.models.MenuItem || mongoose.model<IMenuItem>('MenuItem', MenuItemSchema);
+const menuSchema = new Schema<IMenu>(
+  {
+    menuType: {
+      type: String,
+      enum: ['header', 'footer'],
+      required: true,
+    },
+    links: {
+      type: [linkSchema],
+      default: [],
+    },
+    defaultLinks:{
+       type: [linkSchema],
+      default: [],
+    }
+  },
+  { timestamps: true } // adds createdAt and updatedAt
+);
 
-export default MenuItem;
+export default mongoose.models.Menu || model<IMenu>('Menu', menuSchema);

@@ -1,70 +1,49 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyToken, isAdminUser, DecodedToken } from '@/lib/auth';
 import dbConnect from '@/lib/dbConnect';
 import MenuItem from '@/models/Menu';
+import { verifyAdmin } from '@/utils/validator';
+import { DbMenuLink } from '@/types/menu';
 
 export const GET = async (req: NextRequest) => {
   await dbConnect();
 
-  const menuType = req.nextUrl.searchParams.get('type') || 'header';
+  const menuType = req.nextUrl.searchParams.get('menuType') || 'header';
 
-  const items = await MenuItem.find({ menuType }).sort({ order: 1 }).lean();
-  return NextResponse.json({ success: true, items });
-};
-
-export const POST = async (req: NextRequest) => {
-   await dbConnect();
-
-   // Get token from cookies
-    const token = req.cookies.get('accessToken')?.value;
-    if (!token) {
-      return NextResponse.json({ error: true, message: 'Access token missing' }, { status: 401 });
-    }
-
-    // Verify token
-    const decoded = verifyToken(token) as DecodedToken | null;
-    if (!decoded) {
-      return NextResponse.json({ error: true, message: 'Invalid or expired token' }, { status: 401 });
-    }
-
-    // Check if user is admin
-    if (!isAdminUser(decoded)) {
-      return NextResponse.json({ error: true, message: 'Forbidden: Admins only' }, { status: 403 });
-    }
-
-  const body = await req.json();
-  const newItem = await MenuItem.create(body);
-  return NextResponse.json({ success: true, item: newItem }, { status: 201 });
+  const items = await MenuItem.find({ menuType }).lean();
+  return NextResponse.json({ success: true, data: items });
 };
 
 export const PUT = async (req: NextRequest) => {
-  await dbConnect();
+  // Authenticate admin user
+  try {
+    await dbConnect();
+    await verifyAdmin(req);
+  } catch (error) {
+    return NextResponse.json({ success: false, message: (error as Error).message }, { status: 401 });
+  }
 
- 
-   // Get token from cookies
-    const token = req.cookies.get('accessToken')?.value;
-    if (!token) {
-      return NextResponse.json({ error: true, message: 'Access token missing' }, { status: 401 });
+  try {
+    const body = await req.json();
+    const { menuType, links }: { menuType: 'header' | 'footer'; links: DbMenuLink[] } = body;
+
+    // Validate input
+    if (!menuType || !['header', 'footer'].includes(menuType)) {
+      return NextResponse.json({ success: false, message: 'Invalid or missing menuType.' }, { status: 400 });
     }
 
-    // Verify token
-    const decoded = verifyToken(token) as DecodedToken | null;
-    if (!decoded) {
-      return NextResponse.json({ error: true, message: 'Invalid or expired token' }, { status: 401 });
+    if (!Array.isArray(links)) {
+      return NextResponse.json({ success: false, message: 'Invalid or missing links array.' }, { status: 400 });
     }
 
-    // Check if user is admin
-    if (!isAdminUser(decoded)) {
-      return NextResponse.json({ error: true, message: 'Forbidden: Admins only' }, { status: 403 });
-    }
+    const updatedMenu = await MenuItem.findOneAndUpdate(
+      { menuType },
+      { links },
+      { new: true, upsert: true, setDefaultsOnInsert: true }
+    );
 
-  const updatedOrder: { id: string; order: number }[] = await req.json();
-
-  await Promise.all(
-    updatedOrder.map(({ id, order }) =>
-      MenuItem.findByIdAndUpdate(id, { order }, { new: true })
-    )
-  );
-
-  return NextResponse.json({ success: true, message:"update successful" });
+    return NextResponse.json({ success: true, message: 'Update successful', data: updatedMenu });
+  } catch (error) {
+    console.error('Menu update error:', error);
+    return NextResponse.json({ success: false, message: (error as Error).message }, { status: 500 });
+  }
 };
