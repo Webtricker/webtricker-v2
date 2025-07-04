@@ -10,13 +10,13 @@ export default function AdminLayout({
 }) {
   return (
     <div className="flex min-h-screen w-full items-start">
-        <PrivateSidebar />
+      <PrivateSidebar />
       <div className="grow h-full flex flex-col">
         <PrivateNavbar />
         {children}
-        </div>
+      </div>
 
-        <CheckAccessToken />
+      <CheckAccessToken />
     </div>
   );
 }

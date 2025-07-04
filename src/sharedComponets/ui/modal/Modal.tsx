@@ -4,6 +4,7 @@ import { RootState } from "@/redux/store";
 import { MouseEvent, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { XMarkIcon } from "../icons/Icons";
 // import XMarkBlack from "../icons/XMarkBlack";
 
 type CustomModalProps = {
@@ -96,10 +97,9 @@ export const CustomModalHeader = (props: HeaderProps) => {
     <div
       className={`w-full flex items-center justify-between gap-5 flex-wrap bg-[#005aff08] py-2.5 px-[18px] rounded-[12px] ${containerStyle}`}
     >
-      <h2 className={`fs-xl-lh-lg text-[#30353E] ${titleStyle}`}>{title}</h2>
+      <h6 className={`fs-xl-lh-lg text-[#30353E] ${titleStyle}`}>{title}</h6>
       <button className={`${buttonStyle}`} type="button" onClick={handleClose}>
-        {/* <XMarkBlack /> */}
-        icon
+        <XMarkIcon className="w-7 h-7" />
       </button>
     </div>
   );

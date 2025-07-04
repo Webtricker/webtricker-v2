@@ -12,4 +12,3 @@ export type Block =
   | { type: 'link'; href: string; children: InlineNode[]}
   | { type: 'span'; children: InlineNode[] }
   | { type: 'br' };
-  

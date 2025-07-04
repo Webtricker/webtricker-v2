@@ -597,3 +597,15 @@ p.bouncing-text {
 .dark .wt_portfolio-card::after {
   background: var(--clr-bg-body-dark);
 }
+
+/* ===== style element for blogs ======= */
+.wt_parser_content ul{
+  list-style-type: disc;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
+.wt_parser_content ol{
+  list-style-type: decimal;
+  margin-left: 1.5em;
+  padding-left: 0;
+}
