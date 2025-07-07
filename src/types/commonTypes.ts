@@ -1,0 +1,1 @@
+export type TMediaCB = { url: string; title: string; type: "img" | "video";}

@@ -57,7 +57,7 @@ export const CustomModal = (props: CustomModalProps) => {
       className={`text-[#30353E] w-full h-full fixed top-0 px-4 left-0 flex justify-center items-center bg-[#17171791] overflow-hidden z-[99998] ${wrapperContainerStyle}`}
     >
       <div
-        className={`w-full max-w-[844px] duration-300 h-auto max-h-[95vh] flex flex-col relative py-8 md:py-10 lg:py-[50px] px-4 md:px-5 lg:px-[22px] bg-white rounded-[20px] lg:rounded-[30px]  z-[99999] ${containerStyle}`}
+        className={`w-full max-w-[844px] duration-300 h-auto max-h-[95vh] flex flex-col relative p-4 md:p-5 lg:p-6 bg-white rounded-[20px] lg:rounded-[30px]  z-[99999] ${containerStyle}`}
       >
         {children}
       </div>
@@ -95,11 +95,11 @@ export const CustomModalHeader = (props: HeaderProps) => {
   };
   return (
     <div
-      className={`w-full flex items-center justify-between gap-5 flex-wrap bg-[#005aff08] py-2.5 px-[18px] rounded-[12px] ${containerStyle}`}
+      className={`w-full flex items-center justify-between gap-5 flex-wrap bg-slate-200/50 py-2.5 px-[18px] rounded-[12px] ${containerStyle}`}
     >
       <h6 className={`fs-xl-lh-lg text-[#30353E] ${titleStyle}`}>{title}</h6>
       <button className={`${buttonStyle}`} type="button" onClick={handleClose}>
-        <XMarkIcon className="w-7 h-7" />
+        <XMarkIcon className="w-7 md:w-8 h-7 md:h-8" />
       </button>
     </div>
   );

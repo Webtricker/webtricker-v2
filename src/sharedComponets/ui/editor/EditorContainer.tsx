@@ -3,57 +3,33 @@ import { Editor } from "@tinymce/tinymce-react";
 import MediaModal from "./MediaModal";
 import { useDispatch } from "react-redux";
 import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
-import { useRef } from "react";
-import Button from "../buttons/Button";
-import { toast } from "react-toastify";
+import {RefObject, useRef } from "react";
+import { Editor as TinyMCEEditor } from 'tinymce';
 
 type TinyFilePickerCallback = (url: string, meta?: { title?: string }) => void;
-
-// config variables
-// const plugins = [
-//   "textcolor",
-//   "anchor",
-//   "autolink",
-//   "charmap",
-//   "codesample",
-//   "emoticons",
-//   "image",
-//   "link",
-//   "lists",
-//   "media",
-//   "searchreplace",
-//   "visualblocks",
-//   "wordcount",
-//   "code",
-// ];
 
 const  plugins = [
       'advlist', 'autolink', 'autosave', 'charmap', 'code', 'codesample',
       'directionality', 'emoticons', 'fullscreen', 'help', 'image', 'insertdatetime',
-      'link', 'lists', 'media', 'nonbreaking', 'pagebreak', 'preview', 'quickbars',
+      'link', 'lists', 'media', 'nonbreaking', 'pagebreak', 'preview',
       'searchreplace', 'table', 'textcolor', 'visualblocks', 'visualchars', 'wordcount'
     ];
 
-// const toolbar =
-//   "blocks fontsize | bold italic underline strikethrough code forecolor backcolor | link image media mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap";
-
-const  toolbar = 'undo redo | blocks fontfamily fontsize | ' +
+const toolbar = 'undo redo | blocks styles | ' +
              'bold italic underline strikethrough | forecolor backcolor | ' +
              'alignleft aligncenter alignright alignjustify | ' +
              'bullist numlist outdent indent | ' +
              'link image media table | ' +
-             'charmap emoticons codesample | ' +
-             'fullscreen preview print | ' +
-             'a11ycheck addcomment showcomments | ' + // a11ycheck, addcomment, showcomments are also free
-             'insertdatetime nonbreaking pagebreak | ' +
-             'searchreplace visualblocks visualchars | help';
+             'charmap emoticons | ' +
+             'fullscreen preview | ' +
+             'a11ycheck addcomment showcomments | ' +
+             'insertdatetime | ' +
+             'searchreplace';
 
-const menubar = 'file edit view insert format table';
+const menubar = 'file edit view insert format';
 
  const content_css = [
-      '//fonts.googleapis.com/css?family=Open+Sans', // Example: Google Font
-      '//www.tiny.cloud/css/codepen.min.css' // Example: TinyMCE's default content styles
-  
+      '/css/editor.css'
     ];
 
 const textcolor_map = [
@@ -69,15 +45,38 @@ const textcolor_map = [
       "00CCFF", "Electric blue", "993366", "Red violet", "FFFFFF", "White"
     ];
 
+
+  const style_formats = [
+      { title: '14px', inline: 'span', classes: 'wt_fs-xs'  },
+      { title: '16px', inline: 'span', classes: 'wt_fs-sm'  },
+      { title: '18px', inline: 'span', classes: 'wt_fs-base' },
+      { title: '20px', inline: 'span', classes: 'wt_fs-md'  },
+      { title: '22px', inline: 'span', classes: 'wt_fs-lg'  },
+      { title: '25px', inline: 'span', classes: 'wt_fs-xl'  },
+      { title: '30px', inline: 'span', classes: 'wt_fs-2xl' },
+      { title: '35px', inline: 'span', classes: 'wt_fs-3xl' },
+      { title: '40px', inline: 'span', classes: 'wt_fs-4xl' },
+      { title: '60px', inline: 'span', classes: 'wt_fs-5xl' },
+      { title: '72px', inline: 'span', classes: 'wt_fs-6xl' },
+      { title: '100px',inline: 'span', classes: 'wt_fs-7xl' }
+
+];
+
+
 const textcolor_cols = 8;
 
-export default function EditorContainer() {
+// container starts
+interface EditorContainerProps {
+  editorRef: RefObject<TinyMCEEditor | null>;
+}
+
+ const EditorContainer = ({editorRef }:EditorContainerProps)=>{
+
   // hooks
   const dispatch = useDispatch();
 
   // ref
   const pickerResolveRef = useRef<TinyFilePickerCallback | null>(null);
-  const editorRef = useRef<any>(null);
 
   // handlers
   const handleSelect = (fileUrl: string, title: string) => {
@@ -85,14 +84,6 @@ export default function EditorContainer() {
     console.log(title, " title");
     console.log(pickerResolveRef, " picker resolve function");
     pickerResolveRef.current?.(fileUrl, { title });
-  };
-
-  const handleSave = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent(), " content from editor");
-    }
-    // console.log(editorRef.current);
-    toast.success("btn clicked");
   };
 
   // config
@@ -104,8 +95,11 @@ export default function EditorContainer() {
     statusbar:true,
     content_css,
     textcolor_map,
+    preview_styles: 'font-family font-weight', 
     textcolor_cols,
-     autoresize_bottom_margin: 16,
+    style_formats,
+    style_formats_merge: false,
+    autoresize_bottom_margin: 16,
     autoresize_overflow_padding: 0,
 
      // Optional: Quickbars for contextual toolbars
@@ -121,7 +115,8 @@ export default function EditorContainer() {
 
     // customize media select
     file_picker_types: "image media",
-    file_picker_callback: (cb:any, value, meta) => {
+    // file_picker_callback: (cb:any, value, meta) => {
+    file_picker_callback: (cb:any) => {
       dispatch(toggleModal("OPEN_MEDIA_MODAL"));
 
       // store the callback to call later.
@@ -132,22 +127,24 @@ export default function EditorContainer() {
     paste_remove_styles: true,
 
     /* optional: prevent TinyMCE’s default image upload POST */
-    images_upload_handler: () => new Promise(() => {}), // no‑op
+    images_upload_handler: () => new Promise<string>(() => {}), // no‑op
   };
+
+  // if(!editorRef?.current) return <p>Reference initialization failed</p>
 
   return (
     <>
       <Editor
-        onInit={(evt, editor) => (editorRef.current = editor)}
+        onInit={(_, editor) => (editorRef.current = editor)}
         apiKey="yo7qusvretankfcx2rp14sl6z5jcppo8i1yzsvukjbugbb3r"
         init={tinymceConfig}
         initialValue="Start typing here."
       />
-      <div className="w-full mt-5 md:mt-10">
-        <Button className="!py-2.5" label="Save" cb={handleSave} />
-      </div>
-
       <MediaModal cb={handleSelect} />
     </>
   );
-}
+};
+
+EditorContainer.displayName='editorContainer'
+
+export default EditorContainer;
