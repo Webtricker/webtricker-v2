@@ -11,7 +11,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen w-full items-start">
       <PrivateSidebar />
-      <div className="grow h-full flex flex-col">
+      <div className="grow  h-full flex flex-col">
         <PrivateNavbar />
         {children}
       </div>

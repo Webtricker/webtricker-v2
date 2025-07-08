@@ -9,7 +9,7 @@ import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 
 type Props = {
   setThumnail: Dispatch<SetStateAction<string | null>>;
-  thumnail: string;
+  thumnail: string | null;
 };
 export default function Thumnail({ setThumnail, thumnail }: Props) {
   // hooks

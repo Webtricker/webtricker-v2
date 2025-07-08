@@ -8,6 +8,7 @@ import { logosApi } from "./features/logos/logosApiSlice";
 import siteLogo from "./features/logos/siteLogoSlice";
 import { uploadApi } from "./features/upload/uploadApiSlice";
 import { menuApi } from "./features/menu/menuApiSlice";
+import { MediaApi } from "./features/media/MediaApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -26,15 +27,19 @@ export const store = configureStore({
     [contactApi.reducerPath]: contactApi.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
     [logosApi.reducerPath]: logosApi.reducer,
-    [uploadApi.reducerPath]: uploadApi.reducer,
     [menuApi.reducerPath]: menuApi.reducer,
+    
+    // media
+    [uploadApi.reducerPath]: uploadApi.reducer,
+    [MediaApi.reducerPath]: MediaApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
       concat(loginApi.middleware).
       concat(logosApi.middleware).
       concat(uploadApi.middleware).
-      concat(menuApi.middleware)
+      concat(menuApi.middleware).
+      concat(MediaApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

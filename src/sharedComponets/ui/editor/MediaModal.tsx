@@ -1,10 +1,11 @@
 "use client";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { CustomModal, CustomModalHeader } from "../modal/Modal";
 import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 import { TMediaCB } from "@/types/commonTypes";
 import { useState } from "react";
 import { GalleryIcon, VideoIcon } from "../icons/Icons";
+import MediaImages from "./MediaImages";
 
 type Props = {
   cb: (data: TMediaCB) => void;
@@ -12,9 +13,9 @@ type Props = {
 };
 
 export default function MediaModal({ cb, activeKey }: Props) {
-
   // hooks
-  const [activeTab, setActiveTab] = useState<'img'|'video'>("img")
+  const [activeTab, setActiveTab] = useState<"img" | "video">("img");
+
   // handlers
   const dispatch = useDispatch();
   const handleClick = () => {
@@ -33,25 +34,42 @@ export default function MediaModal({ cb, activeKey }: Props) {
       activeKey={activeKey}
       key={activeKey}
     >
-      <CustomModalHeader containerStyle="!bg-transparent border-b border-slate-400 !rounded-none" title="Choose Media" />
+      <CustomModalHeader
+        containerStyle="!bg-transparent border-b border-slate-400 !rounded-none"
+        title="Choose Media"
+      />
       <div className="w-full flex grow">
         <div className="w-full flex flex-col max-w-14 border-r border-slate-400 py-5 pr-4">
-          <button onClick={()=>setActiveTab("img")} className="mb-5">
-            <GalleryIcon className={`w-10 h-10 ${activeTab==="img"?'text-blue-600':'hover:text-black'}`} />
+          <button onClick={() => setActiveTab("img")} className="mb-5">
+            <GalleryIcon
+              className={`w-10 h-10 ${
+                activeTab === "img" ? "text-blue-600" : "hover:text-black"
+              }`}
+            />
           </button>
-          <button onClick={()=>setActiveTab("video")} className="">
-            <VideoIcon className={`w-10 h-10 ${activeTab==="video"?'text-blue-600':'hover:text-black'}`} />
+          <button onClick={() => setActiveTab("video")} className="">
+            <VideoIcon
+              className={`w-10 h-10 ${
+                activeTab === "video" ? "text-blue-600" : "hover:text-black"
+              }`}
+            />
           </button>
         </div>
-        <div className="grow grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-4 min-h-full">
-          {
-            activeKey==="img" ? <>
-
-            </>:
+        <div
+          className="w-full p-4 pr-0 max-h-[60vh]"
+        >
+          <div className="grow overflow-y-auto pr-4 max-h-full grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
+            {activeTab === "img" ? (
             <>
-              
+              <MediaImages cb={() => {}} />
             </>
-          }
+          ) : (
+            <>
+              <p>Media videos</p>
+            </>
+          )}
+           
+          </div>
         </div>
         {/* <button onClick={handleClick}>select</button> */}
       </div>
