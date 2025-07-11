@@ -1,43 +1,35 @@
-import { Schema, model, Document } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
-interface MediaMetadata {
-  width?: number;
-  height?: number;
-  duration?: number;
-  size?: number;  
-  format?: string; 
+export interface IMedia {
+  secure_url: string;
+  resource_type: 'image' | 'video';
+  asset_id: string;
+  public_id: string;
+  format: string;
+  duration?:number;
+  width: number;
+  height: number;
+  size: number; 
 }
-
-export interface IMedia extends Document {
-  url: string;
-  type: 'image' | 'video';
-  thumbnail?: string | null;
-  metadata?: MediaMetadata;
-  createdAt: Date;
-}
-
 const mediaSchema = new Schema<IMedia>(
   {
-    url: { type: String, required: true },
-    type: { type: String, enum: ['image', 'video'], required: true },
-    thumbnail: { type: String, default: null },
-    metadata: {
-      width: { type: Number },
-      height: { type: Number },
-      duration: { type: Number },
-      size: { type: Number },
-      format: { type: String },
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+    secure_url: { type: String, required: true },
+    resource_type: { type: String, enum: ['image', 'video'], required: true },
+
+    asset_id: { type: String, required: true },
+    public_id: { type: String, required: true },
+    format: { type: String, required: true },
+    duration: { type: Number, default: 0 },
+
+    width: { type: Number, required: true },
+    height: { type: Number, required: true },
+    size: { type: Number, required: true },
   },
   {
-    timestamps: false, 
+    timestamps: false,
   }
 );
 
-const Media = model<IMedia>('Media', mediaSchema);
+const Media = models.Media || model<IMedia>('Media', mediaSchema);
 
 export default Media;

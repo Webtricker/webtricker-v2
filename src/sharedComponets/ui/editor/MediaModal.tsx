@@ -1,33 +1,18 @@
 "use client";
-import { useDispatch} from "react-redux";
 import { CustomModal, CustomModalHeader } from "../modal/Modal";
-import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
-import { TMediaCB } from "@/types/commonTypes";
 import { useState } from "react";
 import { GalleryIcon, VideoIcon } from "../icons/Icons";
 import MediaImages from "./MediaImages";
+import { TMedia } from "@/types/commonTypes";
 
 type Props = {
-  cb: (data: TMediaCB) => void;
+  cb: (data: TMedia) => void;
   activeKey: string;
 };
 
 export default function MediaModal({ cb, activeKey }: Props) {
   // hooks
   const [activeTab, setActiveTab] = useState<"img" | "video">("img");
-
-  // handlers
-  const dispatch = useDispatch();
-  const handleClick = () => {
-    const data: TMediaCB = {
-      title: "Site Logo",
-      type: "img",
-      url: "https://res.cloudinary.com/dirjayri8/raw/upload/v1748532597/r2rg0cgdr3xa8e8bctbw.svg",
-    };
-    cb(data);
-    dispatch(toggleModal(null));
-  };
-
   return (
     <CustomModal
       containerStyle="!max-w-[1200px] min-h-[400px]"
@@ -55,21 +40,16 @@ export default function MediaModal({ cb, activeKey }: Props) {
             />
           </button>
         </div>
-        <div
-          className="w-full p-4 pr-0 max-h-[60vh]"
-        >
-          <div className="grow overflow-y-auto pr-4 max-h-full grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-4">
-            {activeTab === "img" ? (
+        <div className="w-full p-4 pr-0 max-h-[60vh]">
+          {activeTab === "img" ? (
             <>
-              <MediaImages cb={() => {}} />
+              <MediaImages cb={cb} />
             </>
           ) : (
             <>
               <p>Media videos</p>
             </>
           )}
-           
-          </div>
         </div>
         {/* <button onClick={handleClick}>select</button> */}
       </div>

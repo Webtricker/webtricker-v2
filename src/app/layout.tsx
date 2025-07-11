@@ -8,7 +8,6 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
-import CursorDot from "@/sharedComponets/DOM/CursorDot";
 import LoadSiteLogos from "../sharedComponets/ui/logos/LoadSiteLogos";
 
 const syne = Syne({
@@ -75,8 +74,6 @@ export default function RootLayout({
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />
 
-            <CursorDot />
-            
             {/* ===== portal to show modals ====== */}
             <div className="w-full" id="modal_portal"></div>
             <BodyEventListeners />

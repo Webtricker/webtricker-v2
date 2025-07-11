@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 import {RefObject, useRef } from "react";
 import { Editor as TinyMCEEditor } from 'tinymce';
+import { TMedia } from "@/types/commonTypes";
 
 type TinyFilePickerCallback = (url: string, meta?: { title?: string }) => void;
 
@@ -79,11 +80,9 @@ interface EditorContainerProps {
   const pickerResolveRef = useRef<TinyFilePickerCallback | null>(null);
 
   // handlers
-  const handleSelect = (fileUrl: string, title: string) => {
-    console.log(fileUrl, " file url");
-    console.log(title, " title");
-    console.log(pickerResolveRef, " picker resolve function");
-    pickerResolveRef.current?.(fileUrl, { title });
+  const handleSelect = (imgData:TMedia) => {
+    console.log(imgData);
+    // pickerResolveRef.current?.(fileUrl, { title });
   };
 
   // config
@@ -140,7 +139,7 @@ interface EditorContainerProps {
         init={tinymceConfig}
         initialValue="Start typing here."
       />
-      <MediaModal cb={handleSelect} />
+      <MediaModal activeKey="TODO" cb={handleSelect} />
     </>
   );
 };

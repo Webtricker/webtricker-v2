@@ -36,16 +36,21 @@ export default function BlogPageEditor() {
       <div className="w-full lg:fixed z-50 top-0 py-3 px-4 md:px-5 lg:px-10 left-0 flex items-center justify-between lg:bg-slate-100">
         <PageTitle key="ADD_BLOG" title="Add Blog" />
         <div className="w-auto hidden lg:block">
-            <Button className="!py-2.5" label="Save" cb={handleSave} />
+          <Button className="!py-2.5" label="Save" cb={handleSave} />
         </div>
       </div>
       <div className="w-full grow lg:pt-20 max-w-[952px] mx-auto">
         <TitleInput title={title} setTitle={setTitle} />
-      <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
-      <Description des={des} excerp={excerp} setExcerp={setExcerp} setDes={setDes} />
-      {/* <EditorContainer editorRef={editorRef} /> */}
-      <div className="w-auto lg:hidden mt-6 md:mt-8">
-            <Button className="!py-2.5" label="Save" cb={handleSave} />
+        <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
+        <Description
+          des={des}
+          excerp={excerp}
+          setExcerp={setExcerp}
+          setDes={setDes}
+        />
+        {/* <EditorContainer editorRef={editorRef} /> */}
+        <div className="w-auto lg:hidden mt-6 md:mt-8">
+          <Button className="!py-2.5" label="Save" cb={handleSave} />
         </div>
       </div>
     </>

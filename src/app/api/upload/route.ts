@@ -2,51 +2,68 @@ import { NextRequest, NextResponse } from 'next/server';
 import cloudinary from '@/lib/cloudinary';
 import { verifyAdmin } from '@/utils/validator';
 import dbConnect from '@/lib/dbConnect';
+import Media from '@/models/Media';
+import { IMedia } from '@/models/Media';
 
-async function uploadFileToCloudinary(file: File): Promise<{ url: string; public_id: string }> {
+// Upload a single file to Cloudinary and return media data
+async function uploadFileToCloudinary(file: File): Promise<IMedia> {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-      const isSvg = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
+    const isSvg = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
 
     return new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
+        cloudinary.uploader.upload_stream(
             {
                 resource_type: isSvg ? 'raw' : 'auto',
-                format: isSvg ? 'svg' : undefined, // optional but explicit
+                format: isSvg ? 'svg' : undefined,
             },
-        
             (error, result) => {
                 if (error) {
                     console.error(`Cloudinary upload error for file "${file.name}":`, error);
                     return reject(new Error(`Cloudinary upload failed for ${file.name}`));
                 }
+
                 if (!result) {
                     return reject(new Error('Cloudinary upload returned no result.'));
                 }
-                resolve({
-                    url: result.secure_url,
+
+                // Only include required fields based on IMedia
+                const media: IMedia = {
+                    secure_url: result.secure_url,
+                    resource_type: result.resource_type === 'video' ? 'video' : 'image',
+                    asset_id: result.asset_id,
                     public_id: result.public_id,
-                });
+                    format: result.format,
+                    width: result.width,
+                    height: result.height,
+                    size: result.bytes,
+                    duration: result.duration, // Only present for videos
+                };
+
+                resolve(media);
             }
-        );
-        uploadStream.end(buffer);
+        ).end(buffer);
     });
 }
 
 export async function POST(req: NextRequest) {
-    // Only allow multipart/form-data
     const contentType = req.headers.get('content-type') || '';
     if (!contentType.includes('multipart/form-data')) {
-        return NextResponse.json({ success: false, message: 'Invalid content type' }, { status: 415 });
+        return NextResponse.json(
+            { success: false, message: 'Invalid content type' },
+            { status: 415 }
+        );
     }
 
-    // Authenticate admin user
     try {
         await dbConnect();
         await verifyAdmin(req);
     } catch (error) {
-        return NextResponse.json({ success: false, message: (error as Error).message }, { status: 401 });
+        return NextResponse.json(
+            { success: false, message: (error as Error).message },
+            { status: 401 }
+        );
     }
 
     try {
@@ -54,24 +71,51 @@ export async function POST(req: NextRequest) {
         const files = formData.getAll('files') as File[];
 
         if (!files || files.length === 0) {
-            return NextResponse.json({ success: false, message: 'No files provided' }, { status: 400 });
+            return NextResponse.json(
+                { success: false, message: 'No files provided' },
+                { status: 400 }
+            );
         }
 
-        // limit number of files
         if (files.length > 10) {
-            return NextResponse.json({ success: false, message: 'Too many files. Max 10 allowed.' }, { status: 413 });
+            return NextResponse.json(
+                { success: false, message: 'Too many files. Max 10 allowed.' },
+                { status: 413 }
+            );
         }
 
-        const uploadedResults = await Promise.all(files.map(uploadFileToCloudinary));
-        const urls = uploadedResults.map((file) => file.url);
+        const allowedTypes = ['image/', 'video/'];
+
+        const invalidFiles = files.filter(
+            (file) => !allowedTypes.some((type) => file.type.startsWith(type))
+        );
+
+        if (invalidFiles.length > 0) {
+            return NextResponse.json(
+                { success: false, message: 'Image and Video are allowed' },
+                { status: 400 }
+            )
+        }
+
+        // Upload all files and save to DB
+        const uploadedResults = await Promise.all(
+            files.map(async (file) => {
+                const mediaData = await uploadFileToCloudinary(file);
+                const savedMedia = await Media.create(mediaData);
+                return savedMedia.toObject();
+            })
+        );
 
         return NextResponse.json({
             success: true,
-            message: 'Files uploaded successfully!',
-            uploadedFiles: urls,
+            message: 'Files uploaded and saved successfully!',
+            uploadedFiles: uploadedResults,
         });
     } catch (error) {
         console.error('Upload failed:', error);
-        return NextResponse.json({ success: false, message: 'Upload failed' }, { status: 500 });
+        return NextResponse.json(
+            { success: false, message: 'Upload failed' },
+            { status: 500 }
+        );
     }
 }

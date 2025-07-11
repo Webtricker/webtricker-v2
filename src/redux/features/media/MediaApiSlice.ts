@@ -8,12 +8,12 @@ export const MediaApi = createApi({
   }),
   endpoints: (builder) => ({
     getMedia: builder.query({
-      query: () => ({
-        url: '/',
+      query: ({type}) => ({
+        url: `?type=${type}`,
         method: 'GET',
       }),
     }),
   }),
 });
 
-export const {useGetMediaQuery} = MediaApi;
+export const {useLazyGetMediaQuery} = MediaApi;

@@ -28,6 +28,7 @@ export const getJwtExpiration = (token: string): number => {
 
 export const verifyAdmin = async (req: NextRequest): Promise<true> => {
   const token = req.cookies.get('accessToken')?.value;
+  console.log(token, ' token from req body')
 
   if (!token) {
     throw new Error('Access token missing');
