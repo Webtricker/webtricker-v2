@@ -4,15 +4,17 @@ import { useState } from "react";
 import { GalleryIcon, VideoIcon } from "../icons/Icons";
 import MediaImages from "./MediaImages";
 import { TMedia } from "@/types/commonTypes";
+import MediaVideos from "./MediaVideos";
 
 type Props = {
   cb: (data: TMedia) => void;
   activeKey: string;
+  allowedMediaTypeToShow?: Array<'img' | 'video'>;
 };
 
-export default function MediaModal({ cb, activeKey }: Props) {
+export default function MediaModal({ cb, activeKey,allowedMediaTypeToShow=['img','video'] }: Props) {
   // hooks
-  const [activeTab, setActiveTab] = useState<"img" | "video">("img");
+  const [activeTab, setActiveTab] = useState<"img" | "video">(allowedMediaTypeToShow[0]);
   return (
     <CustomModal
       containerStyle="!max-w-[1200px] min-h-[400px]"
@@ -25,20 +27,24 @@ export default function MediaModal({ cb, activeKey }: Props) {
       />
       <div className="w-full flex grow">
         <div className="w-full flex flex-col max-w-14 border-r border-slate-400 py-5 pr-4">
-          <button onClick={() => setActiveTab("img")} className="mb-5">
-            <GalleryIcon
-              className={`w-10 h-10 ${
-                activeTab === "img" ? "text-blue-600" : "hover:text-black"
-              }`}
-            />
-          </button>
-          <button onClick={() => setActiveTab("video")} className="">
-            <VideoIcon
-              className={`w-10 h-10 ${
-                activeTab === "video" ? "text-blue-600" : "hover:text-black"
-              }`}
-            />
-          </button>
+          {allowedMediaTypeToShow.includes("img") && (
+            <button onClick={() => setActiveTab("img")} className="mb-5">
+              <GalleryIcon
+                className={`w-10 h-10 ${
+                  activeTab === "img" ? "text-blue-600" : "hover:text-black"
+                }`}
+              />
+            </button>
+          )}
+          {allowedMediaTypeToShow.includes("video") && (
+            <button onClick={() => setActiveTab("video")}>
+              <VideoIcon
+                className={`w-10 h-10 ${
+                  activeTab === "video" ? "text-blue-600" : "hover:text-black"
+                }`}
+              />
+            </button>
+          )}
         </div>
         <div className="w-full p-4 pr-0 max-h-[60vh]">
           {activeTab === "img" ? (
@@ -47,7 +53,7 @@ export default function MediaModal({ cb, activeKey }: Props) {
             </>
           ) : (
             <>
-              <p>Media videos</p>
+              <MediaVideos cb={cb} />
             </>
           )}
         </div>

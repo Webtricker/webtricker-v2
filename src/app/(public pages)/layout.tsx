@@ -8,7 +8,6 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       {children}
-
       <CursorDot />
       <Footer />
     </>

@@ -13,7 +13,22 @@ export const MediaApi = createApi({
         method: 'GET',
       }),
     }),
+
+    deleteMedia: builder.mutation({
+      query: (data) => ({
+          url: ``,
+          method: 'DELETE',
+          body: data,
+        })
+    }),
+    postMedia: builder.mutation({
+      query: (data) => ({
+      url: ``,
+      method: 'POST',
+      body: data,
+      }),
+    }),
   }),
 });
 
-export const {useLazyGetMediaQuery} = MediaApi;
+export const {useLazyGetMediaQuery, useDeleteMediaMutation, usePostMediaMutation} = MediaApi;

@@ -5,6 +5,7 @@ import Description from "@/sharedComponets/ui/editor/Description";
 // import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
 import Thumnail from "@/sharedComponets/ui/editor/Thumnail";
 import TitleInput from "@/sharedComponets/ui/editor/TitleInput";
+import { TMedia } from "@/types/commonTypes";
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Editor } from "tinymce";
@@ -17,7 +18,7 @@ export default function BlogPageEditor() {
   const [title, setTitle] = useState("some title");
   const [des, setDes] = useState("fdfsd");
   const [excerp, setExcerp] = useState("some excerpt");
-  const [thumnail, setThumnail] = useState<string | null>("");
+  const [thumnail, setThumnail] = useState<TMedia | null>(null);
 
   const handleSave = () => {
     console.log(title);

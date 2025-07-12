@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { Dispatch, SetStateAction } from "react";
 import { GallerySingleIcon, PenSQRIcon } from "../icons/Icons";
-import { toast } from "react-toastify";
 import MediaModal from "./MediaModal";
 import { useDispatch } from "react-redux";
 import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
@@ -21,9 +20,10 @@ export default function Thumnail({ setThumnail, thumnail }: Props) {
   };
 
   const handleSelect = (data: TMedia) => {
+
     console.log(data, " data from select");
-    dispatch(toggleModal(null));
-    setThumnail(data);
+    // dispatch(toggleModal(null));
+    // setThumnail(data);
   };
 
   return (
@@ -41,7 +41,7 @@ export default function Thumnail({ setThumnail, thumnail }: Props) {
             />
             <button
               onClick={handleClick}
-              className="duration-300 absolute opacity-0 group-hover:opacity-100 top-2 right-2 bg-white rounded-full w-10 h-10 flex items-center justify-center"
+              className="duration-300 absolute opacity-0 group-hover:opacity-100 top-2 right-2 bg-black p-2 text-white rounded-full w-10 h-10 flex items-center justify-center"
               title="Change image"
             >
               <PenSQRIcon />
@@ -58,7 +58,8 @@ export default function Thumnail({ setThumnail, thumnail }: Props) {
           </button>
         )}
       </div>
-      <MediaModal
+      <MediaModal 
+      allowedMediaTypeToShow={['video']}
         activeKey="OPEN_MEDIA_MODAL"
         key={"OPEN_MEDIA_MODAL_WRAPPER"}
         cb={handleSelect}

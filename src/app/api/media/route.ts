@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdmin } from '@/utils/validator';
 import dbConnect from '@/lib/dbConnect';
 import cloudinary from '@/lib/cloudinary';
-import Media from '@/models/Media';
+import Media, { IMedia } from '@/models/Media';
 
 export async function DELETE(req: NextRequest) {
   try {
@@ -94,6 +94,53 @@ export async function GET(req: NextRequest) {
     console.error('Media query failed:', error);
     return NextResponse.json(
       { success: false, message: `Media query failed: ${(error as Error).message}` },
+      { status: 500 }
+    );
+  }
+}
+
+
+export async function POST(req: NextRequest) {
+  try {
+    await dbConnect();
+    await verifyAdmin(req);
+  } catch (error) {
+    return NextResponse.json(
+      { success: false, message: (error as Error).message },
+      { status: 401 }
+    );
+  }
+
+  try {
+    const media: IMedia = await req.json();
+
+    if (
+      !media.secure_url ||
+      !media.resource_type ||
+      !media.asset_id ||
+      !media.public_id ||
+      !media.format ||
+      !media.width ||
+      !media.height ||
+      !media.size ||
+      (media.resource_type === 'video' && typeof media.duration !== 'number')
+    ) {
+      return NextResponse.json(
+        { success: false, message: 'Missing or invalid media fields' },
+        { status: 400 }
+      );
+    }
+
+    const createdMedia = await Media.create(media);
+
+    return NextResponse.json({
+      success: true,
+      media: createdMedia
+    });
+  } catch (error) {
+    console.error('Media creation failed:', error);
+    return NextResponse.json(
+      { success: false, message: `Media creation failed: ${(error as Error).message}` },
       { status: 500 }
     );
   }
