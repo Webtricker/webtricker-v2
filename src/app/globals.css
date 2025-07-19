@@ -260,6 +260,10 @@ section {
 .section-speacing {
   @apply py-10 xl:py-12 2xl:py-14;
 }
+
+.section-bottom-speacing {
+  @apply pb-10 xl:pb-12 2xl:pb-14;
+}
 .dark section {
   background-color: var(--clr-bg-body-dark);
 }

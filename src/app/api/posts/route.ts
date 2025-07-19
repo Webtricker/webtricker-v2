@@ -1,6 +1,7 @@
 import connectToDatabase from "@/lib/dbConnect";
 import Posts from "@/models/Posts";
 import { verifyAdmin } from "@/utils/validator";
+import mongoose from "mongoose";
 
 import { NextRequest, NextResponse } from "next/server";
 export const POST = async (req: NextRequest) => {
@@ -37,7 +38,7 @@ export const POST = async (req: NextRequest) => {
         );
     }
 }
-;
+    ;
 
 export const GET = async (req: NextRequest) => {
     try {
@@ -47,12 +48,18 @@ export const GET = async (req: NextRequest) => {
         const postType = searchParams.get("postType") || "blog";
         const categoryId = searchParams.get("categoryId") || null;
         const page = parseInt(searchParams.get("page") || "1", 10);
-        const limit = parseInt(searchParams.get("limit") || "10", 20);
+        const limit = parseInt(searchParams.get("limit") || "20", 10);
         const skip = (page - 1) * limit;
 
         const query: any = { postType };
-        if (categoryId) {
-            query['category._id'] = categoryId;
+
+        if (categoryId && mongoose.Types.ObjectId.isValid(categoryId)) {
+            query['categories._id'] = new mongoose.Types.ObjectId(categoryId);
+        } else if (categoryId) {
+            return NextResponse.json(
+                { success: false, message: 'Invalid categoryId' },
+                { status: 400 }
+            );
         }
 
         const [posts, total] = await Promise.all([
@@ -67,8 +74,7 @@ export const GET = async (req: NextRequest) => {
                 pagination: {
                     total,
                     page,
-                    limit,
-                    totalPages: Math.ceil(total / limit),
+                    limit
                 },
             },
             { status: 200 }

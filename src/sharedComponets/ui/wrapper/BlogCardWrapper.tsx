@@ -1,7 +1,6 @@
 import { trimText } from "@/utils/blog";
 import { formatDateToShortString } from "@/utils/date";
 import Image from "next/image";
-import Link from "next/link";
 import React, { ReactNode } from "react";
 
 type Props = {
@@ -16,7 +15,6 @@ type Props = {
 export default function BlogCardWrapper({
   thumnail,
   createdAt,
-  slug,
   title,
   excerpt = "",
   description,

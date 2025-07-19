@@ -1,5 +1,6 @@
 import connectToDatabase from "@/lib/dbConnect";
 import Posts from "@/models/Posts";
+import mongoose from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -11,9 +12,16 @@ export const GET = async (req: NextRequest) => {
         const categoryId = searchParams.get("categoryId") || null;
 
         const query: any = { postType };
-        if (categoryId) {
-            query['category._id'] = categoryId;
+        
+        if (categoryId && mongoose.Types.ObjectId.isValid(categoryId)) {
+            query['categories._id'] = new mongoose.Types.ObjectId(categoryId);
+        } else if (categoryId) {
+            return NextResponse.json(
+                { success: false, message: 'Invalid categoryId' },
+                { status: 400 }
+            );
         }
+
 
 
         const counts = await Posts.countDocuments(query)

@@ -1,6 +1,6 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
-import CategoryBlogs from "./component/CategoryBlogs";
+import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
 // import BlogCardsContainer from "./components/BlogCardsContainer";
 
 export default async function CategoryPage({ params }: { params: { id: string } }) {
@@ -31,7 +31,7 @@ export default async function CategoryPage({ params }: { params: { id: string } 
           <source src="/videos/blogs/blog.mp4" type="video/mp4" />
         </video>
       </section>
-      <CategoryBlogs categoryId={data.category?._id}  />
+      <CategoryBlogsContainer categoryId={data.category?._id}  />
     </main>
   );
 }

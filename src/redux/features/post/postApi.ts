@@ -8,8 +8,8 @@ export const postApi = createApi({
     }),
     endpoints: (builder) => ({
         getPosts: builder.query({
-            query: (postType) => ({
-                url: `/posts?postType=${postType}`
+            query: ({postType,categoryId,page,limit}) => ({
+                url: `/posts?postType=${postType}&categoryId=${categoryId}&page=${page}&limit=${limit}`
             })
         }),
         countPosts: builder.query({
@@ -33,4 +33,4 @@ export const postApi = createApi({
     })
 })
 
-export const { useAddPostsMutation, useCountPostsQuery, useDeletePostsMutation, useGetPostsQuery } = postApi;
+export const { useAddPostsMutation, useLazyCountPostsQuery, useDeletePostsMutation, useGetPostsQuery,useLazyGetPostsQuery } = postApi;

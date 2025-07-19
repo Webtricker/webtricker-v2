@@ -1,6 +1,6 @@
 import { TCategory } from "./data";
 
-export type TBlog = {
+export interface TBlog {
       title: string;
       slug: string;
       description: string;
@@ -14,4 +14,14 @@ export type TBlog = {
       postType: 'service' | 'blog';
       categories: TCategory[];
       content: string;
+}
+
+export interface IBlog extends TBlog {
+    _id:string;
+    createdAt:Date;
+    thumnail: {
+        width: number;
+        height: number;
+        url: string;
+      };
 }
