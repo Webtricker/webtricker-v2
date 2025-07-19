@@ -3,11 +3,9 @@ import Categories from "@/models/Categories"
 import { verifyAdmin } from "@/utils/validator";
 import { NextRequest, NextResponse } from "next/server"
 
-export const GET = async (req: NextRequest) => {
+export const GET = async () => {
     try {
         await dbConnect();
-        await verifyAdmin(req);
-
         const categories = await Categories.find().select('name').lean();
 
         return NextResponse.json({
