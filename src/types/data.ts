@@ -52,3 +52,8 @@ export type TUploadResponse = {
   message: string;
   uploadedFiles: string[];
 }
+
+
+
+// category
+export type TCategory = { _id: string; name: string }

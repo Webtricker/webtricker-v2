@@ -11,15 +11,15 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import LoadSiteLogos from "../sharedComponets/ui/logos/LoadSiteLogos";
 
 const syne = Syne({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-syne',
-  display: 'swap',
-})
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
-    default:"Webtricker",
+    default: "Webtricker",
     template: "%s | Webtricker",
   },
   description: "Web Design and Development Agency",
@@ -60,10 +60,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en"> 
-      <body
-        className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}
-      >
+    <html lang="en">
+      <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
             {children}
@@ -77,8 +75,8 @@ export default function RootLayout({
             {/* ===== portal to show modals ====== */}
             <div className="w-full" id="modal_portal"></div>
             <BodyEventListeners />
-            <BodyScrollController />
             <InitializeAnimationPlugin />
+            <BodyScrollController />
           </ReduxProvider>
         </ThemeProvider>
         <ReactToastifyMessage />

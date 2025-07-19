@@ -20,16 +20,14 @@ export default function Thumnail({ setThumnail, thumnail }: Props) {
   };
 
   const handleSelect = (data: TMedia) => {
-
-    console.log(data, " data from select");
-    // dispatch(toggleModal(null));
-    // setThumnail(data);
+    dispatch(toggleModal(null));
+    setThumnail(data);
   };
 
   return (
     <>
-      <label className="wt_fs-md mb-1 block">Thumnail</label>
-      <div className="w-full group relative flex items-center justify-center border border-slate-200 rounded-[10px] mb-5 lg:mb-10">
+      <p className="wt_fs-md mb-1 block">Thumnail</p>
+      <div className="w-full group relative flex items-center justify-center border border-slate-400 rounded-[10px] mb-5 lg:mb-10">
         {thumnail ? (
           <>
             <Image
@@ -59,7 +57,7 @@ export default function Thumnail({ setThumnail, thumnail }: Props) {
         )}
       </div>
       <MediaModal 
-      allowedMediaTypeToShow={['video']}
+      allowedMediaTypeToShow={['img']}
         activeKey="OPEN_MEDIA_MODAL"
         key={"OPEN_MEDIA_MODAL_WRAPPER"}
         cb={handleSelect}

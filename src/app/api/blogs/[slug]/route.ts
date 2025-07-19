@@ -1,7 +1,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
-import Post from "@/models/Blogs";
+import Post from "@/models/Posts";
 
 export const DELETE = async (
     req: NextRequest,

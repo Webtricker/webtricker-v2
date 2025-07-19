@@ -9,6 +9,9 @@ import siteLogo from "./features/logos/siteLogoSlice";
 import { uploadApi } from "./features/upload/uploadApiSlice";
 import { menuApi } from "./features/menu/menuApiSlice";
 import { MediaApi } from "./features/media/MediaApiSlice";
+import { categoryApi } from "./features/category/categoryApiSlice";
+import categories from "./features/category/categories";
+import { postApi } from "./features/post/postApi";
 
 export const store = configureStore({
   reducer: {
@@ -23,23 +26,28 @@ export const store = configureStore({
     // site logo
     siteLogo: siteLogo.reducer,
 
+    // categories
+    categories: categories.reducer,
+
     // api slices can be added here
     [contactApi.reducerPath]: contactApi.reducer,
+    [postApi.reducerPath]: postApi.reducer,
     [loginApi.reducerPath]: loginApi.reducer,
     [logosApi.reducerPath]: logosApi.reducer,
     [menuApi.reducerPath]: menuApi.reducer,
-    
-    // media
+    [categoryApi.reducerPath]: categoryApi.reducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [MediaApi.reducerPath]: MediaApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
       concat(loginApi.middleware).
+      concat(postApi.middleware).
       concat(logosApi.middleware).
       concat(uploadApi.middleware).
       concat(menuApi.middleware).
-      concat(MediaApi.middleware)
+      concat(MediaApi.middleware).
+      concat(categoryApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

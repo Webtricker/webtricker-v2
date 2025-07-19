@@ -256,6 +256,10 @@ section {
 .section-inner-speacing {
   @apply pt-10 xl:pt-12 2xl:pt-14;
 }
+
+.section-speacing {
+  @apply py-10 xl:py-12 2xl:py-14;
+}
 .dark section {
   background-color: var(--clr-bg-body-dark);
 }
