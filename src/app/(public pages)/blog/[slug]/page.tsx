@@ -6,7 +6,7 @@ import BlogPageContainer from "@/sharedComponets/ui/wrapper/BlogPageContainer";
 import { IBlog } from "@/types/post";
 
 const getBlogData = async (slug: string) => {
-  // You can fetch data here on the server
+  // You can fetch data here on the server f
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${slug}`
