@@ -41,6 +41,6 @@ export default function LoadSiteLogos() {
     };
 
     loadLogo();
-  }, []);
+  }, [getLogos,dispatch]);
   return <></>;
 }

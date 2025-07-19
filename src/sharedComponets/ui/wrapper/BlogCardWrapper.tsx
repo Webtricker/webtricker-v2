@@ -46,9 +46,10 @@ export default function BlogCardWrapper({
 }
 
 {
-  /* <Link href={`/blogs/slug`}>
-                    <Button label="Read More" className="!text-sm !py-2.5" />
-                  </Link>
-                  add this to the children
-                  */
+  /* 
+  <Link href={`/blogs/slug`}>
+      <Button label="Read More" className="!text-sm !py-2.5" />
+  </Link>
+                  
+ add this to the children */
 }

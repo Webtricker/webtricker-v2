@@ -617,3 +617,15 @@ p.bouncing-text {
   margin-left: 1.5em;
   padding-left: 0;
 }
+
+/* lets add 5 px default bottom margin for each heading in post details page  */
+.post-details-container h2, 
+.post-details-container h3, 
+.post-details-container h4, 
+.post-details-container h5, 
+.post-details-container h6{
+  margin-bottom: 5px;
+}
+.post-details-container img{
+ border-radius: 10px;
+}

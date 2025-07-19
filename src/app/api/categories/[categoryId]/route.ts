@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (
     _: NextRequest,
-    { params }: { params: { categoryId: string } }
+    { params }: { params: Promise<{ categoryId: string }> }
 ) => {
     const asyncParams = await params;
     const id = asyncParams.categoryId;
@@ -26,7 +26,7 @@ export const DELETE = async (
 };
 export const GET = async (
     _: NextRequest,
-    { params }: { params: { categoryId: string } }
+    { params }: { params: Promise<{ categoryId: string }> }
 ) => {
     const asyncParams = await params;
     const id = asyncParams.categoryId;

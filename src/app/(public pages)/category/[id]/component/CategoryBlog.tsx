@@ -23,7 +23,7 @@ export default function CategoryBlog({ blogs }: { blogs: IBlog[] }) {
           title={blog.title}
           excerpt={blog.excerp}
         >
-          <Link href={`/blogs/${blog.slug}`}>
+          <Link href={`/blog/${blog.slug}`}>
             <Button label="Read More" className="!text-sm !py-2.5" />
           </Link>
         </BlogCardWrapper>

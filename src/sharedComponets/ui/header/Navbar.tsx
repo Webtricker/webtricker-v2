@@ -65,7 +65,7 @@ export default function Navbar({ navStyle = "" }: Props) {
     return () => {
       lenis.off("scroll", handleScroll);
     };
-  }, [scrollY])
+  }, [scrollY,showBorder])
   return (
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}

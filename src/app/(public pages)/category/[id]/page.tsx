@@ -1,10 +1,12 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
-// import BlogCardsContainer from "./components/BlogCardsContainer";
 
-export default async function CategoryPage({ params }: { params: { id: string } }) {
-     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${params.id}`);
+// Define the type for the props explicitly
+
+export default async function CategoryPage({ params }: {params:Promise<{id:string}>}) {
+  const id = (await params).id
+     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`);
      const data = await res.json();
 
      if(!data.success) return <Container><h1 className="text-center">Invalid category</h1></Container>

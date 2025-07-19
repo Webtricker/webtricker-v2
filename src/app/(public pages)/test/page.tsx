@@ -1,7 +1,7 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 // import UploadFile from "./components/UploadFile";
-import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
+// import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
 // import { EditorContent, useEditor, JSONContent } from '@tiptap/react'
 // import StarterKit from '@tiptap/starter-kit'
 // import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
@@ -17,7 +17,8 @@ export default function TestPage() {
   return (
     <div className="w-full min-h-screen pt-20 mt-5 flex flex-col">
       <Container className="flex flex-col grow">
-         <EditorContainer />
+         {/* <EditorContainer /> */}
+         test content
       </Container>
     </div>
   );

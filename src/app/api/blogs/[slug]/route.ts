@@ -5,7 +5,7 @@ import Post from "@/models/Posts";
 
 export const DELETE = async (
     req: NextRequest,
-    { params }: { params: { id: string } }
+    { params }: { params: Promise<{ id: string }> }
 ) => {
     const authorization = req.headers.get('authorization');
     const asyncParams = await params;
@@ -37,7 +37,7 @@ export const DELETE = async (
 
 export const GET = async (
     req: NextRequest,
-    { params }: { params: { slug: string } }
+    { params }: { params: Promise<{ slug: string }> }
 ) => {
     const asyncParams = await params;
     const slug = asyncParams.slug;

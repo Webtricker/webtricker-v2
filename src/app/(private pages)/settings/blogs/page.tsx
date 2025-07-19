@@ -7,6 +7,7 @@ import { useGetPostsQuery } from "@/redux/features/post/postApi";
 export default function BlogsPage() { 
   const  {data, isLoading, isError} = useGetPostsQuery('blog')
   console.log(data?.posts,' data from blogs')
+  console.log(isLoading, isError, ' ')
   return (
     <PrivatePageWrapper>
       <div className="w-full flex flex-col  gap-20">
