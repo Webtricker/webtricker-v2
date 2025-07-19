@@ -11,6 +11,7 @@ const getBlogData = async (slug: string) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${slug}`
     );
+    console.log(res, ' res from single blog')
     const data = await res.json();
     return data;
   } catch (error) {
