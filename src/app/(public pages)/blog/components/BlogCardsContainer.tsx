@@ -1,30 +1,58 @@
 "use client";
+
 import { useGetCategoriesQuery } from "@/redux/features/category/categoryApiSlice";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
-import React from "react";
-import CategoryBlog from "./CategoryBlog";
 import Container from "@/sharedComponets/ui/wrapper/Container";
+import CategoryBlog from "./CategoryBlog";
+import React from "react";
 
 export default function BlogCardsContainer() {
-  // hooks
-  const {data, isLoading, isError } = useGetCategoriesQuery({});
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useGetCategoriesQuery({});
 
-  if (isLoading)
+  const categories = data?.categories ?? [];
+
+  // Show loading spinner
+  if (isLoading) {
     return (
-      <Container className="flex items-center justify-center">
+      <Container className="flex items-center justify-center min-h-[200px]">
         <LoadingSpinner />
       </Container>
     );
-  if (!isLoading && !data.categories?.length || isError)
+  }
+
+  // Handle error case
+  if (isError) {
+    const errorMessage =
+      (error as any)?.data?.message || "Failed to load categories.";
     return (
-      <Container>
-        <p className="text-center wt_fs-lg">No category found</p>
+      <Container className="text-center">
+        <p className="wt_fs-lg text-red-600">{errorMessage}</p>
       </Container>
     );
+  }
+
+  // No categories found
+  if (!categories.length) {
+    return (
+      <Container className="text-center">
+        <p className="wt_fs-lg">No categories found.</p>
+      </Container>
+    );
+  }
+
+  // Render categories
   return (
     <>
-      {data.categories.map((category) => (
-        <CategoryBlog key={category._id} category={category} />
+      {categories.map((category) => (
+        <CategoryBlog
+          key={category._id ?? category.name} // Fallback to name if _id is missing
+          category={category}
+        />
       ))}
     </>
   );
