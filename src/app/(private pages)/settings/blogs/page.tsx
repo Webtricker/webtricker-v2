@@ -1,14 +1,9 @@
-"use client"
 import React from "react";
 import PrivatePageWrapper from "../../components/PrivatePageWrapper";
-import { useGetPostsQuery } from "@/redux/features/post/postApi";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import AdminBlogsContainer from "./components/AdminBlogsContainer";
 
 export default function BlogsPage() { 
-  const  {data, isLoading, isError} = useGetPostsQuery('blog')
-  console.log(data?.posts,' data from blogs')
-  console.log(isLoading, isError, ' ')
   return (
     <PrivatePageWrapper className="!p-0">
       <main className="w-full z-0">

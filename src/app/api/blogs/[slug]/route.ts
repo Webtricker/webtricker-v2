@@ -4,37 +4,6 @@ import connectToDatabase from "@/lib/dbConnect";
 import Post from "@/models/Posts";
 import { verifyAdmin } from "@/utils/validator";
 
-export const DELETE = async (
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
-) => {
-    const authorization = req.headers.get('authorization');
-    const asyncParams = await params;
-    const id = asyncParams.id;
-
-    // --- API Key Validation (Crucial!) ---
-    const API_KEY = process.env.WORDPRESS_API_KEY;
-    if (!API_KEY || authorization !== `Bearer ${API_KEY}`) {
-        console.error('Unauthorized attempt for delete:', authorization);
-        return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
-    }
-
-    try {
-        await connectToDatabase();
-
-        await Post.findOneAndDelete({ wordpress_post_id: id });
-        return NextResponse.json(
-            { success: true, error: false, message: `Post with ID ${id} deleted successfully.` },
-            { status: 200 }
-        );
-    } catch (error) {
-        console.error('Error during post deletion:', error);
-        return NextResponse.json(
-            { success: false, error: true, message: 'Internal Server Error' },
-            { status: 500 }
-        );
-    }
-};
 
 export const GET = async (
     req: NextRequest,
@@ -105,6 +74,40 @@ export const GET = async (
     }
 };
 
+export const DELETE = async (
+    req: NextRequest,
+    { params }: { params: Promise<{ slug: string }> }
+) => {
+    const { slug:blogID } = await params;
+    try {
+        await connectToDatabase();
+        await verifyAdmin(req);
+
+        const deletedPost = await Post.findByIdAndDelete(blogID);
+
+        if (!deletedPost) {
+            return NextResponse.json(
+                { success: false, error: true, message: 'Post not found' },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json(
+            {
+                success: true,
+                message: 'Post deleted successfully',
+                deletedPost,
+            },
+            { status: 200 }
+        );
+    } catch (error) {
+        console.error('Error deleting blog post:', error);
+        return NextResponse.json(
+            { error: true, message: 'Internal Server Error' },
+            { status: 500 }
+        );
+    }
+};
 
 export const PUT = async (
     req: NextRequest,
