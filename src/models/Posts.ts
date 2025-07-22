@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 interface IPost {
   title: string;
-  slug:string;
+  slug: string;
   description: string;
   excerp: string;
   thumnail: {
@@ -11,13 +11,13 @@ interface IPost {
   };
   tags: string[];
   postType: 'service' | 'blog';
-  categories: { _id: mongoose.Types.ObjectId; name: string }[];
+  category: { _id: mongoose.Types.ObjectId; name: string };
   content: string;
 }
 
 const PostSchema = new mongoose.Schema<IPost>({
   title: { type: String, required: true },
-  slug: { type: String, required: true, unique:true },
+  slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
 
   excerp: { type: String, required: true },
@@ -28,14 +28,11 @@ const PostSchema = new mongoose.Schema<IPost>({
   },
   tags: { type: [String], default: [] },
   postType: { type: String, enum: ['service', 'blog'], required: true },
-  categories: {
-    type: [
-      {
-        _id: { type: mongoose.Schema.Types.ObjectId, required: true },
-        name: { type: String, required: true },
-      },
-    ],
-    default: [],
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+    default: new mongoose.Types.ObjectId('687e0480f869c4910bb64f7f'),
   },
   content: { type: String, required: true },
 }, {

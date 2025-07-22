@@ -21,7 +21,7 @@ export default function BlogCardWrapper({
   children,
 }: Props) {
   return (
-    <div className="duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px]">
+    <div className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px]">
       <div className="w-full h-[230px]">
         <Image
           src={thumnail}

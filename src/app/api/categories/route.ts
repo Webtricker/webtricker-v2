@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/dbConnect";
-import Categories from "@/models/Categories"
+import Category from "@/models/Category";
 import { verifyAdmin } from "@/utils/validator";
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async () => {
     try {
         await dbConnect();
-        const categories = await Categories.find().select('name').lean();
+        const categories = await Category.find().select('name').lean();
 
         return NextResponse.json({
             success: true,
@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
 
         await dbConnect();
         await verifyAdmin(req);
-        await Categories.create({ name });
+        await Category.create({ name });
         return NextResponse.json({
             message: "Category created successfully.",
             category: name,

@@ -3,16 +3,28 @@ import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
 
 // Define the type for the props explicitly
+export default async function CategoryPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`
+  );
+  const data = await res.json();
 
-export default async function CategoryPage({ params }: {params:Promise<{id:string}>}) {
-  const id = (await params).id
-     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`);
-     const data = await res.json();
-
-     if(!data.success) return <Container><h1 className="text-center">Invalid category</h1></Container>
+  if (!data.success)
+    return (
+      <Container>
+        <h1 className="text-center">Invalid category</h1>
+      </Container>
+    );
   return (
     <main className="w-full z-0">
-      <section className={`w-full min-h-screen z-0 flex relative mb-8 md:mb-10 lg:mb-14 xl:mb-16 2xl:mb-18`}>
+      <section
+        className={`w-full min-h-screen z-0 flex relative mb-8 md:mb-10 lg:mb-14 xl:mb-16 2xl:mb-18`}
+      >
         <Container className="flex items-center justify-center">
           <div className="w-full max-w-[1000px] text-center bg-slate-800/30 rounded-[10px] p-4">
             <h1 className="!text-white wt_text-shadow wt_fs-7xl font-medium heading !leading-[100%]">
@@ -33,7 +45,7 @@ export default async function CategoryPage({ params }: {params:Promise<{id:strin
           <source src="/videos/blogs/blog.mp4" type="video/mp4" />
         </video>
       </section>
-      <CategoryBlogsContainer categoryId={data.category?._id}  />
+      <CategoryBlogsContainer categoryId={data.category?._id} />
     </main>
   );
 }

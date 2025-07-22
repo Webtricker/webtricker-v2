@@ -11,5 +11,5 @@ const categorySchema = new Schema<Category>(
   }
 );
 
-const Categories = models.Categories || model<Category>('Categories', categorySchema);
-export default Categories;
+const Category = models.Category || model<Category>('Category', categorySchema);
+export default Category;

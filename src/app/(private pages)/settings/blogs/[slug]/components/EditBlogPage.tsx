@@ -1,6 +1,8 @@
 "use client";
 import PageTitle from "@/app/(private pages)/components/PageTitle";
-import { useAddPostsMutation } from "@/redux/features/post/postApi";
+import {
+  useUpdatePostMutation,
+} from "@/redux/features/post/postApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import Category from "@/sharedComponets/ui/editor/Category";
 import Description from "@/sharedComponets/ui/editor/Description";
@@ -8,36 +10,45 @@ import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
 import Tag from "@/sharedComponets/ui/editor/Tag";
 // import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
 import Thumnail from "@/sharedComponets/ui/editor/Thumnail";
-import TitleInput from "@/sharedComponets/ui/editor/TitleInput";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import { TMedia } from "@/types/commonTypes";
 import { TCategory } from "@/types/data";
 import { TBlog } from "@/types/post";
-import { makeSlug } from "@/utils/blog";
+
 import React, { useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { Editor } from "tinymce";
 
-export default function BlogPageEditor() {
+export default function EditBlogPage({ post }: { post: TBlog }) {
   // ref
   const editorRef = useRef<Editor | null>(null);
 
+  const tempThumnail: TMedia = {
+    _id: "",
+    secure_url: post.thumnail?.url || "",
+    resource_type: "image",
+    asset_id: "",
+    public_id: "",
+    format: "",
+    duration: undefined,
+    width: post.thumnail?.width || 0,
+    height: post.thumnail?.height || 0,
+    size: 0,
+  };
+
+  //   const id = post.category;
+  //   console.log(post)
   //   hook
-  const [title, setTitle] = useState("");
-  const [des, setDes] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-  const [excerp, setExcerp] = useState("");
-  const [thumnail, setThumnail] = useState<TMedia | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<TCategory|null>(null);
-  const [postBlog, { isLoading }] = useAddPostsMutation();
+  const [des, setDes] = useState(post.description || "");
+  const [tags, setTags] = useState<string[]>(post.tags || []);
+  const [excerp, setExcerp] = useState(post.excerp || "");
+  const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
+  const [selectedCategory, setSelectedCategory] = useState<TCategory | null>(
+    post.category || null
+  );
+  const [updateBlog, { isLoading }] = useUpdatePostMutation();
 
-  const handleSave = async () => {
-
-    if (!title.trim()) {
-      toast.error("Title is required");
-      return;
-    }
-
+  const handleUpdate = async () => {
     if (!des.trim()) {
       toast.error("Description is required");
       return;
@@ -63,9 +74,14 @@ export default function BlogPageEditor() {
       return;
     }
 
+    if(editorRef.current && !editorRef.current.getContent()) {
+      toast.error("Content is required");
+      return;
+    }
+
     const blogData: TBlog = {
-      title,
-      slug: `${makeSlug(title)}`,
+      title: post.title,
+      slug: post.slug,
       description: des,
       excerp,
       thumnail: {
@@ -84,33 +100,27 @@ export default function BlogPageEditor() {
     }
 
     try {
-      const res = await postBlog({ data: blogData }).unwrap();
+      const res = await updateBlog({
+        slug: post.slug,
+        data: blogData,
+      }).unwrap();
       if (res.success) {
-        toast.success("Post added");
-
-        // reset form fields
-        setTitle("");
-        setDes("");
-        setTags([]);
-        setExcerp("");
-        setThumnail(null);
-        setSelectedCategory(null);
-
-        editorRef.current?.setContent("");
+        toast.success("Post updated successfully");
       } else {
         toast.success(res?.message);
       }
     } catch (error: any) {
       console.log(error?.data?.message);
       toast.error(
-        error?.data?.message || "Error occured adding post. Try again"
+        error?.data?.message || "Error occured updating post. Try again"
       );
     }
   };
+
   return (
     <>
       <div className=" w-full lg:fixed z-50 top-0 py-3 px-4 md:px-5 lg:px-10 left-0 flex items-center justify-between lg:bg-slate-100">
-        <PageTitle key="ADD_BLOG" title="Add Blog" />
+        <PageTitle key="UPDATE_BLOG" title="Update Blog" />
 
         {isLoading ? (
           <div className="w-[110px] hidden lg:block">
@@ -118,12 +128,12 @@ export default function BlogPageEditor() {
           </div>
         ) : (
           <div className="w-auto hidden lg:block">
-            <Button className="!py-2.5" label="Save" cb={handleSave} />
+            <Button className="!py-2.5" label="Update" cb={handleUpdate} />
           </div>
         )}
       </div>
       <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
-        <TitleInput title={title} setTitle={setTitle} />
+        <h5 className="mb-5">{post.title}</h5>
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
           des={des}
@@ -137,16 +147,16 @@ export default function BlogPageEditor() {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        <EditorContainer editorRef={editorRef} />
-        
-         {isLoading ? (
+        <EditorContainer content={post.content} editorRef={editorRef} />
+
+        {isLoading ? (
           <div className="w-[50px] lg:hidden mt-6 md:mt-8">
             <LoadingSpinner />
           </div>
         ) : (
           <div className="w-auto lg:hidden mt-6 md:mt-8">
-          <Button className="!py-2.5" label="Save" cb={handleSave} />
-        </div>
+            <Button className="!py-2.5" label="Update" cb={handleUpdate} />
+          </div>
         )}
       </div>
     </>

@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import Categories from "@/models/Categories";
+import Category from "@/models/Category";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (
@@ -11,7 +11,7 @@ export const DELETE = async (
     try {
         await dbConnect();
 
-        await Categories.findByIdAndDelete(id)
+        await Category.findByIdAndDelete(id)
         return NextResponse.json(
             { success: true, message: 'Category deleted' },
             { status: 200 }
@@ -33,7 +33,7 @@ export const GET = async (
     try {
         await dbConnect();
 
-        const category = await Categories.findById(id).select('name').lean()
+        const category = await Category.findById(id).select('name').lean()
         return NextResponse.json(
             { success: true, category: category },
             { status: 200 }

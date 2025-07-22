@@ -139,9 +139,10 @@ const textcolor_cols = 8;
 // container starts
 interface EditorContainerProps {
   editorRef: RefObject<TinyMCEEditor | null>;
+  content?:string;
 }
 
-const EditorContainer = ({ editorRef }: EditorContainerProps) => {
+const EditorContainer = ({ editorRef,content='Start typing here.' }: EditorContainerProps) => {
   // hooks
   const dispatch = useDispatch();
 
@@ -156,7 +157,7 @@ const EditorContainer = ({ editorRef }: EditorContainerProps) => {
 
   // config
   const tinymceConfig = {
-    height: 500,
+    height: 800,
     plugins,
     toolbar,
     menubar,
@@ -205,7 +206,8 @@ const EditorContainer = ({ editorRef }: EditorContainerProps) => {
           onInit={(_, editor) => (editorRef.current = editor)}
           apiKey="yo7qusvretankfcx2rp14sl6z5jcppo8i1yzsvukjbugbb3r"
           init={tinymceConfig}
-          initialValue="Start typing here."
+          initialValue={content}
+
         />
       </div>
       <MediaModal activeKey="OPEN_EDITOR_MEDIA_MODAL" cb={handleSelect} />

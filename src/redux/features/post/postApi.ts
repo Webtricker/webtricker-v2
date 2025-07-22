@@ -24,13 +24,20 @@ export const postApi = createApi({
                 body: data,
             })
         }),
-        deletePosts: builder.mutation({
+        deletePost: builder.mutation({
             query: (postId: string) => ({
                 url: `/posts/${postId}`,
                 method: "DELETE",
             })
         }),
+    updatePost: builder.mutation({
+            query: ({slug,data}) => ({
+                url: `/blogs/${slug}`,
+                method: "PUT",
+                body: data,
+            })
+        }),
     })
 })
 
-export const { useAddPostsMutation, useLazyCountPostsQuery, useDeletePostsMutation, useGetPostsQuery,useLazyGetPostsQuery } = postApi;
+export const { useAddPostsMutation,useUpdatePostMutation, useLazyCountPostsQuery, useDeletePostMutation, useGetPostsQuery,useLazyGetPostsQuery } = postApi;

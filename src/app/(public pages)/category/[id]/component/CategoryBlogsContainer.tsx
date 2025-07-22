@@ -32,7 +32,8 @@ export default function CategoryBlogsContainer({
           postType: "blog",
           categoryId,
           page: currentPage,
-          limit: 1,
+          limit: 8,
+          // limit: 20,
         }).unwrap();
         if (result?.success && result?.posts?.length > 0) {
           setblogs(result.posts);
@@ -58,8 +59,11 @@ export default function CategoryBlogsContainer({
           postType: "blog",
           categoryId,
         }).unwrap();
-        if (result?.success && result?.counts > 20 && result.counts / 20 >= 2) {
-          const pages = Math.floor((result.counts / 20) as number);
+        // if (result?.success && result?.counts > 20 && result.counts / 20 >= 2) {
+          // const pages = Math.floor((result.counts / 20) as number);
+          if (result?.success && result?.counts > 8 && result.counts / 8 >= 1) {
+            const pages = Math.ceil((result.counts / 8) as number);
+            console.log(pages ,  ' pages counts');
           setTotalPages(pages);
         }
       } catch (error) {

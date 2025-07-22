@@ -12,7 +12,7 @@ export interface TBlog {
       };
       tags: string[];
       postType: 'service' | 'blog';
-      categories: TCategory[];
+      category: TCategory | null;
       content: string;
 }
 

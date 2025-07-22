@@ -153,8 +153,6 @@ export const PenSQRIcon = ({ className = "" }: { className?: string }) => {
   );
 };
 
-
-
 export const AngleRightIcon = ({
   className = "auth-dashboard-icons",
 }: {
@@ -187,6 +185,25 @@ export const AngleLeftIcon = ({
     >
       <path
         d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+        fill="currentcolor"
+      />
+    </svg>
+  );
+};
+
+export const AngleDownIcon = ({
+  className = "w-6 h-6",
+}: {
+  className?: string;
+}) => {
+  return (
+    <svg
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 448 512"
+    >
+      <path
+        d="M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z"
         fill="currentcolor"
       />
     </svg>

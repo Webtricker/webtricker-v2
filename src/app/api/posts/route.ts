@@ -54,7 +54,7 @@ export const GET = async (req: NextRequest) => {
         const query: any = { postType };
 
         if (categoryId && mongoose.Types.ObjectId.isValid(categoryId)) {
-            query['categories._id'] = new mongoose.Types.ObjectId(categoryId);
+             query['category'] = new mongoose.Types.ObjectId(categoryId);
         } else if (categoryId) {
             return NextResponse.json(
                 { success: false, message: 'Invalid categoryId' },
