@@ -13,7 +13,7 @@ export default function CategoryBlog({ category }: { category: TCategory }) {
   const { data, isLoading, isError, error } = useGetPostsQuery({
     postType: "blog",
     categoryId: category._id,
-    limit: 9,
+    limit: 5,
   });
 
   if (isLoading) {
@@ -34,7 +34,7 @@ export default function CategoryBlog({ category }: { category: TCategory }) {
       <div className="w-full flex items-center justify-between gap-4 flex-wrap lg:gap-10">
         <h4>{category.name}</h4>
 
-        {data.posts?.length > 8 ? (
+        {data.posts?.length > 4 ? (
           <Link href={`/category/${category._id}`}>
             <Button label="Show All" className="!py-2.5 lg:!py-3" />
           </Link>
@@ -43,7 +43,7 @@ export default function CategoryBlog({ category }: { category: TCategory }) {
         )}
       </div>
       <div className="w-full mt-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5 lg:gap-6 xl:gap-7 2xl:gap-8">
-        {data.posts.slice(0, 8).map((blog:IBlog) => (
+        {data.posts.slice(0, 4).map((blog:IBlog) => (
           <BlogCardWrapper
             key={`${blog._id}-${category}`}
             createdAt={blog.createdAt}

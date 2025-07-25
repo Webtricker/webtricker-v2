@@ -63,7 +63,7 @@ export const GET = async (req: NextRequest) => {
         }
 
         const [posts, total] = await Promise.all([
-            Posts.find(query).skip(skip).limit(limit),
+            Posts.find(query).sort({createdAt:-1}).skip(skip).limit(limit),
             Posts.countDocuments(query)
         ]);
 

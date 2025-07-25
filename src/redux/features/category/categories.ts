@@ -15,7 +15,7 @@ const categories = createSlice({
     initialState,
     reducers: {
         addCategories: (state, action: PayloadAction<TCategory[]>) => {
-            state.categories.push(...action.payload)
+            state.categories = action.payload;
         },
         deleteCategory: (state, action: PayloadAction<string>) => {
             state.categories = state.categories.filter(cat => cat._id !== action.payload);

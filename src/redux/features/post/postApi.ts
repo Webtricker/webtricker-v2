@@ -8,12 +8,12 @@ export const postApi = createApi({
     }),
     endpoints: (builder) => ({
         getPosts: builder.query({
-            query: ({postType,categoryId,page,limit}) => ({
+            query: ({ postType, categoryId, page, limit }) => ({
                 url: `/posts?postType=${postType}&categoryId=${categoryId}&page=${page}&limit=${limit}`
             })
         }),
         countPosts: builder.query({
-            query: ({postType,categoryId}) => ({
+            query: ({ postType, categoryId }) => ({
                 url: `/posts/counts?postType=${postType}&categoryId=${categoryId}`
             })
         }),
@@ -24,15 +24,45 @@ export const postApi = createApi({
                 body: data,
             })
         }),
+
         deletePost: builder.mutation({
             query: (blogId: string) => ({
                 url: `/blogs/${blogId}`,
                 method: "DELETE",
             })
         }),
-    updatePost: builder.mutation({
-            query: ({slug,data}) => ({
+
+        updatePost: builder.mutation({
+            query: ({ slug, data }) => ({
                 url: `/blogs/${slug}`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
+        // services endpoints
+        getServices: builder.query({
+            query: () => ({
+                url: `/services`
+            })
+        }),
+
+        addService: builder.mutation({
+            query: (data) => ({
+                url: `/services`,
+                method: "POST",
+                body: data,
+            })
+        }),
+        deleteService: builder.mutation({
+            query: (blogId: string) => ({
+                url: `/services/${blogId}`,
+                method: "DELETE",
+            })
+        }),
+        updateService: builder.mutation({
+            query: ({ slug, data }) => ({
+                url: `/services/${slug}`,
                 method: "PUT",
                 body: data,
             })
@@ -40,4 +70,17 @@ export const postApi = createApi({
     })
 })
 
-export const { useAddPostsMutation,useUpdatePostMutation, useLazyCountPostsQuery, useDeletePostMutation, useGetPostsQuery,useLazyGetPostsQuery } = postApi;
+export const {
+    useAddPostsMutation,
+    useUpdatePostMutation,
+    useLazyCountPostsQuery,
+    useDeletePostMutation,
+    useGetPostsQuery,
+    useLazyGetPostsQuery,
+    // services hooks
+    useGetServicesQuery,
+    useLazyGetServicesQuery,
+    useAddServiceMutation,
+    useDeleteServiceMutation,
+    useUpdateServiceMutation
+} = postApi;

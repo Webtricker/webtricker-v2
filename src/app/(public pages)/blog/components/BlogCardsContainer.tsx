@@ -5,6 +5,7 @@ import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import CategoryBlog from "./CategoryBlog";
 import React from "react";
+import { TCategory } from "@/types/data";
 
 export default function BlogCardsContainer() {
   const {
@@ -48,7 +49,7 @@ export default function BlogCardsContainer() {
   // Render categories
   return (
     <>
-      {categories.map((category) => (
+      {categories.map((category:TCategory) => (
         <CategoryBlog
           key={category._id ?? category.name} // Fallback to name if _id is missing
           category={category}

@@ -1,71 +1,64 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
-import Post from "@/models/Posts";
 import { verifyAdmin } from "@/utils/validator";
+import Service from "@/models/Service";
 
 
 export const GET = async (
-    req: NextRequest,
+    _: NextRequest,
     { params }: { params: Promise<{ slug: string }> }
 ) => {
     const asyncParams = await params;
     const slug = asyncParams.slug;
-    // --- API Key Validation (Crucial!) ---
+
     try {
         await connectToDatabase();
 
-        const res = await Post.findOne({ slug }).populate('category');
+        const res = await Service.findOne({ slug })
 
         if (!res) {
             return NextResponse.json(
-                { success: false, error: true, message: "Post not found" },
+                { success: false, error: true, message: "Service not found" },
                 { status: 404 }
             );
         }
 
-        // Attempt to find older post
-        let prevPost = await Post.findOne({
-            category: res.category._id,
+        // Attempt to find older Service
+        let prevService = await Service.findOne({
             createdAt: { $lt: res.createdAt },
-        })
-            .sort({ createdAt: -1 });
+        }).sort({ createdAt: -1 });
 
         // Wrap around to latest if no older post
-        if (!prevPost) {
-            prevPost = await Post.findOne({
-                category: res.category._id,
+        if (!prevService) {
+            prevService = await Service.findOne({
                 slug: { $ne: slug }, // exclude current
             }).sort({ createdAt: -1 });
         }
 
         // Attempt to find newer post
-        let nextPost = await Post.findOne({
-            category: res.category._id,
+        let nextService = await Service.findOne({
             createdAt: { $gt: res.createdAt },
-        })
-            .sort({ createdAt: 1 });
+        }).sort({ createdAt: 1 });
 
         // Wrap around to oldest if no newer post
-        if (!nextPost) {
-            nextPost = await Post.findOne({
-                category: res.category._id,
+        if (!nextService) {
+            nextService = await Service.findOne({
                 slug: { $ne: slug },
             }).sort({ createdAt: 1 });
         }
-
 
         return NextResponse.json(
             {
                 success: true,
                 post: res,
-                prevPost: prevPost || null,
-                nextPost: nextPost || null
+                prevPost: prevService || null,
+                nextPost: nextService || null
             },
             { status: 200 }
         );
     } catch (error) {
-        console.error('Error during post deletion:', error);
+        console.error('Error during service query:', error);
         return NextResponse.json(
             { error: true, message: 'Internal Server Error' },
             { status: 500 }
@@ -77,16 +70,16 @@ export const DELETE = async (
     req: NextRequest,
     { params }: { params: Promise<{ slug: string }> }
 ) => {
-    const { slug:blogID } = await params;
+    const { slug: serviceID } = await params;
     try {
         await connectToDatabase();
         await verifyAdmin(req);
 
-        const deletedPost = await Post.findByIdAndDelete(blogID);
+        const deletedService = await Service.findByIdAndDelete(serviceID);
 
-        if (!deletedPost) {
+        if (!deletedService) {
             return NextResponse.json(
-                { success: false, error: true, message: 'Post not found' },
+                { success: false, error: true, message: 'Service not found' },
                 { status: 404 }
             );
         }
@@ -94,13 +87,13 @@ export const DELETE = async (
         return NextResponse.json(
             {
                 success: true,
-                message: 'Post deleted successfully',
-                deletedPost,
+                message: 'Service deleted successfully',
+                deletedService,
             },
             { status: 200 }
         );
     } catch (error) {
-        console.error('Error deleting blog post:', error);
+        console.error('Error deleting service:', error);
         return NextResponse.json(
             { error: true, message: 'Internal Server Error' },
             { status: 500 }
@@ -128,18 +121,18 @@ export const PUT = async (
             );
         }
 
-        const updatedPost = await Post.findOneAndUpdate(
+        const updatedService = await Service.findOneAndUpdate(
             { slug },
             { $set: body },
             {
                 new: true, // return the updated document
                 runValidators: true,
             }
-        ).populate("category");
+        )
 
-        if (!updatedPost) {
+        if (!updatedService) {
             return NextResponse.json(
-                { success: false, message: "Post not found." },
+                { success: false, message: "Service not found." },
                 { status: 404 }
             );
         }
@@ -147,13 +140,13 @@ export const PUT = async (
         return NextResponse.json(
             {
                 success: true,
-                message: `Post "${slug}" updated successfully.`,
-                post: updatedPost,
+                message: `Service "${slug}" updated successfully.`,
+                post: updatedService,
             },
             { status: 200 }
         );
     } catch (error: any) {
-        console.error("Error updating post:", error);
+        console.error("Error updating service:", error);
         return NextResponse.json(
             { success: false, message: "Internal Server Error", details: error.message },
             { status: 500 }

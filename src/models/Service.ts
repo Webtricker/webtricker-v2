@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-interface IPost {
+interface IService {
   title: string;
   slug: string;
   description: string;
-  subServices?: string[];
+  subServices: string[];
   excerp: string;
   thumnail: {
     width?: number;
@@ -11,12 +11,11 @@ interface IPost {
     url?: string;
   };
   tags: string[];
-  postType: 'service' | 'blog';
-  category: { _id: mongoose.Types.ObjectId; name: string };
+  category: string;
   content: string;
 }
 
-const PostSchema = new mongoose.Schema<IPost>({
+const ServiceSchema = new mongoose.Schema<IService>({
   title: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   description: { type: String, required: true },
@@ -28,12 +27,10 @@ const PostSchema = new mongoose.Schema<IPost>({
     url: { type: String },
   },
   tags: { type: [String], default: [] },
-  postType: { type: String, enum: ['service', 'blog'], required: true },
   category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    type: String,
     required: true,
-    default: new mongoose.Types.ObjectId('687e0480f869c4910bb64f7f'),
+    unique: true,
   },
   content: { type: String, required: true },
 }, {
@@ -41,11 +38,10 @@ const PostSchema = new mongoose.Schema<IPost>({
 });
 
 // Indexes at schema definition level
-PostSchema.index({ postType: 1 });
-PostSchema.index({ category: 1 });
-PostSchema.index({ tags: 1 });
-PostSchema.index({ createdAt: -1 });
+ServiceSchema.index({ postType: 1 });
+ServiceSchema.index({ tags: 1 });
+ServiceSchema.index({ createdAt: -1 });
 
-const Post = mongoose.models.Post || mongoose.model<IPost>('Post', PostSchema);
+const Service = mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);
 
-export default Post;
+export default Service;

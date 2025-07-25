@@ -27,10 +27,11 @@ export default async function SingleBlogPage({ params }) {
 
   const data = await getBlogData(slug);
   if (!data?.post) return <NoBlogFoundMsg />;
-  const nextPost = data.nextPost || ({} as IBlog);
-  const prevPost = data.prevPost || ({} as IBlog);
+  const nextPost = data.nextPost
+  const prevPost = data.prevPost
   
   const post = data.post || ({} as IBlog);
+  console.log(data, "data in single blog page");
   return (
     <main className="w-full z-0 section-speacing mt-7 post-details-container">
       <BlogPageContainer className="section-speacing">
