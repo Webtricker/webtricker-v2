@@ -28,7 +28,7 @@ export default function ServicePageEditor() {
   const [keyServices, setKeyServices] = useState<string[]>([]);
   const [excerp, setExcerp] = useState("");
   const [thumnail, setThumnail] = useState<TMedia | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string|null>(null);
   const [postService, { isLoading }] = useAddServiceMutation();
 
   const handleSave = async () => {
@@ -58,6 +58,11 @@ export default function ServicePageEditor() {
 
     if (!excerp.trim()) {
       toast.error("Excerp is required");
+      return;
+    }
+
+    if (!selectedCategory) {
+      toast.error("Category is required");
       return;
     }
 
@@ -93,15 +98,15 @@ export default function ServicePageEditor() {
       if (res.success) {
         toast.success("Service added");
         // reset form fields
-        // setTitle("");
-        // setDes("");
-        // setKeyServices([]);
-        // setTags([]);
-        // setExcerp("");
-        // setThumnail(null);
-        // setSelectedCategory(null);
+        setTitle("");
+        setDes("");
+        setKeyServices([]);
+        setTags([]);
+        setExcerp("");
+        setThumnail(null);
+        setSelectedCategory(null);
 
-        // editorRef.current?.setContent("");
+        editorRef.current?.setContent("");
       } else {
         toast.success(res?.message);
       }

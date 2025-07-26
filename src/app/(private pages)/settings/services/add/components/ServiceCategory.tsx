@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction } from 'react'
 
 type Props = {
-  setSelectedCategory: Dispatch<SetStateAction<string>>;
-   selectedCategory: string
+  setSelectedCategory: Dispatch<SetStateAction<string | null>>;
+   selectedCategory: string |null
 };
 export default function ServiceCategory({selectedCategory,setSelectedCategory}:Props) {
   return (
@@ -12,7 +12,7 @@ export default function ServiceCategory({selectedCategory,setSelectedCategory}:P
         className="wt_fs-md px-4 py-2.5 lg:py-3 border outline-none border-slate-400 hover:border-slate-500 rounded-[10px] w-full "
         placeholder="Ex: Web Development | UX-UI Design | Digital Marketing"
         onChange={(e) => setSelectedCategory(e.target.value)}
-        value={selectedCategory}
+        value={selectedCategory || ''}
       />
     </div>
   )

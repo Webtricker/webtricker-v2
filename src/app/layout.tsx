@@ -8,7 +8,6 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
-import LoadSiteLogos from "../sharedComponets/ui/logos/LoadSiteLogos";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -66,8 +65,6 @@ export default function RootLayout({
           <ReduxProvider>
             {children}
 
-            {/* load content */}
-            <LoadSiteLogos />
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />

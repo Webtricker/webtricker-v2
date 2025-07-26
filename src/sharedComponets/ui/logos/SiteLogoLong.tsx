@@ -1,34 +1,37 @@
-"use client";
 import Image from "next/image";
 import webtrickerDark from "@/assets/images/home/webtricker-logo.svg";
 import webtrickerWhite from "@/assets/images/home/webtricker-white.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import LoadingSpinner from "../loading/LoadingSpinner";
+import { getSiteLogos } from "@/utils/logo";
 
-export default function SiteLogoLong() {
-  const { isLoading, isError, darkLargeLogo,lightLargeLogo } = useSelector(
-    (state: RootState) => state.siteLogo
-  );
+export default async function SiteLogoLong() {
+  let logoUrls = { darkLargeLogo: null, lightLargeLogo: null };
+  try {
+    const result = await getSiteLogos();
+    if (result) {
+      logoUrls = {
+        darkLargeLogo: result.darkLargeLogo,
+        lightLargeLogo: result.lightLargeLogo,
+      };
+    }
+  } catch (error) {
+    console.error("Error fetching site logos:", error);
+  }
 
-  if (isLoading)
-    return (
-      <div className="inline w-[160px] md:w-[180px] lg:w-[190px] xl:w-[200px] h-auto">
-        <LoadingSpinner className="w-6 h-6" />
-      </div>
-    );
+  const finalDarkLogoSrc = logoUrls.darkLargeLogo || webtrickerDark;
+  const finalLightLogoSrc = logoUrls.lightLargeLogo || webtrickerWhite;
+
   return (
     <>
       <Image
         className="inline dark:hidden w-[160px] md:w-[180px] lg:w-[190px] xl:w-[200px] h-auto"
-        src={isError ? webtrickerDark : darkLargeLogo}
+        src={finalDarkLogoSrc}
         width={282}
         height={74}
         alt="Site logo"
       />
       <Image
         className="hidden dark:inline w-[160px] md:w-[180px] lg:w-[190px] xl:w-[200px] h-auto"
-         src={isError ? webtrickerWhite : lightLargeLogo}
+        src={finalLightLogoSrc}
         width={282}
         height={74}
         alt="Site logo"

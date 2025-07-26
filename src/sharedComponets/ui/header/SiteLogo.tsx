@@ -2,9 +2,14 @@
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getLenisInstance } from "@/utils/lenis";
-import SiteLogoLong from "../logos/SiteLogoLong";
 
-export default function SiteLogo({ className = "" }: { className?: string }) {
+
+type Props = {
+className?: string;
+children?:string;
+}
+
+export default function SiteLogo({ className = "",children=<></> }: Props) {
   // variables
   const THRESHOLD = 270;
 
@@ -45,7 +50,7 @@ export default function SiteLogo({ className = "" }: { className?: string }) {
         className ? className : ""
       }`}
     >
-      <SiteLogoLong />
+      {children}
     </Link>
   );
 }

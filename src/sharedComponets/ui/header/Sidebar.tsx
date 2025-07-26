@@ -7,18 +7,15 @@ import { RootState } from "@/redux/store";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { XMarkIcon } from "../icons/Icons";
-import Image from "next/image";
-import webtrickerW from "@/assets/images/home/webtricker-w.png";
+import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/data/navLinks";
-import LoadingSpinner from "../loading/LoadingSpinner";
 
-export default function Sidebar() {
+type Props = { siteShortLogoUrl: string | StaticImageData };
+export default function Sidebar({ siteShortLogoUrl }: Props) {
   const dispatch = useDispatch();
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
-  const { isLoading, isError, smallLogo } = useSelector(
-    (state: RootState) => state.siteLogo
-  );
+
   //   hanlders
   const handleClose = () => {
     dispatch(SET_EXPAND(null));
@@ -49,18 +46,14 @@ export default function Sidebar() {
       >
         <div className="w-full pb-5 flex items-center justify-between px-4 md:px-5  lg:px-8 xl:px-9">
           <Link href="/">
-            {isLoading ? (
-              <LoadingSpinner className="w-5 h-5" />
-            ) : (
-              <Image
-                onClick={handleClose}
-                className="inline w-14"
-                src={isError ? webtrickerW : smallLogo}
-                width={50}
-                height={50}
-                alt="Site logo"
-              />
-            )}
+            <Image
+              className="inline w-14"
+              onClick={handleClose}
+              src={siteShortLogoUrl}
+              width={50}
+              height={50}
+              alt="Site logo small"
+            />
           </Link>
           <button
             onClick={handleClose}

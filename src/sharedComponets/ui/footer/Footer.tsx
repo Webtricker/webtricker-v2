@@ -5,7 +5,6 @@ import Link from "next/link";
 import NewsLetterForm from "./NewsLetterForm";
 import BouncingText from "../effects/BouncingText";
 import SiteLogoLong from "../logos/SiteLogoLong";
-// import galleryModern from "@/app/fonts/gallery";
 
 export default function Footer() {
   return (

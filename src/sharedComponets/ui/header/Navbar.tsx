@@ -7,13 +7,19 @@ import SiteLogo from "./SiteLogo";
 import SidebarToggler from "./SidebarToggler";
 import { getLenisInstance } from "@/utils/lenis";
 import { navLinks } from "@/data/navLinks";
-
+import { StaticImageData } from "next/image";
 
 type Props = {
   navStyle?: string;
+  children?: React.ReactNode;
+  siteShortLogoUrl:string | StaticImageData;
 };
 
-export default function Navbar({ navStyle = "" }: Props) {
+export default function Navbar({
+  navStyle = "",
+  children = <></>,
+  siteShortLogoUrl,
+}: Props) {
   // variables
   const THRESHOLD = 150;
 
@@ -31,10 +37,10 @@ export default function Navbar({ navStyle = "" }: Props) {
       const prevScroll = prevScrollRef.current;
 
       // set the border
-      if(prevScrollRef.current > 50 && !showBorder){
-        setShowBorder(true)
-      }else{
-        setShowBorder(false)
+      if (prevScrollRef.current > 50 && !showBorder) {
+        setShowBorder(true);
+      } else {
+        setShowBorder(false);
       }
 
       const isScrollingDown = currentScroll > prevScroll;
@@ -65,17 +71,17 @@ export default function Navbar({ navStyle = "" }: Props) {
     return () => {
       lenis.off("scroll", handleScroll);
     };
-  }, [scrollY,showBorder])
+  }, [scrollY, showBorder]);
   return (
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}
       className={`z-[999] wt_header fixed top-0 left-0 py-4 w-full h-auto ${navStyle} ${
         scrollY === 0 ? "duration-1000" : ""
-      } ${showBorder ? "shadow":'border-0'}`}
+      } ${showBorder ? "shadow" : "border-0"}`}
     >
       <Container>
         <div className="w-full flex items-center justify-center">
-          <SiteLogo />
+          <SiteLogo>{children}</SiteLogo>
 
           {/* links */}
           <div className="hidden mt-[8px] lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8 2xl:gap-10">
@@ -94,7 +100,7 @@ export default function Navbar({ navStyle = "" }: Props) {
         </div>
       </Container>
 
-      <Sidebar />
+      <Sidebar siteShortLogoUrl={siteShortLogoUrl} key="PUBLIC_SIDEBAR" />
     </header>
   );
 }

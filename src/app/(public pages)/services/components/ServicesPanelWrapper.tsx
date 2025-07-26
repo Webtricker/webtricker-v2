@@ -1,0 +1,59 @@
+"use client";
+import React, { useEffect, useRef } from "react";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import Container from "@/sharedComponets/ui/wrapper/Container";
+import gsap from "gsap";
+
+// import Link from "next/link";
+// import { RightArrowLong } from "@/sharedComponets/ui/icons/Icons";
+gsap.registerPlugin(ScrollTrigger);
+
+export default function ServicesPanelWrapper({children}: {children?: React.ReactNode}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const endTrigger = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !endTrigger.current) return;
+    
+    const pinnedPanels =
+      containerRef.current?.querySelectorAll(".service-panel");
+    pinnedPanels?.forEach((panel, i) => {
+      ScrollTrigger.create({
+        trigger: panel,
+        start: "top top",
+        endTrigger: endTrigger.current,
+        end: "top bottom",
+        pin: true,
+        pinSpacing: false,
+        id: `${i + 1}`,
+      });
+
+        ScrollTrigger.refresh();
+
+      return () => {
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      };
+    });
+  }, [containerRef, endTrigger]);
+
+  return (
+    <section
+      className="w-full relative pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18"
+      ref={containerRef}
+    >
+      {
+        children
+      }
+      
+      <div
+        ref={endTrigger}
+        className="z-10 w-full pt-10 md:pt-14 lg:pt-18 xl:pt-20 2xl:pt-24"
+      >
+        <Container className="w-full flex flex-col">
+            <p className="bold text-center mb-2 lg:mb-0">DIGITAL DESIGN EXPERIENCE CREATIVE STUDIO</p>
+          <h2 className="wt_fs-big text-center heading">GET IN TOUCH</h2>
+        </Container>
+      </div>
+    </section>
+  );
+}

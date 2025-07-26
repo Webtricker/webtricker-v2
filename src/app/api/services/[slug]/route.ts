@@ -51,9 +51,9 @@ export const GET = async (
         return NextResponse.json(
             {
                 success: true,
-                post: res,
-                prevPost: prevService || null,
-                nextPost: nextService || null
+                service: res,
+                prevService: prevService || null,
+                nextService: nextService || null
             },
             { status: 200 }
         );
@@ -147,6 +147,13 @@ export const PUT = async (
         );
     } catch (error: any) {
         console.error("Error updating service:", error);
+        if (error.code === 11000) {
+            return NextResponse.json(
+                { success: false, error: true, message: `Category you entered matches an existing service` },
+                { status: 409 }
+            );
+        }
+
         return NextResponse.json(
             { success: false, message: "Internal Server Error", details: error.message },
             { status: 500 }
