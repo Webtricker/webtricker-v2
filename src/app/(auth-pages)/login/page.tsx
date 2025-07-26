@@ -1,8 +1,9 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import LoginForm from "./components/LoginForm";
+import SiteLogoLong from "@/sharedComponets/ui/logos/SiteLogoLong";
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return (
     <main className="w-full z-0">
       <div
@@ -10,7 +11,9 @@ export default function LoginPage() {
       >
         <Container>
           <div className="w-full max-w-[500px] mx-auto">
-            <LoginForm />
+            <LoginForm>
+              <SiteLogoLong />
+            </LoginForm>
           </div>
         </Container>
       </div>

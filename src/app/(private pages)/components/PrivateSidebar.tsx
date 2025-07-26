@@ -15,7 +15,12 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import { removeAccessToken } from "@/utils/auth";
 import { toast } from "react-toastify";
 
-export default function PrivateSidebar() {
+
+type Props = {
+  navStyle?: string;
+  children?: React.ReactNode;
+};
+export default function PrivateSidebar({children=<></>}:Props) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -54,7 +59,9 @@ export default function PrivateSidebar() {
     >
       <div className="w-full flex flex-col h-full">
         <div className="w-full py-2 px-5 flex items-center justify-between">
-          <SiteLogo />
+          <SiteLogo>
+            {children}
+          </SiteLogo>
           <button className="lg:hidden" onClick={handleClose}>
             <XMarkIcon />
           </button>

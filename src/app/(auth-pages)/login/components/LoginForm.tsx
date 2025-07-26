@@ -25,7 +25,11 @@ type FormData = {
 };
 
 // ===== root component ======
-export default function LoginForm() {
+type Props = {
+  navStyle?: string;
+  children: React.ReactNode;
+};
+export default function LoginForm({children}:Props) {
   // hooks
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
@@ -69,7 +73,9 @@ export default function LoginForm() {
       className="relative duration-200 bg-slate-50 dark:bg-slate-900 shadow dark:shadow-slate-100/10 p-10 rounded-[10px] w-full flex flex-col gap-5"
     >
       <div className="w-full flex items-center justify-center mb-5">
-        <SiteLogo className="!w-auto" />
+        <SiteLogo className="!w-auto">
+          {children}
+        </SiteLogo>
       </div>
       <h1 className="absolute opacity-0 pointer-events-none wt_fs-2xl">
         Admin Login

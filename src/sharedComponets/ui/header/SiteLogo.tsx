@@ -6,7 +6,7 @@ import { getLenisInstance } from "@/utils/lenis";
 
 type Props = {
 className?: string;
-children?:string;
+children?:React.ReactNode;
 }
 
 export default function SiteLogo({ className = "",children=<></> }: Props) {
