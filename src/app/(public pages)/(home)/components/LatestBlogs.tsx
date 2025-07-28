@@ -1,45 +1,45 @@
-"use client";
 import galleryModern from "@/app/fonts/gallery";
-import { latestBlogs } from "@/data/blogs";
+import Button from "@/sharedComponets/ui/buttons/Button";
+import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
 import Container from "@/sharedComponets/ui/wrapper/Container";
-import { TBlog } from "@/types/data";
-import { getSlicedText } from "@/utils/slicedText";
-import Image from "next/image";
+import { IBlog } from "@/types/post";
+// import { trimText } from "@/utils/blog";
+// import { formatDateToShortString } from "@/utils/date";
+// import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const BlogCard = ({ blog }: { blog: TBlog }) => {
-  return (
-    <div className="w-full dark:border dark:border-slate-700 shadow hover:shadow-xl duration-300 rounded-[10px]">
-      <div className="w-full h-[250px] group rounded-t-[8px] overflow-hidden ">
-        <Image
-          src={blog.thumnail}
-          className="duration-300 group-hover:scale-110 w-full h-full object-cover"
-          width={300}
-          height={250}
-          alt={blog.title}
-        />
-      </div>
-      <div className="w-full p-4 pt-5">
-        <h6 className="heading mb-2">{getSlicedText(blog.title, 50)}</h6>
-        <p>{blog.excerpt ? getSlicedText(blog.excerpt, 150) : ""}</p>
-        <div className="w-full flex justify-between items-center mt-3">
-          <p className="bold">{blog.date}</p>{" "}
-          <Link
-          data-wt-hide-cursor
-            className="wt_btn duration-300 bold font-semibold hover:underline"
-            href={`/${blog.title}`}
-          >
-            Read More
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
+const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
+
+const getLatestPosts = async (): Promise<IBlog[] | null> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=4`,
+      {
+        next: { revalidate: POSTS_REVALIDATE_SECONDS },
+      }
+    );
+
+    if (!res.ok) {
+      console.error(`Failed to fetch posts . Status: ${res.status}`);
+      return null;
+    }
+
+    const data = await res.json();
+    return data?.posts || [];
+  } catch (error) {
+    console.error(`Error fetching posts`, error);
+    return null;
+  }
 };
 
 // ===== root component =======
-export default function LatestBlogs() {
+export default async function LatestBlogs() {
+  const posts = await getLatestPosts();
+  if (!posts || posts.length === 0) {
+    return <></>;
+  }
+
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
@@ -51,11 +51,53 @@ export default function LatestBlogs() {
           <h6 className="mb-2 2xl:mb-4 heading">Our Newest Articles</h6>
         </div>
         <div className=" section-inner-speacing w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 gap-y-14 md:gap-8 md:gap-y-14 lg:gap-10 lg:gap-y-14">
-          {latestBlogs.map((blog) => (
-            <BlogCard blog={blog} key={blog.id} />
+          {posts.map((blog) => (
+            <BlogCardWrapper
+              key={blog._id}
+              createdAt={blog.createdAt}
+              description={blog.description}
+              slug={blog.slug}
+              thumnail={blog.thumnail.url}
+              title={blog.title}
+              excerpt={blog.excerp}
+            >
+              <Link href={`/blog/${blog.slug}`}>
+                <Button label="Read More" className="!text-sm !py-2.5" />
+              </Link>
+            </BlogCardWrapper>
           ))}
         </div>
       </Container>
     </section>
   );
 }
+
+// const BlogCard = ({ blog }: { blog: IBlog }) => {
+//   return (
+//     <div className="w-full dark:border dark:border-slate-700 shadow hover:shadow-xl duration-300 rounded-[10px]">
+//       <div className="w-full h-[250px] group rounded-t-[8px] overflow-hidden ">
+//         <Image
+//           src={blog.thumnail.url}
+//           className="duration-300 group-hover:scale-110 w-full h-full object-cover"
+//           width={blog.thumnail.width}
+//           height={250}
+//           alt={blog.title}
+//         />
+//       </div>
+//       <div className="w-full p-4 pt-5">
+//         <h6 className="heading mb-2">{trimText(blog.title, 52)}</h6>
+//         <p>{trimText(blog.excerp ? blog.excerp : blog.description, 133)}</p>
+//         <div className="w-full flex justify-between items-center mt-3">
+//           <p className="bold">{formatDateToShortString(blog.createdAt)}</p>{" "}
+//           <Link
+//             data-wt-hide-cursor
+//             className="wt_btn duration-300 bold font-semibold hover:underline"
+//             href={`/blog/${blog.slug}`}
+//           >
+//             Read More
+//           </Link>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };

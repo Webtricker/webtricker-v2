@@ -42,8 +42,8 @@ export default function NewsLetterVerifyForm({
         setErr(res?.message || "Something went wrong");
         setOtp("");
       } else {
-        setMail('')
-        setOtp('')
+        setMail("");
+        setOtp("");
         toast.success(res.message);
         dispatch(toggleModal(null));
       }
@@ -53,21 +53,33 @@ export default function NewsLetterVerifyForm({
       setErr(error?.data?.message || "Couldn't subscribe, try again");
     }
   };
+
+  const handleClose = () => {
+    setMail("");
+    setOtp("");
+    setErr("");
+  };
+
   return (
     <CustomModal
       hideClickingOutside={false}
-      containerStyle="!max-w-[500px] !rounded-[10px] md:!rounded-[15px]"
+      containerStyle="border border-slate-200 dark:border-slate-600 dark:bg-black !max-w-[500px] !rounded-[10px] md:!rounded-[15px]"
+      wrapperContainerStyle="dark:bg-slate-800/50 backdrop-blur-xs"
       activeKey={ACTIVE_KEY}
     >
       <CustomModalHeader
-        containerStyle="!rounded-[8px] font-semibold"
+        handler={handleClose}
+        containerStyle="!rounded-[8px] font-semibold dark:bg-slate-700 dark:text-white"
+        titleStyle="dark:text-white"
         title="Email varification"
       />
       <div className="w-full flex flex-col items-center gap-5 py-5">
-        <p className="text-center wt_fs-lg mb-5">Enter OTP from {mail}</p>
+        <p className="text-center wt_fs-lg mb-5 dark:text-white">
+          Enter OTP from {mail}
+        </p>
         <input
           type="text"
-          className="border max-w-[200px] text-center rounded-[8px] duration-300 border-slate-400 focus:border-slate-600 dark:border-slate-700 py-2 wt_fs-lg  2xl:px-3.5 outline-none focus:outline-none"
+          className="border dark:text-white max-w-[200px] text-center rounded-[8px] duration-300 border-slate-400 focus:border-slate-500 dark:border-slate-600 py-2 wt_fs-lg  2xl:px-3.5 outline-none focus:outline-none"
           placeholder="Enter OTP"
           value={otp}
           onChange={(e) => {
@@ -81,11 +93,11 @@ export default function NewsLetterVerifyForm({
         <div className="w-full mt-5 flex justify-center">
           {isLoading ? (
             <button className="flex items-center justify-center min-w-[113px] min-h-10 lg:min-h-[44px]">
-              <LoadingSpinner />
+              <LoadingSpinner className="dark:text-white" />
             </button>
           ) : (
             <Button
-              className="!py-2.5 wt_fs-md"
+              className="!py-2.5 wt_fs-md dark:!border-slate-300 dark:!text-white"
               label="Verify"
               cb={handleSubmit}
             />

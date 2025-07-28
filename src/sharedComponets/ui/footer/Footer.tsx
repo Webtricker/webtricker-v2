@@ -102,7 +102,7 @@ export default function Footer() {
             />
           </div>
         </Container>
-        <div className="w-full h-[1px] bg-slate-100 dark:bg-slate-800"></div>
+        <div className="w-full h-[1px] bg-slate-400/40 dark:bg-slate-800"></div>
         <Container className="text-center mt-5 lg:mt-10">
           <p>
             All rights reserved — {new Date().getFullYear()} &copy; Webtricker

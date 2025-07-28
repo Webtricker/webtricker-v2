@@ -607,25 +607,90 @@ p.bouncing-text {
 }
 
 /* ===== style element for blogs ======= */
-.wt_parser_content ul{
+.wt_parser_content ul {
   list-style-type: disc;
   margin-left: 1.5em;
   padding-left: 0;
 }
-.wt_parser_content ol{
+.wt_parser_content ol {
   list-style-type: decimal;
   margin-left: 1.5em;
   padding-left: 0;
 }
 
 /* lets add 5 px default bottom margin for each heading in post details page  */
-.post-details-container h2, 
-.post-details-container h3, 
-.post-details-container h4, 
-.post-details-container h5, 
-.post-details-container h6{
+.post-details-container h2,
+.post-details-container h3,
+.post-details-container h4,
+.post-details-container h5,
+.post-details-container h6 {
   margin-bottom: 5px;
 }
-.post-details-container img{
- border-radius: 10px;
+.post-details-container img {
+  border-radius: 10px;
+}
+
+/*======= font sizes ======== */
+.post-details-container h1 {
+  font-size: var(--fs-6xl);
+  line-height: 104%;
+}
+
+.post-details-container h2 {
+  font-size: var(--fs-5xl);
+  line-height: 104%;
+}
+
+.post-details-container h3 {
+  font-size: var(--fs-4xl);
+  line-height: 104%;
+}
+
+
+/* glowing border */
+/* .portfolio_card{
+  position: relative;
+} */
+.portfolio_card:after {
+  content: '';
+  position: absolute;
+  border-radius: 1rem;
+  inset: -4px;
+  
+  background: 
+    linear-gradient(
+        var(--rotate),
+        #f3d060, 
+        #A5282c);
+  z-index: -1;
+  animation: spin 2.5s linear infinite;
+}
+.portfolio_card:before {
+  content: '';
+  position: absolute;
+  border-radius: 1rem;
+  left: 0;
+  top: 10%;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(
+        var(--rotate),
+        #f3d060, 
+        #A5282c);
+  z-index: -2;
+  filter: 
+    blur(5rem) 
+    opacity(.6);
+  transform: scale(0.8);
+  animation: spin 2.5s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    --rotate: 0deg;
+  }
+  100% {
+    --rotate: 360deg;
+  }
 }

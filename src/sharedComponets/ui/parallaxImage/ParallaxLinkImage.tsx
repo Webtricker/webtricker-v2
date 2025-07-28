@@ -69,12 +69,12 @@ export default function ParallaxLinkImage({
       onMouseOverCapture={() => toggleShowText("View Demo")}
       onMouseLeave={() => toggleShowText(null)}
       href={href}
-      className="cursor-hide inline w-full sm:w-auto"
+      className="relative cursor-hide inline w-full sm:w-auto"
     >
-      <div className={`w-full overflow-hidden ${containerStyle}`}>
+      <div className={`border border-slate-300 dark:border-slate-600 relative w-full rounded-[10px] overflow-hidden ${containerStyle}`}>
         <div
         ref={parentContainerRef}
-          className={`w-full h-full`}
+          className={` w-full h-full`}
         >
           <Image
             ref={imageRef}

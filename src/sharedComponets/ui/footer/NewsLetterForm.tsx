@@ -65,7 +65,7 @@ export default function NewsLetterForm() {
           className="px-3.5 btn-reverse-bg min-w-[48px]"
         >
           {isLoading ? (
-            <LoadingSpinner className="text-white" />
+            <LoadingSpinner className="text-white dark:text-black" />
           ) : (
             <svg
               className="w-5 h-5"

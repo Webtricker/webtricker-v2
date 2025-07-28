@@ -36,7 +36,7 @@ export default function IntroVideo() {
         ref={pinContainer}
         className="w-full "
       >
-        <div ref={targetEl} className="w-full z-0 max-w-[35vw] overflow-hidden mx-auto">
+        <div ref={targetEl} className="w-full rounded-t-[16px] z-0 max-w-[35vw] overflow-hidden mx-auto">
           <video
             autoPlay
             muted

@@ -1,8 +1,3 @@
-
-// import Button from "@/sharedComponets/ui/buttons/Button";
-// import Heading from "./components/Heading";
-// import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
-
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Banner from "./components/Banner";
 import Clients from "./components/Clients";

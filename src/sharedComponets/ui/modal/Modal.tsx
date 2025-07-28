@@ -9,7 +9,7 @@ import { XMarkIcon } from "../icons/Icons";
 
 type CustomModalProps = {
   wrapperContainerStyle?: string;
-  hideClickingOutside?:boolean;
+  hideClickingOutside?: boolean;
   containerStyle?: string;
   children: React.ReactNode;
   activeKey: string;
@@ -17,7 +17,13 @@ type CustomModalProps = {
 
 export const CustomModal = (props: CustomModalProps) => {
   // props value
-  const { children, hideClickingOutside=true, activeKey, containerStyle, wrapperContainerStyle } = props;
+  const {
+    children,
+    hideClickingOutside = true,
+    activeKey,
+    containerStyle,
+    wrapperContainerStyle,
+  } = props;
 
   // dispatcher and active state
   const dispatch = useDispatch();
@@ -27,8 +33,8 @@ export const CustomModal = (props: CustomModalProps) => {
 
   //   reset all state
   const hideModal = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(hideClickingOutside, ' hide clicking outside')
-    if(!hideClickingOutside)return;
+    console.log(hideClickingOutside, " hide clicking outside");
+    if (!hideClickingOutside) return;
 
     // return if the innter container element is clicked;
     if (event.target !== containerRef.current) return;
@@ -83,7 +89,7 @@ export const CustomModalHeader = (props: HeaderProps) => {
     titleStyle = "",
     containerStyle = "",
     buttonStyle = "",
-    // handler
+    handler,
   } = props;
   const dispatch = useDispatch();
 
@@ -91,8 +97,10 @@ export const CustomModalHeader = (props: HeaderProps) => {
   const handleClose = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    if (handler) {
+      handler();
+    }
     dispatch(toggleModal(null));
-    // handler && handler();
     document.body.style.overflowY = "auto";
   };
   return (

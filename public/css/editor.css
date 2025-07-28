@@ -196,28 +196,28 @@
 
 /*======= font sizes ======== */
 
-*{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
-  font-size: var(--fs-big);
-  line-height: 120%;
+  font-size: var(--fs-6xl);
+  line-height: 104%;
   margin: 0;
   padding: 0;
 }
 
 h2 {
-  font-size: var(--fs-7xl);
-  line-height: 120%;
+  font-size: var(--fs-5xl);
+  line-height: 104%;
   margin: 0;
   padding: 0;
 }
 
 h3 {
-  font-size: var(--fs-5xl);
-  line-height: 120%;
+  font-size: var(--fs-4xl);
+  line-height: 104%;
   margin: 0;
   padding: 0;
 }
@@ -243,14 +243,16 @@ h6 {
   padding: 0;
 }
 
-p{
+p {
   font-size: var(--fs-base);
   line-height: 150%;
   margin: 0;
   padding: 0;
 }
 
-ul, ol, li{
+ul,
+ol,
+li {
   font-size: var(--fs-base);
   line-height: 150%;
   padding: 0;
@@ -264,9 +266,9 @@ span {
   margin: 0;
 }
 
-
-ul, ol{
- padding-inline-start:20px;
+ul,
+ol {
+  padding-inline-start: 20px;
 }
 
 /* utility */
@@ -380,7 +382,7 @@ body {
 .dark body {
   background-color: var(--clr-bg-body-dark);
   color: var(--clr-text-body-dark);
-} 
+}
 
 /* blocks style */
 .tox-menu .tox-collection__group .tox-collection__item-label h1,
@@ -388,8 +390,13 @@ body {
 .tox-menu .tox-collection__group .tox-collection__item-label h3,
 .tox-menu .tox-collection__group .tox-collection__item-label h4,
 .tox-menu .tox-collection__group .tox-collection__item-label h5,
-.tox-menu .tox-collection__group .tox-collection__item-label h6
-.tox-menu .tox-collection__group .tox-collection__item-label p
-{
- font-size: 18px !important;
+.tox-menu
+  .tox-collection__group
+  .tox-collection__item-label
+  h6
+  .tox-menu
+  .tox-collection__group
+  .tox-collection__item-label
+  p {
+  font-size: 18px !important;
 }

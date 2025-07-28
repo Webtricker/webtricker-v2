@@ -10,7 +10,7 @@ export default function Portfolios() {
         <div className="w-full flex-col flex-wrap  sm:flex-row flex gap-5 sm:gap-5  lg:gap-14 justify-between overflow-hidden">
           <div className="flex items-center w-full sm:w-[45%] 2xl:w-[47%] max-w-[800px] h-auto">
             <ParallaxImage
-              containerStyle="w-full h-[400px] sm:h-[413px] sm:max-w-[600px]"
+              containerStyle="w-full  h-[400px] sm:h-[413px] sm:max-w-[600px]"
               href=""
               src="/images/portfolios/bicycle.png"
               imgStyle=""

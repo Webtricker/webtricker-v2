@@ -5,6 +5,7 @@ interface IService {
   description: string;
   subServices: string[];
   excerp: string;
+  icon:string;
   thumnail: {
     width?: number;
     height?: number;
@@ -21,6 +22,7 @@ const ServiceSchema = new mongoose.Schema<IService>({
   description: { type: String, required: true },
   subServices: { type: [String], default: [] },
   excerp: { type: String, required: true },
+  icon: { type: String, required: true },
   thumnail: {
     width: { type: Number },
     height: { type: Number },
