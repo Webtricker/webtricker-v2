@@ -9,6 +9,7 @@ import { XMarkIcon } from "../icons/Icons";
 
 type CustomModalProps = {
   wrapperContainerStyle?: string;
+  hideClickingOutside?:boolean;
   containerStyle?: string;
   children: React.ReactNode;
   activeKey: string;
@@ -16,7 +17,7 @@ type CustomModalProps = {
 
 export const CustomModal = (props: CustomModalProps) => {
   // props value
-  const { children, activeKey, containerStyle, wrapperContainerStyle } = props;
+  const { children, hideClickingOutside=true, activeKey, containerStyle, wrapperContainerStyle } = props;
 
   // dispatcher and active state
   const dispatch = useDispatch();
@@ -26,7 +27,8 @@ export const CustomModal = (props: CustomModalProps) => {
 
   //   reset all state
   const hideModal = (event: React.MouseEvent<HTMLDivElement>) => {
-    // event.stopPropagation();
+    console.log(hideClickingOutside, ' hide clicking outside')
+    if(!hideClickingOutside)return;
 
     // return if the innter container element is clicked;
     if (event.target !== containerRef.current) return;
@@ -51,7 +53,7 @@ export const CustomModal = (props: CustomModalProps) => {
 
   return createPortal(
     <div
-    
+      data-prevent-body-trigger
       ref={containerRef}
       onClick={hideModal}
       className={`text-[#30353E] w-full h-full fixed top-0 px-4 left-0 flex justify-center items-center bg-[#17171791] overflow-hidden z-[99998] ${wrapperContainerStyle}`}

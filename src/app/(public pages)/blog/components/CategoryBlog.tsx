@@ -1,7 +1,4 @@
-"use client";
-import { useGetPostsQuery } from "@/redux/features/post/postApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
-import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { TCategory } from "@/types/data";
@@ -9,23 +6,47 @@ import { IBlog } from "@/types/post";
 import Link from "next/link";
 import React from "react";
 
-export default function CategoryBlog({ category }: { category: TCategory }) {
-  const { data, isLoading, isError, error } = useGetPostsQuery({
-    postType: "blog",
-    categoryId: category._id,
-    limit: 5,
-  });
+const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
 
-  if (isLoading) {
-    return (
-      <Container className="section-speacing flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner />
-      </Container>
+const getPostsForCategory = async (
+  categoryId: string
+): Promise<IBlog[] | null> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?categoryId=${categoryId}&limit=5`,
+      {
+        next: { revalidate: POSTS_REVALIDATE_SECONDS },
+      }
     );
-  }
 
-  if (!data || !data?.posts?.length || isError) {
-    console.log(error);
+    if (!res.ok) {
+      console.error(
+        `Failed to fetch posts for category ID: ${categoryId}. Status: ${res.status}`
+      );
+      return null;
+    }
+
+    const data = await res.json();
+    return data?.posts || [];
+  } catch (error) {
+    console.error(
+      `Error fetching posts for category ID: ${categoryId}:`,
+      error
+    );
+    return null;
+  }
+};
+
+export default async function CategoryBlog({
+  category,
+}: {
+  category: TCategory;
+}) {
+
+  console.log("render info Category blog")
+
+  const posts = await getPostsForCategory(category._id);
+  if (!posts || posts.length === 0) {
     return <></>;
   }
 
@@ -34,7 +55,7 @@ export default function CategoryBlog({ category }: { category: TCategory }) {
       <div className="w-full flex items-center justify-between gap-4 flex-wrap lg:gap-10">
         <h4>{category.name}</h4>
 
-        {data.posts?.length > 4 ? (
+        {posts.length > 4 ? (
           <Link href={`/category/${category._id}`}>
             <Button label="Show All" className="!py-2.5 lg:!py-3" />
           </Link>
@@ -43,9 +64,9 @@ export default function CategoryBlog({ category }: { category: TCategory }) {
         )}
       </div>
       <div className="w-full mt-4 grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] md:grid-cols-[repeat(auto-fill,minmax(350px,1fr))] gap-5 lg:gap-6 xl:gap-7 2xl:gap-8">
-        {data.posts.slice(0, 4).map((blog:IBlog) => (
+        {posts.slice(0, 4).map((blog: IBlog) => (
           <BlogCardWrapper
-            key={`${blog._id}-${category}`}
+            key={blog._id}
             createdAt={blog.createdAt}
             description={blog.description}
             slug={blog.slug}

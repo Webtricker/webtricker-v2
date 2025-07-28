@@ -7,7 +7,7 @@ const rootTemplate = (body: string) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body style="margin:0; padding:14px; font-family:'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <table  width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; padding:25px 14px; border:1px solid #eeeeee; border-radius:10px; margin:0 auto;">
+    <table  width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; padding:25px 14px; margin:0 auto;">
      <tr style="padding-top:20px;">
         <td align="center" style="padding-bottom: 10px;"> <table cellpadding="0" cellspacing="0" border="0" style="display:inline-block;">
             <tr>
@@ -87,3 +87,32 @@ export const getAdminMailTemplate = () => {
   `
   return rootTemplate(template);
 }
+
+export const getSubscribeOTPMailTemplate = (otp: string) => {
+  const template = `
+    <!-- OTP Notification Message -->
+    <tr>
+      <td align="center">
+        <p style="margin:0 0 10px; font-size:16px; color:#555555;">
+          Thank you for subscribing our newsletter! Use the 6-digit OTP below to verify your email address on our website.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <p style="font-size:28px; font-weight:bold; color:#2b2b2b; margin:20px 0;">
+          ${otp}
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <p style="font-size:14px; color:#888888;">
+          This OTP is valid for the next 10 minutes. Please do not share it with anyone.
+        </p>
+      </td>
+    </tr>
+  `;
+
+  return rootTemplate(template);
+};

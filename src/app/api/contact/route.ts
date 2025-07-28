@@ -1,21 +1,12 @@
+import transporter from "@/services/mail";
 import { getThankingMailTemplate } from "@/utils/mailTemplate";
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
 
 export const POST = async (req: NextRequest) => {
     const { name, email, message } = await req.json();
     if (!name || !email || !message) {
         return NextResponse.json({ success: false, error: true, message: "Missing fields" }, { status: 400 });
     }
-
-    // Set up transporter
-    const transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
-    });
 
     try {
         await transporter.sendMail({

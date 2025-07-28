@@ -12,6 +12,7 @@ import { MediaApi } from "./features/media/MediaApiSlice";
 import { categoryApi } from "./features/category/categoryApiSlice";
 import categories from "./features/category/categories";
 import { postApi } from "./features/post/postApi";
+import { subscribeApi } from "./features/subscriber/subscribeApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -38,6 +39,7 @@ export const store = configureStore({
     [categoryApi.reducerPath]: categoryApi.reducer,
     [uploadApi.reducerPath]: uploadApi.reducer,
     [MediaApi.reducerPath]: MediaApi.reducer,
+    [subscribeApi.reducerPath]: subscribeApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
@@ -47,7 +49,8 @@ export const store = configureStore({
       concat(uploadApi.middleware).
       concat(menuApi.middleware).
       concat(MediaApi.middleware).
-      concat(categoryApi.middleware)
+      concat(categoryApi.middleware).
+      concat(subscribeApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

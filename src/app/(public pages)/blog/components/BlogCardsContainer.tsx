@@ -1,57 +1,41 @@
-"use client";
+import React from 'react';
+import { TCategory } from "@/types/data"; 
+import CategoryBlog from './CategoryBlog';
 
-import { useGetCategoriesQuery } from "@/redux/features/category/categoryApiSlice";
-import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
-import Container from "@/sharedComponets/ui/wrapper/Container";
-import CategoryBlog from "./CategoryBlog";
-import React from "react";
-import { TCategory } from "@/types/data";
+const getCategories = async (): Promise<TCategory[]> => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
+      next: { revalidate: 1800 }, // revalidate in every 30 minutes
+    });
 
-export default function BlogCardsContainer() {
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useGetCategoriesQuery({});
-
-  const categories = data?.categories ?? [];
-
-  // Show loading spinner
-  if (isLoading) {
-    return (
-      <Container className="flex items-center justify-center min-h-[200px]">
-        <LoadingSpinner />
-      </Container>
-    );
+    if (!res.ok) {
+      console.error("Failed to fetch categories (Server)");
+      return [];
+    }
+    const result = await res.json();
+    return result?.categories || [];
+  } catch (error) {
+    console.error("Error fetching categories (Server):", error);
+    return [];
   }
+};
 
-  // Handle error case
-  if (isError) {
-    const errorMessage =
-      (error as any)?.data?.message || "Failed to load categories.";
-    return (
-      <Container className="text-center">
-        <p className="wt_fs-lg text-red-600">{errorMessage}</p>
-      </Container>
-    );
-  }
-
-  // No categories found
+export default async function ServerCategoriesList() {
+  const categories = await getCategories();
+  console.log("render info for blog cards container")
   if (!categories.length) {
     return (
-      <Container className="text-center">
+      <div className="text-center">
         <p className="wt_fs-lg">No categories found.</p>
-      </Container>
+      </div>
     );
   }
 
-  // Render categories
   return (
     <>
-      {categories.map((category:TCategory) => (
+      {categories.map((category: TCategory) => (
         <CategoryBlog
-          key={category._id ?? category.name} // Fallback to name if _id is missing
+          key={category._id ?? category.name}
           category={category}
         />
       ))}

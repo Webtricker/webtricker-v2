@@ -64,9 +64,9 @@ export async function generateStaticParams() {
 export default async function SingleServicePage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const data = await getServiceData(slug);
 
