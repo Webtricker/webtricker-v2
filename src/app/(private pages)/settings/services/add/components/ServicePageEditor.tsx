@@ -16,6 +16,7 @@ import { Editor } from "tinymce";
 import KeyService from "./KeyService";
 import { TService } from "@/types/post";
 import ServiceCategory from "./ServiceCategory";
+import ServiceIcon from "./ServiceIcon";
 
 export default function ServicePageEditor() {
   // ref
@@ -28,6 +29,7 @@ export default function ServicePageEditor() {
   const [keyServices, setKeyServices] = useState<string[]>([]);
   const [excerp, setExcerp] = useState("");
   const [thumnail, setThumnail] = useState<TMedia | null>(null);
+  const [icon, setIcon] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string|null>(null);
   const [postService, { isLoading }] = useAddServiceMutation();
 
@@ -36,9 +38,15 @@ export default function ServicePageEditor() {
       toast.error("Title is required");
       return;
     }
+    
 
     if (!des.trim()) {
       toast.error("Description is required");
+      return;
+    }
+
+    if (!icon) {
+      toast.error("Icon is required");
       return;
     }
 
@@ -85,6 +93,7 @@ export default function ServicePageEditor() {
       },
       subServices: keyServices,
       tags,
+      icon,
       category: selectedCategory,
       content: "",
     };
@@ -100,6 +109,7 @@ export default function ServicePageEditor() {
         // reset form fields
         setTitle("");
         setDes("");
+        setIcon('');
         setKeyServices([]);
         setTags([]);
         setExcerp("");
@@ -134,6 +144,7 @@ export default function ServicePageEditor() {
       </div>
       <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
         <TitleInput title={title} setTitle={setTitle} />
+        <ServiceIcon icon={icon} setIcon={setIcon} />
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
           des={des}

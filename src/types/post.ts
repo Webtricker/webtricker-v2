@@ -33,6 +33,7 @@ export interface TService {
   excerp: string;
   tags: string[];
   category:string;
+  icon:string;
   subServices: string[];
   content: string;
   thumnail: {

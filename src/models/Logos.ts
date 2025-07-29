@@ -1,21 +1,7 @@
-import mongoose, { Schema, Document, Model, HydratedDocument } from 'mongoose';
+import { IDefaultSiteLogos, ISiteLogos } from '@/types/logoType';
+import mongoose, { Schema, Model, HydratedDocument } from 'mongoose';
 
 // Schema for fallback/default logos
-interface IDefaultSiteLogos {
-  lightLargeLogo: string;
-  darkLargeLogo: string;
-  smallLogo: string;
-}
-
-// Main document interface
-export interface ISiteLogos extends Document {
-  lightLargeLogo: string;
-  darkLargeLogo: string;
-  smallLogo: string;
-  defaultLogos: IDefaultSiteLogos;
-  createdAt: Date;
-  updatedAt: Date;
-}
 
 export type SiteLogosDocument = HydratedDocument<ISiteLogos>;
 

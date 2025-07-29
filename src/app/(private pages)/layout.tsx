@@ -2,7 +2,7 @@ import React from "react";
 import PrivateSidebar from "./components/PrivateSidebar";
 import PrivateNavbar from "./components/PrivateNavbar";
 import CheckAccessToken from "./components/CheckAccessToken";
-import SiteLogoLong from "@/sharedComponets/ui/logos/SiteLogoLong";
+import SidebarLogo from "@/sharedComponets/ui/sidebar/SidebarLogo";
 
 export default async function AdminLayout({
   children,
@@ -12,11 +12,11 @@ export default async function AdminLayout({
   return (
     <div className="flex min-h-screen w-full items-start">
       <PrivateSidebar>
-        <SiteLogoLong />
+        <SidebarLogo />
       </PrivateSidebar>
       <div className="grow  h-full flex flex-col">
         <PrivateNavbar>
-          <SiteLogoLong />
+          <SidebarLogo />
         </PrivateNavbar>
         {children}
       </div>

@@ -57,3 +57,10 @@ export type TUploadResponse = {
 
 // category
 export type TCategory = { _id: string; name: string }
+
+// navbar link
+export type TNavlink = {
+  label:string;
+  href:string;
+  target:"_blank" | "_self";
+}

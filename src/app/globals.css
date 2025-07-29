@@ -648,9 +648,9 @@ p.bouncing-text {
 
 
 /* glowing border */
-/* .portfolio_card{
+.portfolio_card{
   position: relative;
-} */
+}
 .portfolio_card:after {
   content: '';
   position: absolute;

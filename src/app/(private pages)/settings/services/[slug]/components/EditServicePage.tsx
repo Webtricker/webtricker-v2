@@ -1,8 +1,6 @@
 "use client";
 import PageTitle from "@/app/(private pages)/components/PageTitle";
-import {
-  useUpdateServiceMutation,
-} from "@/redux/features/post/postApi";
+import { useUpdateServiceMutation } from "@/redux/features/post/postApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import Description from "@/sharedComponets/ui/editor/Description";
 import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
@@ -16,6 +14,7 @@ import { Editor } from "tinymce";
 import { IService, TService } from "@/types/post";
 import KeyService from "../../add/components/KeyService";
 import ServiceCategory from "../../add/components/ServiceCategory";
+import ServiceIcon from "../../add/components/ServiceIcon";
 
 export default function EditServicePage({ service }: { service: IService }) {
   // ref
@@ -39,6 +38,7 @@ export default function EditServicePage({ service }: { service: IService }) {
   const [keyServices, setKeyServices] = useState<string[]>(
     service.subServices || []
   );
+  const [icon, setIcon] = useState(service.icon || "");
   const [excerp, setExcerp] = useState(service.excerp || "");
   const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
   const [selectedCategory, setSelectedCategory] = useState(
@@ -54,6 +54,11 @@ export default function EditServicePage({ service }: { service: IService }) {
 
     if (!tags.length) {
       toast.error("Tags required");
+      return;
+    }
+
+    if (!icon) {
+      toast.error("Icon is required");
       return;
     }
 
@@ -91,6 +96,7 @@ export default function EditServicePage({ service }: { service: IService }) {
         height: thumnail?.height,
         url: thumnail?.secure_url,
       },
+      icon,
       subServices: keyServices,
       tags,
       category: selectedCategory || "",
@@ -134,7 +140,7 @@ export default function EditServicePage({ service }: { service: IService }) {
         )}
       </div>
       <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
-
+        <ServiceIcon icon={icon} setIcon={setIcon} />
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
           des={des}

@@ -41,7 +41,7 @@ export default function ResetAllLogos() {
   const isProcessing = isLoading || isUpdating;
   return (
     <div className="w-full">
-      {!isProcessing && <Button cb={handleReset} label="RESET" />}
+      {!isProcessing && <Button cb={handleReset} className="!py-2.5" label="RESET" />}
     </div>
   );
 }
