@@ -64,3 +64,14 @@ export type TNavlink = {
   href:string;
   target:"_blank" | "_self";
 }
+
+
+export interface ITeam {
+    profile: string;
+    name: string;
+    role: string;
+}
+
+export interface ITeamInfo extends ITeam {
+    _id:string;
+}

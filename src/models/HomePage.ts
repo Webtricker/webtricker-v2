@@ -21,6 +21,8 @@
 // // clients section
 // clientSectionSubtitle:string;
 
+// // home latest blog
+// blogSectionTitle:string;
 
 
 // }

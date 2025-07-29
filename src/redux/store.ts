@@ -13,22 +13,18 @@ import { categoryApi } from "./features/category/categoryApiSlice";
 import categories from "./features/category/categories";
 import { postApi } from "./features/post/postApi";
 import { subscribeApi } from "./features/subscriber/subscribeApiSlice";
+import { teamApi } from "./features/team/teamApiSlice";
+import teamData from "./features/team/teamData";
 
 export const store = configureStore({
   reducer: {
-    /* root modyfier to open dropdown, modal, menu or to toggle  between different active states */
     modyfier: Modyfier.reducer,
-
     floatingText: floatingText.reducer,
-
-    // modal show/hide slice
     modalToggler: ModalToggler,
-
-    // site logo
     siteLogo: siteLogo.reducer,
-
-    // categories
     categories: categories.reducer,
+    teamData:teamData.reducer,
+
 
     // api slices can be added here
     [contactApi.reducerPath]: contactApi.reducer,
@@ -40,6 +36,7 @@ export const store = configureStore({
     [uploadApi.reducerPath]: uploadApi.reducer,
     [MediaApi.reducerPath]: MediaApi.reducer,
     [subscribeApi.reducerPath]: subscribeApi.reducer,
+    [teamApi.reducerPath]: teamApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
@@ -50,7 +47,8 @@ export const store = configureStore({
       concat(menuApi.middleware).
       concat(MediaApi.middleware).
       concat(categoryApi.middleware).
-      concat(subscribeApi.middleware)
+      concat(subscribeApi.middleware).
+      concat(teamApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
