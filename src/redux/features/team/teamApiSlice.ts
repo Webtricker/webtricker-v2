@@ -6,11 +6,13 @@ export const teamApi = createApi({
         baseUrl: '/api',
         credentials: "include"
     }),
+    tagTypes: ['TeamInfoData'],
     endpoints: (builder) => ({
         getTeamInfo: builder.query({
             query: () => ({
                 url: '/teams'
-            })
+            }),
+            providesTags: ['TeamInfoData']
         }),
         getATeamInfo: builder.query({
             query: (id) => ({
@@ -34,10 +36,11 @@ export const teamApi = createApi({
 
         updateTeamInfo: builder.mutation({
             query: ({ id, data }) => ({
-                url: `/blogs/${id}`,
+                url: `/teams/${id}`,
                 method: "PUT",
                 body: data,
-            })
+            }),
+            invalidatesTags: ['TeamInfoData']
         }),
     })
 })

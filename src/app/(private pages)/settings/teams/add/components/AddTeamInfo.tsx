@@ -1,46 +1,41 @@
 "use client";
-import { useUpdateTeamInfoMutation } from "@/redux/features/team/teamApiSlice";
+import { useAddTeamMemberMutation } from "@/redux/features/team/teamApiSlice";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import TeamInfoForm from "@/sharedComponets/ui/form/TeamInfoForm";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
-import { ITeamInfo } from "@/types/data";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-interface Props {
-  member: ITeamInfo;
-}
-
-export default function TeamUpdateForm({ member }: Props) {
+export default function AddTeamInfo() {
   // hooks
-  const [profile, setProfile] = useState(member.profile);
-  const [name, setName] = useState(member.name);
-  const [role, setRole] = useState(member.role);
-  const [updateTeamMember, { isLoading }] = useUpdateTeamInfoMutation();
+  const [profile, setProfile] = useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [addTeamMember, { isLoading }] = useAddTeamMemberMutation();
 
   //  handlers
   const handleSubmit = async () => {
     if (!profile) return toast.error("Please add profile");
     if (!name) return toast.error("Please enter name");
     if (!role) return toast.error("Please enter role");
+
     try {
-      const res = await updateTeamMember({
-        id: member._id,
-        data: { profile, name, role },
-      }).unwrap();
-      console.log(res, " res from updating team info");
+      const res = await addTeamMember({ profile, name, role }).unwrap();
       if (res.success) {
-        toast.success("Team member info updated");
+        toast.success("Team member info added");
+        // reset data
+        setProfile("");
+        setName("");
+        setRole("");
       } else {
-        throw new Error(res?.message || "Error updating team member");
+        throw new Error("Error uploading team member");
       }
     } catch (error: any) {
       console.log(error);
-      toast.error(error?.data?.message || "Error updating team member");
+      toast.error("Error uploading team member");
     }
   };
 
-  const shouldDisable = member.profile === profile && member.name ===name && member.role===role
   return (
     <div
       className={`w-full grow flex items-center justify-center ${
@@ -48,8 +43,8 @@ export default function TeamUpdateForm({ member }: Props) {
       }`}
     >
       <TeamInfoForm
-        activeKey="OPEN_TEAM_INFO_UPDATE_MODAL"
-        key="OPEN_TEAM_INFO_UPDATE_MODAL_WRAPPER"
+        activeKey="OPEN_TEAM_INFO_ADD_MODAL"
+        key="OPEN_TEAM_INFO_ADD_MODAL_WRAPPER"
         name={name}
         setName={setName}
         role={role}
@@ -61,8 +56,8 @@ export default function TeamUpdateForm({ member }: Props) {
           <LoadingSpinner />
         ) : (
           <Button
-            disabled={!profile || !name || !role || shouldDisable}
-            label="Update"
+            disabled={!profile || !name || !role}
+            label="Save"
             cb={handleSubmit}
             className="!py-2.5 wt_fs-md"
           />

@@ -24,6 +24,7 @@ export const settingsLinks: TLink[] = [
   // { label: "Career", href: "/settings/career" },
   { label: "Contact", href: "/settings/contact" },
   { label: "Teams", href: "/settings/teams" },
+  { label: "Testimonials", href: "/settings/testimonials" },
   {
     label: "Footer",
     href: "/settings/footer"

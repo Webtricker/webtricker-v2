@@ -6,12 +6,12 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
-import { teamData } from "@/data/team";
 import Image from "next/image";
 import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveable";
 import galleryModern from "@/app/fonts/gallery";
+import { TTeamData } from "@/types/data";
 
-export default function TeamInfo() {
+export default function TeamInfo({ teamData }: { teamData: TTeamData[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -28,20 +28,24 @@ export default function TeamInfo() {
     });
   }, [containerRef]);
 
+  if(!teamData.length) return <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
+      <h5>Please add team information from dashboard</h5>
+  </div>
+
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative">
       <div ref={containerRef} className="w-full cursor-hide">
         <Swiper
-        //  dir="ltr"
+          //  dir="ltr"
           modules={[Navigation, Autoplay, Pagination]}
           spaceBetween={16}
           navigation={false}
           centeredSlides={true}
           loop={true}
-        //   autoplay={{
-        //     delay: 5000,
-        //     disableOnInteraction: false,
-        //   }}
+          //   autoplay={{
+          //     delay: 5000,
+          //     disableOnInteraction: false,
+          //   }}
           breakpoints={{
             0: {
               slidesPerView: 1.5,
@@ -61,7 +65,7 @@ export default function TeamInfo() {
           }}
           className="w-full"
         >
-          {teamData.map((item, index) => (
+          {[...teamData,...teamData,...teamData].map((item, index) => (
             <SwiperSlide
               className="cursor-hide overflow-hidden rounded-[8px]"
               key={index}

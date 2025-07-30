@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
-import Team from "@/models/TeamInfo";
 import { verifyAdmin } from "@/utils/validator";
+import Testimonial from "@/models/Testimonials";
 
 export const GET = async (
     _: NextRequest,
@@ -12,14 +12,14 @@ export const GET = async (
     try {
         await connectToDatabase();
 
-        const teamData = await Team.findOne({ _id });
+        const testimonialData = await Testimonial.findOne({ _id });
         return NextResponse.json(
-            { error: true, teamData },
+            { error: true, testimonialData },
             { status: 200 }
         );
     }
     catch (err) {
-        console.error('Error during post deletion:', err);
+        console.error('Error fetching testimonial data:', err);
         return NextResponse.json(
             { error: true, message: 'Internal Server Error' },
             { status: 500 }
@@ -48,18 +48,18 @@ export const PUT = async (
             );
         }
 
-        const teamData = await Team.findByIdAndUpdate(_id, { ...body }, { new: true });
+        const testimonialData = await Testimonial.findByIdAndUpdate(_id, { ...body }, { new: true });
         return NextResponse.json(
-            { success: true, teamData },
+            { success: true, testimonialData },
             { status: 200 }
         );
     }
     catch (err: any) {
-        console.error('Error during updating team info:', err);
+        console.error('Error during updating testimonial info:', err);
 
         if (err?.code === 11000) {
             return NextResponse.json(
-                { success: false, error: true, message: "Duplicate entry in team data." },
+                { success: false, error: true, message: "Duplicate entry in testimonial data." },
                 { status: 409 }
             );
         }
@@ -83,14 +83,14 @@ export const DELETE = async (
         await verifyAdmin(req);
         await connectToDatabase();
 
-        const result = await Team.findByIdAndDelete(_id);
+        const result = await Testimonial.findByIdAndDelete(_id);
         return NextResponse.json(
             { success: true, result },
             { status: 200 }
         );
     }
     catch (err) {
-        console.error('Error deleting team info:', err);
+        console.error('Error deleting testimonial info:', err);
         return NextResponse.json(
             { error: true, message: 'Internal Server Error' },
             { status: 500 }

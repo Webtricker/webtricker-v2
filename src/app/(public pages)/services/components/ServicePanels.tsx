@@ -1,19 +1,17 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IService } from "@/types/post";
+import { getServicesData } from "@/utils/pageData";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+// export const revalidate = 3600; // page rebuild in every 1 hour
+// TODO: have to uncomment above line
+
+// export const revalidate = 300; // page rebuild in every 5 min
+export const revalidate = 120; // page rebuild in every 5 min
 
 export default async function ServicePanels() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`, {
-    next: { revalidate: 3600 },
-  });
-
-  if (!res.ok) {
-    return <PanelMessage message="Error fetching services" />;
-  }
-
-  const { services } = await res.json();
+ const services = await getServicesData()
 
   if (!services?.length) {
     return <PanelMessage message="No services found" />;

@@ -8,10 +8,13 @@ import { Autoplay, EffectFade } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { testimonials } from "@/data/testimonials";
 import galleryModern from "@/app/fonts/gallery";
+import { ITestimonialsInfo } from "@/types/data";
 
-export default function Testimonials() {
+export default function Testimonials({testimonials=[]}:{testimonials:ITestimonialsInfo[]}) {
+    if(!testimonials.length) return <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
+      <h5>Please add testimonial from dashboard</h5>
+  </div>
   return (
     <section className="relative py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <div className="w-full min-h-[300px] relative z-0 ">
@@ -50,21 +53,21 @@ export default function Testimonials() {
                 modules={[EffectFade, Autoplay]}
                 className="mySwiper"
               >
-                {testimonials.map((item) => (
-                  <SwiperSlide key={item.id}>
-                    <p>{item.description}</p>
+                {testimonials.map((testimonial) => (
+                  <SwiperSlide key={testimonial._id}>
+                    <p>{testimonial.review}</p>
 
                     <div className="w-full gap-5 flex items-center mt-10">
                       <Image
                         className="w-20 min-w-20 lg:min-w-[100px] border object-cover border-slate-300 dark:border-slate-700 rounded-full lg:w-[100px] h-20 lg:h-[100px]"
-                        src={item.image}
+                        src={testimonial.profile}
                         width={100}
                         height={100}
                         alt="profile image"
                       />
                       <div className="w-full flex flex-col">
-                        <h6>{item.name}</h6>
-                        <p>{item.role}</p>
+                        <h6>{testimonial.name}</h6>
+                        <p>{testimonial.role}</p>
                       </div>
                     </div>
                   </SwiperSlide>

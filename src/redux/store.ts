@@ -15,6 +15,8 @@ import { postApi } from "./features/post/postApi";
 import { subscribeApi } from "./features/subscriber/subscribeApiSlice";
 import { teamApi } from "./features/team/teamApiSlice";
 import teamData from "./features/team/teamData";
+import testimonialData from "./features/testimonials/testimonialData";
+import { testimonialApi } from "./features/testimonials/testimonialsApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,7 +26,7 @@ export const store = configureStore({
     siteLogo: siteLogo.reducer,
     categories: categories.reducer,
     teamData:teamData.reducer,
-
+    testimonialData:testimonialData.reducer,
 
     // api slices can be added here
     [contactApi.reducerPath]: contactApi.reducer,
@@ -37,6 +39,7 @@ export const store = configureStore({
     [MediaApi.reducerPath]: MediaApi.reducer,
     [subscribeApi.reducerPath]: subscribeApi.reducer,
     [teamApi.reducerPath]: teamApi.reducer,
+    [testimonialApi.reducerPath]: testimonialApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
@@ -48,7 +51,8 @@ export const store = configureStore({
       concat(MediaApi.middleware).
       concat(categoryApi.middleware).
       concat(subscribeApi.middleware).
-      concat(teamApi.middleware)
+      concat(teamApi.middleware).
+      concat(testimonialApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -10,7 +10,7 @@ const initialState: IInitialState = {
     teamInfo: []
 };
 
-const siteLogo = createSlice({
+const teamData = createSlice({
     name: "teamData",
     initialState,
     reducers: {
@@ -42,6 +42,6 @@ export const {
     deleteTeamMember,
     updateTeamMember,
     setTeamMembers,
-} = siteLogo.actions;
+} = teamData.actions;
 
-export default siteLogo;
+export default teamData;

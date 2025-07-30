@@ -73,5 +73,15 @@ export interface ITeam {
 }
 
 export interface ITeamInfo extends ITeam {
-    _id:string;
+  _id:string;
+}
+export interface ITestimonials {
+    profile: string;
+    name: string;
+    role: string;
+    review:string;
+}
+
+export interface ITestimonialsInfo extends ITestimonials {
+  _id:string;
 }

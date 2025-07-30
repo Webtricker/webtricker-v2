@@ -6,8 +6,17 @@ import TeamInfo from "../(home)/components/TeamInfo";
 import FunFacts from "./components/FunFacts";
 import Testimonials from "../(home)/components/Testimonials";
 import Link from "next/link";
+import { getTeamData, getTestimonialsData } from "@/utils/pageData";
 
-export default function AboutPage() {
+// export const revalidate = 3600; // page rebuild in every 1 hour
+// TODO: have to uncomment above line
+
+// export const revalidate = 300; // page rebuild in every 5 min
+export const revalidate = 120; // page rebuild in every 2 min
+
+export default async function AboutPage() {
+  const teamData = await getTeamData();
+    const testimonialsData = await getTestimonialsData();
   return (
     <main className="w-full z-0">
       <section className={`w-full min-h-screen z-0 flex relative`}>
@@ -85,9 +94,9 @@ export default function AboutPage() {
         </Container>
       </section>
       <WhatWeDo />
-      <TeamInfo />
+      <TeamInfo teamData={teamData} />
       <FunFacts />
-      <Testimonials />
+      <Testimonials testimonials={testimonialsData} />
       <section className="pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18">
         <Container className="w-full flex flex-col">
           <p className="bold text-center mb-2 lg:mb-0">

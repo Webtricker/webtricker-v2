@@ -1,0 +1,47 @@
+export const getTeamData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/teams`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch team data");
+            return [];
+        }
+        const result = await res.json();
+        return result?.teamData || [];
+    } catch (error) {
+        console.error("Error fetching team data:", error);
+        return [];
+    }
+}
+
+export const getTestimonialsData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/testimonials`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch testimonial data");
+            return [];
+        }
+    const result = await res.json();
+        return result?.testimonialsData || [];
+    } catch (error) {
+        console.error("Error fetching testimonial data:", error);
+        return [];
+    }
+}
+
+export const getServicesData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch services");
+            return [];
+        }
+    const result = await res.json();
+        return result?.services || [];
+    } catch (error) {
+        console.error("Error fetching services:", error);
+        return [];
+    }
+}

@@ -1,17 +1,17 @@
 import PrivatePageWrapper from "@/app/(private pages)/components/PrivatePageWrapper";
 import NoBlogFoundMsg from "@/app/(public pages)/blog/[slug]/components/NoBlogFoundMsg";
 import { ITeamInfo } from "@/types/data";
-import TeamUpdateForm from "./components/TeamUpdateForm";
 import PageTitle from "@/app/(private pages)/components/PageTitle";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import Container from "@/sharedComponets/ui/wrapper/Container";
+import TestimonialUpdateForm from "./components/TestimonialUpdateForm";
 
-const getTeamData = async (slug: string) => {
+const getTestimonialData = async (slug: string) => {
   // You can fetch data here on the server f
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/teams/${slug}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/testimonials/${slug}`
     );
     const data = await res.json();
     return data;
@@ -21,25 +21,25 @@ const getTeamData = async (slug: string) => {
   return null;
 };
 
-export default async function SingleTeamInfoPage({ params }) {
+export default async function SingleTestimonialPage({ params }) {
   const { id } = await params;
 
-  const data = await getTeamData(id);
-  if (!data?.teamData)
-    return <NoBlogFoundMsg msg="No team found" key="TEAM_INFO_MSG" />;
-  const teamData = data.teamData || ({} as ITeamInfo);
+  const data = await getTestimonialData(id);
+  if (!data?.testimonialData)
+    return <NoBlogFoundMsg msg="No testimonial found" key="TESTIMONIAL_MSG" />;
+  const testimonialData = data.testimonialData || ({} as ITeamInfo);
   return (
     <PrivatePageWrapper className="!p-0">
       <main className="w-full z-0">
         <section className=" w-full py-3 px-4 md:px-5 lg:px-10 left-0 flex items-center justify-between lg:bg-slate-100">
-          <PageTitle key="UPDATE" title="UPDATE" />
-          <Link href="/settings/teams/add">
-            <Button className="!py-2.5 whitespace-nowrap" label="Add Team" />
+          <PageTitle key="UPDATE_TESTIMONIAL" title="UPDATE TESTIMONIAL" />
+          <Link href="/settings/testimonials/add">
+            <Button className="!py-2.5 whitespace-nowrap" label="Add Testimonial" />
           </Link>
         </section>
         <section className="section-speacing  grow">
         <Container className="w-full justify-center flex items-center">
-            <TeamUpdateForm member={teamData} />
+            <TestimonialUpdateForm testimonial={testimonialData} />
         </Container>
         </section>
         </main>

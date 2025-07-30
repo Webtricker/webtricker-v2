@@ -3,10 +3,10 @@ import React from "react";
 import Marquee from "react-fast-marquee";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
-import { testimonials } from "@/data/testimonials";
+import { ITestimonialsInfo } from "@/types/data";
 
 
-export default function Clients() {
+export default function Clients({testimonials=[]}:{testimonials:ITestimonialsInfo[]}) {
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
@@ -20,7 +20,7 @@ export default function Clients() {
             pauseOnHover={false}
             className="flex items-center"
           >
-            {testimonials.map((item) => <Image className="block border border-slate-300 dark:border-slate-700 mx-12 w-20 h-20 rounded-full" key={item.id} src={item.image} width={100} height={100} alt="Client Image" />)}
+            {testimonials.map((item) => <Image className="block border border-slate-300 dark:border-slate-700 mx-12 w-20 h-20 rounded-full" key={item._id} src={item.profile} width={100} height={100} alt={item.name} />)}
           </Marquee>
         </div>
       </Container>
