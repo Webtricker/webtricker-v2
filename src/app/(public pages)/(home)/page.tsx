@@ -5,11 +5,12 @@ import IntroVideo from "./components/IntroVideo";
 import Services from "./components/Services";
 import LargeMarquee from "./components/LargeMarquee";
 import Portfolios from "./components/Portfolios";
-import TeamBanner from "./components/TeamBanner";
 import Testimonials from "./components/Testimonials";
 import TeamInfo from "./components/TeamInfo";
 import LatestBlogs from "./components/LatestBlogs";
 import { getTeamData, getTestimonialsData } from "@/utils/pageData";
+import PortfolioSlider from "./components/PortfolioSlider";
+import OurLeader from "./components/OurLeader";
 
 // export const revalidate = 3600; // page rebuild in every 1 hour
 // TODO: have to uncomment above line
@@ -28,11 +29,12 @@ export default async function Home() {
         <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
       </Container>
       <Clients testimonials={testimonialsData} />
+      <Testimonials testimonials={testimonialsData} />
       <Services />
       <LargeMarquee />
       <Portfolios />
-      <TeamBanner />
-      <Testimonials testimonials={testimonialsData} />
+      <PortfolioSlider />
+      <OurLeader />
       <TeamInfo teamData={teamData} />
       <LatestBlogs />
     </main>

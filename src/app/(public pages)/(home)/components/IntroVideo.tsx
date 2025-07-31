@@ -43,7 +43,7 @@ export default function IntroVideo() {
             loop
             preload="metadata"
             className="h-screen w-full object-cover"
-            src="/videos/banner-intro.mp4"
+            src="/videos/home/contact.mp4"
           ></video>
         </div>
       </div>

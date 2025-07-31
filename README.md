@@ -42,3 +42,17 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 # Use the keyword where necessary.
 # Reduce h2 font-size for blog details page only. h2 will be 70px. have to reduce line height. 101% 
 #
+
+<!-- Home page -->
+
+
+<!--  portfolio page new designs 
+
+    For portfolio page hero slider :https://liko.foxthemes.me/portfolio-showcase-2/
+    For category portfolios 
+    1. https://liko.foxthemes.me/portfolio-wrapper/
+
+ -->
+<!-- main portfolio page design : https://liko.foxthemes.me/portfolio-random/ -->
+<!-- Have to create single case study page -->
+<!-- case study page design : https://liko.foxthemes.me/tp-portfolios/fashion/ -->

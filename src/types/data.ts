@@ -85,3 +85,17 @@ export interface ITestimonials {
 export interface ITestimonialsInfo extends ITestimonials {
   _id:string;
 }
+
+
+ type SocialLink = {
+  url: string;
+  icon: string;
+  alt: string;
+};
+
+export type TOurLeader = {
+  image: string; 
+  name: string;
+  description: string; // This used to be memberDesc
+  socialLinks: SocialLink[];
+};

@@ -1,11 +1,15 @@
 import galleryModern from "@/app/fonts/gallery";
+import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function Banner() {
   return (
-    <div className={`w-full mt-[100px] sm:mt-[130px] md:mt-[150px] lg:mt-[180px] 2xl:mt-[200px]`}>
+    <div
+      className={`w-full mt-[100px] sm:mt-[130px] md:mt-[150px] lg:mt-[180px] 2xl:mt-[200px]`}
+    >
       <Container className="">
         <div className="w-full flex-col sm:flex-row flex items-start sm:gap-5 md:gap-8 lg:gap-14 justify-center">
           <span className="mb-5 sm:mb-0 inline-block heading !text-[18px] lg:!text-[20px] leading-[100%] whitespace-nowrap">
@@ -33,7 +37,9 @@ export default function Banner() {
             />
           </div>
         </div>
-        <h1 className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 wt_fs-giant banner-large-text flex w-full items-center justify-center heading`}>
+        <h1
+          className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 wt_fs-giant banner-large-text flex w-full items-center justify-center heading`}
+        >
           Digital
           <span className="tp-hero-title-img">
             <Image
@@ -49,8 +55,17 @@ export default function Banner() {
         </h1>
 
         <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">
-                <span className="hidden lg:inline-block float-left w-[95px] h-0.5 "></span>
-                <p className="text-center lg:text-left !leading-[140%]">Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind? Let’s talk.</p>
+          <span className="hidden lg:inline-block float-left w-[95px] h-0.5 "></span>
+          <p className="text-center lg:text-left !leading-[140%]">
+            Webtricker designs, develops, and delivers high-quality, responsive
+            websites with pixel-perfect precision. We’re passionate,
+            detail-driven, and committed to exceeding expectations. Have a
+            project in mind?{" "}
+            <Link href="/contact" className="btn-line-effect !inline-flex gap-1.5 items-center">
+              <span>Let’s talk</span>
+             <ArrowUpRightIcon />
+            </Link>
+          </p>
         </div>
       </Container>
     </div>

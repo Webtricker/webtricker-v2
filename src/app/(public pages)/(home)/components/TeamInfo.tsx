@@ -28,12 +28,18 @@ export default function TeamInfo({ teamData }: { teamData: TTeamData[] }) {
     });
   }, [containerRef]);
 
-  if(!teamData.length) return <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
-      <h5>Please add team information from dashboard</h5>
-  </div>
+  if (!teamData.length)
+    return (
+      <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
+        <h5>Please add team information from dashboard</h5>
+      </div>
+    );
 
   return (
-    <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative">
+    <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 relative">
+      <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
+        <h3 className="text-center middle-border">Our People</h3>
+      </div>
       <div ref={containerRef} className="w-full cursor-hide">
         <Swiper
           //  dir="ltr"
@@ -65,7 +71,7 @@ export default function TeamInfo({ teamData }: { teamData: TTeamData[] }) {
           }}
           className="w-full"
         >
-          {[...teamData,...teamData,...teamData].map((item, index) => (
+          {[...teamData, ...teamData, ...teamData].map((item, index) => (
             <SwiperSlide
               className="cursor-hide overflow-hidden rounded-[8px]"
               key={index}

@@ -209,3 +209,35 @@ export const AngleDownIcon = ({
     </svg>
   );
 };
+
+export const ArrowUpRightIcon = ({
+  className = "w-2.5 h-2.5",
+}: {
+  className?: string;
+}) => {
+  return (
+    <svg
+      className={className}
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M1 9L9 1"
+        stroke="currentcolor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+      <path
+        d="M1 1H9V9"
+        stroke="currentcolor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      ></path>
+    </svg>
+  );
+};
