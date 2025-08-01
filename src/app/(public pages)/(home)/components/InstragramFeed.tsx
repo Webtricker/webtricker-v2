@@ -30,6 +30,7 @@ export default function InstragramFeed() {
       alt: "",
     },
   ];
+  
   return (
     <section className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <div className="w-full relative">
@@ -63,7 +64,7 @@ export default function InstragramFeed() {
           ))}
         </Marquee>
         <div className=" w-full rounded-edge-container absolute -bottom-1 z-50 pointer-events-none">
-          <svg
+          <svg 
             id="wave"
             viewBox="0 0 1440 100"
             version="1.1"
