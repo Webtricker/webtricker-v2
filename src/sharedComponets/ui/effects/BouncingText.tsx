@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React from "react";
 
 interface BouncingTextProps {
@@ -15,8 +16,8 @@ const BouncingText: React.FC<BouncingTextProps> = ({
   size="wt_fs-5xl",
 }) => {
   return (
-     <div className="inline-block bouncing-text-wrapper bold">
-         <p className={`bouncing-text font-semibold text-center ${size}` }>
+     <Link href="/contact" className="inline-block bouncing-text-wrapper bold my-5">
+         <p className={`bouncing-text font-semibold !leading-[100%] text-center ${size}` }>
         {text.split("").map((char:string, index) => (
           <span
             key={index + char}
@@ -30,7 +31,7 @@ const BouncingText: React.FC<BouncingTextProps> = ({
           </span>
         ))}
       </p>
-     </div>
+     </Link>
   );
 };
 

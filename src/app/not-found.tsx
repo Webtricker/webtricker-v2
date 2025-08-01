@@ -13,7 +13,7 @@ export default function NotFound() {
             width={600}
             height={400}
             className="max-w-[350px] w-full md:max-w-[400px] lg:max-w-[500px]"
-            src="https://liko.foxthemes.me/wp-content/themes/liko/assets/img/error/error.png"
+            src="/images/shared/404-image.webp"
             alt="Error 404"
           />
 
