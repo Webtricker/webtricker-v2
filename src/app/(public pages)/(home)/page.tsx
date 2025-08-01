@@ -11,6 +11,7 @@ import LatestBlogs from "./components/LatestBlogs";
 import { getTeamData, getTestimonialsData } from "@/utils/pageData";
 import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
+import InstragramFeed from "./components/InstragramFeed";
 
 // export const revalidate = 3600; // page rebuild in every 1 hour
 // TODO: have to uncomment above line
@@ -37,6 +38,7 @@ export default async function Home() {
       <OurLeader />
       <TeamInfo teamData={teamData} />
       <LatestBlogs />
+      <InstragramFeed />
     </main>
   );
 }

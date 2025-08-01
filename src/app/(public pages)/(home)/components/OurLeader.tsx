@@ -16,6 +16,6 @@ export default function OurLeader() {
         ))}
       </Container>
       </div>
-    </section>
+    </section>  
   );
 }
