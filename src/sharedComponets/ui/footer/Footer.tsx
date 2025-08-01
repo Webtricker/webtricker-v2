@@ -5,8 +5,11 @@ import Link from "next/link";
 import NewsLetterForm from "./NewsLetterForm";
 import BouncingText from "../effects/BouncingText";
 import SiteLogoLong from "../logos/SiteLogoLong";
+import { getServicesData } from "@/utils/pageData";
+import { footerServicesLink } from "@/data/pageData";
 
-export default function Footer() {
+export default async function Footer() {
+  const getService = await getServicesData(5) || footerServicesLink;
   return (
     <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
       <div className="w-full bg-slate-200 dark:bg-black py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
@@ -34,6 +37,9 @@ export default function Footer() {
           <div className="w-full  md:max-w-[45%] 2xl:max-w-[200px]">
             <h5>Services</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
+              {
+                getService.map(item=><Link key={item.label} href={item.href}>{item.label}</Link>)
+              }
               <Link href="#">Web Development</Link>
               <Link href="#">UX/UI Design</Link>
               <Link href="#">SEO</Link>

@@ -30,9 +30,10 @@ export const getTestimonialsData = async () => {
     }
 }
 
-export const getServicesData = async () => {
+export const getServicesData = async (limit:number=99) => {
     try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services`);
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services?limit=${limit}`);
 
         if (!res.ok) {
             console.error("Failed to fetch services");

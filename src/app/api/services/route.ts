@@ -36,14 +36,15 @@ export const POST = async (req: NextRequest) => {
             { status: 500 }
         );
     }
-}
-    ;
+};
 
-export const GET = async () => {
+export const GET = async (req:NextRequest) => {
     try {
-        await connectToDatabase();
-        const services = await Service.find()
+         const { searchParams } = new URL(req.url);
+          const limit = parseInt(searchParams.get("limit") || "99", 10);
 
+        await connectToDatabase();
+        const services = await Service.find().sort({createdAt:-1}).limit(limit)
         return NextResponse.json(
             {
                 success: true,
