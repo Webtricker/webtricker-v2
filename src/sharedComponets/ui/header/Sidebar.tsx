@@ -10,8 +10,11 @@ import { XMarkIcon } from "../icons/Icons";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/data/navLinks";
+import SidebarImages from "./SidebarImages";
 
-type Props = { siteShortLogoUrl: string | StaticImageData };
+type Props = {
+  siteShortLogoUrl: string | StaticImageData;
+};
 export default function Sidebar({ siteShortLogoUrl }: Props) {
   const dispatch = useDispatch();
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
@@ -68,17 +71,20 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
           data-lenis-prevent
           className="sidebar_scrollable_container grow w-full overflow-y-auto px-4 md:px-5 lg:px-8 xl:px-9"
         >
-          <div className="w-full mt-10 lg:mt-16">
+          <div className="w-full mt-5 lg:mt-16">
             <h5 className="heading font-semibold text-center lg:text-start">
-              Hello There!
+              Your Digital Partner for Success
             </h5>
             <p className="mt-2 text-center lg:text-start">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+              {/* Ready to grow your business? We&apos;re a full-service digital agency that acts as your dedicated partner, not just a service provider. From planning and design to development, debugging, and marketing, we handle all your digital needs. Our expertise in SEO development ensures your brand gets the visibility it deserves. */}
+              Looking for a digital partner? We&apos;re a full-service agency
+              providing planning, design, development, debugging, and SEO.
+              Let&apos;s collaborate to grow your business and achieve success.
             </p>
           </div>
 
           {/* links */}
-          <div className="lg:hidden inline-flex w-full flex-col items-center mt-14 lg:mt-20 gap-5">
+          <div className="lg:hidden inline-flex w-full flex-col items-center mt-10 lg:mt-20 gap-5">
             {navLinks.map(({ href, label }) => (
               <Link
                 className="uppercase cursor-pointer"
@@ -89,39 +95,13 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
               </Link>
             ))}
           </div>
-          <div className=" w-full hidden lg:flex  gap-3 mt-20">
-            <Image
-              className="inline w-full rounded-[5px]"
-              src="https://liko.foxthemes.me/wp-content/uploads/2024/06/offcanvas-1.jpg"
-              width={50}
-              height={50}
-              alt="Site logo"
-            />
-            <Image
-              className="inline w-full rounded-[5px]"
-              src="https://liko.foxthemes.me/wp-content/uploads/2024/06/offcanvas-2.jpg"
-              width={50}
-              height={50}
-              alt="Site logo"
-            />
-            <Image
-              className="inline w-full rounded-[5px]"
-              src="https://liko.foxthemes.me/wp-content/uploads/2024/06/offcanvas-3.jpg"
-              width={50}
-              height={50}
-              alt="Site logo"
-            />
-            <Image
-              className="inline w-full rounded-[5px]"
-              src="https://liko.foxthemes.me/wp-content/uploads/2024/06/offcanvas-4.jpg"
-              width={50}
-              height={50}
-              alt="Site logo"
-            />
+
+          <div className="w-full hidden lg:block">
+            <SidebarImages />
           </div>
 
           {/* company information */}
-          <div className="w-full flex flex-col items-center lg:items-start gap-3 mt-14 lg:mt-20">
+          <div className="w-full flex flex-col items-center lg:items-start gap-3 mt-10 lg:mt-20">
             <h6 className="heading uppercase mb-1">INFORMATION</h6>
             <p>
               <a href="tel:+442077001007">+4 20 7700 1007</a>

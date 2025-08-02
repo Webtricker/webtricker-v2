@@ -1,4 +1,4 @@
-type TFooterService = { label: string; href: string }
+export type TFooterService = { label: string; href: string }
 export const footerServicesLink: TFooterService[] = [
     {
         label: "Web Development",

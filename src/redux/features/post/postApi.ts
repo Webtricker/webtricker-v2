@@ -42,8 +42,8 @@ export const postApi = createApi({
 
         // services endpoints
         getServices: builder.query({
-            query: () => ({
-                url: `/services`
+            query: (limit:number=99) => ({
+                url: `/services?limit=${limit}`
             })
         }),
 

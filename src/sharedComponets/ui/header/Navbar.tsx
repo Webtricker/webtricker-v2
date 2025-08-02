@@ -12,7 +12,7 @@ import { StaticImageData } from "next/image";
 type Props = {
   navStyle?: string;
   children?: React.ReactNode;
-  siteShortLogoUrl:string | StaticImageData;
+  siteShortLogoUrl: string | StaticImageData;
 };
 
 export default function Navbar({
