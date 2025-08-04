@@ -16,30 +16,29 @@ export const revalidate = 120; // page rebuild in every 2 min
 
 export default async function AboutPage() {
   const teamData = await getTeamData();
-    const testimonialsData = await getTestimonialsData();
+  const testimonialsData = await getTestimonialsData();
   return (
     <main className="w-full z-0">
-      <section className={`w-full min-h-screen z-0 flex relative`}>
-        <Container className="flex items-center justify-center">
-          <div className="w-full max-w-[1000px] pb-1 text-center bg-slate-800/30 rounded-[10px]">
-            <h1 className="!text-white wt_text-shadow wt_fs-7xl font-medium heading !leading-[100%]">
-              About Us
-            </h1>
-            <p className="!text-white wt_text-shadow wt_fs-xl bold mt-5">
-              A leading responsive web design agency creating stunning,
-              user-friendly websites.
-            </p>
-          </div>
-        </Container>
-        <video
-          autoPlay
-          loop
-          muted
-          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-          src="/videos/portfolio/portfolio.mp4"
-        >
-          <source src="/videos/services/banner-intro.mp4" type="video/mp4" />
-        </video>
+      <section
+        className={`flex w-full  h-[140vh] max-h-[1500px] min-h-[800px] bg-cover bg-center bg-no-repeat z-0 relative bg-[url(https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]`}
+      >
+        <div className="w-full h-full flex grow bg-black/40 pt-[100px]" >
+          <Container className="flex items-center grow ">
+            <div className="w-full max-w-[1000px] pb-1">
+              <div className="w-full text-white pl-3 lg:pl-4 border-l-2 border-white">
+                <h6>DIGITAL</h6>
+                <h6>CREATIVE AGENCY</h6>
+              </div>
+              <h1 className="!text-white !leading-[90%] max-w-[500px] -ml-2.5 font-semibold tracking-tight">
+                Building Digital Presence
+              </h1>
+              <p className="!text-white wt_text-shadow wt_fs-xl bold mt-5">
+                A leading responsive web design agency creating stunning,
+                user-friendly websites.
+              </p>
+            </div>
+          </Container>
+        </div>
       </section>
       <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
         <Container className="flex lg:items-center gap-12 md:gap-18 xl:gap-20 2xl:gap-28 flex-col lg:flex-row">

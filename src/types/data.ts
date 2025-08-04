@@ -60,42 +60,49 @@ export type TCategory = { _id: string; name: string }
 
 // navbar link
 export type TNavlink = {
-  label:string;
-  href:string;
-  target:"_blank" | "_self";
+  label: string;
+  href: string;
+  target: "_blank" | "_self";
 }
 
 
 export interface ITeam {
-    profile: string;
-    name: string;
-    role: string;
+  profile: string;
+  name: string;
+  role: string;
 }
 
 export interface ITeamInfo extends ITeam {
-  _id:string;
+  _id: string;
 }
 export interface ITestimonials {
-    profile: string;
-    name: string;
-    role: string;
-    review:string;
+  profile: string;
+  name: string;
+  role: string;
+  review: string;
 }
 
 export interface ITestimonialsInfo extends ITestimonials {
-  _id:string;
+  _id: string;
 }
 
 
- type SocialLink = {
+type SocialLink = {
   url: string;
   icon: string;
   alt: string;
 };
 
 export type TOurLeader = {
-  image: string; 
+  image: string;
   name: string;
   description: string; // This used to be memberDesc
   socialLinks: SocialLink[];
 };
+
+
+export type TSocialLink = {
+  iconURL: string;
+  link: string;
+  _id: number;
+}

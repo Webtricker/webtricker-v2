@@ -5,8 +5,11 @@ import React, { useEffect, useState } from "react";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import { IService } from "@/types/post";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { SET_EXPAND } from "@/redux/features/rootModyfier/Modyfier";
 
 export default function SidebarImages() {
+    const dispatch = useDispatch();
   const [getServices, { isLoading }] = useLazyGetServicesQuery();
   const [services, setServices] = useState<IService[]>([]);
 
@@ -17,7 +20,6 @@ export default function SidebarImages() {
         if (response.success) {
           setServices(response.services);
         }
-        console.log(response, " response from sidebar");
       } catch (error: any) {
         console.log(error?.data?.message || "");
       }
@@ -27,6 +29,13 @@ export default function SidebarImages() {
     loadData();
   }, [getServices]);
 
+
+//   handlers
+const handleclick = ()=>{
+    dispatch(SET_EXPAND(null));
+    return true;
+}
+
   if (isLoading)
     return (
       <div className="w-full flex items-center justify-center min-h-20">
@@ -34,10 +43,13 @@ export default function SidebarImages() {
       </div>
     );
 
+
+
+
   return (
     <div className=" w-full flex  gap-3 mt-20">
       {services.map((service) => (
-        <Link className="w-full" href={`/services/${service.slug}`} key={service?._id}>
+        <Link onClick={handleclick} className="w-full" href={`/services/${service.slug}`} key={service?._id}>
           <Image
             className="w-full min-h-full rounded-[5px] object-cover"
             src={service?.thumnail?.url}

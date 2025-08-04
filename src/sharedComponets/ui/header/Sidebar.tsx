@@ -11,6 +11,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/data/navLinks";
 import SidebarImages from "./SidebarImages";
+import SocialLinks from "../footer/SocialLinks";
 
 type Props = {
   siteShortLogoUrl: string | StaticImageData;
@@ -76,7 +77,6 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
               Your Digital Partner for Success
             </h5>
             <p className="mt-2 text-center lg:text-start">
-              {/* Ready to grow your business? We&apos;re a full-service digital agency that acts as your dedicated partner, not just a service provider. From planning and design to development, debugging, and marketing, we handle all your digital needs. Our expertise in SEO development ensures your brand gets the visibility it deserves. */}
               Looking for a digital partner? We&apos;re a full-service agency
               providing planning, design, development, debugging, and SEO.
               Let&apos;s collaborate to grow your business and achieve success.
@@ -104,22 +104,24 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
           <div className="w-full flex flex-col items-center lg:items-start gap-3 mt-10 lg:mt-20">
             <h6 className="heading uppercase mb-1">INFORMATION</h6>
             <p>
-              <a href="tel:+442077001007">+4 20 7700 1007</a>
+              <a href="tel:+8801712377577">+8801712377577</a>
             </p>
 
             <p>
-              <a href="mailto:hello@diego.com">hello@diego.com</a>
+              <a href="mailto:info@webtricker.com">info@webtricker.com</a>
             </p>
 
-            <p>Avenue de Roma 158b, Lisboa</p>
+            <p>House No. 46, Zia College More, beside Shahid Minar, Jamalpur, Bangladesh.</p>
           </div>
 
           {/* social links */}
           <div className="w-full flex flex-col  gap-3 mt-14 lg:mt-20">
-            <h6 className="heading uppercase mb-1 text-center lg:text-start">
+            <h6 className="heading uppercase mb-2 text-center lg:text-start">
               FOLLOW US
             </h6>
-            <div className="w-full flex gap-4"></div>
+            <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap">
+              <SocialLinks />
+            </div>
           </div>
         </div>
       </div>

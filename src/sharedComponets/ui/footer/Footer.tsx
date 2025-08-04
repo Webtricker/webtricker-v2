@@ -1,6 +1,5 @@
 import React from "react";
 import Container from "../wrapper/Container";
-import Image from "next/image";
 import Link from "next/link";
 import NewsLetterForm from "./NewsLetterForm";
 import BouncingText from "../effects/BouncingText";
@@ -8,6 +7,7 @@ import SiteLogoLong from "../logos/SiteLogoLong";
 import { getServicesData } from "@/utils/pageData";
 import { footerServicesLink, TFooterService } from "@/data/pageData";
 import { IService } from "@/types/post";
+import SocialLinks from "./SocialLinks";
 
 export default async function Footer() {
   const services = (await getServicesData(4)) as IService[];
@@ -53,47 +53,7 @@ export default async function Footer() {
           <div className="w-full max-w-[400px] md:max-w-[45%] 2xl:max-w-[350px]">
             <h5>Follow Us on</h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
-              <Link href="#">
-                <Image
-                  src="/icons/home/facebook.svg"
-                  width={26}
-                  height={26}
-                  alt="Social icon"
-                />
-              </Link>
-              <Link href="#">
-                <Image
-                  src="/icons/home/twitter.svg"
-                  width={26}
-                  height={26}
-                  alt="Social icon"
-                />
-              </Link>
-              <Link href="#">
-                <Image
-                  src="/icons/home/linkedIn.svg"
-                  width={26}
-                  height={26}
-                  alt="Social icon"
-                />
-              </Link>
-              {/* <Link href="#"><Image src="/icons/home/you-tube.svg" width={26} height={26} alt="Social icon" /></Link> */}
-              <Link href="#">
-                <Image
-                  src="/icons/home/pinterest.svg"
-                  width={26}
-                  height={26}
-                  alt="Social icon"
-                />
-              </Link>
-              <Link href="#">
-                <Image
-                  src="/icons/home/instagram.svg"
-                  width={26}
-                  height={26}
-                  alt="Social icon"
-                />
-              </Link>
+             <SocialLinks />
             </div>
             <div className="w-full mt-7">
               <label className="wt_fs-md">Subscribe to our newsletter:</label>
