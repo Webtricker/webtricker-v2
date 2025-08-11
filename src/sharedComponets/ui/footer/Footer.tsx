@@ -6,8 +6,7 @@ import BouncingText from "../effects/BouncingText";
 import SiteLogoLong from "../logos/SiteLogoLong";
 import { getServicesData } from "@/utils/pageData";
 import { footerServicesLink, TFooterService } from "@/data/pageData";
-import { IService } from "@/types/post";
-import SocialLinks from "./SocialLinks";
+import { IService } from "@/types/post"
 
 export default async function Footer() {
   const services = (await getServicesData(4)) as IService[];
@@ -53,7 +52,9 @@ export default async function Footer() {
           <div className="w-full max-w-[400px] md:max-w-[45%] 2xl:max-w-[350px]">
             <h5>Follow Us on</h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
-             <SocialLinks />
+
+              {/* TODO: ============= */}
+             {/* <SocialLinks /> */}
             </div>
             <div className="w-full mt-7">
               <label className="wt_fs-md">Subscribe to our newsletter:</label>

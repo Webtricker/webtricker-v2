@@ -8,6 +8,8 @@ import Testimonials from "../(home)/components/Testimonials";
 import Link from "next/link";
 import { getTeamData, getTestimonialsData } from "@/utils/pageData";
 import { ScrollToExploreBtn } from "./components/Button";
+import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
+import AboutGallery from "./components/AboutGallery";
 
 // export const revalidate = 3600; // page rebuild in every 1 hour
 // TODO: have to uncomment above line
@@ -23,10 +25,10 @@ export default async function AboutPage() {
   return (
     <main className="w-full z-0">
       <section
-        className={`flex w-full  h-[140vh] max-h-[1500px] min-h-[800px] bg-cover bg-center bg-no-repeat z-0 relative bg-[url(https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]`}
+        className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative bg-[url(https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]`}
       >
-        <div className="w-full h-full flex-col flex grow bg-black/40 ">
-          <Container className="flex max-w-[1000px] pb-1 flex-col justify-center md:justify-end max-h-[800px] h-[95vh] pt-[100px]">
+        <div className="w-full h-full flex-col flex grow bg-black/40">
+          <Container className="flex max-w-[1000px] pb-1 flex-col justify-center md:justify-end min-h-[700px]  max-h-[900px] h-[95vh] pt-[100px]">
             <div className="w-full text-white pl-3 lg:pl-4 border-l-2 border-white">
               <h6>DIGITAL</h6>
               <h6>CREATIVE AGENCY</h6>
@@ -42,7 +44,32 @@ export default async function AboutPage() {
           <div className="w-full">
             <ScrollToExploreBtn />
           </div>
+          <Container className="flex justify-end grow items-center">
+            <div className="w-full text-white max-w-[600px]">
+              <h4>
+                Liko develops, designs & delivers websites & creative campaigns
+                that drive results,
+              </h4>
+              <LinkButton className="mt-5" label="Our Story" href="#" />
+            </div>
+          </Container>
         </div>
+      </section>
+      <AboutGallery />
+      <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
+        <Container>
+          <div className="w-full max-w-[1200px]">
+            <h3 className="">
+              <span className="w-24 h-5 bg-red-200 inline-block">
+                <span>Hi!</span>
+              </span>
+              We are a creative studio that specializes in providing
+              high-quality design and branding solutions to businesses and
+              individuals. Our team is composed of talented designers,
+              developers, and marketers.!
+            </h3>
+          </div>
+        </Container>
       </section>
       <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
         <Container className="flex lg:items-center gap-12 md:gap-18 xl:gap-20 2xl:gap-28 flex-col lg:flex-row">
@@ -96,6 +123,7 @@ export default async function AboutPage() {
           </div>
         </Container>
       </section>
+
       <WhatWeDo />
       <TeamInfo teamData={teamData} />
       <FunFacts />

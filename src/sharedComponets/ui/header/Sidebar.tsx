@@ -11,7 +11,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { navLinks } from "@/data/navLinks";
 import SidebarImages from "./SidebarImages";
-import SocialLinks from "../footer/SocialLinks";
+// import SocialLinks from "../footer/SocialLinks";
 
 type Props = {
   siteShortLogoUrl: string | StaticImageData;
@@ -120,7 +120,9 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
               FOLLOW US
             </h6>
             <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap">
-              <SocialLinks />
+
+              {/* ====== TODO: ========= */}
+              {/* <SocialLinks /> */}
             </div>
           </div>
         </div>
