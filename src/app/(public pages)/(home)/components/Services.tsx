@@ -1,9 +1,8 @@
-"use client";
 import galleryModern from "@/app/fonts/gallery";
-import { services } from "@/data/services";
 import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { TService } from "@/types/data";
+import { getServicesData } from "@/utils/pageData";
 import Image from "next/image";
 import React from "react";
 
@@ -28,7 +27,8 @@ const ServiceCard = ({ service }: { service: TService }) => {
 };
 
 // ====== root component ======
-export default function Services() {
+export default async function Services() {
+  const serviceData = await getServicesData(4)
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
@@ -52,8 +52,8 @@ export default function Services() {
 
           {/* services info */}
           <div className="w-full flex flex-col gap-8 lg:gap-10 2xl:gap-12">
-            {services.map((service) => (
-              <ServiceCard key={service.id} service={service} />
+            {(serviceData as TService[]).map((service) => (
+              <ServiceCard key={service._id} service={service} />
             ))}
           </div>
         </div>

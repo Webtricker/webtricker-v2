@@ -60,9 +60,6 @@ export default async function AboutPage() {
         <Container>
           <div className="w-full max-w-[1200px]">
             <h3 className="">
-              <span className="w-24 h-5 bg-red-200 inline-block">
-                <span>Hi!</span>
-              </span>
               We are a creative studio that specializes in providing
               high-quality design and branding solutions to businesses and
               individuals. Our team is composed of talented designers,

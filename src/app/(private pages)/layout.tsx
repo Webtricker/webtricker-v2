@@ -3,6 +3,7 @@ import PrivateSidebar from "./components/PrivateSidebar";
 import PrivateNavbar from "./components/PrivateNavbar";
 import CheckAccessToken from "./components/CheckAccessToken";
 import SidebarLogo from "@/sharedComponets/ui/sidebar/SidebarLogo";
+import LoadSiteLogos from "@/sharedComponets/ui/logos/LoadSiteLogos";
 
 export default async function AdminLayout({
   children,
@@ -21,6 +22,7 @@ export default async function AdminLayout({
         {children}
       </div>
 
+      <LoadSiteLogos />
       <CheckAccessToken />
     </div>
   );

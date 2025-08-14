@@ -3,7 +3,8 @@ import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxLinkImage"
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 
-export default function Portfolios() {
+export default function Portfolios({portfolios=[]}:{portfolios?:[]}) {
+  console.log(portfolios)
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>

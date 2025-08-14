@@ -8,7 +8,7 @@ import Portfolios from "./components/Portfolios";
 import Testimonials from "./components/Testimonials";
 import TeamInfo from "./components/TeamInfo";
 import LatestBlogs from "./components/LatestBlogs";
-import { getTeamData, getTestimonialsData } from "@/utils/pageData";
+import {getTeamData, getTestimonialsData } from "@/utils/pageData";
 import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";

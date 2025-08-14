@@ -32,7 +32,7 @@ export type TService = {
   excerpt: string;
   thumnail: string;
   relatedWork: string[];
-  id: string;
+  _id: string;
   parmalink: string;
 }
 

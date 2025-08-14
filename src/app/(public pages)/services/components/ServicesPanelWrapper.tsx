@@ -4,8 +4,6 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import gsap from "gsap";
 
-// import Link from "next/link";
-// import { RightArrowLong } from "@/sharedComponets/ui/icons/Icons";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ServicesPanelWrapper({children}: {children?: React.ReactNode}) {
