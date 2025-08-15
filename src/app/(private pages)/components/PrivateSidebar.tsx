@@ -67,7 +67,7 @@ export default function PrivateSidebar({children=<></>}:Props) {
           </button>
         </div>
         <div className="w-full flex flex-col items-start mt-2 grow border-t border-slate-300 dark:border-slate-700">
-          {settingsLinks.map((link) => (
+          {settingsLinks.map ((link) => (
             <Link
               key={link.href}
               className={`duration-200 px-5 py-2 w-full ${

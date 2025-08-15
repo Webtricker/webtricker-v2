@@ -12,9 +12,13 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
     height: { type: Number },
     url: { type: String },
   },
-  tags: { type: [String], default: [] },
-  technology:{ type: [String], default: [] },
+  technology: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Technology',
+    required: true,
+  },
   content: { type: String, required: true },
+  liveLink: { type: String, required: true },
 }, {
   timestamps: true,
 });

@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export type TTechnology = {
   name: string;
   src: string;
@@ -57,6 +59,7 @@ export type TUploadResponse = {
 
 // category
 export type TCategory = { _id: string; name: string }
+export type ITechnology = { _id: string; name: string }
 
 // navbar link
 export type TNavlink = {

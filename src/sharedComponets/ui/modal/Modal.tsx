@@ -33,7 +33,7 @@ export const CustomModal = (props: CustomModalProps) => {
 
   //   reset all state
   const hideModal = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(hideClickingOutside, " hide clicking outside");
+  
     if (!hideClickingOutside) return;
 
     // return if the innter container element is clicked;
@@ -62,10 +62,10 @@ export const CustomModal = (props: CustomModalProps) => {
       data-prevent-body-trigger
       ref={containerRef}
       onClick={hideModal}
-      className={`text-[#30353E] w-full h-full fixed top-0 px-4 left-0 flex justify-center items-center bg-[#17171791] overflow-hidden z-[99998] ${wrapperContainerStyle}`}
+      className={`text-[#30353E] w-full h-full fixed top-0 px-4 left-0 flex justify-center items-center bg-[#17171791] overflow-hidden z-[9997] ${wrapperContainerStyle}`}
     >
       <div
-        className={`w-full max-w-[844px] duration-300 h-auto max-h-[95vh] flex flex-col relative p-4 md:p-5 lg:p-6 bg-white rounded-[20px] lg:rounded-[30px]  z-[99999] ${containerStyle}`}
+        className={`w-full max-w-[844px] duration-300 h-auto max-h-[95vh] flex flex-col relative p-4 md:p-5 lg:p-6 bg-white rounded-[20px] lg:rounded-[30px]  z-[9998] ${containerStyle}`}
       >
         {children}
       </div>

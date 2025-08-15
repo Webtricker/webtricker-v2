@@ -9,10 +9,8 @@ gsap.registerPlugin(ScrollTrigger);
 export default function ServicesPanelWrapper({children}: {children?: React.ReactNode}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const endTrigger = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (!containerRef.current || !endTrigger.current) return;
-    
     const pinnedPanels =
       containerRef.current?.querySelectorAll(".service-panel");
     pinnedPanels?.forEach((panel, i) => {

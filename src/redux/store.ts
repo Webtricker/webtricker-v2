@@ -11,6 +11,7 @@ import { menuApi } from "./features/menu/menuApiSlice";
 import { MediaApi } from "./features/media/MediaApiSlice";
 import { categoryApi } from "./features/category/categoryApiSlice";
 import categories from "./features/category/categories";
+import technologies from "./features/category/technologies";
 import { postApi } from "./features/post/postApi";
 import { subscribeApi } from "./features/subscriber/subscribeApiSlice";
 import { teamApi } from "./features/team/teamApiSlice";
@@ -18,6 +19,7 @@ import teamData from "./features/team/teamData";
 import testimonialData from "./features/testimonials/testimonialData";
 import { testimonialApi } from "./features/testimonials/testimonialsApiSlice";
 import { portfolioApi } from "./features/portfolio/portfolioApi";
+import { technologyApi } from "./features/category/technologyApiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -28,6 +30,7 @@ export const store = configureStore({
     categories: categories.reducer,
     teamData: teamData.reducer,
     testimonialData: testimonialData.reducer,
+    technologies: technologies.reducer,
 
     // api slices can be added here
     [contactApi.reducerPath]: contactApi.reducer,
@@ -42,6 +45,7 @@ export const store = configureStore({
     [teamApi.reducerPath]: teamApi.reducer,
     [testimonialApi.reducerPath]: testimonialApi.reducer,
     [portfolioApi.reducerPath]: portfolioApi.reducer,
+    [technologyApi.reducerPath]: technologyApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
@@ -55,7 +59,8 @@ export const store = configureStore({
       concat(subscribeApi.middleware).
       concat(teamApi.middleware).
       concat(testimonialApi.middleware).
-      concat(portfolioApi.middleware)
+      concat(portfolioApi.middleware).
+      concat(technologyApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

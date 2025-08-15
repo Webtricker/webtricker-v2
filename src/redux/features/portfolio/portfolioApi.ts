@@ -8,8 +8,8 @@ export const portfolioApi = createApi({
     }),
     endpoints: (builder) => ({
         getPortfolios: builder.query({
-            query: ({ page, limit }) => ({
-                url: `/portfolios?page=${page}&limit=${limit}`
+            query: ({ page, limit,technologyId }) => ({
+                url: `/portfolios?page=${page}&limit=${limit}&technologyId=${technologyId}`
             })
         }),
 

@@ -1,22 +1,22 @@
 import dbConnect from "@/lib/dbConnect";
-import Category from "@/models/Category";
+import Technology from "@/models/Technology";
 import { verifyAdmin } from "@/utils/validator";
 import { NextRequest, NextResponse } from "next/server"
 
 export const GET = async () => {
     try {
         await dbConnect();
-        const categories = await Category.find({ name: { $ne: "Uncategorized" } }).select('name').lean();
+        const technologies = await Technology.find().select('name').lean();
 
         return NextResponse.json({
             success: true,
-            categories,
+            technologies,
         }, { status: 200 })
     } catch (error) {
-        console.log(error, ' error occured during fetching categories')
+        console.log(error, ' error occured during fetching technologies')
 
         return NextResponse.json({
-            message: "Failed to get categories",
+            message: "Failed to get technologies",
             success: false,
         }, { status: 500 })
     }
@@ -27,26 +27,26 @@ export const POST = async (req: NextRequest) => {
         const { name } = await req.json();
         if (!name || typeof name !== "string") {
             return NextResponse.json({
-                message: "Category name is required",
+                message: "Technology name is required",
                 success: false,
             }, { status: 400 });
         }
 
         await dbConnect();
         await verifyAdmin(req);
-        const res = await Category.create({ name });
+        const res = await Technology.create({ name });
         return NextResponse.json({
             success: true,
-            message: "Category created successfully.",
-            category: res,
+            message: "Portfolio technology added.",
+            technology: res,
         }, { status: 200 })
     } catch (error: any) {
-        console.log(error, ' error occured adding category')
+        console.log(error, ' error occured adding technology')
         if (error.code === 11000) {
-            return NextResponse.json({ success: false, message: 'Category already exists.' });
+            return NextResponse.json({ success: false, message: 'Technology already exists.' });
         }
         return NextResponse.json({
-            message: "Failed to post category",
+            message: "Failed to post technology",
             error,
             success: false,
         }, { status: 500 })
