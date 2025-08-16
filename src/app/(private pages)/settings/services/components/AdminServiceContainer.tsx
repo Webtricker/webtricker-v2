@@ -14,7 +14,7 @@ export default function AdminServiceContainer() {
     isError,
     refetch,
     error,
-  } = useGetServicesQuery({});
+  } = useGetServicesQuery(99);
 
   const services = data?.services ?? [];
   console.log(services, "services from admin service container");

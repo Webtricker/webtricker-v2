@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 export type TTechnology = {
   name: string;
   src: string;

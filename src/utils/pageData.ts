@@ -30,6 +30,22 @@ export const getTestimonialsData = async () => {
     }
 }
 
+export const getPortfoliosData = async (limit=6) => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios?limit=${limit}`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch portfolios data");
+            return [];
+        }
+    const result = await res.json();
+        return result?.portfolios || [];
+    } catch (error) {
+        console.error("Error fetching portfolios data:", error);
+        return [];
+    }
+}
+
 export const getServicesData = async (limit:number=99) => {
     try {
 

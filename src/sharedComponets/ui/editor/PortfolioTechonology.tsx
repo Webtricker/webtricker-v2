@@ -30,6 +30,7 @@ export default function PortfolioTechonology({
 
   if (isLoading) return <LoadingSpinner />;
 
+  console.log(technologies, " technologies above condition");
   return (
     <div className="w-full">
       <div className="w-full">

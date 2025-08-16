@@ -87,15 +87,15 @@ export default function PortfolioEditor() {
         toast.success("Post added");
 
         // reset form fields
-        setTitle("");
-        setDes("");
-        setExcerp("");
-        setThumnail(null);
-        setSelectedTechnology(null);
-        setLiveLink("");
-        editorRef.current?.setContent("");
+        // setTitle("");
+        // setDes("");
+        // setExcerp("");
+        // setThumnail(null);
+        // setSelectedTechnology(null);
+        // setLiveLink("");
+        // editorRef.current?.setContent("");
       } else {
-        toast.success(res?.message);
+        toast.error(res?.message);
       }
     } catch (error: any) {
       console.log(error?.data?.message);

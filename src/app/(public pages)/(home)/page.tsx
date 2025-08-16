@@ -8,20 +8,24 @@ import Portfolios from "./components/Portfolios";
 import Testimonials from "./components/Testimonials";
 import TeamInfo from "./components/TeamInfo";
 import LatestBlogs from "./components/LatestBlogs";
-import {getTeamData, getTestimonialsData } from "@/utils/pageData";
+import {
+  getPortfoliosData,
+  getTeamData,
+  getTestimonialsData,
+} from "@/utils/pageData";
 import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 
-// export const revalidate = 3600; // page rebuild in every 1 hour
-// TODO: have to uncomment above line
-
-// export const revalidate = 300; // page rebuild in every 5 min
-export const revalidate = 120; // page rebuild in every 5 min
+export const revalidate = 900; // page rebuild in every 15 min
 
 export default async function Home() {
   const teamData = await getTeamData();
   const testimonialsData = await getTestimonialsData();
+  const portfoliosData = await getPortfoliosData(12);
+
+  const firstSixPortfolios = portfoliosData.slice(0, 6);
+  const secondSixPortfolios = portfoliosData.slice(6, 12);
   return (
     <main className="w-full z-0">
       <Banner />
@@ -33,8 +37,13 @@ export default async function Home() {
       <Testimonials testimonials={testimonialsData} />
       <Services />
       <LargeMarquee />
-      <Portfolios />
-      <PortfolioSlider />
+      <Portfolios portfolios={firstSixPortfolios} />
+
+      {secondSixPortfolios.length > 5 ? (
+        <PortfolioSlider portfolios={secondSixPortfolios} />
+      ) : (
+        <></>
+      )}
       <OurLeader />
       <TeamInfo teamData={teamData} />
       <LatestBlogs />
