@@ -3,7 +3,6 @@ import React from "react";
 import PortfoliosContainer from "./components/PortfoliosContainer";
 import { getTechnologies } from "@/utils/pageData";
 
-
 export default async function PortfolioPage() {
   const technologiesData = await getTechnologies();
   return (
@@ -15,19 +14,35 @@ export default async function PortfolioPage() {
               Portfolio
             </h1>
             <p className="!text-white wt_text-shadow wt_fs-xl bold mt-5">
-              Explore our portfolio of responsive web design & development projects.
+              Explore our portfolio of responsive web design & development
+              projects.
             </p>
           </div>
         </Container>
       </section>
-      <PortfoliosContainer technologies={technologiesData} />
-
-      {/* <PortfolioShowcase /> */}
-
-       <Container className="w-full flex flex-col">
-            <p className="bold text-center mb-2 lg:mb-0">DIGITAL DESIGN EXPERIENCE CREATIVE STUDIO</p>
-          <h2 className="wt_fs-big text-center heading">GET IN TOUCH</h2>
+      <section className="section-speacing">
+        <Container className="!max-w-[1200px]">
+          <p className="bold flex items-center gap-1">
+            <span>Webtricker Studio</span>
+            <span className="w-10 h-[1px] mt-1.5 bg-black dark:bg-white"></span>
+          </p>
+          <h2 className="heading xl:font-semibold !leading-[100%]">
+            Our latest & great projects
+          </h2>
+          <p className="mx-auto max-w-[500px] mt-5">
+            We’re a diverse team that works as fancies attention to details,
+            enjoys beers on Friday nights and aspires to design the dent in the
+            universe.
+          </p>
         </Container>
+      </section>
+      <PortfoliosContainer technologies={technologiesData} />
+      <Container className="w-full flex flex-col">
+        <p className="bold text-center mb-2 lg:mb-0">
+          DIGITAL DESIGN EXPERIENCE CREATIVE STUDIO
+        </p>
+        <h2 className="wt_fs-big text-center heading">GET IN TOUCH</h2>
+      </Container>
     </main>
   );
 }
