@@ -636,6 +636,11 @@ p.bouncing-text {
   line-height: 104%;
 }
 
+.post-details-container h1.page-title {
+  font-size: var(--fs-7xl);
+  line-height: 104%;
+}
+
 .post-details-container h2 {
   font-size: var(--fs-5xl);
   line-height: 104%;

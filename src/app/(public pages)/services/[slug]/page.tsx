@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
+import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxImage";
+import ParallaxBanner from "./components/ServiceBanner";
 
 const REVALIDATE_SECONDS = 60 * 60; // 1 hour
 
@@ -82,17 +84,22 @@ export default async function SingleServicePage({
   return (
     <main className="w-full z-0 section-speacing mt-7 post-details-container">
       <BlogPageContainer className="section-speacing">
-        <p className="text-center">
+        <p className="">
           Published {formatDateToShortString(service.createdAt)}
         </p>
-        <h1 className="wt_fs-5xl text-center my-3">{service.title}</h1>
-        <Image
+        <h1 className="page-title my-3">{service.title}</h1>
+        <p className="max-w-[400px] mx-auto">{service.description}</p>
+        <p className="max-w-[400px] mx-auto mt-5">
+          Explore our achievements and let yourself beconvinced!
+        </p>
+        <ParallaxBanner src={service.thumnail.url} />
+        {/* <Image
           src={service.thumnail.url}
           width={service.thumnail.width || 912}
           height={service.thumnail.height || 400}
           alt={service.title}
           className="w-full h-auto my-10"
-        />
+        /> */}
         <p>{service.description}</p>
       </BlogPageContainer>
       <section className="w-full wt_parser_content">
