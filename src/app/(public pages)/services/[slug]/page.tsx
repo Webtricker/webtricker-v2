@@ -7,7 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
-import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxImage";
 import ParallaxBanner from "./components/ServiceBanner";
 
 const REVALIDATE_SECONDS = 60 * 60; // 1 hour
