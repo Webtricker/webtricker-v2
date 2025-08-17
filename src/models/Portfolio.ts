@@ -12,6 +12,11 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
     height: { type: Number },
     url: { type: String },
   },
+  coverImage: {
+    width: { type: Number },
+    height: { type: Number },
+    url: { type: String },
+  },
   technology: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Technology',

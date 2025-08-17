@@ -24,8 +24,12 @@ export const POST = async (req: NextRequest) => {
             { success: true, message: "success" },
             { status: 200 }
         );
-    } catch (error) {
+    } catch (error:any) {
         console.error('Error adding portfolio to database. ', error);
+
+         if (error.code === 11000) {
+            return NextResponse.json({ success: false, message: 'Portfolio already exists.' });
+        }
         return NextResponse.json(
             { success: false, error: true, message: 'Internal Server Error' },
             { status: 500 }

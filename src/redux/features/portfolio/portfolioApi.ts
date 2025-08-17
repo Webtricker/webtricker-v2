@@ -45,5 +45,5 @@ export const portfolioApi = createApi({
 })
 
 export const {
-    useAddPortfolioMutation, useDeletePortfolioMutation, useGetPortfolioQuery, useGetPortfoliosQuery, useUpdatePortfolioMutation
+    useAddPortfolioMutation, useDeletePortfolioMutation,useLazyGetPortfoliosQuery, useGetPortfolioQuery, useGetPortfoliosQuery, useUpdatePortfolioMutation
 } = portfolioApi;

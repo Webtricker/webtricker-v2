@@ -715,3 +715,17 @@ p.bouncing-text {
 .dark .rounded-edge-container div{
   background-color: var(--clr-bg-body-dark);
 }
+
+
+/* ====== technology btn style ====== */
+.choose-technology-btn span::before{
+ @apply duration-200 absolute left-0 w-0 h-1 bg-blue-600 block z-10 -bottom-[10px];
+ content: '';
+}
+.choose-technology-btn span:hover::before{
+ width: 100%;
+}
+
+.bottom-bar{
+  background-image: linear-gradient(90deg, #FF4B1FB3 0%, #1FDDFFB3 100%);
+}

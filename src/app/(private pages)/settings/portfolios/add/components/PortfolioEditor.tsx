@@ -2,6 +2,7 @@
 import PageTitle from "@/app/(private pages)/components/PageTitle";
 import { useAddPortfolioMutation } from "@/redux/features/portfolio/portfolioApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
+import CoverImage from "@/sharedComponets/ui/editor/CoverImage";
 import Description from "@/sharedComponets/ui/editor/Description";
 import DynamicInput from "@/sharedComponets/ui/editor/DynamicInput";
 import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
@@ -27,6 +28,7 @@ export default function PortfolioEditor() {
   const [excerp, setExcerp] = useState("");
   const [liveLink, setLiveLink] = useState("");
   const [thumnail, setThumnail] = useState<TMedia | null>(null);
+  const [coverImage, setCoverImage] = useState<TMedia | null>(null);
   const [selectedTechnology, setSelectedTechnology] =
     useState<ITechnology | null>(null);
   const [postPortfolio, { isLoading }] = useAddPortfolioMutation();
@@ -62,6 +64,11 @@ export default function PortfolioEditor() {
       return;
     }
 
+    if (!coverImage) {
+      toast.error("Cover image is required");
+      return;
+    }
+
     const portfolioData = {
       title,
       slug: `${makeSlug(title)}`,
@@ -73,6 +80,11 @@ export default function PortfolioEditor() {
         width: thumnail?.width,
         height: thumnail?.height,
         url: thumnail?.secure_url,
+      },
+      coverImage: {
+        width: coverImage?.width,
+        height: coverImage?.height,
+        url: coverImage?.secure_url,
       },
       content: "",
     };
@@ -91,6 +103,7 @@ export default function PortfolioEditor() {
         // setDes("");
         // setExcerp("");
         // setThumnail(null);
+        // setCoverImage(null);
         // setSelectedTechnology(null);
         // setLiveLink("");
         // editorRef.current?.setContent("");
@@ -121,6 +134,7 @@ export default function PortfolioEditor() {
       </div>
       <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
         <TitleInput title={title} setTitle={setTitle} />
+        <CoverImage coverImage={coverImage} setCoverImage={setCoverImage} />
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
           des={des}

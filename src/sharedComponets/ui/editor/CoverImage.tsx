@@ -7,39 +7,39 @@ import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 import { TMedia } from "@/types/commonTypes";
 
 type Props = {
-  setThumnail: Dispatch<SetStateAction<TMedia | null>>;
-  thumnail: TMedia | null;
+  setCoverImage: Dispatch<SetStateAction<TMedia | null>>;
+  coverImage: TMedia | null;
   label?: string;
 };
-export default function Thumnail({
-  label = "Thumnail",
-  setThumnail,
-  thumnail,
+export default function CoverImage({
+  setCoverImage,
+  coverImage,
+  label = "Cover Image",
 }: Props) {
   // hooks
   const dispatch = useDispatch();
 
   // handlers
   const handleClick = () => {
-    dispatch(toggleModal("OPEN_MEDIA_MODAL"));
+    dispatch(toggleModal("OPEN_COVER_IMAGE_MEDIA_MODAL"));
   };
 
   const handleSelect = (data: TMedia) => {
     dispatch(toggleModal(null));
-    setThumnail(data);
+    setCoverImage(data);
   };
 
   return (
     <>
       <p className="wt_fs-md mb-1 block">{label}</p>
       <div className="w-full group relative flex items-center justify-center border border-slate-400 rounded-[10px] mb-5 lg:mb-10">
-        {thumnail ? (
+        {coverImage ? (
           <>
             <Image
-              src={thumnail?.secure_url}
-              alt="Post Thumnail"
-              width={thumnail.width}
-              height={thumnail.height}
+              src={coverImage?.secure_url}
+              alt="coverImage"
+              width={coverImage.width}
+              height={coverImage.height}
               className="w-full h-full object-cover rounded-[10px]"
             />
             <button
@@ -55,7 +55,7 @@ export default function Thumnail({
             data-prevent-body-trigger
             onClick={handleClick}
             className="min-h-[250px]"
-            title="Add thumnail"
+            title="Add Cover Image"
           >
             <GallerySingleIcon className="w-20 lg:w-28 h-20 lg:h-28" />
           </button>
@@ -63,8 +63,8 @@ export default function Thumnail({
       </div>
       <MediaModal
         allowedMediaTypeToShow={["img"]}
-        activeKey="OPEN_MEDIA_MODAL"
-        key={"OPEN_MEDIA_MODAL_WRAPPER"}
+        activeKey="OPEN_COVER_IMAGE_MEDIA_MODAL"
+        key={"OPEN_COVER_IMAGE_MEDIA_MODAL_WRAPPER"}
         cb={handleSelect}
       />
     </>

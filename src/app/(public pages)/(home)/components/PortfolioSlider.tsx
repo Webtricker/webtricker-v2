@@ -137,7 +137,7 @@ export default function PortfolioSlider({
             <LinkButton
               className=""
               label="View All Projects"
-              href="/services"
+              href="/portfolio"
             />
           </div>
         </Container>

@@ -2,6 +2,7 @@
 import PageTitle from "@/app/(private pages)/components/PageTitle";
 import { useUpdatePortfolioMutation } from "@/redux/features/portfolio/portfolioApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
+import CoverImage from "@/sharedComponets/ui/editor/CoverImage";
 import Description from "@/sharedComponets/ui/editor/Description";
 import DynamicInput from "@/sharedComponets/ui/editor/DynamicInput";
 import EditorContainer from "@/sharedComponets/ui/editor/EditorContainer";
@@ -34,11 +35,26 @@ export default function EditPortfolio({
     height: portfolio.thumnail?.height || 0,
     size: 0,
   };
+  const tempCover: TMedia = {
+    _id: "",
+    secure_url: portfolio.coverImage?.url || "",
+    resource_type: "image",
+    asset_id: "",
+    public_id: "",
+    format: "",
+    duration: undefined,
+    width: portfolio.coverImage?.width || 0,
+    height: portfolio.coverImage?.height || 0,
+    size: 0,
+  };
 
   //   hook
   const [des, setDes] = useState(portfolio.description || "");
   const [excerp, setExcerp] = useState(portfolio.excerp || "");
   const [liveLink, setLiveLink] = useState(portfolio.liveLink || "");
+  const [coverImage, setCoverImage] = useState<TMedia | null>(
+    tempCover || null
+  );
   const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
   const [selectedTechnology, setSelectedTechnology] =
     useState<ITechnology | null>(portfolio.technology || null);
@@ -70,6 +86,11 @@ export default function EditPortfolio({
       return;
     }
 
+    if (!coverImage) {
+      toast.error("Cover image is required");
+      return;
+    }
+
     const portfolioData = {
       title: portfolio.title,
       slug: portfolio.slug,
@@ -81,6 +102,11 @@ export default function EditPortfolio({
         width: thumnail?.width,
         height: thumnail?.height,
         url: thumnail?.secure_url,
+      },
+      coverImage: {
+        width: coverImage?.width,
+        height: coverImage?.height,
+        url: coverImage?.secure_url,
       },
       content: "",
     };
@@ -122,6 +148,7 @@ export default function EditPortfolio({
         )}
       </div>
       <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
+        <CoverImage coverImage={coverImage} setCoverImage={setCoverImage} />
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
           des={des}
