@@ -2,24 +2,25 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import PortfoliosContainer from "./components/PortfoliosContainer";
 import { getTechnologies } from "@/utils/pageData";
+import PortfolioBanner from "./components/PortfolioBanner";
 
 export default async function PortfolioPage() {
   const technologiesData = await getTechnologies();
   return (
     <main className="w-full z-0">
-      <section className={`w-full min-h-screen z-0 flex relative`}>
-        <Container className="flex items-center justify-center">
-          <div className="w-full max-w-[1000px] text-center bg-slate-800/30 rounded-[10px] p-2">
-            <h1 className="!text-white wt_text-shadow wt_fs-7xl font-medium heading !leading-[100%]">
-              Portfolio
-            </h1>
-            <p className="!text-white wt_text-shadow wt_fs-xl bold mt-5">
-              Explore our portfolio of responsive web design & development
-              projects.
-            </p>
-          </div>
-        </Container>
-      </section>
+      <PortfolioBanner
+        images={[
+          "https://firebasestorage.googleapis.com/v0/b/infinitegallery-f9fac.appspot.com/o/image-reveal%2F1.jpg?alt=media",
+          "https://firebasestorage.googleapis.com/v0/b/infinitegallery-f9fac.appspot.com/o/image-reveal%2F2.jpg?alt=media",
+          "https://firebasestorage.googleapis.com/v0/b/infinitegallery-f9fac.appspot.com/o/image-reveal%2F3.jpg?alt=media",
+          "https://firebasestorage.googleapis.com/v0/b/infinitegallery-f9fac.appspot.com/o/image-reveal%2F4.jpg?alt=media",
+          "https://firebasestorage.googleapis.com/v0/b/infinitegallery-f9fac.appspot.com/o/image-reveal%2F5.jpg?alt=media",
+        ]}
+        imageDuration={8000}
+        rows={4}
+        cols={7}
+      />
+
       <section className="section-speacing">
         <Container className="!max-w-[1200px]">
           <p className="bold flex items-center gap-1">
