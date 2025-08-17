@@ -1,7 +1,12 @@
 "use client";
+
 import React, { useEffect, useRef } from "react";
-import { Autoplay, EffectFade } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
+
+import "swiper/css";
+import "swiper/css/pagination";
 
 type Props = {
   images: string[];
@@ -23,6 +28,7 @@ const PortfolioBanner: React.FC<Props> = ({
   transitionDuration = 4000,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const swiperRef = useRef<SwiperCore | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current || images.length < 2) return;
@@ -53,6 +59,11 @@ const PortfolioBanner: React.FC<Props> = ({
       coverImg = imgEls[index];
       canvasImg = imgEls[index + 1] || imgEls[0];
       index = index === imgEls.length - 2 ? 0 : index + 1;
+
+      // 🔥 sync Swiper when image changes
+      if (swiperRef.current) {
+        swiperRef.current.slideToLoop(index); // loop index sync
+      }
     }
     switchImages();
 
@@ -66,7 +77,7 @@ const PortfolioBanner: React.FC<Props> = ({
       ctx.drawImage(canvasImg, 0, 0, width, height);
 
       if (t <= transitionFrames) {
-        const bx = (t / transitionFrames) * wx; // smooth shrink until fully gone
+        const bx = (t / transitionFrames) * wx;
         const by = (t / transitionFrames) * wy;
 
         for (let i = 0; i < cols; i++) {
@@ -108,28 +119,28 @@ const PortfolioBanner: React.FC<Props> = ({
     <section className="w-full relative">
       <canvas
         ref={canvasRef}
-        className="max-h-[70vh] md:max-h-[80vh] block w-full h-full"
+        className="max-h-[70vh] z-10 md:max-h-[80vh] block w-full h-full"
       />
-      <div className="w-full h-full bg-slate-900/30 absolute top-0 left-0">
+      <div className="w-full z-20 h-full bg-slate-900/30 absolute top-0 left-0">
         <Swiper
-          modules={[EffectFade, Autoplay]}
-          effect="fade"
+          allowTouchMove={false}
           loop={true}
-          autoplay={{
-            delay: imageDuration, // time between slides
-            disableOnInteraction: false,
-          }}
-          speed={1000} // fade speed
-          className="w-full h-full"
+          pagination={{ clickable: true }}
+          modules={[Pagination]}
+          className="portfolio-slider w-full h-full p-10"
+          onSwiper={(swiper) => (swiperRef.current = swiper)} // save swiper instance
         >
-          <SwiperSlide className="w-full h-full bg-red-200/50">
-            <h1>Text 1</h1>
+          <SwiperSlide className="w-full h-full bg-transparent text-white p-10 !flex flex-col pt-[60px] items-center justify-center">
+            <p>[Web Development]</p>
+            <h2>Tkween</h2>
           </SwiperSlide>
-          <SwiperSlide className="w-full h-full bg-green-200/50">
-            <h1>Text 2</h1>
+          <SwiperSlide className="w-full h-full p-10 bg-transparent text-white !flex flex-col pt-[60px] items-center justify-center">
+            <p>[WordPress Development]</p>
+            <h2>ANS Music</h2>
           </SwiperSlide>
-          <SwiperSlide className="w-full h-full bg-blue-200/50">
-            <h1>Text 3</h1>
+          <SwiperSlide className="w-full h-full p-10 bg-transparent text-white !flex flex-col pt-[60px] items-center justify-center">
+            <p>[MERN Stack Development]</p>
+            <h2>ZeyoxStudio</h2>
           </SwiperSlide>
         </Swiper>
       </div>

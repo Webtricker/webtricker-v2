@@ -14,7 +14,7 @@ export default function PortfolioTechnologyTab({
   selectedTechnology
 }: Props) {
   return (
-    <div className="w-full flex flex-wrap lg:flex-nowrap gap-x-10 gap-y-3 lg:gap-0 justify-center overflow-x-auto mb-5 md:mb-7">
+    <div className="w-full flex flex-wrap lg:flex-nowrap gap-x-10 gap-y-3  lg:gap-0 justify-center overflow-x-auto mb-5 md:mb-7">
       {technologies.map((technology) => (
         <button
          onClick={()=>setSelectedTechnology(technology)}
