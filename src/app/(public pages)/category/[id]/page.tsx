@@ -2,6 +2,13 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
 
+// get category related posts data
+async function getCategoryPosts(id: string) {
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`).then(
+    (res) => res.json()
+  );
+}
+
 // generate dynamic metadata for each category page
 export async function generateMetadata({
   params,
@@ -9,10 +16,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`
-  );
-  const data = await res.json();
+  const data = await getCategoryPosts(id);
 
   if (!data.success) return { title: "Invalid category" };
 
@@ -33,10 +37,7 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`
-  );
-  const data = await res.json();
+  const data = await getCategoryPosts(id);
 
   if (!data.success)
     return (
