@@ -1,4 +1,5 @@
 import { TOurLeader } from "@/types/data";
+import { IHomePage } from "@/types/pageTypes";
 
 
 export const teamData: TOurLeader[] = [
@@ -48,3 +49,41 @@ export const teamData: TOurLeader[] = [
   },
 ];
 
+
+
+
+export const demoJson:IHomePage = {
+  "greeting": {
+    "top": "Hello,",
+    "bottom": "People! We’re"
+  },
+  "bannerText": {
+    "top": "Creative",
+    "left": "Digital",
+    "right": "Studio"
+  },
+  "bannerVideo": {
+    "type": "image",
+    "src": ""
+  },
+  "bannerSpinningIconBlack":"",
+  "bannerSpinningIconWhite":"",
+  "bannerDescription": "Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?",
+  "introVideo": "/videos/intro-video.mp4",
+  "clientSectionSubtitle": "clients we've worked with",
+  "serviceSectionTitle": {
+    "large": "Thoughtful",
+    "medium": "Process",
+    "small": "We Think a lot"
+  },
+  "allServiceBtnText":"See All Services",
+  "allProjectBtnText":"View All Projects",
+  "LeadersSectionTitle":"Our Leaders",
+  "teamSectionTitle":"Our People",
+  "blogSectionTitle": {
+    "large": "Updates,",
+    "medium": "Insights",
+    "small": "Our Newest Articles"
+  },
+  "testimonialsBg":"",
+}

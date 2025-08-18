@@ -26,7 +26,7 @@ const mediaSchema = new Schema<IMedia>(
     size: { type: Number, required: true },
   },
   {
-    timestamps: false,
+    timestamps: true,
   }
 );
 

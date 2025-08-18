@@ -9,7 +9,7 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
 import ParallaxBanner from "./components/ServiceBanner";
 
-const REVALIDATE_SECONDS = 60 * 60; // 1 hour
+const REVALIDATE_SECONDS = 60 * 60;
 
 // Helper function to fetch a single service data
 const getServiceData = async (slug: string) => {

@@ -1,11 +1,13 @@
 import React from "react";
-import PrivatePageWrapper from "../../components/PrivatePageWrapper";
-import CommingSoonMsg from "../../components/CommingSoonMsg";
+import HomePageForm from "./components/HomePageForm";
+import { getTestimonialsData } from "@/utils/pageData";
+import { demoJson } from "@/data/demoData";
 
-export default function HomeCustomizationPage() {
+export default async function HomeCustomizationPage() {
+  const testimonialsData = await getTestimonialsData();
   return (
-    <PrivatePageWrapper>
-     <CommingSoonMsg />
-    </PrivatePageWrapper>
+    <>
+      <HomePageForm testimonials={testimonialsData} homePageData={demoJson} />
+    </>
   );
 }

@@ -1,38 +1,55 @@
-// import { Schema, model, models } from 'mongoose';
+import { IHomePage } from '@/types/pageTypes';
+import { Schema, model, models } from 'mongoose';
 
 
 
-// export interface IHome {
 
-//     // banner section
-//  greeting:string;
-//   bannerText:{
-//     top:string;
-//     left:string;
-//     right:string;
-//   };
-//   bannerSpinningIcon:string;
-//   bannerVideo:{type:"video"|"image"};
-//   bannerDescription:string;
-  
-// //   intro section
-// introVideo:string;
+const homePageSchema = new Schema<IHomePage>(
+    {
+        greeting: {
+            top: { type: String, required: true },
+            bottom: { type: String, required: true },
+        },
+        bannerText: {
+            top: { type: String, required: true },
+            left: { type: String, required: true },
+            right: { type: String, required: true },
+        },
+        bannerSpinningIconWhite: { type: String, required: true },
+        bannerSpinningIconBlack: { type: String, required: true },
+        bannerVideo: {
+            type: { type: String, enum: ['video', 'image'], required: true },
+            src: { type: String, required: true },
+        },
+        bannerDescription: { type: String, required: true },
+        introVideo: { type: String, required: true },
+        clientSectionSubtitle: { type: String, required: true },
+        testimonialsBg: { type: String, required: true },
 
-// // clients section
-// clientSectionSubtitle:string;
+        serviceSectionTitle: {
+            large: { type: String, required: true },
+            medium: { type: String, required: true },
+            small: { type: String, required: true },
+        },
+        allServiceBtnText: { type: String, required: true },
 
-// // home latest blog
-// blogSectionTitle:string;
+        allProjectBtnText: { type: String, required: true },
+
+        LeadersSectionTitle: { type: String, required: true },
+
+        teamSectionTitle: { type: String, required: true },
+
+        blogSectionTitle: {
+            large: { type: String, required: true },
+            medium: { type: String, required: true },
+            small: { type: String, required: true },
+        },
+    },
+    {
+        timestamps: false,
+    }
+);
 
 
-// }
-// const homePageSchema = new Schema<IHome>(
-//   {
-//     name: { type:String, required: true ,unique: true},  },
-//   {
-//     timestamps: false,
-//   }
-// );
-
-// const Home = models.Home || model<IHome>('Home', homePageSchema);
-// export default Home;
+const Home = models.Home || model<IHomePage>('Home', homePageSchema);
+export default Home;

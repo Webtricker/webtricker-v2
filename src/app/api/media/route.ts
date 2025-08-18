@@ -85,7 +85,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const media = await Media.find({ resource_type: type }).lean();
+    const media = await Media.find({ resource_type: type }).sort({ createdAt: -1 }).lean();
     return NextResponse.json({
       success: true,
       media
