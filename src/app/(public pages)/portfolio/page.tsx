@@ -14,7 +14,10 @@ export async function generateMetadata() {
       "Explore our portfolio showcasing the latest and greatest projects from Webtricker Studio.",
     keywords: [
       "Webtricker",
-      technologiesData.map((tech: { name: string }) => tech.name).join(", "),
+      technologiesData
+        .map((tech: { name: string }) => tech.name)
+        .join(", ")
+        .split(", "),
     ],
     openGraph: {
       title: "Webtricker - Our Portfolio",

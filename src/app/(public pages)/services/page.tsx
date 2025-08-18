@@ -13,7 +13,10 @@ export async function generateMetadata() {
     title: "Our Services | Webtricker",
     description: "Explore the range of services we offer at Webtricker.",
     keywords: [
-      data.map((service: { title: string }) => service.title).join(", "),
+      data
+        .map((service: { title: string }) => service.title)
+        .join(", ")
+        .split(", "),
     ],
     openGraph: {
       title: "Webtricker - Our Services",
