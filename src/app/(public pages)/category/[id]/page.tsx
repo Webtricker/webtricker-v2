@@ -2,6 +2,30 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
 
+// generate dynamic metadata for each category page
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`
+  );
+  const data = await res.json();
+
+  if (!data.success) return { title: "Invalid category" };
+
+  return {
+    title: data.category?.name,
+    description: `Explore our blog posts about ${data.category?.name}.`,
+    openGraph: {
+      title: data.category?.name,
+      description: `Explore our blog posts about ${data.category?.name}.`,
+    },
+  };
+}
+
 // Define the type for the props explicitly
 export default async function CategoryPage({
   params,
