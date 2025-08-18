@@ -32,7 +32,7 @@ export async function generateMetadata() {
 
 export default async function ServicesPage() {
   const serviceData = await getServicesData();
-  console.log(serviceData);
+
   return (
     <main className="w-full z-0">
       <ServicesBanner />

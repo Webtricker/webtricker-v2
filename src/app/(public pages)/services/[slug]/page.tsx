@@ -62,6 +62,39 @@ export async function generateStaticParams() {
   return slugs;
 }
 
+// dynamically generating metadata for each service page
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const data = await getServiceData(slug);
+
+  if (!data?.service) {
+    return { title: "Service Not Found" };
+  }
+
+  const service = data.service as IService;
+
+  return {
+    title: service.title,
+    description: service.description,
+    openGraph: {
+      title: service.title,
+      description: service.description,
+      images: [
+        {
+          url: service.thumnail.url,
+          width: service.thumnail.width || 1200,
+          height: service.thumnail.height || 630,
+          alt: service.title,
+        },
+      ],
+    },
+  };
+}
+
 export default async function SingleServicePage({
   params,
 }: {
