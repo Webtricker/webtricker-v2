@@ -17,6 +17,7 @@ import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import { Metadata } from "next";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 export const revalidate = 900; // page rebuild in every 15 min
 
@@ -33,8 +34,20 @@ export const metadata: Metadata = {
     "Best bangladeshi web development company",
   ],
   openGraph: {
+    title: "Webtricker - Expert Web Design & Digital Services",
     description:
       "Get premium responsive web design for a stunning, seamless website on all devices.",
+    url: "https://webtricker.com",
+    images: [
+      {
+        url: `${shortLogo.src}`,
+        width: 1200,
+        height: 630,
+        alt: "Webtricker - Expert Web Design & Digital Services",
+      },
+    ],
+    siteName: "Webtricker",
+    type: "website",
   },
 };
 

@@ -1,6 +1,7 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 // get category related posts data
 async function getCategoryPosts(id: string) {
@@ -26,6 +27,14 @@ export async function generateMetadata({
     openGraph: {
       title: data.category?.name,
       description: `Explore our blog posts about ${data.category?.name}.`,
+      images: [
+        {
+          url: `${shortLogo.src}`,
+          width: 1200,
+          height: 630,
+          alt: "Webtricker - Expert Web Design & Digital Services",
+        },
+      ],
     },
   };
 }

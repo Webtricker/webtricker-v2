@@ -1,4 +1,5 @@
 import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxImage";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import WhatWeDo from "./components/WhatWeDo";
@@ -26,6 +27,14 @@ export const metadata: Metadata = {
     title: "About Webtricker: Our Mission and Vision",
     description:
       "Learn about us: A leading responsive web design agency creating stunning, user-friendly websites.",
+    images: [
+      {
+        url: `${shortLogo.src}`,
+        width: 1200,
+        height: 630,
+        alt: "Webtricker - Expert Web Design & Digital Services",
+      },
+    ],
   },
 };
 

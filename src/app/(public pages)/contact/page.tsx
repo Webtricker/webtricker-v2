@@ -6,16 +6,25 @@ import ContactCTABtns from "./components/ContactCTABtns";
 import { EmailIcon, MapPinIcon, PhoneIcon } from "./components/Icons";
 import Link from "next/link";
 import { Metadata } from "next";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 export const metadata: Metadata = {
   title: "Contact",
   description:
     "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
-  // openGraph: {
-  //   title: "Talk to Us: Contact Webtricker Today",
-  //   description:
-  //     "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
-  // },
+  openGraph: {
+    title: "Talk to Us: Contact Webtricker Today",
+    description:
+      "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
+    images: [
+      {
+        url: `${shortLogo.src}`,
+        width: 1200,
+        height: 630,
+        alt: "Webtricker - Expert Web Design & Digital Services",
+      },
+    ],
+  },
 };
 
 export default function ContactPage() {
@@ -116,7 +125,13 @@ export default function ContactPage() {
 
             {/* ======= map ======== */}
             <div className="w-full overflow-hidden rounded-[10px]">
-              <iframe className="min-h-[400px]" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14474.096950431665!2d89.941474!3d24.914205!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd7f5ce07e179d%3A0x209802aa6366f9da!2sWebtricker%20Web%20Design%20%26%20Development%20Agency!5e0!3m2!1sen!2sus!4v1693518943068!5m2!1sen!2sus" width="100%" height="100%" loading="lazy" ></iframe>
+              <iframe
+                className="min-h-[400px]"
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14474.096950431665!2d89.941474!3d24.914205!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd7f5ce07e179d%3A0x209802aa6366f9da!2sWebtricker%20Web%20Design%20%26%20Development%20Agency!5e0!3m2!1sen!2sus!4v1693518943068!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                loading="lazy"
+              ></iframe>
             </div>
           </div>
         </Container>
