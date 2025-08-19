@@ -6,13 +6,13 @@ import Image from "next/image";
 import { ITestimonialsInfo } from "@/types/data";
 
 
-export default function Clients({testimonials=[]}:{testimonials:ITestimonialsInfo[]}) {
+export default function Clients({title, testimonials=[]}:{title:string;testimonials:ITestimonialsInfo[]}) {
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
         <div className="w-full flex-col  md:flex-row flex md:items-center gap-5 lg:gap-10 overflow-hidden">
           <p className="uppercase whitespace-nowrap shrink-0">
-            clients we&apos;ve worked with
+            {title || "clients we've worked with"}
           </p>
           <Marquee
             speed={80}          

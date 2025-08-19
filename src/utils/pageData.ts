@@ -24,7 +24,7 @@ export const getTestimonialsData = async () => {
             console.error("Failed to fetch testimonial data");
             return [];
         }
-    const result = await res.json();
+        const result = await res.json();
         return result?.testimonialsData || [];
     } catch (error) {
         console.error("Error fetching testimonial data:", error);
@@ -32,7 +32,7 @@ export const getTestimonialsData = async () => {
     }
 }
 
-export const getPortfoliosData = async (limit=6) => {
+export const getPortfoliosData = async (limit = 6) => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios?limit=${limit}`);
 
@@ -40,7 +40,7 @@ export const getPortfoliosData = async (limit=6) => {
             console.error("Failed to fetch portfolios data");
             return [];
         }
-    const result = await res.json();
+        const result = await res.json();
         return result?.portfolios || [];
     } catch (error) {
         console.error("Error fetching portfolios data:", error);
@@ -56,7 +56,7 @@ export const getTechnologies = async () => {
             console.error("Failed to fetch portfolios data");
             return [];
         }
-    const result = await res.json();
+        const result = await res.json();
         return result?.technologies || [];
     } catch (error) {
         console.error("Error fetching portfolios data:", error);
@@ -64,7 +64,7 @@ export const getTechnologies = async () => {
     }
 }
 
-export const getServicesData = async (limit:number=99) => {
+export const getServicesData = async (limit: number = 99) => {
     try {
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services?limit=${limit}`);
@@ -73,7 +73,7 @@ export const getServicesData = async (limit:number=99) => {
             console.error("Failed to fetch services");
             return [];
         }
-    const result = await res.json();
+        const result = await res.json();
         return result?.services || [];
     } catch (error) {
         console.error("Error fetching services:", error);
@@ -81,20 +81,36 @@ export const getServicesData = async (limit:number=99) => {
     }
 }
 
-export const getPostsData = async (limit:number=99): Promise<IBlog[] | null> => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=${limit}`);
+export const getPostsData = async (limit: number = 99): Promise<IBlog[] | null> => {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=${limit}`);
 
-    if (!res.ok) {
-      console.error(`Failed to fetch posts . Status: ${res.status}`);
-      return null;
+        if (!res.ok) {
+            console.error(`Failed to fetch posts . Status: ${res.status}`);
+            return null;
+        }
+
+        const data = await res.json();
+        return data?.posts || [];
+    } catch (error) {
+        console.error(`Error fetching posts`, error);
+        return null;
     }
-
-    const data = await res.json();
-    return data?.posts || [];
-  } catch (error) {
-    console.error(`Error fetching posts`, error);
-    return null;
-  }
 };
+
+
+export const getHomePageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/home-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch testimonial data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching testimonial data:", error);
+        return {};
+    }
+}

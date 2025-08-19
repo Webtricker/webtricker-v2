@@ -68,8 +68,10 @@ const ParallaxImage = ({ src, title }: Props) => {
 
 export default function PortfolioSlider({
   portfolios = [],
+  linkText,
 }: {
   portfolios?: TPortfolio[];
+  linkText: string;
 }) {
   const pinContainer = useRef<HTMLDivElement | null>(null);
   const targetEl = useRef<HTMLDivElement | null>(null);
@@ -136,7 +138,7 @@ export default function PortfolioSlider({
           <div className="w-full">
             <LinkButton
               className=""
-              label="View All Projects"
+              label={linkText || "View All Projects"}
               href="/portfolio"
             />
           </div>

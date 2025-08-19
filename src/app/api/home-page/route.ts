@@ -3,25 +3,37 @@ import Home from "@/models/HomePage";
 import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
+
 export const PUT = async (req: NextRequest) => {
     try {
         await connectToDatabase();
         await verifyAdmin(req);
 
-        const data = await req.json() || {};
-        console.log(data, ' data from home page posts')
-        if (!data) {
+        // Expect a single data object from the request body
+        const { id, data } = await req.json();
+
+        // Check if the data and its ID are present
+        if (!id) {
             return NextResponse.json(
-                { success: false, error: true, message: "Missing post data" },
+                { success: false, error: true, message: "Missing document ID" },
                 { status: 400 }
             );
         }
 
-        const homeData = new Home(data);
-        await homeData.save()
+        // Use the _id from the data object to find and update
+        // Add { new: true } to return the updated document
+        const updatedHomeData = await Home.findByIdAndUpdate(id, data);
+
+        // If no document was found with that ID, handle the case
+        if (!updatedHomeData) {
+            return NextResponse.json(
+                { success: false, error: true, message: "Document not found" },
+                { status: 404 }
+            );
+        }
 
         return NextResponse.json(
-            { success: true, message: "Data updated",homeData },
+            { success: true, message: "Data updated", data: updatedHomeData },
             { status: 200 }
         );
     } catch (error: any) {
@@ -31,8 +43,7 @@ export const PUT = async (req: NextRequest) => {
             { status: 500 }
         );
     }
-}
-    ;
+};
 
 export const GET = async () => {
     try {

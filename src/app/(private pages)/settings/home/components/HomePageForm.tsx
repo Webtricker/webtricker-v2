@@ -50,12 +50,14 @@ export default function HomePageForm({
   const { data, isLoading } = useGetHomePageDataQuery({});
   const [updateHomePage, { isLoading: loading }] =
     useUpdateHomePageDataMutation();
-  // const { data, isLoading } = ({});
 
   // handlers
-  const onSubmit = async (data) => {
+  const onSubmit = async (updateData) => {
     try {
-      const res = await updateHomePage(data).unwrap();
+      const res = await updateHomePage({
+        id: data?.data?._id,
+        data: updateData,
+      }).unwrap();
       if (res?.success) {
         toast.success("Home page data updated");
       } else {
@@ -63,7 +65,7 @@ export default function HomePageForm({
       }
     } catch (error: any) {
       console.log(error, " error updating home page data");
-       toast.error("Failed to update home page data");
+      toast.error("Failed to update home page data");
     }
   };
 
@@ -95,7 +97,7 @@ export default function HomePageForm({
                 className="page-input pl-1"
                 {...register("greeting.top", { required: true })}
                 placeholder="Hello"
-                value={homePageData?.greeting?.top || "Hello"}
+                defaultValue={homePageData?.greeting?.top || "Hello"}
               />
               <br />
               <input
@@ -103,7 +105,7 @@ export default function HomePageForm({
                 className="page-input mt-1 pl-1"
                 {...register("greeting.bottom", { required: true })}
                 placeholder="People! We’re"
-                value={homePageData?.greeting?.bottom || "People! We’re"}
+                defaultValue={homePageData?.greeting?.bottom || "People! We’re"}
               />
             </span>
             <input
@@ -111,7 +113,7 @@ export default function HomePageForm({
               className={`text-center max-w-[50vw] !rounded-[10px] sm:w-auto sm:text-left wt_fs-giant banner-large-text heading page-input px-4 ${galleryModern.className}`}
               {...register("bannerText.top", { required: true })}
               placeholder="Creative"
-              value={homePageData?.banner?.top || "Creative"}
+              defaultValue={homePageData?.banner?.top || "Creative"}
             />
             <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
               <BannerSpinningIcon data={homePageData} setValue={setValue} />
@@ -125,7 +127,7 @@ export default function HomePageForm({
               className={`max-w-[555px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.left", { required: true })}
               placeholder="Digital"
-              value={homePageData?.banner?.left || "Digital"}
+              defaultValue={homePageData?.banner?.left || "Digital"}
             />
             <span className="tp-hero-title-img">
               <BannerRoundVideo data={homePageData} setValue={setValue} />
@@ -135,7 +137,7 @@ export default function HomePageForm({
               className={`max-w-[575px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.right", { required: true })}
               placeholder="Studio"
-              value={homePageData?.banner?.right || "Studio"}
+              defaultValue={homePageData?.banner?.right || "Studio"}
             />
           </h1>
 
@@ -147,7 +149,7 @@ export default function HomePageForm({
                 className={`min-h-[100px] w-full page-input p-2 ${galleryModern.className}`}
                 {...register("bannerDescription", { required: true })}
                 placeholder={bannerDescription}
-                value={homePageData?.bannerDescription || bannerDescription}
+                defaultValue={homePageData?.bannerDescription || bannerDescription}
               ></textarea>
               <Link
                 href="/contact"
@@ -174,7 +176,7 @@ export default function HomePageForm({
                   className={`w-full min-w-[260px] page-input px-1 py-2 wt_fs-md`}
                   {...register("clientSectionSubtitle", { required: true })}
                   placeholder="Clients we've worked with"
-                  value={
+                  defaultValue={
                     homePageData?.clientSectionSubtitle ||
                     "Clients we've worked with"
                   }
@@ -222,7 +224,7 @@ export default function HomePageForm({
                       required: true,
                     })}
                     placeholder="Thoughtful"
-                    value={
+                    defaultValue={
                       homePageData?.serviceSectionTitle?.large || "Thoughtful"
                     }
                   />
@@ -238,7 +240,7 @@ export default function HomePageForm({
                         required: true,
                       })}
                       placeholder="Process"
-                      value={
+                      defaultValue={
                         homePageData?.serviceSectionTitle?.medium || "Process"
                       }
                     />
@@ -251,7 +253,7 @@ export default function HomePageForm({
                         required: true,
                       })}
                       placeholder="We Think a lot"
-                      value={
+                      defaultValue={
                         homePageData?.serviceSectionTitle?.small ||
                         "We Think a lot"
                       }
@@ -264,7 +266,7 @@ export default function HomePageForm({
                     className={`max-w-[200px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
                     {...register("allServiceBtnText", { required: true })}
                     placeholder="See All Service"
-                    value={homePageData?.allServiceBtnText || "See All Service"}
+                    defaultValue={homePageData?.allServiceBtnText || "See All Service"}
                   />
                 </div>
               </div>
@@ -305,7 +307,7 @@ export default function HomePageForm({
             className={`max-w-[210px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
             {...register("allProjectBtnText", { required: true })}
             placeholder="View All Projects"
-            value={homePageData?.allProjectBtnText || "View All Projects"}
+            defaultValue={homePageData?.allProjectBtnText || "View All Projects"}
           />
         </section>
         <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
@@ -316,7 +318,7 @@ export default function HomePageForm({
                 className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
                 {...register("leadersSectionTitle", { required: true })}
                 placeholder="Our Leaders"
-                value={homePageData?.leadersSectionTitle || "Our Leaders"}
+                defaultValue={homePageData?.leadersSectionTitle || "Our Leaders"}
               />
             </h3>
           </div>
@@ -332,7 +334,7 @@ export default function HomePageForm({
                 className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
                 {...register("teamSectionTitle", { required: true })}
                 placeholder="Our People"
-                value={homePageData?.teamSectionTitle || "teamSectionTitle"}
+                defaultValue={homePageData?.teamSectionTitle || "teamSectionTitle"}
               />
             </h3>
           </div>
@@ -349,7 +351,7 @@ export default function HomePageForm({
                 className={`max-w-[575px] w-full page-input`}
                 {...register("blogSectionTitle.large", { required: true })}
                 placeholder="Updates,"
-                value={homePageData?.blogSectionTitle?.large || "Updates"}
+                defaultValue={homePageData?.blogSectionTitle?.large || "Updates"}
               />
             </h2>
             <div className="mt-1 w-full flex flex-wrap md:flex-nowrap items-end gap-2">
@@ -361,7 +363,7 @@ export default function HomePageForm({
                   className={`max-w-[400px] w-full page-input`}
                   {...register("blogSectionTitle.medium", { required: true })}
                   placeholder="Insights"
-                  value={homePageData?.blogSectionTitle?.medium || "Insights"}
+                  defaultValue={homePageData?.blogSectionTitle?.medium || "Insights"}
                 />
               </h2>
               <h6 className="mb-2 2xl:mb-4 heading">
@@ -370,7 +372,7 @@ export default function HomePageForm({
                   className={`max-w-[375px] px-1 w-full page-input`}
                   {...register("blogSectionTitle.small", { required: true })}
                   placeholder="Our Newest Articles"
-                  value={
+                  defaultValue={
                     homePageData?.blogSectionTitle?.small ||
                     "Our Newest Articles"
                   }

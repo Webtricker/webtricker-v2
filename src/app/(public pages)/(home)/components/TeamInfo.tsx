@@ -11,7 +11,7 @@ import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveabl
 import galleryModern from "@/app/fonts/gallery";
 import { TTeamData } from "@/types/data";
 
-export default function TeamInfo({ teamData }: { teamData: TTeamData[] }) {
+export default function TeamInfo({ teamData,title }: { teamData: TTeamData[],title:string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function TeamInfo({ teamData }: { teamData: TTeamData[] }) {
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 relative">
       <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-        <h3 className="text-center middle-border">Our People</h3>
+        <h3 className="text-center middle-border">{title || "Our People"}</h3>
       </div>
       <div ref={containerRef} className="w-full cursor-hide">
         <Swiper

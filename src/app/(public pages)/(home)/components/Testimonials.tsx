@@ -11,7 +11,7 @@ import "swiper/css/pagination";
 import galleryModern from "@/app/fonts/gallery";
 import { ITestimonialsInfo } from "@/types/data";
 
-export default function Testimonials({testimonials=[]}:{testimonials:ITestimonialsInfo[]}) {
+export default function Testimonials({sectionBg, testimonials=[]}:{sectionBg:string;testimonials:ITestimonialsInfo[]}) {
     if(!testimonials.length) return <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
       <h5>Please add testimonial from dashboard</h5>
   </div>
@@ -20,7 +20,7 @@ export default function Testimonials({testimonials=[]}:{testimonials:ITestimonia
       <div className="w-full min-h-[300px] relative z-0 ">
         <Image
           className="w-full h-[85%] object-cover absolute top-0 left-0 -z-10"
-          src={testimonialsBanner}
+          src={sectionBg ||testimonialsBanner}
           width={1000}
           height={400}
           alt="Testimonals Banner"
