@@ -8,8 +8,7 @@ import { IMedia } from '@/models/Media';
 // Upload a single file to Cloudinary and return media data
 async function uploadFileToCloudinary(file: File): Promise<IMedia> {
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
+    const buffer = Buffer.from(arrayBuffer)
     const isSvg = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
 
     return new Promise((resolve, reject) => {
@@ -27,16 +26,15 @@ async function uploadFileToCloudinary(file: File): Promise<IMedia> {
                 if (!result) {
                     return reject(new Error('Cloudinary upload returned no result.'));
                 }
-
                 // Only include required fields based on IMedia
                 const media: IMedia = {
                     secure_url: result.secure_url,
                     resource_type: result.resource_type === 'video' ? 'video' : 'image',
                     asset_id: result.asset_id,
                     public_id: result.public_id,
-                    format: result.format,
-                    width: result.width,
-                    height: result.height,
+                    format: result?.format || "svg",
+                    width: result?.width || 100,
+                    height: result?.height || 100,
                     size: result.bytes,
                     duration: result.duration, // Only present for videos
                 };
