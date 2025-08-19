@@ -4,6 +4,7 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 export default function Banner() {
   return (
@@ -46,9 +47,9 @@ export default function Banner() {
               width={270}
               height={160}
               decoding="async"
-              className="hidden md:block sm:w-[120px] sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]"
-              src="http://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1-1.png"
-              alt=""
+              className="hidden md:block sm:w-[120px] sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px] animate-pulse"
+              src={shortLogo.src}
+              alt="Webtricker - Expert Web Design & Digital Services"
             />
           </span>
           Agency
