@@ -51,7 +51,7 @@ export default function Banner() {
               alt=""
             />
           </span>
-          Studio
+          Agency
         </h1>
 
         <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">
@@ -61,9 +61,12 @@ export default function Banner() {
             websites with pixel-perfect precision. We’re passionate,
             detail-driven, and committed to exceeding expectations. Have a
             project in mind?{" "}
-            <Link href="/contact" className="btn-line-effect !inline-flex gap-1.5 items-center">
+            <Link
+              href="/contact"
+              className="btn-line-effect !inline-flex gap-1.5 items-center"
+            >
               <span>Let’s talk</span>
-             <ArrowUpRightIcon />
+              <ArrowUpRightIcon />
             </Link>
           </p>
         </div>

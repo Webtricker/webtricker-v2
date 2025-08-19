@@ -53,7 +53,7 @@ export default function ContactForm() {
           className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           id="contactName"
           type="text"
-          placeholder="John Doe"
+          placeholder="Your Name"
           {...register("name", { required: "Name is required" })}
         />
         {errors?.name ? (
@@ -70,7 +70,7 @@ export default function ContactForm() {
           className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           type="text"
           id="contactEmail"
-          placeholder="example@gmail.com"
+          placeholder="email@company.com"
           {...register("email", {
             required: "Email is required",
             pattern: {
@@ -87,11 +87,11 @@ export default function ContactForm() {
       </div>
       {/* ======= input === */}
       <div className="w-full">
-        <label htmlFor="contactMessage">Message</label>
+        <label htmlFor="contactMessage">Your Queries</label>
         <textarea
           data-wt-hide-cursor
           id="contactMessage"
-          placeholder="Enter your message"
+          placeholder="Let us know how we can help you"
           className="cursor-hide min-h-[100px] block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           {...register("message", { required: "Message is required" })}
         ></textarea>
