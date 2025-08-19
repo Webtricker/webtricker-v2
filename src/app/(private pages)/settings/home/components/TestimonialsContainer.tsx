@@ -1,6 +1,6 @@
 import { ITestimonialsInfo } from "@/types/data";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import defaultBanner from "@/assets/images/home/testimonials-banner.webp";
 import { UseFormSetValue } from "react-hook-form";
 import { IHomePage } from "@/types/pageTypes";
@@ -32,6 +32,10 @@ export default function TestimonialsContainer({
   //hooks
   const dispatch = useDispatch();
   const [bg, setBg] = useState(data?.testimonialsBg || defaultBanner);
+
+  useEffect(() => {
+    setValue("testimonialsBg", data?.testimonialsBg || "");
+  }, [setValue, data?.testimonialsBg]);
 
   // handlers
   const handleSelect = (selectedMedia: TMedia) => {
@@ -66,9 +70,11 @@ export default function TestimonialsContainer({
             <button
               onClick={() => dispatch(toggleModal(KEY))}
               type="button"
-              className="grow min-h-full wt_fs-lg text-black"
+              className=" grow min-h-full wt_fs-lg text-black"
             >
-              Click Edit Background
+              <span className="inline-block p-1 bg-white rounded-full px-4">
+                Click Edit Background
+              </span>
             </button>
             <Link
               href="/settings/testimonials"

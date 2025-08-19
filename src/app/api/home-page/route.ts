@@ -1,15 +1,15 @@
 import connectToDatabase from "@/lib/dbConnect";
 import Home from "@/models/HomePage";
-import Posts from "@/models/Posts";
 import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
-export const POST = async (req: NextRequest) => {
+export const PUT = async (req: NextRequest) => {
     try {
         await connectToDatabase();
         await verifyAdmin(req);
 
-        const { data } = await req.json() || {};
+        const data = await req.json() || {};
+        console.log(data, ' data from home page posts')
         if (!data) {
             return NextResponse.json(
                 { success: false, error: true, message: "Missing post data" },
@@ -17,21 +17,15 @@ export const POST = async (req: NextRequest) => {
             );
         }
 
-        const post = new Posts(data);
-        await post.save()
+        const homeData = new Home(data);
+        await homeData.save()
 
         return NextResponse.json(
-            { success: true, message: "Post added" },
+            { success: true, message: "Data updated",homeData },
             { status: 200 }
         );
     } catch (error: any) {
         console.error(error);
-        if (error.code === 11000) {
-            return NextResponse.json(
-                { success: false, error: true, message: "Post exists in the database" },
-                { status: 409 }
-            );
-        }
         return NextResponse.json(
             { success: false, message: 'Internal Server Error' },
             { status: 500 }

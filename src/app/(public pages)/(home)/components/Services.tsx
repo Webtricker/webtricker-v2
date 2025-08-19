@@ -6,7 +6,7 @@ import { getServicesData } from "@/utils/pageData";
 import Image from "next/image";
 import React from "react";
 
-const ServiceCard = ({ service }: { service: TService }) => {
+export const ServiceCard = ({ service }: { service: TService }) => {
   return (
     <div className="flex items-start gap-5 md:gap-6 lg:gap-8 2xl:gap-10">
       <Image

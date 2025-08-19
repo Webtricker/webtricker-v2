@@ -12,10 +12,10 @@ export const pageApi = createApi({
                 url: "/home-page"
             })
         }),
-        addPosts: builder.mutation({
+        updateHomePageData: builder.mutation({
             query: (data) => ({
-                url: `/posts`,
-                method: "POST",
+                url: `/home-page`,
+                method: "PUT",
                 body: data,
             })
         }),
@@ -24,4 +24,5 @@ export const pageApi = createApi({
 
 export const {
   useGetHomePageDataQuery,
+  useUpdateHomePageDataMutation
 } = pageApi;

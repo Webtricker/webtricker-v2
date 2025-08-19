@@ -1,13 +1,14 @@
 import React from "react";
 import HomePageForm from "./components/HomePageForm";
-import { getTestimonialsData } from "@/utils/pageData";
-import { demoJson } from "@/data/demoData";
+import { getPostsData, getServicesData, getTestimonialsData } from "@/utils/pageData";
 
 export default async function HomeCustomizationPage() {
   const testimonialsData = await getTestimonialsData();
+   const serviceData = await getServicesData(4);
+   const posts = await getPostsData(4);
   return (
     <>
-      <HomePageForm testimonials={testimonialsData} homePageData={demoJson} />
+      <HomePageForm posts={posts} serviceData={serviceData} testimonials={testimonialsData} />
     </>
   );
 }

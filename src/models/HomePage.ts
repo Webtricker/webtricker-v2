@@ -35,7 +35,7 @@ const homePageSchema = new Schema<IHomePage>(
 
         allProjectBtnText: { type: String, required: true },
 
-        LeadersSectionTitle: { type: String, required: true },
+        leadersSectionTitle: { type: String, required: true },
 
         teamSectionTitle: { type: String, required: true },
 
@@ -44,6 +44,7 @@ const homePageSchema = new Schema<IHomePage>(
             medium: { type: String, required: true },
             small: { type: String, required: true },
         },
+        bottomSlider: { type: [String], required: true, }
     },
     {
         timestamps: false,

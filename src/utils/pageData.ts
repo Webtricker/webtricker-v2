@@ -1,3 +1,5 @@
+import { IBlog } from "@/types/post";
+
 export const getTeamData = async () => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/teams`);
@@ -78,3 +80,21 @@ export const getServicesData = async (limit:number=99) => {
         return [];
     }
 }
+
+export const getPostsData = async (limit:number=99): Promise<IBlog[] | null> => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=${limit}`);
+
+    if (!res.ok) {
+      console.error(`Failed to fetch posts . Status: ${res.status}`);
+      return null;
+    }
+
+    const data = await res.json();
+    return data?.posts || [];
+  } catch (error) {
+    console.error(`Error fetching posts`, error);
+    return null;
+  }
+};

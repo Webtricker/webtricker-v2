@@ -4,17 +4,19 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
-
-// TODO: have to set default image and video
-// TODO: have to change the image hide/show condition
 
 const dImage =
   "http://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1-1.png";
 const dVideo =
   "http://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1-1.png";
+
+const initialData = {
+  src: dImage,
+  type: "image",
+};
 
 type Props = {
   setValue: UseFormSetValue<IHomePage>;
@@ -22,11 +24,16 @@ type Props = {
 };
 export default function BannerRoundVideo({ setValue, data }: Props) {
   const KEY = "OPEN_BANNER_VIDEO_MODAL";
+
   //hooks
   const dispatch = useDispatch();
   const [bannerData, setBannerData] = useState(
     data?.bannerVideo || { type: "image", src: dImage }
   );
+
+  useEffect(() => {
+    setValue("bannerVideo", data?.bannerVideo || initialData);
+  }, [data?.bannerVideo, setValue]);
 
   // handlers
   const handleSelect = (selectedMedia: TMedia) => {

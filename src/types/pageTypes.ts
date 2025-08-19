@@ -35,7 +35,7 @@ export interface IHomePage {
     allProjectBtnText:string;
 
     // leaders section
-    LeadersSectionTitle:string;
+    leadersSectionTitle:string;
 
 
 
@@ -48,4 +48,6 @@ export interface IHomePage {
         medium: string;
         small: string;
     };
+
+    bottomSlider:string[];
 }

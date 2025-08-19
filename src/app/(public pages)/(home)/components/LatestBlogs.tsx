@@ -11,7 +11,7 @@ import React from "react";
 
 const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
 
-const getLatestPosts = async (): Promise<IBlog[] | null> => {
+export const getLatestPosts = async (): Promise<IBlog[] | null> => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=4`,
