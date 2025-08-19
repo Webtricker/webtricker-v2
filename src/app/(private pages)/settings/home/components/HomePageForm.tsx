@@ -33,7 +33,7 @@ export default function HomePageForm({ homePageData=demoJson, testimonials }: Pr
   const {
     register,
     setValue,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<IHomePage>();
   const { data, isLoading } = useGetHomePageDataQuery({});
 
