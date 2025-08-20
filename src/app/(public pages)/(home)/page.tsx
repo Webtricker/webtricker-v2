@@ -21,7 +21,8 @@ import InstragramFeed from "./components/InstragramFeed";
 import { Metadata } from "next";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 
-export const revalidate = 900; // page rebuild in every 15 min
+// export const revalidate = 900; // page rebuild in every 15 min
+export const revalidate = 20; // page rebuild in every 15 min
 
 export const metadata: Metadata = {
   title: "Expert Web Design & Digital Services | Home",
