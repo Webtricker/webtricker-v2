@@ -1,6 +1,43 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
+
+// get category related posts data
+async function getCategoryPosts(id: string) {
+  return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`).then(
+    (res) => res.json()
+  );
+}
+
+// generate dynamic metadata for each category page
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const id = (await params).id;
+  const data = await getCategoryPosts(id);
+
+  if (!data.success) return { title: "Invalid category" };
+
+  return {
+    title: data.category?.name,
+    description: `Explore our blog posts about ${data.category?.name}.`,
+    openGraph: {
+      title: data.category?.name,
+      description: `Explore our blog posts about ${data.category?.name}.`,
+      images: [
+        {
+          url: `${shortLogo.src}`,
+          width: 1200,
+          height: 630,
+          alt: "Webtricker - Expert Web Design & Digital Services",
+        },
+      ],
+    },
+  };
+}
 
 // Define the type for the props explicitly
 export default async function CategoryPage({
@@ -9,10 +46,7 @@ export default async function CategoryPage({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories/${id}`
-  );
-  const data = await res.json();
+  const data = await getCategoryPosts(id);
 
   if (!data.success)
     return (
