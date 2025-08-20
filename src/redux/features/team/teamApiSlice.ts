@@ -6,7 +6,7 @@ export const teamApi = createApi({
         baseUrl: '/api',
         credentials: "include"
     }),
-    tagTypes: ['TeamInfoData'],
+    tagTypes: ['TeamInfoData', 'LeaderInfoData'],
     endpoints: (builder) => ({
         getTeamInfo: builder.query({
             query: () => ({
@@ -42,6 +42,42 @@ export const teamApi = createApi({
             }),
             invalidatesTags: ['TeamInfoData']
         }),
+
+        // leader 
+        getLeaderInfo: builder.query({
+            query: () => ({
+                url: '/leader'
+            }),
+            providesTags: ['LeaderInfoData']
+        }),
+        getALeaderInfo: builder.query({
+            query: (id) => ({
+                url: `/leader/${id}`
+            })
+        }),
+        addLeader: builder.mutation({
+            query: (data) => ({
+                url: `/leader`,
+                method: "POST",
+                body: data,
+            })
+        }),
+
+        deleteLeader: builder.mutation({
+            query: (id: string) => ({
+                url: `/leader/${id}`,
+                method: "DELETE",
+            })
+        }),
+
+        updateLeaderInfo: builder.mutation({
+            query: ({ id, data }) => ({
+                url: `/leader/${id}`,
+                method: "PUT",
+                body: data,
+            }),
+            invalidatesTags: ['LeaderInfoData']
+        }),
     })
 })
 
@@ -51,4 +87,11 @@ export const {
     useGetATeamInfoQuery,
     useGetTeamInfoQuery,
     useUpdateTeamInfoMutation,
+
+    // leader 
+    useAddLeaderMutation,
+    useDeleteLeaderMutation,
+    useGetALeaderInfoQuery,
+    useUpdateLeaderInfoMutation,
+    useGetLeaderInfoQuery
 } = teamApi;

@@ -24,8 +24,8 @@ export const settingsLinks: TLink[] = [
   { label: "Post Categories", href: "/settings/post-categories"},
   { label: "Portfolios", href: "/settings/portfolios" },
   { label: "Portfolio Technologies", href: "/settings/portfolio-technologies"},
-  // { label: "Career", href: "/settings/career" },
   { label: "Contact", href: "/settings/contact" },
+  { label: "Leaders", href: "/settings/leader" },
   { label: "Teams", href: "/settings/teams" },
   { label: "Testimonials", href: "/settings/testimonials" },
   {

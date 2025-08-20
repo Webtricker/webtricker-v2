@@ -71,6 +71,7 @@ export interface ITeam {
   profile: string;
   name: string;
   role: string;
+
 }
 
 export interface ITeamInfo extends ITeam {
@@ -106,4 +107,18 @@ export type TSocialLink = {
   iconURL: string;
   link: string;
   _id: number;
+}
+
+
+export interface ILeader {
+  profile: string;
+  name: string;
+  role: string;
+  facebookLink:string;
+  instagramLink:string;
+  linkedInLink:string;
+}
+
+export interface ILeaderInfo extends ILeader {
+  _id: string;
 }
