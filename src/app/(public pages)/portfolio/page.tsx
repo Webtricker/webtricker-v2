@@ -3,9 +3,44 @@ import React from "react";
 import PortfoliosContainer from "./components/PortfoliosContainer";
 import { getTechnologies } from "@/utils/pageData";
 import PortfolioBanner from "./components/PortfolioBanner";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
+
+// dynamic metadata for the portfolio page
+export async function generateMetadata() {
+  const technologiesData = await getTechnologies();
+  return {
+    title: "Webtricker - Our Portfolio",
+    description:
+      "Explore our portfolio showcasing the latest and greatest projects from Webtricker Studio.",
+    keywords: [
+      "Webtricker",
+      technologiesData
+        .map((tech: { name: string }) => tech.name)
+        .join(", ")
+        .split(", "),
+    ],
+    openGraph: {
+      title: "Webtricker - Our Portfolio",
+      description:
+        "Explore our portfolio showcasing the latest and greatest projects from Webtricker",
+      url: "https://webtricker.com/portfolio",
+      images: [
+        {
+          url: `${shortLogo.src}`,
+          width: 1200,
+          height: 630,
+          alt: "Webtricker Portfolio",
+        },
+      ],
+      siteName: "Webtricker",
+      type: "website",
+    },
+  };
+}
 
 export default async function PortfolioPage() {
   const technologiesData = await getTechnologies();
+
   return (
     <main className="w-full z-0">
       <PortfolioBanner

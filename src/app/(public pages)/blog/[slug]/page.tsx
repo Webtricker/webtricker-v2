@@ -16,11 +16,14 @@ const getBlogData = async (slug: string) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${slug}`,
       {
-        next: { revalidate: REVALIDATE_SECONDS },      }
+        next: { revalidate: REVALIDATE_SECONDS },
+      }
     );
 
     if (!res.ok) {
-      console.error(`Failed to fetch blog data for slug: ${slug}, Status: ${res.status}`);
+      console.error(
+        `Failed to fetch blog data for slug: ${slug}, Status: ${res.status}`
+      );
       return null;
     }
 
@@ -34,16 +37,19 @@ const getBlogData = async (slug: string) => {
 
 const getAllBlogSlugs = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blog-slugs`, {
-      cache: 'no-store',
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog-slugs`,
+      {
+        cache: "no-store",
+      }
+    );
 
     if (!res.ok) {
       console.error("Failed to fetch all blog slugs for generateStaticParams");
       return [];
     }
     const { blogs } = await res.json();
-    return blogs.map((blog:{slug:string}) => ({ slug: blog.slug }));
+    return blogs.map((blog: { slug: string }) => ({ slug: blog.slug }));
   } catch (error) {
     console.error("Error fetching all blog slugs:", error);
     return [];
@@ -56,9 +62,47 @@ export async function generateStaticParams() {
   return slugs;
 }
 
+// generate metadata for each blog post dynamically
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const data = await getBlogData(slug);
+
+  if (!data?.post) {
+    return {
+      title: "Blog Not Found",
+      description: "The blog post you are looking for does not exist.",
+    };
+  }
+
+  const post = data.post as IBlog;
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      title: post.title,
+      description: post.description,
+      images: [
+        {
+          url: post.thumnail.url,
+          width: post.thumnail.width || 1200,
+          height: post.thumnail.height || 630,
+          alt: post.title,
+        },
+      ],
+    },
+  };
+}
 
 // Main component for the single blog page
-export default async function SingleBlogPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function SingleBlogPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
 
   const data = await getBlogData(slug);
@@ -68,7 +112,7 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
 
   const nextPost = data.nextPost;
   const prevPost = data.prevPost;
-  const post = data.post as IBlog; 
+  const post = data.post as IBlog;
   return (
     <main className="w-full z-0 section-speacing mt-7 post-details-container">
       <BlogPageContainer className="section-speacing">
@@ -93,10 +137,7 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
         <BlogPageContainer className="mt-10">
           <div className="w-full flex">
             {prevPost && (
-              <Link
-                href={`/blog/${prevPost.slug}`}
-                className="w-full relative"
-              >
+              <Link href={`/blog/${prevPost.slug}`} className="w-full relative">
                 <Image
                   className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-e-none"
                   src={prevPost?.thumnail?.url || ""} // Fallback for image src
@@ -111,10 +152,7 @@ export default async function SingleBlogPage({ params }: { params: Promise<{ slu
               </Link>
             )}
             {nextPost && (
-              <Link
-                href={`/blog/${nextPost.slug}`}
-                className="w-full relative"
-              >
+              <Link href={`/blog/${nextPost.slug}`} className="w-full relative">
                 <Image
                   className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-s-none"
                   src={nextPost?.thumnail?.url || ""} // Fallback for image src

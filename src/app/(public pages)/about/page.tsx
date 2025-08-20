@@ -1,4 +1,5 @@
 import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxImage";
+import shortLogo from "@/assets/images/home/webtricker-w.png";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
 import WhatWeDo from "./components/WhatWeDo";
@@ -10,12 +11,32 @@ import { getTeamData, getTestimonialsData } from "@/utils/pageData";
 import { ScrollToExploreBtn } from "./components/Button";
 import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
 import AboutGallery from "./components/AboutGallery";
+import { Metadata } from "next";
 
 // export const revalidate = 3600; // page rebuild in every 1 hour
 // TODO: have to uncomment above line
 
 // export const revalidate = 300; // page rebuild in every 5 min
 export const revalidate = 120; // page rebuild in every 2 min
+
+export const metadata: Metadata = {
+  title: "webtricker | About Webtricker: Our Mission and Vision",
+  description:
+    "Learn about us: A leading responsive web design agency creating stunning, user-friendly websites.",
+  openGraph: {
+    title: "About Webtricker: Our Mission and Vision",
+    description:
+      "Learn about us: A leading responsive web design agency creating stunning, user-friendly websites.",
+    images: [
+      {
+        url: `${shortLogo.src}`,
+        width: 1200,
+        height: 630,
+        alt: "Webtricker - Expert Web Design & Digital Services",
+      },
+    ],
+  },
+};
 
 export default async function AboutPage() {
   const teamData = await getTeamData();
