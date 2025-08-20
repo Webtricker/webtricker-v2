@@ -1,11 +1,14 @@
 import React from "react";
-import PrivatePageWrapper from "../../components/PrivatePageWrapper";
-import CommingSoonMsg from "../../components/CommingSoonMsg";
+import HomePageForm from "./components/HomePageForm";
+import { getPostsData, getServicesData, getTestimonialsData } from "@/utils/pageData";
 
-export default function HomeCustomizationPage() {
+export default async function HomeCustomizationPage() {
+  const testimonialsData = await getTestimonialsData();
+   const serviceData = await getServicesData(4);
+   const posts = await getPostsData(4);
   return (
-    <PrivatePageWrapper>
-     <CommingSoonMsg />
-    </PrivatePageWrapper>
+    <>
+      <HomePageForm posts={posts} serviceData={serviceData} testimonials={testimonialsData} />
+    </>
   );
 }

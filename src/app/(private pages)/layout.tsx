@@ -15,7 +15,7 @@ export default async function AdminLayout({
       <PrivateSidebar>
         <SidebarLogo />
       </PrivateSidebar>
-      <div className="grow  h-full flex flex-col">
+      <div className="grow h-full flex flex-col">
         <PrivateNavbar>
           <SidebarLogo />
         </PrivateNavbar>

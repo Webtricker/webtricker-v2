@@ -11,7 +11,7 @@ import React from "react";
 
 const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
 
-const getLatestPosts = async (): Promise<IBlog[] | null> => {
+export const getLatestPosts = async (): Promise<IBlog[] | null> => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/posts?limit=4`,
@@ -34,7 +34,15 @@ const getLatestPosts = async (): Promise<IBlog[] | null> => {
 };
 
 // ===== root component =======
-export default async function LatestBlogs() {
+
+type BlogProps = {
+  blogSectionTitle: {
+    large: string;
+    medium: string;
+    small: string;
+  };
+};
+export default async function LatestBlogs({ blogSectionTitle }: BlogProps) {
   const posts = await getLatestPosts();
   if (!posts || posts.length === 0) {
     return <></>;
@@ -43,12 +51,16 @@ export default async function LatestBlogs() {
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
-        <h2 className="heading inline !leading-[100%]">Updates,</h2>
+        <h2 className="heading inline !leading-[100%]">
+          {blogSectionTitle?.large || "Updates,"}
+        </h2>
         <div className="w-full flex flex-wrap md:flex-nowrap items-end gap-2">
           <h2 className={`heading !leading-[100%] ${galleryModern.className}`}>
-            Insights
+            {blogSectionTitle?.medium || "Insights"}
           </h2>
-          <h6 className="mb-2 2xl:mb-4 heading">Our Newest Articles</h6>
+          <h6 className="mb-2 2xl:mb-4 heading">
+            {blogSectionTitle?.small || "Our Newest Articles"}
+          </h6>
         </div>
         <div className=" section-inner-speacing w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 gap-y-14 md:gap-8 md:gap-y-14 lg:gap-10 lg:gap-y-14">
           {posts.map((blog) => (

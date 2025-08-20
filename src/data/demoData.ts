@@ -1,6 +1,5 @@
 import { TOurLeader } from "@/types/data";
 
-
 export const teamData: TOurLeader[] = [
   {
     image: "/images/team/ceo.jpg",
@@ -47,4 +46,3 @@ export const teamData: TOurLeader[] = [
     ],
   },
 ];
-

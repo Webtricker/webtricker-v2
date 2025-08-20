@@ -20,6 +20,7 @@ import testimonialData from "./features/testimonials/testimonialData";
 import { testimonialApi } from "./features/testimonials/testimonialsApiSlice";
 import { portfolioApi } from "./features/portfolio/portfolioApi";
 import { technologyApi } from "./features/category/technologyApiSlice";
+import { pageApi } from "./features/pageData/pageData";
 
 export const store = configureStore({
   reducer: {
@@ -46,6 +47,7 @@ export const store = configureStore({
     [testimonialApi.reducerPath]: testimonialApi.reducer,
     [portfolioApi.reducerPath]: portfolioApi.reducer,
     [technologyApi.reducerPath]: technologyApi.reducer,
+    [pageApi.reducerPath]: pageApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().
@@ -60,7 +62,8 @@ export const store = configureStore({
       concat(teamApi.middleware).
       concat(testimonialApi.middleware).
       concat(portfolioApi.middleware).
-      concat(technologyApi.middleware)
+      concat(technologyApi.middleware).
+      concat(pageApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

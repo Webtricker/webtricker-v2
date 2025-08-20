@@ -143,9 +143,9 @@ export default async function AboutPage() {
       </section>
 
       <WhatWeDo />
-      <TeamInfo teamData={teamData} />
+      <TeamInfo title="Our Leader" teamData={teamData} />
       <FunFacts />
-      <Testimonials testimonials={testimonialsData} />
+      <Testimonials sectionBg="" testimonials={testimonialsData} />
       <section className="pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18">
         <Container className="w-full flex flex-col">
           <p className="bold text-center mb-2 lg:mb-0">

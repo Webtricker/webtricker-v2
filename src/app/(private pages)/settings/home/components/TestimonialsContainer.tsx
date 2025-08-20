@@ -1,26 +1,54 @@
-"use client";
-import Container from "@/sharedComponets/ui/wrapper/Container";
+import { ITestimonialsInfo } from "@/types/data";
 import Image from "next/image";
-import React from "react";
-import testimonialsBanner from "@/assets/images/home/testimonials-banner.webp";
+import React, { useEffect, useState } from "react";
+import defaultBanner from "@/assets/images/home/testimonials-banner.webp";
+import { UseFormSetValue } from "react-hook-form";
+import { IHomePage } from "@/types/pageTypes";
+import { useDispatch } from "react-redux";
+import { TMedia } from "@/types/commonTypes";
+import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
+import Container from "@/sharedComponets/ui/wrapper/Container";
+import galleryModern from "@/app/fonts/gallery";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
+import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import galleryModern from "@/app/fonts/gallery";
-import { ITestimonialsInfo } from "@/types/data";
+import Link from "next/link";
 
-export default function Testimonials({sectionBg, testimonials=[]}:{sectionBg:string;testimonials:ITestimonialsInfo[]}) {
-    if(!testimonials.length) return <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
-      <h5>Please add testimonial from dashboard</h5>
-  </div>
+type Props = {
+  testimonials: ITestimonialsInfo[];
+  setValue: UseFormSetValue<IHomePage>;
+  data: IHomePage;
+};
+export default function TestimonialsContainer({
+  testimonials = [],
+  data,
+  setValue,
+}: Props) {
+  const KEY = "OPEN_HOME_TESTIMONIALS_BCKGROUND_MODAL";
+
+  //hooks
+  const dispatch = useDispatch();
+  const [bg, setBg] = useState(data?.testimonialsBg || defaultBanner);
+
+  useEffect(() => {
+    setValue("testimonialsBg", data?.testimonialsBg || "");
+  }, [setValue, data?.testimonialsBg]);
+
+  // handlers
+  const handleSelect = (selectedMedia: TMedia) => {
+    setBg(selectedMedia.secure_url);
+    setValue("testimonialsBg", selectedMedia.secure_url);
+    dispatch(toggleModal(null));
+  };
   return (
     <section className="relative py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <div className="w-full min-h-[300px] relative z-0 ">
         <Image
           className="w-full h-[85%] object-cover absolute top-0 left-0 -z-10"
-          src={sectionBg ||testimonialsBanner}
+          src={bg}
           width={1000}
           height={400}
           alt="Testimonals Banner"
@@ -38,10 +66,26 @@ export default function Testimonials({sectionBg, testimonials=[]}:{sectionBg:str
         </div>
 
         <Container className="relative z-10">
-          <div className="w-full flex items-center justify-end ">
-            <div className="testimonials-container">
+          <div className="w-full flex justify-end ">
+            <button
+              onClick={() => dispatch(toggleModal(KEY))}
+              type="button"
+              className=" grow min-h-full wt_fs-lg text-black"
+            >
+              <span className="inline-block p-1 bg-white rounded-full px-4">
+                Click Edit Background
+              </span>
+            </button>
+            <Link
+              href="/settings/testimonials"
+              className="testimonials-container"
+            >
               <h6>Testimonials</h6>
-              <h4 className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}>From Our Cients</h4>
+              <h4
+                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}
+              >
+                From Our Cients
+              </h4>
               <Swiper
                 spaceBetween={30}
                 effect={"slide"}
@@ -73,10 +117,17 @@ export default function Testimonials({sectionBg, testimonials=[]}:{sectionBg:str
                   </SwiperSlide>
                 ))}
               </Swiper>
-            </div>
+            </Link>
           </div>
         </Container>
       </div>
+
+      <MediaModal
+        allowedMediaTypeToShow={["img"]}
+        activeKey={KEY}
+        key={KEY}
+        cb={handleSelect}
+      />
     </section>
   );
 }

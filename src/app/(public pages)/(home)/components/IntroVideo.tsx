@@ -1,8 +1,9 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { IHomePage } from "@/types/pageTypes";
 
-export default function IntroVideo() {
+export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
   const pinContainer = useRef<HTMLDivElement | null>(null);
   const targetEl = useRef<HTMLDivElement | null>(null);
   const triggerEl = useRef<HTMLDivElement | null>(null);
@@ -43,7 +44,7 @@ export default function IntroVideo() {
             loop
             preload="metadata"
             className="h-screen w-full object-cover"
-            src="/videos/home/contact.mp4"
+            src={homeData.introVideo}
           ></video>
         </div>
       </div>

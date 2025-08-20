@@ -9,6 +9,7 @@ import Testimonials from "./components/Testimonials";
 import TeamInfo from "./components/TeamInfo";
 import LatestBlogs from "./components/LatestBlogs";
 import {
+  getHomePageData,
   getPortfoliosData,
   getTeamData,
   getTestimonialsData,
@@ -55,31 +56,32 @@ export default async function Home() {
   const teamData = await getTeamData();
   const testimonialsData = await getTestimonialsData();
   const portfoliosData = await getPortfoliosData(12);
-
+  const homeData = await getHomePageData();
   const firstSixPortfolios = portfoliosData.slice(0, 6);
   const secondSixPortfolios = portfoliosData.slice(6, 12);
+
   return (
     <main className="w-full z-0">
-      <Banner />
-      <IntroVideo />
+      <Banner homeData={homeData} />
+      <IntroVideo homeData={homeData} />
       <Container>
         <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
       </Container>
-      <Clients testimonials={testimonialsData} />
-      <Testimonials testimonials={testimonialsData} />
-      <Services />
+      <Clients title={homeData?.clientSectionSubtitle} testimonials={testimonialsData} />
+      <Testimonials sectionBg={homeData?.testimonialsBanner} testimonials={testimonialsData} />
+      <Services allServiceTxt={homeData?.allServiceBtnText} serviceSectionTitle={homeData?.serviceSectionTitle} />
       <LargeMarquee />
       <Portfolios portfolios={firstSixPortfolios} />
 
       {secondSixPortfolios.length > 5 ? (
-        <PortfolioSlider portfolios={secondSixPortfolios} />
+        <PortfolioSlider linkText={homeData?.allProjectBtnText}  portfolios={secondSixPortfolios} />
       ) : (
         <></>
       )}
-      <OurLeader />
-      <TeamInfo teamData={teamData} />
-      <LatestBlogs />
-      <InstragramFeed />
+      <OurLeader title={homeData?.leadersSectionTitle} />
+      <TeamInfo title={homeData?.teamSectionTitle} teamData={teamData} />
+      <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} />
+      <InstragramFeed images={homeData?.bottomSlider} />
     </main>
   );
 }

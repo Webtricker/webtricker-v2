@@ -39,7 +39,7 @@ const ImageUploaderBtn = ({ setMediaData }: ImageUploaderBtnProps) => {
         res?.uploadedFiles &&
         res.uploadedFiles?.length
       ) {
-        setMediaData((prev) => [...prev, ...res.uploadedFiles]);
+        setMediaData((prev) => [...res.uploadedFiles,...prev]);
       } else {
         throw new Error("Error uploading files");
       }
@@ -153,7 +153,7 @@ export default function MediaImages({ cb }: Props) {
   // hooks
   const [mediaData, setMediaData] = useState<TMedia[]>([]);
   const [loadMedia, { isLoading, error }] = useLazyGetMediaQuery();
-
+ 
   // effect
   useEffect(() => {
     const loadData = async () => {

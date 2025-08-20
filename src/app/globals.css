@@ -734,3 +734,8 @@ p.bouncing-text {
 .bottom-bar{
   background-image: linear-gradient(90deg, #FF4B1FB3 0%, #1FDDFFB3 100%);
 }
+
+/* ======= home page customization ======= */
+.page-input{
+  @apply border border-slate-300 rounded-[3px] hover:border-slate-500 focus:border-slate-500 outline-none;
+}
