@@ -5,7 +5,6 @@ import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 export default function Banner({ homeData }: { homeData: IHomePage }) {
   return (
