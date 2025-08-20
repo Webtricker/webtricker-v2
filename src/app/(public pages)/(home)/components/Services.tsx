@@ -8,18 +8,16 @@ import React from "react";
 
 const ServiceCard = ({ service }: { service: TService }) => {
   return (
-    <div className="flex items-start gap-5 md:gap-6 lg:gap-8 2xl:gap-10">
+    <div className="flex items-center gap-5 md:gap-6 lg:gap-8 2xl:gap-10">
       <Image
-        width={60}
-        height={66}
+        width={40}
+        height={40}
         className="h-auto"
         alt="Service icon"
         src={service.icon || ""}
       />
       <div className="grow">
-        <h6 className="heading font-semibold mb-1 uppercase">
-          {service.title}
-        </h6>
+        <h6 className="heading font-semibold uppercase">{service.title}</h6>
         <p>{service.excerpt}</p>
       </div>
     </div>
@@ -28,7 +26,7 @@ const ServiceCard = ({ service }: { service: TService }) => {
 
 // ====== root component ======
 export default async function Services() {
-  const serviceData = await getServicesData(4)
+  const serviceData = await getServicesData();
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
