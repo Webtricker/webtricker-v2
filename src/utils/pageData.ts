@@ -114,3 +114,19 @@ export const getHomePageData = async () => {
         return {};
     }
 }
+
+export const getLeaderData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/leader`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch leader data");
+            return [];
+        }
+        const result = await res.json();
+        return result?.leaderData || [];
+    } catch (error) {
+        console.error("Error fetching leader data:", error);
+        return [];
+    }
+}

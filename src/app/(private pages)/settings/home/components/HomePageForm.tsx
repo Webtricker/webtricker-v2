@@ -83,6 +83,7 @@ export default function HomePageForm({
       </ConditionalReturnContainer>
     );
   const homePageData = data?.data || {};
+  console.log(homePageData,'  home page data from private page')
   return (
     <div className="w-full overflow-x-hidden">
       <form
@@ -113,7 +114,7 @@ export default function HomePageForm({
               className={`text-center max-w-[50vw] !rounded-[10px] sm:w-auto sm:text-left wt_fs-giant banner-large-text heading page-input px-4 ${galleryModern.className}`}
               {...register("bannerText.top", { required: true })}
               placeholder="Creative"
-              defaultValue={homePageData?.banner?.top || "Creative"}
+              defaultValue={homePageData?.bannerText?.top || "Creative"}
             />
             <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
               <BannerSpinningIcon data={homePageData} setValue={setValue} />
@@ -127,7 +128,7 @@ export default function HomePageForm({
               className={`max-w-[555px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.left", { required: true })}
               placeholder="Digital"
-              defaultValue={homePageData?.banner?.left || "Digital"}
+              defaultValue={homePageData?.bannerText?.left || "Digital"}
             />
             <span className="tp-hero-title-img">
               <BannerRoundVideo data={homePageData} setValue={setValue} />
@@ -149,7 +150,9 @@ export default function HomePageForm({
                 className={`min-h-[100px] w-full page-input p-2 ${galleryModern.className}`}
                 {...register("bannerDescription", { required: true })}
                 placeholder={bannerDescription}
-                defaultValue={homePageData?.bannerDescription || bannerDescription}
+                defaultValue={
+                  homePageData?.bannerDescription || bannerDescription
+                }
               ></textarea>
               <Link
                 href="/contact"
@@ -266,7 +269,9 @@ export default function HomePageForm({
                     className={`max-w-[200px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
                     {...register("allServiceBtnText", { required: true })}
                     placeholder="See All Service"
-                    defaultValue={homePageData?.allServiceBtnText || "See All Service"}
+                    defaultValue={
+                      homePageData?.allServiceBtnText || "See All Service"
+                    }
                   />
                 </div>
               </div>
@@ -307,7 +312,9 @@ export default function HomePageForm({
             className={`max-w-[210px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
             {...register("allProjectBtnText", { required: true })}
             placeholder="View All Projects"
-            defaultValue={homePageData?.allProjectBtnText || "View All Projects"}
+            defaultValue={
+              homePageData?.allProjectBtnText || "View All Projects"
+            }
           />
         </section>
         <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
@@ -318,7 +325,9 @@ export default function HomePageForm({
                 className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
                 {...register("leadersSectionTitle", { required: true })}
                 placeholder="Our Leaders"
-                defaultValue={homePageData?.leadersSectionTitle || "Our Leaders"}
+                defaultValue={
+                  homePageData?.leadersSectionTitle || "Our Leaders"
+                }
               />
             </h3>
           </div>
@@ -334,7 +343,9 @@ export default function HomePageForm({
                 className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
                 {...register("teamSectionTitle", { required: true })}
                 placeholder="Our People"
-                defaultValue={homePageData?.teamSectionTitle || "teamSectionTitle"}
+                defaultValue={
+                  homePageData?.teamSectionTitle || "teamSectionTitle"
+                }
               />
             </h3>
           </div>
@@ -351,7 +362,9 @@ export default function HomePageForm({
                 className={`max-w-[575px] w-full page-input`}
                 {...register("blogSectionTitle.large", { required: true })}
                 placeholder="Updates,"
-                defaultValue={homePageData?.blogSectionTitle?.large || "Updates"}
+                defaultValue={
+                  homePageData?.blogSectionTitle?.large || "Updates"
+                }
               />
             </h2>
             <div className="mt-1 w-full flex flex-wrap md:flex-nowrap items-end gap-2">
@@ -363,7 +376,9 @@ export default function HomePageForm({
                   className={`max-w-[400px] w-full page-input`}
                   {...register("blogSectionTitle.medium", { required: true })}
                   placeholder="Insights"
-                  defaultValue={homePageData?.blogSectionTitle?.medium || "Insights"}
+                  defaultValue={
+                    homePageData?.blogSectionTitle?.medium || "Insights"
+                  }
                 />
               </h2>
               <h6 className="mb-2 2xl:mb-4 heading">
@@ -379,10 +394,7 @@ export default function HomePageForm({
                 />
               </h6>
             </div>
-            <Link
-              href="/settings/blogs"
-              className=" section-inner-speacing w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 gap-y-14 md:gap-8 md:gap-y-14 lg:gap-10 lg:gap-y-14"
-            >
+            <div className=" section-inner-speacing w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 gap-y-14 md:gap-8 md:gap-y-14 lg:gap-10 lg:gap-y-14">
               {posts?.map((blog) => (
                 <BlogCardWrapper
                   key={blog._id}
@@ -398,7 +410,7 @@ export default function HomePageForm({
                   </Link>
                 </BlogCardWrapper>
               ))}
-            </Link>
+            </div>
           </Container>
         </section>
         <BottomSlider data={homePageData} setValue={setValue} />

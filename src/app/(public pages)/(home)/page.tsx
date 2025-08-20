@@ -10,6 +10,7 @@ import TeamInfo from "./components/TeamInfo";
 import LatestBlogs from "./components/LatestBlogs";
 import {
   getHomePageData,
+  getLeaderData,
   getPortfoliosData,
   getTeamData,
   getTestimonialsData,
@@ -54,12 +55,13 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   const teamData = await getTeamData();
+  const leaderData = await getLeaderData();
   const testimonialsData = await getTestimonialsData();
   const portfoliosData = await getPortfoliosData(12);
   const homeData = await getHomePageData();
   const firstSixPortfolios = portfoliosData.slice(0, 6);
   const secondSixPortfolios = portfoliosData.slice(6, 12);
-
+ console.log(homeData,'  home data')
   return (
     <main className="w-full z-0">
       <Banner homeData={homeData} />
@@ -67,18 +69,33 @@ export default async function Home() {
       <Container>
         <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
       </Container>
-      <Clients title={homeData?.clientSectionSubtitle} testimonials={testimonialsData} />
-      <Testimonials sectionBg={homeData?.testimonialsBanner} testimonials={testimonialsData} />
-      <Services allServiceTxt={homeData?.allServiceBtnText} serviceSectionTitle={homeData?.serviceSectionTitle} />
+      <Clients
+        title={homeData?.clientSectionSubtitle}
+        testimonials={testimonialsData}
+      />
+      <Testimonials
+        sectionBg={homeData?.testimonialsBanner}
+        testimonials={testimonialsData}
+      />
+      <Services
+        allServiceTxt={homeData?.allServiceBtnText}
+        serviceSectionTitle={homeData?.serviceSectionTitle}
+      />
       <LargeMarquee />
       <Portfolios portfolios={firstSixPortfolios} />
 
       {secondSixPortfolios.length > 5 ? (
-        <PortfolioSlider linkText={homeData?.allProjectBtnText}  portfolios={secondSixPortfolios} />
+        <PortfolioSlider
+          linkText={homeData?.allProjectBtnText}
+          portfolios={secondSixPortfolios}
+        />
       ) : (
         <></>
       )}
-      <OurLeader title={homeData?.leadersSectionTitle} />
+      <OurLeader
+        leaderData={leaderData}
+        title={homeData?.leadersSectionTitle}
+      />
       <TeamInfo title={homeData?.teamSectionTitle} teamData={teamData} />
       <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} />
       <InstragramFeed images={homeData?.bottomSlider} />
