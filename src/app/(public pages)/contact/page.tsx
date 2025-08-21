@@ -46,7 +46,6 @@ export default function ContactPage() {
               <div className="w-full">
                 <h6 className="bold">SAY HELLO TO US</h6>
                 <div className="w-full flex items-start mt-2">
-                  {" "}
                   <p className="bold whitespace-nowrap">WRITE TO US</p>
                   <div className="hidden sm:block w-full mt-4">
                     <Image
