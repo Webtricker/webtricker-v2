@@ -714,28 +714,74 @@ p.bouncing-text {
 .dark .rounded-edge-container {
   color: var(--clr-bg-body-dark);
 }
-.rounded-edge-container div{
+.rounded-edge-container div {
   background-color: var(--clr-bg-body);
 }
-.dark .rounded-edge-container div{
+.dark .rounded-edge-container div {
   background-color: var(--clr-bg-body-dark);
 }
 
-
 /* ====== technology btn style ====== */
-.choose-technology-btn span::before{
- @apply duration-200 absolute left-0 w-0 h-1 bg-blue-600 block z-10 -bottom-[10px];
- content: '';
+.choose-technology-btn span::before {
+  @apply duration-200 absolute left-0 w-0 h-1 bg-blue-600 block z-10 -bottom-[10px];
+  content: "";
 }
-.choose-technology-btn span:hover::before{
- width: 100%;
+.choose-technology-btn span:hover::before {
+  width: 100%;
 }
 
-.bottom-bar{
-  background-image: linear-gradient(90deg, #FF4B1FB3 0%, #1FDDFFB3 100%);
+.bottom-bar {
+  background-image: linear-gradient(90deg, #ff4b1fb3 0%, #1fddffb3 100%);
 }
 
 /* ======= home page customization ======= */
-.page-input{
+.page-input {
   @apply border border-slate-300 rounded-[3px] hover:border-slate-500 focus:border-slate-500 outline-none;
+}
+
+/* ====== animation ======= */
+.animate-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.animate-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: black;
+  transform: scaleX(0);
+}
+
+.animate-underline:hover::after {
+  animation: underline-in 0.3s forwards;
+}
+
+.animate-underline:not(:hover)::after {
+  animation: underline-out 0.3s forwards;
+}
+
+@keyframes underline-in {
+  from {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@keyframes underline-out {
+  from {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
 }

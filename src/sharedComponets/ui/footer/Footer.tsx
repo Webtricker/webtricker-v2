@@ -32,7 +32,9 @@ export default async function Footer() {
           <div className="ms-0 md:ms-8 w-full">
             <h5>Our Pages</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
-              <Link href="/about">About</Link>
+              <Link href="/about" className="animate-underline">
+                About
+              </Link>
               <Link href="/services">Services</Link>
               <Link href="/portfolio">Portfolio</Link>
               <Link href="/blog">Blog</Link>
