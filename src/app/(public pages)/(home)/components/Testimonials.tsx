@@ -47,8 +47,8 @@ export default function Testimonials({
         </div>
 
         <Container className="relative z-10">
-          <div className="w-full flex items-center justify-end ">
-            <div className="testimonials-container">
+          <div className="w-full flex items-center justify-end  ">
+            <div className="testimonials-container bg-gradient-to-tr from-amber-200/60">
               <h6>Testimonials</h6>
               <h4
                 className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}

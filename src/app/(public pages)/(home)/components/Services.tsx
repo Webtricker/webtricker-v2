@@ -17,7 +17,7 @@ export const ServiceCard = ({ service }: { service: TService }) => {
         src={service.icon || ""}
       />
       <div className="grow">
-        <h6 className="heading font-semibold uppercase">{service.title}</h6>
+        <h6 className="heading font-semibold">{service.title}</h6>
         <p>{service.excerpt}</p>
       </div>
     </div>
@@ -37,7 +37,7 @@ export default async function Services({
   serviceSectionTitle,
   allServiceTxt,
 }: PageProps) {
-  const serviceData = await getServicesData(4);
+  const serviceData = await getServicesData();
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <Container>
@@ -64,7 +64,7 @@ export default async function Services({
           </div>
 
           {/* services info */}
-          <div className="w-full flex flex-col gap-8 lg:gap-10 2xl:gap-12">
+          <div className="w-full flex flex-col gap-6">
             {(serviceData as TService[]).map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}
