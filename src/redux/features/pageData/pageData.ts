@@ -7,6 +7,8 @@ export const pageApi = createApi({
         credentials: "include"
     }),
     endpoints: (builder) => ({
+
+        // ===== Home Page Endpoints =====
         getHomePageData: builder.query({
             query: () => ({
                 url: "/home-page"
@@ -19,10 +21,30 @@ export const pageApi = createApi({
                 body: data,
             })
         }),
+
+        // ===== About Page Endpoints =====
+        getAboutPageData: builder.query({
+            query: () => ({
+                url: "/about-page"
+            })
+        }),
+        updateAboutPageData: builder.mutation({
+            query: (data) => ({
+                url: `/about-page`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
     })
 })
 
 export const {
-  useGetHomePageDataQuery,
-  useUpdateHomePageDataMutation
+    useGetHomePageDataQuery,
+    useUpdateHomePageDataMutation,
+
+    // ===== About Page Endpoints =====
+    useGetAboutPageDataQuery,
+    useUpdateAboutPageDataMutation,
+
 } = pageApi;

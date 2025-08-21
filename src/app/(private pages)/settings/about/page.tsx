@@ -1,11 +1,11 @@
 import React from "react";
 import PrivatePageWrapper from "../../components/PrivatePageWrapper";
-import CommingSoonMsg from "../../components/CommingSoonMsg";
+import AboutPageForm from "./components/AboutPageForm";
 
 export default function AboutCustomizationPage() {
   return (
     <PrivatePageWrapper>
-      <CommingSoonMsg />
+      <AboutPageForm />
     </PrivatePageWrapper>
   );
 }

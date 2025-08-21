@@ -17,7 +17,7 @@ export interface IHomePage {
     bannerDescription: string;
 
     // testimonials
-    testimonialsBg:string;
+    testimonialsBg: string;
 
     //   intro section
     introVideo: string;
@@ -31,16 +31,16 @@ export interface IHomePage {
         medium: string;
         small: string;
     };
-    allServiceBtnText:string;
-    allProjectBtnText:string;
+    allServiceBtnText: string;
+    allProjectBtnText: string;
 
     // leaders section
-    leadersSectionTitle:string;
+    leadersSectionTitle: string;
 
 
 
     // team section
-    teamSectionTitle:string;
+    teamSectionTitle: string;
 
     // home latest blog
     blogSectionTitle: {
@@ -49,5 +49,78 @@ export interface IHomePage {
         small: string;
     };
 
-    bottomSlider:string[];
+    bottomSlider: string[];
+}
+
+
+export interface IAboutPage {
+
+    // banner section
+    bannerIntroText: {
+        top: string;
+        bottom: string;
+    },
+    bannerLargeText: string;
+    bannerDescription: string;
+    scrollDwonText: string;
+    bannerBottomText: string;
+    bannerBottomBtnText: string;
+    bannerBottomBtnLink:string;
+    bannerBackgroundImage: string;
+
+    // intro images
+    introImages: {
+        large: string;
+        medium: string;
+        small: string;
+    }
+    introText: string;
+
+
+
+    // about us section
+    aboutUsText: string;
+    aboutUsDescription: string;
+    aboutUsImage: string;
+
+    // our mission
+    ourMissionText: string;
+    ourMissionDescription: string;
+
+    // our goals
+    ourGoalsText: string;
+    ourGoalsDescription: string;
+
+    // why us 
+    whyUsText: string;
+    whyUsDescription: string;
+
+    // what we offer
+    whatWeOfferTitle: string;
+    whatWeOfferSubtitle: string;
+    whatWeOfferCurveIcon: string;
+
+    // what we offer
+    whatWeOfferItems: string[];
+
+    // team info
+    teamInfoTitle: string;
+
+    // about us analytics
+    aboutUsAnalytics: {
+        title: string;
+        subTitle: string;
+        teamMembers: string;
+        projectsCompleted: string;
+        growingRate: string;
+        yearsOfExperience: string;
+    };
+
+    // Our Clients
+    ourClientsSectionBg: string;
+
+    // bottom text
+    resumeeSendingText: string;
+    resumeeSendingEmail: string;
+    bottomTextLarge: string;
 }

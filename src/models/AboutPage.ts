@@ -1,0 +1,81 @@
+import { IAboutPage } from '@/types/pageTypes';
+import { Schema, model, models } from 'mongoose';
+
+
+
+
+const aboutPageSchema = new Schema<IAboutPage>(
+    {
+        // Banner Section
+        bannerIntroText: {
+            top: { type: String, required: true },
+            bottom: { type: String, required: true },
+        },
+        bannerLargeText: { type: String, required: true },
+        bannerDescription: { type: String, required: true },
+        scrollDwonText: { type: String, required: true },
+        bannerBottomText: { type: String, required: true },
+        bannerBottomBtnText: { type: String, required: true },
+        bannerBottomBtnLink: { type: String, required: true },
+        bannerBackgroundImage: { type: String, required: true },
+
+        // Intro Images
+        introImages: {
+            large: { type: String, required: true },
+            medium: { type: String, required: true },
+            small: { type: String, required: true },
+        },
+        introText: { type: String, required: true },
+
+        // About Us Section
+        aboutUsText: { type: String, required: true },
+        aboutUsDescription: { type: String, required: true },
+        aboutUsImage: { type: String, required: true },
+
+        // Our Mission
+        ourMissionText: { type: String, required: true },
+        ourMissionDescription: { type: String, required: true },
+
+        // Our Goals
+        ourGoalsText: { type: String, required: true },
+        ourGoalsDescription: { type: String, required: true },
+
+        // Why Us
+        whyUsText: { type: String, required: true },
+        whyUsDescription: { type: String, required: true },
+
+        // What We Offer
+        whatWeOfferTitle: { type: String, required: true },
+        whatWeOfferSubtitle: { type: String, required: true },
+        whatWeOfferCurveIcon: { type: String, required: true },
+        whatWeOfferItems: { type: [String], required: true },
+
+        // Team Info
+        teamInfoTitle: { type: String, required: true },
+
+        // About Us Analytics
+        aboutUsAnalytics: {
+            title: { type: String, required: true },
+            subTitle: { type: String, required: true },
+            teamMembers: { type: String, required: true },
+            projectsCompleted: { type: String, required: true },
+            growingRate: { type: String, required: true },
+            yearsOfExperience: { type: String, required: true },
+        },
+
+        // Our Clients
+        ourClientsSectionBg: { type: String, required: true },
+
+        // Bottom Text
+        resumeeSendingText: { type: String, required: true },
+        resumeeSendingEmail: { type: String, required: true },
+        bottomTextLarge: { type: String, required: true },
+    },
+    {
+        timestamps: false,
+    }
+);
+
+
+const About = models.About || model<IAboutPage>('About', aboutPageSchema);
+export default About;
