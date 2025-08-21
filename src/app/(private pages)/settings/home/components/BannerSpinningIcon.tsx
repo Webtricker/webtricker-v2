@@ -46,7 +46,7 @@ export default function BannerSpinningIcon({ setValue, data }: Props) {
           className="inline dark:hidden banner-spinning-star w-5 md:w-6 lg:w-8 2xl:!w-10"
           width={40}
           height={40}
-          src={blackLogo || "/images/home/hero-shape-1-1-black.webp"}
+          src={blackLogo || ""}
           alt="Star"
         />
       </button>
@@ -58,7 +58,7 @@ export default function BannerSpinningIcon({ setValue, data }: Props) {
           className="hidden dark:inline banner-spinning-star w-5 md:w-6 lg:w-8 2xl:!w-10"
           width={40}
           height={40}
-          src={whiteLogo || "/images/home/hero-shape-star-white.png"}
+          src={whiteLogo || ""}
           alt="Star"
         />
       </button>
