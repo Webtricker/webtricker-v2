@@ -51,12 +51,12 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
           {homeData?.bannerText?.left || "Digital"}
           <span className="tp-hero-title-img">
             <Image
-              width={270}
+              width={180}
               height={160}
               decoding="async"
               className={`hidden ${
                 homeData?.bannerVideo?.type === "image" && "md:block"
-              } sm:w-[120px] rounded-full sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]`}
+              } animate-pulse`}
               src={homeData?.bannerVideo?.src || ""}
               alt=""
             />
