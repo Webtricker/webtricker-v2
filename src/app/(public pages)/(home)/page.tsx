@@ -63,8 +63,6 @@ export default async function Home() {
   const firstSixPortfolios = portfoliosData.slice(0, 6);
   const secondSixPortfolios = portfoliosData.slice(6, 12);
 
-  // TODO: Have to delete this console.log
-  console.log(homeData,' home data from home page')
   return (
     <main className="w-full z-0">
       <Banner homeData={homeData} />
@@ -77,7 +75,7 @@ export default async function Home() {
         testimonials={testimonialsData}
       />
       <Testimonials
-        sectionBg={homeData?.testimonialsBanner}
+        sectionBg={homeData?.testimonialsBg}
         testimonials={testimonialsData}
       />
       <Services

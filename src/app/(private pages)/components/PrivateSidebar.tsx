@@ -52,7 +52,7 @@ export default function PrivateSidebar({children=<></>}:Props) {
   const active = EXPAND === "OPEN_PRIVATE_SIDEBAR_MENU";
   return (
     <aside
-      className={`w-full min-w-[250px] bg-slate-200 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-700 max-w-[400px] lg:max-w-[350px] overflow-hidden h-screen fixed lg:sticky top-0 
+      className={`w-full min-w-[200px] bg-slate-200 dark:bg-slate-800 border-r border-slate-300 dark:border-slate-700 max-w-[250px] lg:max-w-[240px] overflow-hidden h-screen fixed lg:sticky top-0 
         ${
           active ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         } duration-500 z-[999]`}

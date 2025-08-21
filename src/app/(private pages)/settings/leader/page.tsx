@@ -14,7 +14,7 @@ export default function TeamCustomizationPage() {
           <Link href="/settings/leader/add">
             <Button className="!py-2.5 whitespace-nowrap" label="Add Leader" />
           </Link>
-        </section>
+      </section>
         <section className=" w-full py-10 mb-10">
           <LeadersContainer />
         </section>
