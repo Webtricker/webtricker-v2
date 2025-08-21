@@ -138,7 +138,7 @@ export default function HomePageForm({
               className={`max-w-[575px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.right", { required: true })}
               placeholder="Studio"
-              defaultValue={homePageData?.banner?.right || ""}
+              defaultValue={homePageData?.bannerText?.right || ""}
             />
           </h1>
 
