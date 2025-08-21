@@ -35,17 +35,29 @@ export default async function Footer() {
               <Link href="/about" className="animate-underline">
                 About
               </Link>
-              <Link href="/services">Services</Link>
-              <Link href="/portfolio">Portfolio</Link>
-              <Link href="/blog">Blog</Link>
-              <Link href="/contact">Contact</Link>
+              <Link href="/services" className="animate-underline">
+                Services
+              </Link>
+              <Link href="/portfolio" className="animate-underline">
+                Portfolio
+              </Link>
+              <Link href="/blog" className="animate-underline">
+                Blog
+              </Link>
+              <Link href="/contact" className="animate-underline">
+                Contact
+              </Link>
             </div>
           </div>
           <div className="w-full">
             <h5>Services</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {servicesLinks.map((item) => (
-                <Link key={item.label} href={item.href}>
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="animate-underline"
+                >
                   {item.label}
                 </Link>
               ))}

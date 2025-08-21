@@ -428,13 +428,29 @@ body {
 }
 
 .wt_header-navlink::before {
-  @apply w-0 duration-300 h-1 block absolute left-0 top-full;
+  /* @apply w-0 duration-300 h-1 block absolute left-0 top-full;
   content: "";
-  background-color: var(--clr-primary);
+  background-color: var(--clr-primary); */
+
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 2px;
+  background: var(--clr-primary);
+  transform: scaleX(0);
 }
 .wt_header-navlink:hover::before {
-  width: 100%;
+  animation: underline-in 0.5s forwards;
 }
+
+.wt_header-navlink:not(:hover)::before {
+  animation: underline-out 0.5s forwards;
+}
+/* .wt_header-navlink:hover::before {
+  width: 100%;
+} */
 
 .wt_sidebar-toggler span {
   @apply w-9 lg:w-10 h-0.5 block my-1.5;
@@ -757,11 +773,11 @@ p.bouncing-text {
 }
 
 .animate-underline:hover::after {
-  animation: underline-in 0.3s forwards;
+  animation: underline-in 0.5s forwards;
 }
 
 .animate-underline:not(:hover)::after {
-  animation: underline-out 0.3s forwards;
+  animation: underline-out 0.5s forwards;
 }
 
 @keyframes underline-in {
