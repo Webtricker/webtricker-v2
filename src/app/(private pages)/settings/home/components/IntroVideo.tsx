@@ -18,7 +18,7 @@ export default function IntroVideo({ setValue, data }: Props) {
   const [video, setVideo] = useState(data?.introVideo);
 
   useEffect(() => {
-    setValue("introVideo", data?.introVideo || "demo link");
+    setValue("introVideo", data?.introVideo || "");
   }, [data?.introVideo, setValue]);
 
   // handlers
