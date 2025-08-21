@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
@@ -14,39 +14,47 @@ export default function PageTransition({
   const slicesRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     const slices = slicesRef.current?.children;
     const content = contentRef.current;
 
     if (!slices || !content) return;
 
-    gsap.set(slices, {
-      scaleY: 0,
-      transformOrigin: "center center",
-    });
     gsap.set(content, { opacity: 0 });
 
     const tl = gsap.timeline();
 
-    tl.to(slices, {
-      scaleY: 1,
-      duration: 0.5,
-      stagger: 0.08,
-      ease: "power2.out",
-      transformOrigin: "center center",
-    })
-      .to(
-        slices,
-        {
-          scaleY: 0,
-          duration: 0.5,
-          stagger: 0.06,
-          ease: "power3.in",
-          transformOrigin: "center center",
-        },
-        "+=0.1"
-      )
+    tl.fromTo(
+      slices,
+      {
+        scaleY: 0,
+        transformOrigin: "center center",
+      },
+      {
+        scaleY: 1,
+        duration: 0.4,
+        stagger: 0.15,
+        ease: "power2.out",
+        transformOrigin: "center center",
+      },
+      "+=0.1"
+    )
+      .to({}, { duration: 0.3 })
+      .to(slices, {
+        scaleY: 0,
+        duration: 0.3,
+        stagger: 0.1,
+        ease: "power2.in",
+        transformOrigin: "center center",
+      })
       .to(
         content,
         {
@@ -54,17 +62,19 @@ export default function PageTransition({
           duration: 0.4,
           ease: "power2.out",
         },
-        "-=0.3"
+        "-=0.4"
       );
-  }, [pathname]);
+  }, [pathname, mounted]);
 
   return (
     <>
+      {/* Slice overlay */}
       <div
         ref={slicesRef}
         className="fixed inset-0 z-50 pointer-events-none"
         style={{ mixBlendMode: "normal" }}
       >
+        {/* Left outer diagonal of W - Lime */}
         <div
           className="absolute top-0 left-0 w-1/4 h-full origin-center"
           style={{
@@ -72,6 +82,7 @@ export default function PageTransition({
             transform: "skewX(20deg)",
           }}
         />
+        {/* Left inner diagonal of W - Sky Blue */}
         <div
           className="absolute top-0 left-1/4 w-1/4 h-full origin-center"
           style={{
@@ -79,6 +90,7 @@ export default function PageTransition({
             transform: "skewX(-20deg)",
           }}
         />
+        {/* Right inner diagonal of W - Yellow */}
         <div
           className="absolute top-0 right-1/4 w-1/4 h-full origin-center"
           style={{
@@ -86,6 +98,7 @@ export default function PageTransition({
             transform: "skewX(20deg)",
           }}
         />
+        {/* Right outer diagonal of W - Lime */}
         <div
           className="absolute top-0 right-0 w-1/4 h-full origin-center"
           style={{
@@ -96,7 +109,9 @@ export default function PageTransition({
       </div>
 
       {/* Page content */}
-      <div ref={contentRef}>{children}</div>
+      <div ref={contentRef} style={{ opacity: 0 }}>
+        {children}
+      </div>
     </>
   );
 }
