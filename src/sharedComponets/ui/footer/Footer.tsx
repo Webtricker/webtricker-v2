@@ -6,7 +6,7 @@ import BouncingText from "../effects/BouncingText";
 import SiteLogoLong from "../logos/SiteLogoLong";
 import { getServicesData } from "@/utils/pageData";
 import { footerServicesLink, TFooterService } from "@/data/pageData";
-import { IService } from "@/types/post"
+import { IService } from "@/types/post";
 
 export default async function Footer() {
   const services = (await getServicesData(4)) as IService[];
@@ -18,8 +18,8 @@ export default async function Footer() {
   return (
     <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
       <div className="w-full bg-slate-200 dark:bg-black py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-        <Container className="flex justify-between flex-wrap gap-10 md:gap-16 lg:gap-10 2xl:gap-24">
-          <div className="w-full max-w-[500px] md:max-w-[45%] 2xl:max-w-[450px] md:mt-[-4px]">
+        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-6 lg:gap-8 2xl:gap-16">
+          <div className="w-full md:mt-[-4px]">
             <Link className="flex items-center gap-1 bold" href="/">
               <SiteLogoLong />
             </Link>
@@ -29,7 +29,7 @@ export default async function Footer() {
               Let&apos;s collaborate for lasting success.
             </p>
           </div>
-          <div className="w-full md:max-w-[45%] 2xl:max-w-[150px]">
+          <div className="ms-0 md:ms-8 w-full">
             <h5>Our Pages</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               <Link href="/about">About</Link>
@@ -39,7 +39,7 @@ export default async function Footer() {
               <Link href="/contact">Contact</Link>
             </div>
           </div>
-          <div className="w-full  md:max-w-[45%] 2xl:max-w-[200px]">
+          <div className="w-full">
             <h5>Services</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {servicesLinks.map((item) => (
@@ -49,12 +49,11 @@ export default async function Footer() {
               ))}
             </div>
           </div>
-          <div className="w-full max-w-[400px] md:max-w-[45%] 2xl:max-w-[350px]">
+          <div className="w-full">
             <h5>Follow Us on</h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
-
               {/* TODO: ============= */}
-             {/* <SocialLinks /> */}
+              {/* <SocialLinks /> */}
             </div>
             <div className="w-full mt-7">
               <label className="wt_fs-md">Subscribe to our newsletter:</label>

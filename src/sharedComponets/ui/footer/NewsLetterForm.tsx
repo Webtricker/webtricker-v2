@@ -62,7 +62,7 @@ export default function NewsLetterForm() {
         <button
           disabled={isLoading}
           onClick={handleSubmit}
-          className="px-3.5 btn-reverse-bg min-w-[48px]"
+          className="btn-reverse-bg px-3"
         >
           {isLoading ? (
             <LoadingSpinner className="text-white dark:text-black" />
