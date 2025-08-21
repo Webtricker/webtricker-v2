@@ -8,16 +8,6 @@ import React, { useEffect, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-const dImage =
-  "http://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1-1.png";
-const dVideo =
-  "http://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1-1.png";
-
-const initialData = {
-  src: dImage,
-  type: "image",
-};
-
 type Props = {
   setValue: UseFormSetValue<IHomePage>;
   data: IHomePage;
@@ -27,12 +17,10 @@ export default function BannerRoundVideo({ setValue, data }: Props) {
 
   //hooks
   const dispatch = useDispatch();
-  const [bannerData, setBannerData] = useState(
-    data?.bannerVideo || { type: "image", src: dImage }
-  );
+  const [bannerData, setBannerData] = useState(data?.bannerVideo);
 
   useEffect(() => {
-    setValue("bannerVideo", data?.bannerVideo || initialData);
+    setValue("bannerVideo", data?.bannerVideo);
   }, [data?.bannerVideo, setValue]);
 
   // handlers
@@ -65,7 +53,7 @@ export default function BannerRoundVideo({ setValue, data }: Props) {
           className={`hidden ${
             bannerData?.type === "video" && "md:block"
           } sm:w-[120px] rounded-full sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]`}
-          src={bannerData?.src || dVideo}
+          src={bannerData?.src}
         ></video>
       </button>
 
