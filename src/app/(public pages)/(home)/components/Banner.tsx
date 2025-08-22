@@ -20,11 +20,6 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
             {homeData?.greeting?.top || "Hello"} <br />{" "}
             {homeData?.greeting?.bottom || "People! We’re"}
           </span>
-          {/* <span
-            className={`text-center w-full sm:w-auto sm:text-left wt_fs-giant banner-large-text heading  ${galleryModern.className}`}
-          >
-            {homeData?.bannerText?.top || "Creative"}
-          </span> */}
           <TopAnimation word={homeData?.bannerText?.top || "Creative"} />
           <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
             <Image
@@ -52,7 +47,6 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
         <h1
           className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 wt_fs-giant banner-large-text flex w-full items-center justify-center heading`}
         >
-          {/* {homeData?.bannerText?.left || "Digital"} */}
           <LeftAnimation word={homeData?.bannerText.left || "Digital"} />
           <span className="tp-hero-title-img">
             <Image

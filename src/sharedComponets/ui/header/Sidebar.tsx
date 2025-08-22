@@ -104,14 +104,61 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
           <div className="w-full flex flex-col items-center lg:items-start gap-3 mt-10 lg:mt-20">
             <h6 className="heading uppercase mb-1">INFORMATION</h6>
             <p>
-              <a href="tel:+8801712377577">+8801712377577</a>
+              <a href="tel:+8809639237100" className="block animate-underline">
+                +8809639237100
+              </a>
+              <a href="tel:+8809639237101" className="block animate-underline">
+                +8809639237101
+              </a>
+              <a href="tel:+16824726184" className="block animate-underline">
+                +1 (682) 472-6184
+              </a>
+              <a href="tel:+8801712377577" className="block animate-underline">
+                +8801712377577
+              </a>
+              <a href="tel+8801785696469:" className="block animate-underline">
+                +8801785696469
+              </a>
+              <a href="tel:+8801793544335" className="block animate-underline">
+                +8801793544335
+              </a>
+            </p>
+
+            <p className="flex flex-col gap-1">
+              <Link
+                title="Email"
+                href="mailto:info@webtricker.com"
+                className="animate-underline"
+              >
+                info@webtricker.com
+              </Link>
+              <Link
+                title="Email"
+                href="mailto:inquiry@webtricker.com"
+                className="animate-underline"
+              >
+                inquiry@webtricker.com
+              </Link>
+              <Link
+                title="Email"
+                href="mailto:career@webtricker.com"
+                className="animate-underline"
+              >
+                career@webtricker.com
+              </Link>
+              <Link
+                title="Email"
+                href="mailto:admin@webtricker.com"
+                className="animate-underline"
+              >
+                admin@webtricker.com
+              </Link>
             </p>
 
             <p>
-              <a href="mailto:info@webtricker.com">info@webtricker.com</a>
+              House No. 46, Zia College More, beside Shahid Minar, Jamalpur,
+              Bangladesh.
             </p>
-
-            <p>House No. 46, Zia College More, beside Shahid Minar, Jamalpur, Bangladesh.</p>
           </div>
 
           {/* social links */}
@@ -120,7 +167,6 @@ export default function Sidebar({ siteShortLogoUrl }: Props) {
               FOLLOW US
             </h6>
             <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap">
-
               {/* ====== TODO: ========= */}
               {/* <SocialLinks /> */}
             </div>

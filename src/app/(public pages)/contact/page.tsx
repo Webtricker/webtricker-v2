@@ -100,22 +100,40 @@ export default function ContactPage() {
                 <PhoneIcon className="min-w-5 w-6 mt-1" />
                 <div className="grow">
                   <h6 className="heading mb-1">Phone</h6>
-                  <a href="tel:+8809639237100" className="block">
+                  <a
+                    href="tel:+8809639237100"
+                    className="block animate-underline w-fit"
+                  >
                     +8809639237100
                   </a>
-                  <a href="tel:+8809639237101" className="block">
+                  <a
+                    href="tel:+8809639237101"
+                    className="block animate-underline w-fit"
+                  >
                     +8809639237101
                   </a>
-                  <a href="tel:+16824726184" className="block">
+                  <a
+                    href="tel:+16824726184"
+                    className="block animate-underline w-fit"
+                  >
                     +1 (682) 472-6184
                   </a>
-                  <a href="tel:+8801712377577" className="block">
+                  <a
+                    href="tel:+8801712377577"
+                    className="block animate-underline w-fit"
+                  >
                     +8801712377577
                   </a>
-                  <a href="tel+8801785696469:" className="block">
+                  <a
+                    href="tel+8801785696469:"
+                    className="block animate-underline w-fit"
+                  >
                     +8801785696469
                   </a>
-                  <a href="tel:+8801793544335" className="block">
+                  <a
+                    href="tel:+8801793544335"
+                    className="block animate-underline w-fit"
+                  >
                     +8801793544335
                   </a>
                 </div>
@@ -124,16 +142,32 @@ export default function ContactPage() {
                 <EmailIcon className="min-w-5 w-6 mt-1" />
                 <div className="grow flex flex-col">
                   <h6 className="heading mb-1">Email</h6>
-                  <Link title="Email" href="mailto:info@webtricker.com">
+                  <Link
+                    title="Email"
+                    href="mailto:info@webtricker.com"
+                    className="animate-underline w-fit"
+                  >
                     info@webtricker.com
                   </Link>
-                  <Link title="Email" href="mailto:inquiry@webtricker.com">
+                  <Link
+                    title="Email"
+                    href="mailto:inquiry@webtricker.com"
+                    className="animate-underline w-fit "
+                  >
                     inquiry@webtricker.com
                   </Link>
-                  <Link title="Email" href="mailto:career@webtricker.com">
+                  <Link
+                    title="Email"
+                    href="mailto:career@webtricker.com"
+                    className="animate-underline w-fit"
+                  >
                     career@webtricker.com
                   </Link>
-                  <Link title="Email" href="mailto:admin@webtricker.com">
+                  <Link
+                    title="Email"
+                    href="mailto:admin@webtricker.com"
+                    className="animate-underline w-fit"
+                  >
                     admin@webtricker.com
                   </Link>
                 </div>
