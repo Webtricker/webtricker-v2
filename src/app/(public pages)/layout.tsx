@@ -5,7 +5,6 @@ import SiteLogoLong from "@/sharedComponets/ui/logos/SiteLogoLong";
 import { getSiteLogos } from "@/utils/logo";
 import React, { ReactNode } from "react";
 import webtrickerW from "@/assets/images/home/webtricker-w.png";
-import PageTransition from "@/sharedComponets/DOM/PageTransition";
 
 export default async function PublicLayout({
   children,
@@ -24,13 +23,13 @@ export default async function PublicLayout({
 
   const finalSmallLogo = smallLogo || webtrickerW;
   return (
-    <PageTransition>
+    <>
       <Navbar siteShortLogoUrl={finalSmallLogo}>
         <SiteLogoLong />
       </Navbar>
       {children}
       <CursorDot />
       <Footer />
-    </PageTransition>
+    </>
   );
 }
