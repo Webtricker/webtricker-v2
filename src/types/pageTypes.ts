@@ -98,7 +98,8 @@ export interface IAboutPage {
     // what we offer
     whatWeOfferTitle: string;
     whatWeOfferSubtitle: string;
-    whatWeOfferCurveIcon: string;
+    whatWeOfferCurveIconWhite: string;
+    whatWeOfferCurveIconBlack: string;
 
     // what we offer
     whatWeOfferItems: string[];
@@ -111,9 +112,13 @@ export interface IAboutPage {
         title: string;
         subTitle: string;
         teamMembers: string;
+        teamMembersText: string;
         projectsCompleted: string;
+        projectsCompletedText: string;
         growingRate: string;
+        growingRateText: string;
         yearsOfExperience: string;
+        yearsOfExperienceText: string;
     };
 
     // Our Clients

@@ -47,7 +47,8 @@ const aboutPageSchema = new Schema<IAboutPage>(
         // What We Offer
         whatWeOfferTitle: { type: String, required: true },
         whatWeOfferSubtitle: { type: String, required: true },
-        whatWeOfferCurveIcon: { type: String, required: true },
+        whatWeOfferCurveIconWhite: { type: String, required: true },
+        whatWeOfferCurveIconBlack: { type: String, required: true },
         whatWeOfferItems: { type: [String], required: true },
 
         // Team Info
@@ -58,9 +59,13 @@ const aboutPageSchema = new Schema<IAboutPage>(
             title: { type: String, required: true },
             subTitle: { type: String, required: true },
             teamMembers: { type: String, required: true },
+            teamMembersText: { type: String, required: true },
             projectsCompleted: { type: String, required: true },
+            projectsCompletedText: { type: String, required: true },
             growingRate: { type: String, required: true },
+            growingRateText: { type: String, required: true },
             yearsOfExperience: { type: String, required: true },
+            yearsOfExperienceText: { type: String, required: true },
         },
 
         // Our Clients

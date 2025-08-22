@@ -71,7 +71,7 @@ export default function PageTransition({
       {/* Slice overlay */}
       <div
         ref={slicesRef}
-        className="fixed inset-0 z-50 pointer-events-none"
+        className="hidden fixed inset-0 z-50 pointer-events-none"
         style={{ mixBlendMode: "normal" }}
       >
         {/* Left outer diagonal of W - Lime */}
@@ -109,7 +109,10 @@ export default function PageTransition({
       </div>
 
       {/* Page content */}
-      <div ref={contentRef} style={{ opacity: 0 }}>
+      <div
+      //  ref={contentRef}
+      // style={{ opacity: 0 }}
+      >
         {children}
       </div>
     </>
