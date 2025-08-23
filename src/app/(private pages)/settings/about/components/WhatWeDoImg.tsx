@@ -34,7 +34,7 @@ export default function WhatWeDoImg({ setValue, data }: Props) {
       setValue("whatWeOfferCurveIconBlack", selectedMedia.secure_url);
     } else {
       setWhiteIcon(selectedMedia.secure_url);
-      setValue("whatWeOfferCurveIconBlack", selectedMedia.secure_url);
+      setValue("whatWeOfferCurveIconWhite", selectedMedia.secure_url);
     }
     dispatch(toggleModal(null));
   };
@@ -42,6 +42,7 @@ export default function WhatWeDoImg({ setValue, data }: Props) {
   return (
     <>
       <button
+       type="button"
        title="click to open modal"
         onClick={() => dispatch(toggleModal(active_key))}
         className="min-h-[96px] min-w-[65px] border border-red-400 w-full mt-4"

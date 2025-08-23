@@ -31,7 +31,7 @@ export const pageApi = createApi({
         updateAboutPageData: builder.mutation({
             query: (data) => ({
                 url: `/about-page`,
-                method: "PUT",
+                method: "POST",
                 body: data,
             })
         }),

@@ -28,6 +28,7 @@ export default function BannerBG({ setValue, setBannerBG }: Props) {
     <>
       <div className="w-[200px]">
         <button
+         type="button"
           onClick={() => dispatch(toggleModal(BANNER_BACKGROUND_MODAL_KEY))}
           className="wt_fs-xl border px-4 py-1 rounded-full"
         >

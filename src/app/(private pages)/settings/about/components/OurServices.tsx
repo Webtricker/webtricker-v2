@@ -6,11 +6,14 @@ import MinusIcon from "./Icons";
 import { toast } from "react-toastify";
 type Props = {
   setValue: UseFormSetValue<IAboutPage>;
+  data: IAboutPage;
 };
 
-export default function OurServices({ setValue }: Props) {
+export default function OurServices({ setValue, data }: Props) {
   // hooks
-  const [services, setServices] = useState<string[]>([]);
+  const [services, setServices] = useState<string[]>(
+    data?.whatWeOfferItems || []
+  );
   const [val, setVal] = useState("");
 
   //   handlers

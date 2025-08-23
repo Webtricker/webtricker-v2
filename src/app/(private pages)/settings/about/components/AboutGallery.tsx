@@ -60,8 +60,8 @@ export default function AboutGallery({ setValue, data }: Props) {
     <div className="w-full flex items-center flex-col md:flex-row gap-10 lg:gap-20 justify-between">
       <div className="w-full max-w-[600px] relative h-[350px] md:h-[400px] lg:h-[428px]">
         <button
+          type="button"
           onClick={() => dispatch(toggleModal(ABOUT_PAGE_BANNER_ONE))}
-          title="Click to change"
           className="w-full h-[400px] md:h-[550px] xl:h-[690px] overflow-hidden absolute left-0 bottom-0"
         >
           <Image
@@ -83,8 +83,8 @@ export default function AboutGallery({ setValue, data }: Props) {
       </div>
       <div className="w-full relative flex justify-center">
         <button
+          type="button"
           onClick={() => dispatch(toggleModal(ABOUT_PAGE_BANNER_TWO))}
-          title="Click to change"
           className="w-full max-w-[638px] h-[400px] lg:h-[428px] relative"
         >
           <Image
@@ -105,9 +105,9 @@ export default function AboutGallery({ setValue, data }: Props) {
         />
 
         <button
+          type="button"
           onClick={() => {
             dispatch(toggleModal(ABOUT_PAGE_BANNER_THREE));
-            console.log("clicked, again");
           }}
           title="Click to change"
           className="w-full absolute -bottom-[40%] lg:-bottom-[60%] right-0 max-w-[260px]  h-[250px] lg:h-[310px]"

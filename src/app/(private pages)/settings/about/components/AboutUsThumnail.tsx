@@ -7,7 +7,6 @@ import React from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-const defaultImg = "/images/about-us/mosharraf-speaking.webp";
 type Props = {
   setValue: UseFormSetValue<IAboutPage>;
   data: IAboutPage;
@@ -18,7 +17,7 @@ export default function AboutUsThumnail({ setValue, data }: Props) {
 
   //hooks
   const dispatch = useDispatch();
-  const [img, setImg] = React.useState(data?.aboutUsImage || defaultImg);
+  const [img, setImg] = React.useState(data?.aboutUsImage || "");
 
   // handlers
   const handleSelect = (selectedMedia: TMedia) => {
@@ -31,7 +30,7 @@ export default function AboutUsThumnail({ setValue, data }: Props) {
     <>
       <button
         onClick={() => dispatch(toggleModal(KEY))}
-        className="w-full lg:max-w-[600px] h-auto"
+        className="w-full border border-slate-300 rounded-[10px] lg:max-w-[600px] h-auto"
       >
         <ParallaxImage
           src={img}

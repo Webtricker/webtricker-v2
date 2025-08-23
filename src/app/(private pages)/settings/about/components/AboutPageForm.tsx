@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IAboutPage } from "@/types/pageTypes";
-import { useGetAboutPageDataQuery } from "@/redux/features/pageData/pageData";
+import {
+  useGetAboutPageDataQuery,
+  useUpdateAboutPageDataMutation,
+} from "@/redux/features/pageData/pageData";
 import { ArrowDownIcon } from "@/app/(public pages)/about/components/Icons";
 import { useForm } from "react-hook-form";
 import BannerBG from "./BannerBG";
@@ -12,10 +15,11 @@ import WhatWeDoImg from "./WhatWeDoImg";
 import OurServices from "./OurServices";
 import { ITeamInfo, ITestimonialsInfo } from "@/types/data";
 import OurTeam from "./OurTeam";
-import Link from "next/link";
-import Marquee from "react-fast-marquee";
-import Image from "next/image";
 import TestimonialsContainer from "./TestimonialsContainer";
+import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
+import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
+import { toast } from "react-toastify";
+import Button from "@/sharedComponets/ui/buttons/Button";
 
 // ================== default variables
 // TODO: have to change this url with
@@ -54,9 +58,8 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
     register,
     setValue,
     handleSubmit,
-    // formState: { errors },
   } = useForm<IAboutPage>();
-  const { data } = useGetAboutPageDataQuery({});
+  const { data, isLoading } = useGetAboutPageDataQuery({});
   const aboutPageData = data?.data || ({} as IAboutPage);
   const [bannerBG, setBannerBG] = useState(""); // TODO: have to change it later.
 
@@ -69,44 +72,45 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
 
   //  background image change key
 
-  //   const [updateHomePage, { isLoading: loading }] =
-  //     useUpdateHomePageDataMutation();
+  const [updateAboutPage, { isLoading: loading }] =
+    useUpdateAboutPageDataMutation();
 
   // handlers
-  //   const onSubmit = async (updateData) => {
-  //     try {
-  //       const res = await updateHomePage({
-  //         id: data?.data?._id,
-  //         data: updateData,
-  //       }).unwrap();
-  //       if (res?.success) {
-  //         toast.success("Home page data updated");
-  //       } else {
-  //         toast.error("Failed to update home page data");
-  //       }
-  //     } catch (error: any) {
-  //       console.log(error, " error updating home page data");
-  //       toast.error("Failed to update home page data");
-  //     }
-  //   };
+  const onSubmit = async (updateData: IAboutPage) => {
+    console.log(updateData, " update data ");
+    try {
+      const res = await updateAboutPage({
+        id: data?.data?._id,
+        data: updateData,
+      }).unwrap();
+      if (res?.success) {
+        toast.success("About page data updated");
+      } else {
+        toast.error("Failed to update about page data");
+      }
+    } catch (error: any) {
+      console.log(error, " error updating home page data");
+      toast.error("Failed to update home page data");
+    }
+  };
 
-  //   if (isLoading)
-  //     return (
-  //       <ConditionalReturnContainer>
-  //         <LoadingSpinner />
-  //       </ConditionalReturnContainer>
-  //     );
+  if (isLoading)
+    return (
+      <ConditionalReturnContainer>
+        <LoadingSpinner />
+      </ConditionalReturnContainer>
+    );
 
-  //   if (!data)
-  //     return (
-  //       <ConditionalReturnContainer>
-  //         <p>Add Home page data</p>
-  //       </ConditionalReturnContainer>
-  //     );
+  if (!data)
+    return (
+      <ConditionalReturnContainer>
+        <p>Add about page data</p>
+      </ConditionalReturnContainer>
+    );
 
   return (
     <div className="w-full overflow-hidden">
-      <form onSubmit={handleSubmit(() => {})} className={`w-full`}>
+      <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
         <section
           style={{
             backgroundImage: `url(${
@@ -163,7 +167,10 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
             </Container>
             <div className="w-full">
               <div className="w-full flex justify-end px-5">
-                <button className="flex items-start gap-5 text-white">
+                <button
+                  type="button"
+                  className="flex items-start gap-5 text-white"
+                >
                   <span className="">
                     <input
                       id="scrollDownText"
@@ -185,7 +192,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input pl-1 max-w-[600px] w-full min-h-[155px]"
                     {...register("bannerBottomText", { required: true })}
                     placeholder="Liko develops, designs & delivers websites & creative campaigns that drive results,"
-                    defaultValue={aboutPageData?.scrollDwonText || ""}
+                    defaultValue={aboutPageData?.bannerBottomText || ""}
                   />
                 </h4>
                 <div className="w-full relative mt-5 ">
@@ -227,7 +234,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                   className="page-input w-full  min-h-[450px] pl-1"
                   {...register("introText", { required: true })}
                   placeholder={defaultIntroText}
-                  defaultValue={aboutPageData?.introText || defaultIntroText}
+                  defaultValue={aboutPageData?.introText || ""}
                 ></textarea>
               </h3>
             </div>
@@ -245,10 +252,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input max-w-[610px] py-3 pl-1"
                     {...register("aboutUsText", { required: true })}
                     placeholder="We help to make your website creative"
-                    defaultValue={
-                      aboutPageData?.aboutUsText ||
-                      "We help to make your website creative"
-                    }
+                    defaultValue={aboutPageData?.aboutUsText || ""}
                   ></textarea>
                 </h3>
                 <p className="w-full">
@@ -257,10 +261,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 min-h-[110px] leading_normal"
                     {...register("aboutUsDescription", { required: true })}
                     placeholder={aboutUsDefaultDescription}
-                    defaultValue={
-                      aboutPageData?.aboutUsDescription ||
-                      aboutUsDefaultDescription
-                    }
+                    defaultValue={aboutPageData?.aboutUsDescription || ""}
                   ></textarea>
                 </p>
               </div>
@@ -271,9 +272,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 leading_normal"
                     {...register("ourMissionText", { required: true })}
                     placeholder="Our mission"
-                    defaultValue={
-                      aboutPageData?.ourMissionText || "Our mission"
-                    }
+                    defaultValue={aboutPageData?.ourMissionText || ""}
                   />
                 </h4>
                 <p>
@@ -282,10 +281,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 min-h-[90px] leading_normal"
                     {...register("ourMissionDescription", { required: true })}
                     placeholder={ourMissionDescription}
-                    defaultValue={
-                      aboutPageData?.ourMissionDescription ||
-                      ourMissionDescription
-                    }
+                    defaultValue={aboutPageData?.ourMissionDescription || ""}
                   ></textarea>
                 </p>
               </div>
@@ -296,7 +292,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 leading_normal"
                     {...register("ourGoalsText", { required: true })}
                     placeholder="Our goals"
-                    defaultValue={aboutPageData?.ourGoalsText || "Our goals"}
+                    defaultValue={aboutPageData?.ourGoalsText || ""}
                   />
                 </h4>
                 <p>
@@ -305,9 +301,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 min-h-[90px] leading_normal"
                     {...register("ourGoalsDescription", { required: true })}
                     placeholder={ourGoalsDescription}
-                    defaultValue={
-                      aboutPageData?.ourGoalsDescription || ourGoalsDescription
-                    }
+                    defaultValue={aboutPageData?.ourGoalsDescription || ""}
                   ></textarea>
                 </p>
               </div>
@@ -318,7 +312,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 leading_normal"
                     {...register("whyUsText", { required: true })}
                     placeholder="Why us?"
-                    defaultValue={aboutPageData?.whyUsText || "Why us?"}
+                    defaultValue={aboutPageData?.whyUsText || ""}
                   />
                 </h4>
                 <p>
@@ -327,9 +321,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                     className="page-input w-full pl-1 min-h-[110px] leading_normal"
                     {...register("whyUsDescription", { required: true })}
                     placeholder={whyUsDescription}
-                    defaultValue={
-                      aboutPageData?.whyUsDescription || whyUsDescription
-                    }
+                    defaultValue={aboutPageData?.whyUsDescription || ""}
                   ></textarea>
                 </p>
               </div>
@@ -364,7 +356,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
                 <WhatWeDoImg data={aboutPageData} setValue={setValue} />
               </div>
             </div>
-            <OurServices setValue={setValue} />
+            <OurServices data={aboutPageData} setValue={setValue} />
           </Container>
         </section>
 
@@ -390,20 +382,20 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
             <div className="w-full col-span-2 lg:col-span-1 text-center md:text-left mb-3 md:mb-0">
               <p className="bold">
                 <input
-                  id="aboutUsAnalytics.title"
+                  id="aboutUsAnalytics.subTitle"
                   className="page-input max-w-[350px] pl-1"
-                  {...register("aboutUsAnalytics.title", { required: true })}
+                  {...register("aboutUsAnalytics.subTitle", { required: true })}
                   placeholder="Fun Facts"
-                  defaultValue={aboutPageData?.aboutUsAnalytics?.title || ""}
+                  defaultValue={aboutPageData?.aboutUsAnalytics?.subTitle || ""}
                 />
               </p>
               <h4 className="heading md:max-w-[350px] mt-1">
                 <textarea
-                  id="aboutUsAnalytics.subTitle"
+                  id="aboutUsAnalytics.title"
                   className="page-input max-w-[300px] pl-1"
-                  {...register("aboutUsAnalytics.subTitle", { required: true })}
+                  {...register("aboutUsAnalytics.title", { required: true })}
                   placeholder="Agency Snapshots"
-                  defaultValue={aboutPageData?.aboutUsAnalytics?.subTitle || ""}
+                  defaultValue={aboutPageData?.aboutUsAnalytics?.title || ""}
                 ></textarea>
               </h4>
             </div>
@@ -579,6 +571,9 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
               />
             </h2>
           </Container>
+        </section>
+        <section className="section ">
+          {loading ? <LoadingSpinner /> : <Button label="Save" />}
         </section>
       </form>
     </div>
