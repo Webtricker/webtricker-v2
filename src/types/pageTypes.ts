@@ -65,7 +65,7 @@ export interface IAboutPage {
     scrollDwonText: string;
     bannerBottomText: string;
     bannerBottomBtnText: string;
-    bannerBottomBtnLink:string;
+    bannerBottomBtnLink: string;
     bannerBackgroundImage: string;
 
     // intro images
@@ -129,3 +129,54 @@ export interface IAboutPage {
     resumeeSendingEmail: string;
     bottomTextLarge: string;
 }
+
+
+type BottomText = {
+    expression: string;
+    title: string;
+}
+
+
+export interface IServicesPage {
+    banner: {
+        title: string;
+        description: string;
+    }
+    bannerBG: {
+        type: "image" | "video";
+        src: string;
+    };
+    servicesShotcut: {
+        icon: string;
+        title: string;
+        subtitle: string;
+    },
+    bottomText: BottomText
+}
+
+
+export interface IPortfolioPage {
+    bannerSlider: [
+        {
+            img: string;
+            technology: string;
+            name: string;
+        }
+    ];
+    projectIntroduction: {
+        companyName: string;
+        title: string;
+        description: string;
+    };
+    bottomText: BottomText
+}
+
+export interface IBlogPage {
+    bannerBG: {
+        type: "image" | "video";
+        src: string;
+    };
+    title: string;
+    description: string;
+}
+

@@ -104,13 +104,28 @@ export const getHomePageData = async () => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/home-page`);
         if (!res.ok) {
-            console.error("Failed to fetch testimonial data");
+            console.error("Failed to fetch home page data");
             return {};
         }
         const result = await res.json();
         return result?.data || {};
     } catch (error) {
-        console.error("Error fetching testimonial data:", error);
+        console.error("Error fetching home page data:", error);
+        return {};
+    }
+}
+
+export const getAboutPageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/about-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch about page data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching about page data:", error);
         return {};
     }
 }

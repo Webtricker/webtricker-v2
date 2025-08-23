@@ -38,7 +38,7 @@ export default function TeamInfo({ teamData,title }: { teamData: TTeamData[],tit
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 relative">
       <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-        <h3 className="text-center middle-border">{title || "Our People"}</h3>
+        <h3 className="text-center middle-border">{title}</h3>
       </div>
       <div ref={containerRef} className="w-full cursor-hide">
         <Swiper

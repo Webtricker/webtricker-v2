@@ -1,10 +1,10 @@
 import connectToDatabase from "@/lib/dbConnect";
-import About from "@/models/AboutPage";
+import ServicePage from "@/models/ServicePage";
 import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
     try {
         await connectToDatabase();
         await verifyAdmin(req);
@@ -21,11 +21,11 @@ export const PUT = async (req: NextRequest) => {
         }
 
         // Use the _id from the data object to find and update
-        const aboutPageData = await About.findByIdAndUpdate(id, data);
+        const servicePageData = await ServicePage.findByIdAndUpdate(id, data);
 
 
         // If no document was found with that ID, handle the case
-        if (!aboutPageData) {
+        if (!servicePageData) {
             return NextResponse.json(
                 { success: false, error: true, message: "Document not found" },
                 { status: 404 }
@@ -33,7 +33,7 @@ export const PUT = async (req: NextRequest) => {
         }
 
         return NextResponse.json(
-            { success: true, message: "Data updated", data: aboutPageData },
+            { success: true, message: "Data updated", data: servicePageData },
             { status: 200 }
         );
     } catch (error: any) {
@@ -49,7 +49,7 @@ export const GET = async () => {
     try {
         await connectToDatabase();
 
-        const data = await About.findOne().lean();
+        const data = await ServicePage.findOne().lean();
 
         return NextResponse.json(
             {
@@ -59,7 +59,7 @@ export const GET = async () => {
             { status: 200 }
         );
     } catch (error) {
-        console.error('Error fetching about page data.', error);
+        console.error('Error fetching service page data.', error);
         return NextResponse.json(
             { success: false, message: 'Internal Server Error' },
             { status: 500 }

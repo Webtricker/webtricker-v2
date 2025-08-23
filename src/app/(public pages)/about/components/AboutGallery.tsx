@@ -4,7 +4,14 @@ import gsap from "gsap";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 
-export default function AboutGallery() {
+type Props = {
+  introImages: {
+    large: string;
+    medium: string;
+    small: string;
+  };
+};
+export default function AboutGallery({ introImages}: Props) {
   const longImageRef = useRef<HTMLImageElement | null>(null);
   const mediumImageRef = useRef<HTMLImageElement | null>(null);
   const shortImageRef = useRef<HTMLImageElement | null>(null);
@@ -12,7 +19,12 @@ export default function AboutGallery() {
 
   useEffect(() => {
     console.log(longImageRef, " image ref");
-    if (!longImageRef.current || !mediumImageRef.current || !shortImageRef.current) return;
+    if (
+      !longImageRef.current ||
+      !mediumImageRef.current ||
+      !shortImageRef.current
+    )
+      return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -75,8 +87,8 @@ export default function AboutGallery() {
                 width={600}
                 height={900}
                 className="w-full h-[135%] absolute left-0 bottom-0"
-                src="https://liko.foxthemes.me/wp-content/uploads/2024/06/about-1.jpg"
-                alt="Gallery Image 1"
+                src={introImages?.large || ""}
+                alt="Gallery sImage"
               />
             </div>
           </div>
@@ -87,19 +99,19 @@ export default function AboutGallery() {
                 width={638}
                 height={428}
                 className="w-full h-full absolute top-0 left-0"
-                src="https://liko.foxthemes.me/wp-content/uploads/2024/06/about-2.jpg"
-                alt="Gallery Image"
+                src={introImages?.medium || ""}
+                alt="Medium Image"
               />
             </div>
 
             <div className="w-full absolute -bottom-[40%] lg:-bottom-[60%] right-0 max-w-[260px]  h-[250px] lg:h-[310px]">
               <Image
-               ref={shortImageRef}
+                ref={shortImageRef}
                 width={600}
                 height={900}
                 className="w-full h-full max-w-[230px]"
-                src="https://liko.foxthemes.me/wp-content/uploads/2024/06/about-3.jpg"
-                alt="Gallery Image 1"
+                src={introImages?.small || ""}
+                alt="Small Image"
               />
             </div>
           </div>

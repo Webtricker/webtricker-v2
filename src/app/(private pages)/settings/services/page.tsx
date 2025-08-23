@@ -3,8 +3,8 @@ import PrivatePageWrapper from "../../components/PrivatePageWrapper";
 import PageTitle from "../../components/PageTitle";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
-import ServicesBanner from "@/app/(public pages)/services/components/ServicesBanner";
 import AdminServiceContainer from "./components/AdminServiceContainer";
+import ServicePageForm from "./components/ServicePageForm";
 
 export default function ServicesCustomizationPage() {
   return (
@@ -16,10 +16,10 @@ export default function ServicesCustomizationPage() {
             <Button className="!py-2.5 whitespace-nowrap" label="Add Service" />
           </Link>
         </section>
+        <ServicePageForm />
         <section
           className={`w-full min-h-screen z-0 flex flex-col relative mb-8 md:mb-10 lg:mb-14 xl:mb-16 2xl:mb-18`}
         >
-          <ServicesBanner />
           <AdminServiceContainer />
         </section>
       </main>
