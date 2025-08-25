@@ -35,26 +35,28 @@ export default function BannerBackground({ setValue, bannerBG }: Props) {
     dispatch(toggleModal(null));
   };
 
-  if (!bg)
-    return (
-      <Button
-        className="object-cover mx-10 absolute top-0 left-0 min-w-[150px] -z-10 whitespace-nowrap"
-        cb={() => dispatch(toggleModal(BANNER_BACKGROUND_MODAL_KEY))}
-        label="Add BG"
-      />
-    );
-
   return (
     <>
-      {bg?.type === "image" ? (
+      {!bg ? (
+        <Button
+          className="object-cover mx-10 absolute top-0 left-0 min-w-[150px] -z-10 whitespace-nowrap"
+          data-prevent-body-trigger
+          cb={() => dispatch(toggleModal(BANNER_BACKGROUND_MODAL_KEY))}
+          label="Add BG"
+        />
+      ) : bg?.type === "image" ? (
         <Image
+          title="Click to change background"
+          width={1800}
+          height={900}
           onClick={() => dispatch(toggleModal(BANNER_BACKGROUND_MODAL_KEY))}
           src={bg?.src || ""}
-          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
+          className=" absolute top-0 left-0 w-full h-full object-cover -z-10"
           alt="Service Banner Image"
         />
       ) : (
         <video
+          title="Click to change background"
           onClick={() => dispatch(toggleModal(BANNER_BACKGROUND_MODAL_KEY))}
           autoPlay
           loop

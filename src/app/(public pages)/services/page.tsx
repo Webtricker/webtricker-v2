@@ -3,8 +3,9 @@ import ServicesBanner from "./components/ServicesBanner";
 import OurServices from "./components/OurServices";
 import ServicesPanelWrapper from "./components/ServicesPanelWrapper";
 import ServicePanels from "./components/ServicePanels";
-import { getServicesData } from "@/utils/pageData";
+import { getServicesData, getServicesPageData } from "@/utils/pageData";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
+import { IServicesPage } from "@/types/pageTypes";
 
 // dynamic metadata for services page
 export async function generateMetadata() {
@@ -35,12 +36,19 @@ export async function generateMetadata() {
 
 export default async function ServicesPage() {
   const serviceData = await getServicesData();
+  const pageData = (await getServicesPageData()) as IServicesPage;
 
   return (
     <main className="w-full z-0">
-      <ServicesBanner />
-      <OurServices services={serviceData} />
-      <ServicesPanelWrapper>
+      <ServicesBanner
+        bg={pageData?.bannerBG || {}}
+        banner={pageData?.banner || {}}
+      />
+      <OurServices
+        servicesShotcut={pageData?.servicesShotcut || {}}
+        services={serviceData}
+      />
+      <ServicesPanelWrapper bottomText={pageData?.bottomText || {}}>
         <ServicePanels services={serviceData} />
       </ServicesPanelWrapper>
     </main>

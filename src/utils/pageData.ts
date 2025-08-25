@@ -81,6 +81,23 @@ export const getServicesData = async (limit: number = 99) => {
     }
 }
 
+export const getServicesPageData = async () => {
+    try {
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services-page`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch services");
+            return [];
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching services:", error);
+        return [];
+    }
+}
+
 export const getPostsData = async (limit: number = 99): Promise<IBlog[] | null> => {
     try {
         const res = await fetch(

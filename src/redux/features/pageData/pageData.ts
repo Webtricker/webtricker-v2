@@ -64,7 +64,7 @@ export const pageApi = createApi({
             })
         }),
 
-        // ===== Portfolio Page Endpoints =====
+        // ===== Blogs Page Endpoints =====
         getBlogsPageData: builder.query({
             query: () => ({
                 url: "/blogs-page"

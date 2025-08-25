@@ -6,6 +6,7 @@ import {
 import { RootState } from "@/redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const BodyEventListeners = () => {
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
@@ -22,6 +23,8 @@ const BodyEventListeners = () => {
         return;
       }
 
+toast.success('btn clicked')
+      return ;
       dispatch(SET_EXPAND(null));
       dispatch(updatePreventScrolling(false));
     };

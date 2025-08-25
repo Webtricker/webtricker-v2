@@ -17,5 +17,5 @@ export default function OurLeader({title,leaderData=[]}:{title:string,leaderData
       </Container>
       </div>
     </section>  
-  );
+  ); 
 }

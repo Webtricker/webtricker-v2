@@ -147,7 +147,8 @@ export interface IServicesPage {
         src: string;
     };
     servicesShotcut: {
-        icon: string;
+        iconWhite: string;
+        iconBlack: string;
         title: string;
         subtitle: string;
     },

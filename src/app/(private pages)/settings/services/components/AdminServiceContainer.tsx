@@ -17,7 +17,7 @@ export default function AdminServiceContainer() {
   } = useGetServicesQuery(99);
 
   const services = data?.services ?? [];
-  console.log(services, "services from admin service container");
+
 
   // Show loading spinner
   if (isLoading) {

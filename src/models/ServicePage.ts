@@ -9,15 +9,15 @@ const bannerSchema = new Schema({
     description: {
         type: String,
         required: true,
-    },
-    bg: {
-        type: String,
-        required: true,
     }
 }, { _id: false });
 
 const servicesShortcutSchema = new Schema({
-    icon: {
+    iconWhite: {
+        type: String,
+        required: true,
+    },
+    iconBlack: {
         type: String,
         required: true,
     },
@@ -36,7 +36,7 @@ const bottomTextSchema = new Schema({
         type: String,
         required: true,
     },
-    description: {
+    expression: {
         type: String,
         required: true,
     }
@@ -46,6 +46,10 @@ const servicesPageSchema = new Schema<IServicesPage>({
     banner: {
         type: bannerSchema,
         required: true,
+    },
+    bannerBG: {
+        type: { type: String, enum: ['video', 'image'], required: true },
+        src: { type: String, required: true },
     },
     servicesShotcut: {
         type: servicesShortcutSchema,
