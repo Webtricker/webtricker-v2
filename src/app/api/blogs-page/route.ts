@@ -4,7 +4,7 @@ import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const PUT = async (req: NextRequest) => {
     try {
         await connectToDatabase();
         await verifyAdmin(req);
