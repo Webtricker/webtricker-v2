@@ -11,7 +11,13 @@ import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveabl
 import galleryModern from "@/app/fonts/gallery";
 import { TTeamData } from "@/types/data";
 
-export default function TeamInfo({ teamData,title }: { teamData: TTeamData[],title:string }) {
+export default function TeamInfo({
+  teamData,
+  title,
+}: {
+  teamData: TTeamData[];
+  title: string;
+}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -89,7 +95,7 @@ export default function TeamInfo({ teamData,title }: { teamData: TTeamData[],tit
                     alt="Team Profile"
                   />
                 </HoverEffectMoveable>
-                <div className="w-full duration-500 opacity-0 group-hover:opacity-100 h-full absolute left-0 pb-10 bottom-0 bg-gradient-to-t text-white from-black to-transparent pointer-events-none flex flex-col justify-end items-center">
+                <div className="w-full duration-500 opacity-0 group-hover:opacity-100 h-full absolute left-0 pb-10 bottom-0 bg-gradient-to-t text-white from-black to-transparent pointer-events-none flex flex-col justify-end items-center p-2">
                   <p className="uppercase">{item.role}</p>
                   <h4 className={`uppercase ${galleryModern.className}`}>
                     {item.name}

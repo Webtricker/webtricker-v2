@@ -50,8 +50,8 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
           <LeftAnimation word={homeData?.bannerText.left || "Digital"} />
           <span className="tp-hero-title-img">
             <Image
-              width={180}
-              height={160}
+              width={160}
+              height={140}
               decoding="async"
               className={`hidden ${
                 homeData?.bannerVideo?.type === "image" && "md:block"

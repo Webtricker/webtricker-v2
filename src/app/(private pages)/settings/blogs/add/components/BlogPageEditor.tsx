@@ -28,11 +28,12 @@ export default function BlogPageEditor() {
   const [tags, setTags] = useState<string[]>([]);
   const [excerp, setExcerp] = useState("");
   const [thumnail, setThumnail] = useState<TMedia | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<TCategory|null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<TCategory | null>(
+    null
+  );
   const [postBlog, { isLoading }] = useAddPostsMutation();
 
   const handleSave = async () => {
-
     if (!title.trim()) {
       toast.error("Title is required");
       return;
@@ -122,7 +123,7 @@ export default function BlogPageEditor() {
           </div>
         )}
       </div>
-      <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
+      <div className="w-full relative grow lg:pt-20 max-w-[1160px] mx-auto">
         <TitleInput title={title} setTitle={setTitle} />
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description
@@ -138,15 +139,15 @@ export default function BlogPageEditor() {
           setSelectedCategory={setSelectedCategory}
         />
         <EditorContainer editorRef={editorRef} />
-        
-         {isLoading ? (
+
+        {isLoading ? (
           <div className="w-[50px] lg:hidden mt-6 md:mt-8">
             <LoadingSpinner />
           </div>
         ) : (
           <div className="w-auto lg:hidden mt-6 md:mt-8">
-          <Button className="!py-2.5" label="Save" cb={handleSave} />
-        </div>
+            <Button className="!py-2.5" label="Save" cb={handleSave} />
+          </div>
         )}
       </div>
     </>
