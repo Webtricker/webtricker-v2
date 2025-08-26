@@ -161,6 +161,7 @@ export interface IPortfolioPage {
         img: string;
         technology: string;
         name: string;
+        _id?:string;
     }[];
     projectIntroduction: {
         companyName: string;

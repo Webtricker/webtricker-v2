@@ -162,3 +162,19 @@ export const getLeaderData = async () => {
         return [];
     }
 }
+
+
+export const getPortfolioPageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch portfolio page data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching portfolio page data:", error);
+        return {};
+    }
+}

@@ -15,7 +15,7 @@ const bannerSliderItemSchema = new Schema({
         type: String,
         required: true,
     },
-}, { _id: false });
+}, { _id: true });
 
 // Define the schema for the projectIntroduction object.
 const projectIntroductionSchema = new Schema({

@@ -60,7 +60,7 @@ export default function PortfolioPageFrom() {
     );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
+    <form onSubmit={handleSubmit(onSubmit)} className={`w-full border-b`}>
       <BannerSlider bannerSlider={portfolioPageData?.bannerSlider || []} setValue={setValue} />
       <section className="section-speacing">
         <Container className="!max-w-[1200px]">

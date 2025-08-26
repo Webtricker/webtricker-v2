@@ -18,7 +18,7 @@ import { TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
 import { toast } from "react-toastify";
 
 type TSliderEl = {
-  id: string;
+  _id: string;
   img: string;
   technology: string;
   name: string;
@@ -26,20 +26,20 @@ type TSliderEl = {
 
 type Props = {
   setValue: UseFormSetValue<IPortfolioPage>;
-  bannerSlider:IPortfolioPage['bannerSlider'];
+  bannerSlider: IPortfolioPage["bannerSlider"];
 };
 
-
-
-export default function BannerSlider({bannerSlider, setValue }: Props) {
+export default function BannerSlider({ bannerSlider, setValue }: Props) {
   //hooks
-  const [sliderElements, setSliderElements] = useState<TSliderEl[]>(bannerSlider as TSliderEl[] || []);
+  const [sliderElements, setSliderElements] = useState<TSliderEl[]>(
+    (bannerSlider as TSliderEl[]) || []
+  );
   const swiperRef = useRef<SwiperType | null>(null);
 
   //   handlers
   const handleAdd = () => {
     const newData: TSliderEl = {
-      id: crypto.randomUUID(), // stable id
+      _id: crypto.randomUUID(), // stable id
       img: "",
       technology: "",
       name: "",
@@ -70,9 +70,9 @@ export default function BannerSlider({bannerSlider, setValue }: Props) {
           pagination={{ clickable: true }}
         >
           {sliderElements.map((el) => (
-            <SwiperSlide key={el.id} className="bg-blue-200 h-full p-0">
+            <SwiperSlide key={el._id} className="bg-blue-200 h-full p-0">
               <SwiperSliderSlide
-                slideId={el.id}
+                slideId={el._id}
                 setSliderElements={setSliderElements}
                 setValue={setValue}
                 el={el}
@@ -105,8 +105,8 @@ const SwiperSliderSlide = ({
   setSliderElements,
   slideId,
 }: SlideProps) => {
+  console.log(el, " element from the slide");
 
-  console.log(el, ' element from the slide')
   // variables
   const BG_MODAL_KEY = `OPEN_BG_CHANGE_MODAL_${slideId}`;
 
@@ -130,7 +130,7 @@ const SwiperSliderSlide = ({
     if (!confirm("Are you sure you want to delete?")) return;
 
     setSliderElements((prev) => {
-      const next = prev.filter((s) => s.id !== slideId);
+      const next = prev.filter((s) => s._id !== slideId);
       setValue("bannerSlider", next);
       return next;
     });
@@ -140,11 +140,22 @@ const SwiperSliderSlide = ({
 
   const handleSaveSlide = () => {
     setSliderElements((prev) => {
-      const next = prev.map((s) =>
-        s.id === slideId
-          ? { ...s, img: bg, technology: tech, name: portfolio }
-          : s
-      );
+      console.log(prev, " prevous elements");
+      const next = prev.map((s) => {
+        if (s._id === slideId) {
+          console.log("previous slide", prev);
+          console.log("slide to change", s);
+          return { ...s, img: bg, technology: tech, name: portfolio };
+        }
+
+        return s;
+
+        //  s._id === slideId
+        //   ? { ...s, img: bg, technology: tech, name: portfolio }
+        //   : s
+      });
+
+      console.log(next, " next elements");
       setValue("bannerSlider", next);
       return next;
     });
