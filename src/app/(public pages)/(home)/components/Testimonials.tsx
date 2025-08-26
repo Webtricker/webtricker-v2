@@ -35,15 +35,17 @@ export default function Testimonials({
           alt="Testimonals Banner"
         />
 
-        <div className="absolute rounded-[4px] md:flex items-center top-40 hidden -left-10 lg:left-20 2xl:left-40 z-0 uppercase bg-[var(--clr-bg-body-dark)] p-2 px-5 -rotate-90 ">
-          <Image
-            className="w-10 h-10 rotate-90"
-            src="/icons/home/testimoials-clicking-hand.svg"
-            width={50}
-            height={50}
-            alt="Hand icon"
-          />{" "}
-          <span className={`text-white font-semibold`}>Our Testimonials</span>
+        <div className="absolute md:flex items-center top-40 hidden -left-10 lg:left-20 2xl:left-40 z-0 uppercase -rotate-90 p-2 bg-green-600/80">
+          <div className="md:flex items-center py-2 px-5 bg-[var(--clr-bg-body-dark)]">
+            <Image
+              className="w-10 h-10 rotate-90"
+              src="/icons/home/testimoials-clicking-hand.svg"
+              width={50}
+              height={50}
+              alt="Hand icon"
+            />
+            <span className={`text-white font-semibold`}>Our Testimonials</span>
+          </div>
         </div>
 
         <Container className="relative z-10">
