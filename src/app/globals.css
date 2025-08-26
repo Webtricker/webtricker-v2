@@ -360,7 +360,7 @@ body {
 
 /* Button Wrapper */
 .wt_btn_cta {
-  @apply relative inline-block overflow-hidden border rounded-full leading-[110%] text-inherit bg-transparent transform transition-transform duration-300 px-8 py-4;
+  @apply relative inline-block overflow-hidden border rounded-full leading-[110%] text-inherit bg-transparent transform transition-transform duration-300 px-8 py-3;
   transform: translateZ(0);
 }
 

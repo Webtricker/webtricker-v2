@@ -1,7 +1,6 @@
 import { ITestimonialsInfo } from "@/types/data";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import defaultBanner from "@/assets/images/home/testimonials-banner.webp";
 import { UseFormSetValue } from "react-hook-form";
 import { IAboutPage } from "@/types/pageTypes";
 import { useDispatch } from "react-redux";
