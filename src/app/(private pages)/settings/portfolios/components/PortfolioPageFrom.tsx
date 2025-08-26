@@ -1,7 +1,7 @@
 "use client";
 import {
   useGetPortfoliosPageDataQuery,
-  useUpdateServicesPageDataMutation,
+  useUpdatePortfoliosPageDataMutation,
 } from "@/redux/features/pageData/pageData";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
@@ -24,10 +24,11 @@ export default function PortfolioPageFrom() {
   //  background image change key
 
   const [updatePortfolioPage, { isLoading: loading }] =
-    useUpdateServicesPageDataMutation();
+    useUpdatePortfoliosPageDataMutation();
 
   // handlers
   const onSubmit = async (updateData: IPortfolioPage) => {
+    console.log(updateData, " updated data");
     try {
       const res = await updatePortfolioPage({
         id: portfolioPageData?._id,
@@ -54,13 +55,13 @@ export default function PortfolioPageFrom() {
   if (!data)
     return (
       <ConditionalReturnContainer>
-        <p>Add Service portfolio data</p>
+        <p>Add portfolio data</p>
       </ConditionalReturnContainer>
     );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
-      <BannerSlider setValue={setValue} />
+      <BannerSlider bannerSlider={portfolioPageData?.bannerSlider || []} setValue={setValue} />
       <section className="section-speacing">
         <Container className="!max-w-[1200px]">
           <p className="bold flex items-center gap-1">

@@ -4,7 +4,7 @@ import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
+export const PUT = async (req: NextRequest) => {
     try {
         await connectToDatabase();
         await verifyAdmin(req);
@@ -22,7 +22,6 @@ export const POST = async (req: NextRequest) => {
 
         // Use the _id from the data object to find and update
         const portfolioPageData = await PortfolioPage.findByIdAndUpdate(id, data);
-
 
         // If no document was found with that ID, handle the case
         if (!portfolioPageData) {

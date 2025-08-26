@@ -157,13 +157,11 @@ export interface IServicesPage {
 
 
 export interface IPortfolioPage {
-    bannerSlider: [
-        {
-            img: string;
-            technology: string;
-            name: string;
-        }
-    ];
+    bannerSlider: {
+        img: string;
+        technology: string;
+        name: string;
+    }[];
     projectIntroduction: {
         companyName: string;
         title: string;

@@ -40,7 +40,7 @@ const bottomTextSchema = new Schema({
         type: String,
         required: true,
     },
-    description: {
+    expression: {
         type: String,
         required: true,
     },
