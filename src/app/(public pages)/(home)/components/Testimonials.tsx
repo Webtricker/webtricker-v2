@@ -35,7 +35,7 @@ export default function Testimonials({
           alt="Testimonals Banner"
         />
 
-        <div className="absolute md:flex items-center top-40 hidden -left-10 lg:left-20 2xl:left-40 z-0 uppercase -rotate-90 p-2 bg-green-600/80">
+        <div className="absolute md:flex items-center top-40 hidden -left-10 lg:left-20 2xl:left-40 z-0 uppercase -rotate-90 p-2 bg-green-500/40">
           <div className="md:flex items-center py-2 px-5 bg-[var(--clr-bg-body-dark)]">
             <Image
               className="w-10 h-10 rotate-90"
@@ -49,45 +49,47 @@ export default function Testimonials({
         </div>
 
         <Container className="relative z-10">
-          <div className="w-full flex items-center justify-end  ">
-            <div className="testimonials-container bg-gradient-to-tr from-amber-200/60">
-              <h6>Testimonials</h6>
-              <h4
-                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}
-              >
-                From Our Cients
-              </h4>
-              <Swiper
-                spaceBetween={30}
-                effect={"slide"}
-                autoplay={{
-                  delay: 5000,
-                  disableOnInteraction: false,
-                }}
-                loop={true}
-                modules={[EffectFade, Autoplay]}
-                className="mySwiper"
-              >
-                {testimonials.map((testimonial) => (
-                  <SwiperSlide key={testimonial._id}>
-                    <p>{testimonial.review}</p>
+          <div className="w-full flex items-center justify-end ">
+            <div className="bg-green-500/40 p-4 w-full max-w-[600px] min-h-[400px] mt-20">
+              <div className="testimonials-container text-white">
+                <h6>Testimonials</h6>
+                <h4
+                  className={`heading font-semibold mb-5 mt-1 ${galleryModern.className} !text-green-500`}
+                >
+                  From Our Cients
+                </h4>
+                <Swiper
+                  spaceBetween={30}
+                  effect={"slide"}
+                  autoplay={{
+                    delay: 5000,
+                    disableOnInteraction: false,
+                  }}
+                  loop={true}
+                  modules={[EffectFade, Autoplay]}
+                  className="mySwiper"
+                >
+                  {testimonials.map((testimonial) => (
+                    <SwiperSlide key={testimonial._id}>
+                      <p>{testimonial.review}</p>
 
-                    <div className="w-full gap-5 flex items-center mt-10">
-                      <Image
-                        className="w-20 min-w-20 lg:min-w-[100px] border object-cover border-slate-300 dark:border-slate-700 rounded-full lg:w-[100px] h-20 lg:h-[100px]"
-                        src={testimonial.profile}
-                        width={100}
-                        height={100}
-                        alt="profile image"
-                      />
-                      <div className="w-full flex flex-col">
-                        <h6>{testimonial.name}</h6>
-                        <p>{testimonial.role}</p>
+                      <div className="w-full gap-5 flex items-center mt-10">
+                        <Image
+                          className="w-20 min-w-20 lg:min-w-[100px] border object-cover border-slate-300 dark:border-slate-700 rounded-full lg:w-[100px] h-20 lg:h-[100px]"
+                          src={testimonial.profile}
+                          width={100}
+                          height={100}
+                          alt="profile image"
+                        />
+                        <div className="w-full flex flex-col">
+                          <h6>{testimonial.name}</h6>
+                          <p>{testimonial.role}</p>
+                        </div>
                       </div>
-                    </div>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
             </div>
           </div>
         </Container>
