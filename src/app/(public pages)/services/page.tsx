@@ -42,7 +42,7 @@ export default async function ServicesPage() {
       />
       <OurServices
         servicesShotcut={pageData?.servicesShotcut || {}}
-        services={serviceData}
+        services={serviceData || []}
       />
       <ServicesPanelWrapper bottomText={pageData?.bottomText || {}}>
         <ServicePanels services={serviceData} />

@@ -11,48 +11,56 @@ export default async function ServicePanels({
 }) {
   return (
     <>
-      {services?.map((item: IService, index: number) => (
-        <section
-          key={item._id}
-          style={{ zIndex: services?.length + index }}
-          className="service-panel !bg-slate-50 dark:!bg-slate-950 flex flex-col sm:flex-row w-full min-h-screen"
-        >
-          <div className="w-full sm:w-3/6 h-5/12 sm:h-full">
-            <Image
-              className="w-full h-full object-cover"
-              src={item.thumnail.url}
-              width={item.thumnail.width || 1000}
-              height={item.thumnail.height || 1000}
-              alt={item.title}
-              priority={index === 0}
-            />
-          </div>
-          <div className="w-full sm:w-3/6 h-7/12 sm:h-full xl:px-10 2xl:px-20 pt-10">
-            <Container className="h-full flex flex-col md:justify-center">
-              <PanelHeader index={index} />
-              <h4 className="mb-2 md:mb-4 lg:mb-6">{item.category}</h4>
-              <div className="w-full flex flex-col items-start xl:ml-10 2xl:ml-12">
-                <p>{item.excerp}</p>
-                {item?.subServices?.length > 0 && (
-                  <ul className="my-2 md:my-4 lg:my-6 list-disc list-inside flex flex-col md:gap-2">
-                    {item.subServices.map((work, i) => (
-                      <li key={work + i}>{work}</li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              <div className="w-full flex items-center justify-between mt-4">
-                <Link
-                  href={`/services/${item.slug}`}
-                  className="duration-200 text-blue-500 hover:underline"
-                >
-                  Want to know more about {item.category}?
-                </Link>
-              </div>
-            </Container>
-          </div>
-        </section>
-      ))}
+      {services?.map((item: IService, index: number) => {
+        const subServices = item.subServices ?? [];
+        const thumbnail = item.thumnail ?? {
+          url: "",
+          width: 1000,
+          height: 1000,
+        };
+        return (
+          <section
+            key={item._id}
+            style={{ zIndex: services?.length + index }}
+            className="service-panel !bg-slate-50 dark:!bg-slate-950 flex flex-col sm:flex-row w-full min-h-screen"
+          >
+            <div className="w-full sm:w-3/6 h-5/12 sm:h-full">
+              <Image
+                className="w-full h-full object-cover"
+                src={thumbnail.url}
+                width={thumbnail.width || 1000}
+                height={thumbnail.height || 1000}
+                alt={item.title}
+                priority={index === 0}
+              />
+            </div>
+            <div className="w-full sm:w-3/6 h-7/12 sm:h-full xl:px-10 2xl:px-20 pt-10">
+              <Container className="h-full flex flex-col md:justify-center">
+                <PanelHeader index={index} />
+                <h4 className="mb-2 md:mb-4 lg:mb-6">{item.category}</h4>
+                <div className="w-full flex flex-col items-start xl:ml-10 2xl:ml-12">
+                  <p>{item.excerp}</p>
+                  {subServices?.length > 0 && (
+                    <ul className="my-2 md:my-4 lg:my-6 list-disc list-inside flex flex-col md:gap-2">
+                      {item.subServices.map((work, i) => (
+                        <li key={work + i}>{work}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="w-full flex items-center justify-between mt-4">
+                  <Link
+                    href={`/services/${item.slug}`}
+                    className="duration-200 text-blue-500 hover:underline"
+                  >
+                    Want to know more about {item.category}?
+                  </Link>
+                </div>
+              </Container>
+            </div>
+          </section>
+        );
+      })}
     </>
   );
 }
