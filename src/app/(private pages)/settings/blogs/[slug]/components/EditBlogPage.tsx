@@ -1,8 +1,6 @@
 "use client";
 import PageTitle from "@/app/(private pages)/components/PageTitle";
-import {
-  useUpdatePostMutation,
-} from "@/redux/features/post/postApi";
+import { useUpdatePostMutation } from "@/redux/features/post/postApi";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import Category from "@/sharedComponets/ui/editor/Category";
 import Description from "@/sharedComponets/ui/editor/Description";
@@ -74,7 +72,7 @@ export default function EditBlogPage({ post }: { post: TBlog }) {
       return;
     }
 
-    if(editorRef.current && !editorRef.current.getContent()) {
+    if (editorRef.current && !editorRef.current.getContent()) {
       toast.error("Content is required");
       return;
     }
@@ -132,7 +130,7 @@ export default function EditBlogPage({ post }: { post: TBlog }) {
           </div>
         )}
       </div>
-      <div className="w-full relative grow lg:pt-20 max-w-[970px] mx-auto">
+      <div className="w-full relative grow lg:pt-20 max-w-[1160px] mx-auto">
         <h5 className="mb-5">{post.title}</h5>
         <Thumnail thumnail={thumnail} setThumnail={setThumnail} />
         <Description

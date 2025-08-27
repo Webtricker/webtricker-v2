@@ -61,7 +61,7 @@ export default function PageTransition({
 
       <div
         ref={blueOverlayRef}
-        className="fixed inset-0 z-40 bg-blue-500 pointer-events-none"
+        className="fixed inset-0 z-40 bg-gray-200 pointer-events-none"
       />
 
       <div ref={contentRef}>{children}</div>

@@ -52,7 +52,7 @@ const ParallaxImage = ({ src, title }: Props) => {
     >
       <Image
         ref={imageRef}
-        className="pointer-events-none min-w-[200%] z-10 absolute top-0 left-0 -translate-x-[40%] h-full object-cover"
+        className="pointer-events-none min-w-[200%] z-10 absolute top-0 left-0 -translate-x-[40%] h-full"
         src={src}
         width={400}
         height={600}

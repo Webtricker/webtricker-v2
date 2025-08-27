@@ -534,7 +534,7 @@ body {
 }
 
 .testimonials-container {
-  @apply mt-20 w-full max-w-[600px] min-h-[400px] bg-[var(--clr-bg-body)] dark:bg-[var(--clr-bg-body-dark)] p-4 md:p-5 lg:p-6 rounded-[10px];
+  @apply bg-[var(--clr-bg-body-dark)] dark:bg-[var(--clr-bg-body-dark)] p-4 md:p-5 lg:p-6;
   box-shadow: 0 10px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 .dark .testimonials-container {
