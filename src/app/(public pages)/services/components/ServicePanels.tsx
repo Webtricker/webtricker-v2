@@ -11,7 +11,7 @@ export default async function ServicePanels({
 }) {
   return (
     <>
-      {services.map((item: IService, index: number) => (
+      {services?.map((item: IService, index: number) => (
         <section
           key={item._id}
           style={{ zIndex: services?.length + index }}

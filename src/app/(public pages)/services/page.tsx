@@ -7,18 +7,14 @@ import { getServicesData, getServicesPageData } from "@/utils/pageData";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IServicesPage } from "@/types/pageTypes";
 
-// dynamic metadata for services page
 export async function generateMetadata() {
   const data = await getServicesData();
+  const titles = data?.map((service: { title: string }) => service.title) ?? [];
+
   return {
     title: "Our Services | Webtricker",
     description: "Explore the range of services we offer at Webtricker.",
-    keywords: [
-      data
-        .map((service: { title: string }) => service.title)
-        .join(", ")
-        .split(", "),
-    ],
+    keywords: titles,
     openGraph: {
       title: "Webtricker - Our Services",
       description: "Explore the range of services we offer at Webtricker.",
@@ -35,8 +31,8 @@ export async function generateMetadata() {
 }
 
 export default async function ServicesPage() {
-  const serviceData = await getServicesData();
-  const pageData = (await getServicesPageData()) as IServicesPage;
+  const serviceData = (await getServicesData()) ?? [];
+  const pageData = ((await getServicesPageData()) as IServicesPage) ?? {};
 
   return (
     <main className="w-full z-0">
