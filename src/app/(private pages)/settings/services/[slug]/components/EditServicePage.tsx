@@ -62,7 +62,7 @@ export default function EditServicePage({ service }: { service: IService }) {
       return;
     }
 
-    if (!keyServices.length) {
+    if (!keyServices?.length) {
       toast.error("Sub services are required");
       return;
     }

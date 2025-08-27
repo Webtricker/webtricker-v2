@@ -14,7 +14,7 @@ export default async function ServicePanels({
       {services.map((item: IService, index: number) => (
         <section
           key={item._id}
-          style={{ zIndex: services.length + index }}
+          style={{ zIndex: services?.length + index }}
           className="service-panel !bg-slate-50 dark:!bg-slate-950 flex flex-col sm:flex-row w-full min-h-screen"
         >
           <div className="w-full sm:w-3/6 h-5/12 sm:h-full">

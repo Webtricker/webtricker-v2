@@ -40,7 +40,7 @@ export default function AdminServiceContainer() {
   }
 
   // No services found
-  if (!services.length) {
+  if (!services?.length) {
     return (
       <Container className="text-center">
         <p className="wt_fs-lg">No services found.</p>
