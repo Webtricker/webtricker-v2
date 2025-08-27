@@ -24,6 +24,7 @@ export interface IHomePage {
 
     // clients section
     clientSectionSubtitle: string;
+    clientsBanners:string[];
 
     // service section
     serviceSectionTitle: {

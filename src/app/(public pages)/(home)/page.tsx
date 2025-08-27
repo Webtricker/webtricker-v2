@@ -72,7 +72,7 @@ export default async function Home() {
       </Container>
       <Clients
         title={homeData?.clientSectionSubtitle}
-        testimonials={testimonialsData}
+        clientsBanners={homeData?.clientsBanners}
       />
       <Testimonials
         sectionBg={homeData?.testimonialsBg}

@@ -24,6 +24,7 @@ const homePageSchema = new Schema<IHomePage>(
         bannerDescription: { type: String, required: true },
         introVideo: { type: String, required: true },
         clientSectionSubtitle: { type: String, required: true },
+        clientsBanners:{type: [String], required:true},
         testimonialsBg: { type: String, required: true },
 
         serviceSectionTitle: {
