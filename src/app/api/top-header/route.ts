@@ -1,5 +1,5 @@
 import connectToDatabase from "@/lib/dbConnect";
-import ServicePage from "@/models/ServicePage";
+import TopHeader from "@/models/TopHeader";
 import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -11,7 +11,7 @@ export const PUT = async (req: NextRequest) => {
 
         // Expect a single data object from the request body
         const { id, data } = await req.json();
-        
+
         // Check if the data and its ID are present
         if (!id) {
             return NextResponse.json(
@@ -21,10 +21,10 @@ export const PUT = async (req: NextRequest) => {
         }
 
         // Use the _id from the data object to find and update
-        const servicePageData = await TopH.create(data);
-         
+        const topHeaderData = await TopHeader.findByIdAndUpdate(id, data);
+
         // If no document was found with that ID, handle the case
-        if (!servicePageData) {
+        if (!topHeaderData) {
             return NextResponse.json(
                 { success: false, error: true, message: "Document not found" },
                 { status: 404 }
@@ -32,7 +32,7 @@ export const PUT = async (req: NextRequest) => {
         }
 
         return NextResponse.json(
-            { success: true, message: "Data updated", data: servicePageData },
+            { success: true, message: "Data updated", data: topHeaderData },
             { status: 200 }
         );
     } catch (error: any) {
@@ -48,7 +48,7 @@ export const GET = async () => {
     try {
         await connectToDatabase();
 
-        const data = await ServicePage.findOne().lean();
+        const data = await TopHeader.findOne().lean();
 
         return NextResponse.json(
             {
@@ -58,7 +58,7 @@ export const GET = async () => {
             { status: 200 }
         );
     } catch (error) {
-        console.error('Error fetching service page data.', error);
+        console.error('Error fetching top header data.', error);
         return NextResponse.json(
             { success: false, message: 'Internal Server Error' },
             { status: 500 }

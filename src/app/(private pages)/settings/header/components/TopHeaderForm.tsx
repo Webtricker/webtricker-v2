@@ -1,18 +1,47 @@
-"use client"; 
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import Button from "@/sharedComponets/ui/buttons/Button";
 import { ITopHeader } from "@/types/componentsType";
 import { TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
+import { TMedia } from "@/types/commonTypes";
+import { useDispatch } from "react-redux";
+import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
+import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
+import Button from "@/sharedComponets/ui/buttons/Button";
+import Image from "next/image";
+import {
+  useGetTopHeaderDataQuery,
+  useUpdateTopHeaderDataMutation,
+} from "@/redux/features/componentsCustomization/customizationApiSlice";
+import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
+import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
+import { toast } from "react-toastify";
+
+type TActionType = {
+  target: "socialLinks" | "contactLinks";
+  index: number;
+};
+
+// variables
+const ACTIVE_KEY = "OPEN_HEADER_TOP_ICON_MODAL";
 
 export default function BlogsPageForm() {
-  const { control, register, handleSubmit } = useForm<ITopHeader>({
-    defaultValues: {
-      contactLinks: [{ icon: "", text: "" }],
-      socialLinks: [{ icon: "", href: "" }],
-    },
-  });
+  const dispatch = useDispatch();
+  const { data: headerData, isLoading } = useGetTopHeaderDataQuery({});
+  const [updateTopHeader, { isLoading: isUpdating }] =
+    useUpdateTopHeaderDataMutation();
+
+  // form default value
+  const defaultValues: ITopHeader = {
+    contactLinks: headerData?.data?.contactLinks ?? [{ icon: "", text: "" }],
+    socialLinks: headerData?.data?.socialLinks ?? [{ icon: "", href: "" }],
+  };
+
+  // hook form necessary fields
+  const { control, reset, watch, setValue, register, handleSubmit } =
+    useForm<ITopHeader>({
+      defaultValues,
+    });
 
   // Dynamic arrays
   const {
@@ -33,105 +62,165 @@ export default function BlogsPageForm() {
     name: "socialLinks",
   });
 
-  const onSubmit: SubmitHandler<ITopHeader> = (data) => {
-    console.log("Submitted data:", data);
-    /**
-     * data looks like:
-     * {
-     *   contactLinks: [ { icon: "phone", text: "123456" }, ... ],
-     *   socialLinks: [ { icon: "facebook", href: "https://fb.com" }, ... ]
-     * }
-     */
-  };
-  // if (isLoading)
-  //   return (
-  //     <ConditionalReturnContainer>
-  //       <LoadingSpinner />
-  //     </ConditionalReturnContainer>
-  //   );
+  // react & form hooks
+  const [actionType, setActionType] = useState<TActionType | null>(null);
+  const contacts = watch("contactLinks");
+  const socials = watch("socialLinks");
 
-  // if (!data)
-  //   return (
-  //     <ConditionalReturnContainer>
-  //       <p>Add blogs page data</p>
-  //     </ConditionalReturnContainer>
-  //   );
+  const onSubmit: SubmitHandler<ITopHeader> = async (data) => {
+    console.log("Submitted data:", data);
+    try {
+      const res = await updateTopHeader({
+        id: headerData?.data?._id,
+        data,
+      }).unwrap();
+      if (res.success) {
+        toast.success("Updated top header");
+      }
+    } catch (error) {
+      console.log(error, " error updating top header data");
+      toast.error("Error updating. Try again");
+    }
+  };
+
+  // handlers
+  const handleSelect = (media: TMedia) => {
+    dispatch(toggleModal(null));
+    if (!actionType) return;
+
+    setValue(
+      `${actionType.target}.${actionType.index}.icon`,
+      media.secure_url,
+      {
+        shouldDirty: true,
+      }
+    );
+    // reset the value
+    setActionType(null);
+  };
+
+  const handleChange = (action: TActionType) => {
+    setActionType(action);
+    dispatch(toggleModal(ACTIVE_KEY));
+  };
+
+  // when headerData arrives, reset form values
+  useEffect(() => {
+    if (headerData?.data) {
+      reset({
+        contactLinks: headerData.data.contactLinks ?? [{ icon: "", text: "" }],
+        socialLinks: headerData.data.socialLinks ?? [{ icon: "", href: "" }],
+      });
+    }
+  }, [headerData, reset]);
+
+  if (isLoading)
+    return (
+      <ConditionalReturnContainer>
+        <LoadingSpinner />
+      </ConditionalReturnContainer>
+    );
+
+  console.log(contactFields, " contact fields");
+  console.log(defaultValues, " default values");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="border w-full max-w-[800px] border-slate-300 dark:border-slate-700 p-5 rounded-[10px]">
-      {/* Contact Links Section */}
-      <div className="w-full">
-        <h5 className="font-bold mb-2">Contact Links</h5>
-        {contactFields.map((field, index) => (
-          <div key={field.id} className="flex gap-2 mb-2 w-full">
-            <input
-              placeholder="Icon"
-              {...register(`contactLinks.${index}.icon` as const)}
-              className="page-input py-1.5 px-3 grow"
-            />
-            <input
-              placeholder="Text"
-              {...register(`contactLinks.${index}.text` as const)}
-              className="page-input py-1.5 px-3 grow"
-            />
-            <button
-              type="button"
-              onClick={() => removeContact(index)}
-              className="pl-3"
-            >
-              <TrashCanIcon className="min-w-6 text-red-500" />
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => addContact({ icon: "", text: "" })}
-          className="bg-blue-500 text-white px-4 py-1 rounded"
-        >
-          + Add Contact
-        </button>
-      </div>
-
-      {/* Social Links Section */}
-      <div>
-        <h5 className="font-bold mb-2">Social Links</h5>
-        {socialFields.map((field, index) => (
-          <div key={field.id} className="flex gap-2 mb-2">
-            <input
-              placeholder="Icon"
-              {...register(`socialLinks.${index}.icon` as const)}
-              className="page-input py-1.5 px-3"
-            />
-            <input
-              placeholder="Href"
-              {...register(`socialLinks.${index}.href` as const)}
-              className="page-input py-1.5 px-3"
-            />
-            <button
-              type="button"
-              onClick={() => removeSocial(index)}
-              className="bg-red-500 text-white px-2 rounded"
-            >
-              X
-            </button>
-          </div>
-        ))}
-        <button
-          type="button"
-          onClick={() => addSocial({ icon: "", href: "" })}
-          className="bg-blue-500 text-white px-4 py-1 rounded"
-        >
-          + Add Social
-        </button>
-      </div>
-
-      {/* Submit */}
-      <button
-        type="submit"
-        className="bg-green-600 text-white px-6 py-2 rounded"
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="border w-full max-w-[800px] border-slate-300 dark:border-slate-700 p-5 md:p-10 rounded-[10px]"
       >
-        Submit
-      </button>
-    </form>
+        {/* Contact Links Section */}
+        <div className="w-full">
+          <h6 className="font-bold mb-5">Contact Links</h6>
+          {contactFields.map((field, index) => {
+            const currentIcon = contacts?.[index]?.icon; // watch value
+
+            return (
+              <div key={field.id} className="flex gap-5 mb-5 w-full">
+                {currentIcon ? (
+                  <Image width={40} height={40} src={currentIcon} alt="Icon" />
+                ) : (
+                  <Button
+                    label="Add Icon"
+                    className="!py-2.5"
+                    cb={() => handleChange({ index, target: "contactLinks" })}
+                  />
+                )}
+                <input
+                  placeholder="Enter text"
+                  {...register(`contactLinks.${index}.text` as const)}
+                  className="page-input py-1.5 px-3 grow"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeContact(index)}
+                  className="pl-3"
+                >
+                  <TrashCanIcon className="min-w-6 text-red-500" />
+                </button>
+              </div>
+            );
+          })}
+
+          <div className="w-full flex justify-center">
+            <Button
+              label="Add Contact"
+              className="!py-2.5"
+              cb={() => addContact({ icon: "", text: "" })}
+            />
+          </div>
+        </div>
+
+        {/* Social Links Section */}
+        <div className="w-full my-10">
+          <h6 className="font-bold mb-5">Social Links</h6>
+          {socialFields.map((field, index) => {
+            const currentIcon = socials?.[index]?.icon;
+            return (
+              <div key={field.id} className="flex gap-5 mb-5 w-full">
+                {currentIcon ? (
+                  <Image width={40} height={40} src={currentIcon} alt="Icon" />
+                ) : (
+                  <Button
+                    label="Add Icon"
+                    className="!py-2.5"
+                    cb={() => handleChange({ index, target: "socialLinks" })}
+                  />
+                )}
+                <input
+                  placeholder="Enter link"
+                  {...register(`socialLinks.${index}.href` as const)}
+                  className="page-input py-1.5 px-3 grow"
+                />
+                <button
+                  type="button"
+                  onClick={() => removeSocial(index)}
+                  className="pl-3"
+                >
+                  <TrashCanIcon className="min-w-6 text-red-500" />
+                </button>
+              </div>
+            );
+          })}
+          <div className="w-full flex justify-center">
+            <Button
+              label="Add Social"
+              className="!py-2.5"
+              cb={() => addSocial({ icon: "", href: "" })}
+            />
+          </div>
+        </div>
+
+        <Button label="Save" type="submit" className="!py-2.5" />
+      </form>
+
+      <MediaModal
+        allowedMediaTypeToShow={["img"]}
+        activeKey={ACTIVE_KEY}
+        key={ACTIVE_KEY}
+        cb={handleSelect}
+      />
+    </>
   );
 }
