@@ -51,7 +51,7 @@ export default function TopAnimation({ word }: { word?: string }) {
 
   return (
     <h1
-      className={`text-center w-full sm:w-auto sm:text-left wt_fs-giant banner-large-text heading  ${galleryModern.className}`}
+      className={`text-center w-full sm:w-auto sm:text-left xl:text-[180px] text-7xl !leading-[70%] heading ${galleryModern.className}`}
     >
       {word?.split("").map((letter, index) => (
         <span
