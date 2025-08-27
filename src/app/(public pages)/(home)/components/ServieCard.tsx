@@ -21,7 +21,7 @@ const ServiceCard = ({ service }: { service: TService }) => {
     //   </div>
     // </div>
 
-    <div className="p-4 shadow-md">
+    <div className="p-4 shadow-md border border-green-500 rounded-xl rounded-br-none">
       <div className="flex items-center gap-4">
         <Image
           width={40}
@@ -39,12 +39,18 @@ const ServiceCard = ({ service }: { service: TService }) => {
           <p className="text-justify">{service.description}</p>
         )}
 
-        <button
-          className="font-bold"
-          onClick={() => setShowDetails((prevState) => !prevState)}
-        >
-          Show more
-        </button>
+        <div className="flex items-baseline justify-between gap-2">
+          <div className="mt-2 flex items-center gap-1">
+            <p className="!text-base">For more:</p>
+            <button className="font-semibold underline">Click here</button>
+          </div>
+          <span
+            className="text-4xl font-bold cursor-pointer"
+            onClick={() => setShowDetails((prevState) => !prevState)}
+          >
+            +
+          </span>
+        </div>
       </div>
     </div>
   );
