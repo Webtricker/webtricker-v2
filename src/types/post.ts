@@ -11,7 +11,7 @@ export interface TBlog {
     url?: string;
   };
   tags: string[];
-  postType: 'service' | 'blog';
+  postType: "service" | "blog";
   category: TCategory | null;
   content: string;
 }
@@ -30,10 +30,10 @@ export interface TService {
   title: string;
   slug: string;
   description: string;
-  excerp: string;
+  excerpt: string;
   tags: string[];
-  category:string;
-  icon:string;
+  category: string;
+  icon: string;
   subServices: string[];
   content: string;
   thumnail: {
@@ -44,6 +44,6 @@ export interface TService {
 }
 
 export interface IService extends TService {
-  _id:string;
+  _id: string;
   createdAt: Date;
 }

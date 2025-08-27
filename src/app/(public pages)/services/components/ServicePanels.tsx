@@ -32,7 +32,7 @@ export default async function ServicePanels({
               <PanelHeader index={index} />
               <h4 className="mb-2 md:mb-4 lg:mb-6">{item.category}</h4>
               <div className="w-full flex flex-col items-start xl:ml-10 2xl:ml-12">
-                <p>{item.excerp}</p>
+                <p>{item.excerpt}</p>
                 {item?.subServices?.length > 0 && (
                   <ul className="my-2 md:my-4 lg:my-6 list-disc list-inside flex flex-col md:gap-2">
                     {item.subServices.map((work, i) => (

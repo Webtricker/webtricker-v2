@@ -39,7 +39,7 @@ export default function EditServicePage({ service }: { service: IService }) {
     service.subServices || []
   );
   const [icon, setIcon] = useState(service.icon || "");
-  const [excerp, setExcerp] = useState(service.excerp || "");
+  const [excerp, setExcerp] = useState(service.excerpt || "");
   const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
   const [selectedCategory, setSelectedCategory] = useState(
     service.category || null
@@ -90,7 +90,7 @@ export default function EditServicePage({ service }: { service: IService }) {
       title: service.title,
       slug: service.slug,
       description: des,
-      excerp,
+      excerpt: excerp,
       thumnail: {
         width: thumnail?.width,
         height: thumnail?.height,

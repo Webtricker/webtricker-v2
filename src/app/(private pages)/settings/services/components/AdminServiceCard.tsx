@@ -52,7 +52,10 @@ export const AdminServiceCard = ({ service, refetch }: TServiceProps) => {
       <div className="w-full  p-4 flex flex-col grow">
         <h6>{trimText(service.category, 52)}</h6>
         <p className="mt-2">
-          {trimText(service.excerp ? service.excerp : service.description, 133)}
+          {trimText(
+            service.excerpt ? service.excerpt : service.description,
+            133
+          )}
         </p>
         <div className="w-full flex items-end grow">
           <div className="w-full flex items-center justify-between">

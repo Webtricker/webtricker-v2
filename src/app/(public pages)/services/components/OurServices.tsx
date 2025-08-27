@@ -5,8 +5,11 @@ import Image from "next/image";
 import { IService } from "@/types/post";
 import { getSlicedText } from "@/utils/slicedText";
 
-export default function OurServices({services=[]}:{services:IService[]}) {
- 
+export default function OurServices({
+  services = [],
+}: {
+  services: IService[];
+}) {
   return (
     <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
       <Container>
@@ -31,7 +34,7 @@ export default function OurServices({services=[]}:{services:IService[]}) {
                 />
               </div>
               <h5 className="heading mb-1 mt-4">{service.category}</h5>
-              <p>{getSlicedText(service.excerp, 80)}</p>
+              <p>{getSlicedText(service.excerpt, 80)}</p>
             </div>
           ))}
         </div>
