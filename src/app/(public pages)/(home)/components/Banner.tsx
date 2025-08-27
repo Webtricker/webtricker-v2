@@ -47,7 +47,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
         <h1
           className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 wt_fs-giant banner-large-text flex w-full items-center justify-center heading`}
         >
-          <LeftAnimation word={homeData?.bannerText.left || "Digital"} />
+          <LeftAnimation word={homeData?.bannerText?.left || "Digital"} />
           <span className="tp-hero-title-img">
             <Image
               width={160}
@@ -68,7 +68,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
               src={homeData?.bannerVideo?.src || ""}
             ></video>
           </span>
-          <RightAnimation word={homeData?.bannerText.right || "Creative"} />
+          <RightAnimation word={homeData?.bannerText?.right || "Creative"} />
         </h1>
 
         <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">

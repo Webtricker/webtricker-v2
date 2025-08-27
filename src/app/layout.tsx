@@ -64,9 +64,7 @@ export default function RootLayout({
       <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
-            {/* <PageTransition> */}
-            {children}
-            {/* </PageTransition> */}
+            <PageTransition>{children}</PageTransition>
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />

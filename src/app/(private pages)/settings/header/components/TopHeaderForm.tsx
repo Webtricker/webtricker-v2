@@ -212,7 +212,11 @@ export default function BlogsPageForm() {
           </div>
         </div>
 
-        <Button label="Save" type="submit" className="!py-2.5" />
+        {isUpdating ? (
+          <LoadingSpinner />
+        ) : (
+          <Button label="Save" type="submit" className="!py-2.5" />
+        )}
       </form>
 
       <MediaModal
