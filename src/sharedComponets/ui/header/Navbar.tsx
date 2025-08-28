@@ -8,17 +8,21 @@ import SidebarToggler from "./SidebarToggler";
 import { getLenisInstance } from "@/utils/lenis";
 import { navLinks } from "@/data/navLinks";
 import { StaticImageData } from "next/image";
+import TopBar from "@/sharedComponets/DOM/TopBar";
+import { ITopBarInfo } from "@/types/data";
 
 type Props = {
   navStyle?: string;
   children?: React.ReactNode;
   siteShortLogoUrl: string | StaticImageData;
+  topBarInfo: ITopBarInfo;
 };
 
 export default function Navbar({
   navStyle = "",
   children = <></>,
   siteShortLogoUrl,
+  topBarInfo,
 }: Props) {
   // variables
   const THRESHOLD = 150;
@@ -79,6 +83,7 @@ export default function Navbar({
         scrollY === 0 ? "duration-1000" : ""
       } ${showBorder ? "shadow" : "border-0"}`}
     >
+      <TopBar info={topBarInfo} />
       <Container>
         <div className="w-full flex items-center justify-center">
           <SiteLogo>{children}</SiteLogo>

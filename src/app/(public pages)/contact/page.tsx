@@ -125,7 +125,7 @@ export default function ContactPage() {
                     +8801712377577
                   </a>
                   <a
-                    href="tel+8801785696469:"
+                    href="tel:+8801785696469:"
                     className="block animate-underline w-fit"
                   >
                     +8801785696469
