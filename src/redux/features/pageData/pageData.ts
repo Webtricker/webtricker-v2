@@ -36,6 +36,48 @@ export const pageApi = createApi({
             })
         }),
 
+        // ===== Services Page Endpoints =====
+        getServicesPageData: builder.query({
+            query: () => ({
+                url: "/services-page"
+            })
+        }),
+        updateServicesPageData: builder.mutation({
+            query: (data) => ({
+                url: `/services-page`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
+        // ===== Portfolio Page Endpoints =====
+        getPortfoliosPageData: builder.query({
+            query: () => ({
+                url: "/portfolios-page"
+            })
+        }),
+        updatePortfoliosPageData: builder.mutation({
+            query: (data) => ({
+                url: `/portfolios-page`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
+        // ===== Blogs Page Endpoints =====
+        getBlogsPageData: builder.query({
+            query: () => ({
+                url: "/blogs-page"
+            })
+        }),
+        updateBlogsPageData: builder.mutation({
+            query: (data) => ({
+                url: `/blogs-page`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
     })
 })
 
@@ -47,4 +89,15 @@ export const {
     useGetAboutPageDataQuery,
     useUpdateAboutPageDataMutation,
 
+    // ===== Services Page Endpoints =====
+    useGetServicesPageDataQuery,
+    useUpdateServicesPageDataMutation,
+
+    // ===== Portfolios Page Endpoints =====
+    useGetPortfoliosPageDataQuery,
+    useUpdatePortfoliosPageDataMutation,
+
+    // ===== Blog Page Endpoints =====
+    useGetBlogsPageDataQuery,
+    useUpdateBlogsPageDataMutation
 } = pageApi;

@@ -7,9 +7,10 @@ import SwiperCore from "swiper";
 
 import "swiper/css";
 import "swiper/css/pagination";
+import { IPortfolioPage } from "@/types/pageTypes";
 
 type Props = {
-  images: string[];
+  bannerSlider: IPortfolioPage["bannerSlider"];
   width?: number;
   height?: number;
   rows?: number;
@@ -19,7 +20,7 @@ type Props = {
 };
 
 const PortfolioBanner: React.FC<Props> = ({
-  images,
+  bannerSlider,
   width = 800,
   height = 600,
   rows = 8,
@@ -31,7 +32,7 @@ const PortfolioBanner: React.FC<Props> = ({
   const swiperRef = useRef<SwiperCore | null>(null);
 
   useEffect(() => {
-    if (!canvasRef.current || images.length < 2) return;
+    if (!canvasRef.current || bannerSlider.length < 2) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -49,9 +50,9 @@ const PortfolioBanner: React.FC<Props> = ({
     let canvasImg: HTMLImageElement;
 
     // preload images
-    const imgEls: HTMLImageElement[] = images.map((src) => {
+    const imgEls: HTMLImageElement[] = bannerSlider.map((el) => {
       const img = new Image();
-      img.src = src;
+      img.src = el.img;
       return img;
     });
 
@@ -113,7 +114,15 @@ const PortfolioBanner: React.FC<Props> = ({
     render();
 
     return () => cancelAnimationFrame(frameId);
-  }, [images, width, height, rows, cols, imageDuration, transitionDuration]);
+  }, [
+    width,
+    height,
+    rows,
+    cols,
+    imageDuration,
+    transitionDuration,
+    bannerSlider,
+  ]);
 
   return (
     <section className="w-full relative">
@@ -122,27 +131,26 @@ const PortfolioBanner: React.FC<Props> = ({
         className="max-h-[70vh] z-10 md:max-h-[80vh] block w-full h-full"
       />
       <div className="w-full z-20 h-full bg-slate-900/30 absolute top-0 left-0">
-        <Swiper
-          allowTouchMove={false}
-          loop={true}
-          pagination={{ clickable: true }}
-          modules={[Pagination]}
-          className="portfolio-slider w-full h-full p-10"
-          onSwiper={(swiper) => (swiperRef.current = swiper)} // save swiper instance
-        >
-          <SwiperSlide className="w-full h-full bg-transparent text-white p-10 !flex flex-col pt-[60px] items-center justify-center">
-            <p>[Web Development]</p>
-            <h2>Tkween</h2>
-          </SwiperSlide>
-          <SwiperSlide className="w-full h-full p-10 bg-transparent text-white !flex flex-col pt-[60px] items-center justify-center">
-            <p>[WordPress Development]</p>
-            <h2>ANS Music</h2>
-          </SwiperSlide>
-          <SwiperSlide className="w-full h-full p-10 bg-transparent text-white !flex flex-col pt-[60px] items-center justify-center">
-            <p>[MERN Stack Development]</p>
-            <h2>ZeyoxStudio</h2>
-          </SwiperSlide>
-        </Swiper>
+        {!!bannerSlider?.length && (
+          <Swiper
+            allowTouchMove={false}
+            loop={true}
+            pagination={{ clickable: false }}
+            modules={[Pagination]}
+            className="portfolio-slider w-full h-full p-10"
+            onSwiper={(swiper) => (swiperRef.current = swiper)} // save swiper instance
+          >
+            {bannerSlider.map((slide) => (
+              <SwiperSlide
+                key={slide?._id}
+                className="w-full h-full bg-transparent text-white p-10 !flex flex-col pt-[60px] items-center justify-center"
+              >
+                <p>{slide?.technology}</p>
+                <h2>{slide?.name}</h2>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );

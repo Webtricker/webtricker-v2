@@ -17,7 +17,7 @@ export default function AdminServiceContainer() {
   } = useGetServicesQuery(99);
 
   const services = data?.services ?? [];
-  console.log(services, "services from admin service container");
+
 
   // Show loading spinner
   if (isLoading) {
@@ -40,7 +40,7 @@ export default function AdminServiceContainer() {
   }
 
   // No services found
-  if (!services.length) {
+  if (!services?.length) {
     return (
       <Container className="text-center">
         <p className="wt_fs-lg">No services found.</p>

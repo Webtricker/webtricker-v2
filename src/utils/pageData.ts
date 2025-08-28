@@ -81,6 +81,23 @@ export const getServicesData = async (limit: number = 99) => {
     }
 }
 
+export const getServicesPageData = async () => {
+    try {
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/services-page`);
+
+        if (!res.ok) {
+            console.error("Failed to fetch services");
+            return [];
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching services:", error);
+        return [];
+    }
+}
+
 export const getPostsData = async (limit: number = 99): Promise<IBlog[] | null> => {
     try {
         const res = await fetch(
@@ -104,13 +121,28 @@ export const getHomePageData = async () => {
     try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/home-page`);
         if (!res.ok) {
-            console.error("Failed to fetch testimonial data");
+            console.error("Failed to fetch home page data");
             return {};
         }
         const result = await res.json();
         return result?.data || {};
     } catch (error) {
-        console.error("Error fetching testimonial data:", error);
+        console.error("Error fetching home page data:", error);
+        return {};
+    }
+}
+
+export const getAboutPageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/about-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch about page data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching about page data:", error);
         return {};
     }
 }
@@ -128,5 +160,36 @@ export const getLeaderData = async () => {
     } catch (error) {
         console.error("Error fetching leader data:", error);
         return [];
+    }
+}
+
+
+export const getPortfolioPageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch portfolio page data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching portfolio page data:", error);
+        return {};
+    }
+}
+
+export const getBlogsPageData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs-page`);
+        if (!res.ok) {
+            console.error("Failed to fetch blogs page data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching blogs page data:", error);
+        return {};
     }
 }

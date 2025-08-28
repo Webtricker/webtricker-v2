@@ -54,7 +54,7 @@ export default function ServicePageEditor() {
       return;
     }
 
-    if (!keyServices.length) {
+    if (!keyServices?.length) {
       toast.error("Sub services are required");
       return;
     }

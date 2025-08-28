@@ -42,7 +42,7 @@ export default function KeyService({ setKeyServices, keyServices }: Props) {
             <li className="relative group" key={_i}>
               <span className="">
                 {subService}
-                {_i !== keyServices.length - 1 ? "," : ""}
+                {_i !== keyServices?.length - 1 ? "," : ""}
               </span>
 
               <button

@@ -28,7 +28,7 @@ export default function MediaModal({ cb, activeKey,allowedMediaTypeToShow=['img'
       <div className="w-full flex grow">
         <div className="w-full flex flex-col max-w-14 border-r border-slate-400 py-5 pr-4">
           {allowedMediaTypeToShow.includes("img") && (
-            <button onClick={() => setActiveTab("img")} className="mb-5">
+            <button type="button" onClick={() => setActiveTab("img")} className="mb-5">
               <GalleryIcon
                 className={`w-10 h-10 ${
                   activeTab === "img" ? "text-blue-600" : "hover:text-black"
@@ -37,7 +37,7 @@ export default function MediaModal({ cb, activeKey,allowedMediaTypeToShow=['img'
             </button>
           )}
           {allowedMediaTypeToShow.includes("video") && (
-            <button onClick={() => setActiveTab("video")}>
+            <button type="button" onClick={() => setActiveTab("video")}>
               <VideoIcon
                 className={`w-10 h-10 ${
                   activeTab === "video" ? "text-blue-600" : "hover:text-black"

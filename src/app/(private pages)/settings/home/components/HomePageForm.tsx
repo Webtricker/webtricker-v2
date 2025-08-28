@@ -2,7 +2,6 @@
 import React from "react";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import galleryModern from "@/app/fonts/gallery";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 import { useForm } from "react-hook-form";
@@ -17,7 +16,6 @@ import BannerSpinningIcon from "./BannerSpinningIcon";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import BannerRoundVideo from "./BannerRoundVideo";
 import IntroVideo from "./IntroVideo";
-import Marquee from "react-fast-marquee";
 import { ITestimonialsInfo, TService } from "@/types/data";
 import TestimonialsContainer from "./TestimonialsContainer";
 import { ServiceCard } from "@/app/(public pages)/(home)/components/Services";
@@ -25,6 +23,7 @@ import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
 import { IBlog } from "@/types/post";
 import BottomSlider from "./BottomSlider";
 import { toast } from "react-toastify";
+import ClientsBanner from "./ClientsBanner";
 
 // TODO: Have to remove these default data
 const bannerDescription = `Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?`;
@@ -83,7 +82,7 @@ export default function HomePageForm({
       </ConditionalReturnContainer>
     );
   const homePageData = data?.data || {};
-  console.log(homePageData, "  home page data from private page");
+
   return (
     <div className="w-full overflow-x-hidden">
       <form
@@ -180,25 +179,7 @@ export default function HomePageForm({
                   defaultValue={homePageData?.clientSectionSubtitle || ""}
                 />
               </p>
-              <Link className="grow block " href="/settings/testimonials">
-                <Marquee
-                  speed={80}
-                  gradient={false}
-                  pauseOnHover={false}
-                  className="flex items-center"
-                >
-                  {testimonials.map((item) => (
-                    <Image
-                      className="block border border-slate-300 dark:border-slate-700 mx-12 w-20 h-20 rounded-full"
-                      key={item._id}
-                      src={item.profile}
-                      width={100}
-                      height={100}
-                      alt={item.name}
-                    />
-                  ))}
-                </Marquee>
-              </Link>
+             <ClientsBanner setValue={setValue} clientsBanners={homePageData?.clientsBanners || []} />
             </div>
           </Container>
         </section>
@@ -398,7 +379,7 @@ export default function HomePageForm({
           {loading ? (
             <LoadingSpinner />
           ) : (
-            <Button className="!py-3" label="Update home page" />
+            <Button type="submit" className="!py-3" label="Update home page" />
           )}
         </Container>
       </form>

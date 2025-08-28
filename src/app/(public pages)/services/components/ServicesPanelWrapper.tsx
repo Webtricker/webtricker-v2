@@ -3,10 +3,15 @@ import React, { useEffect, useRef } from "react";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import gsap from "gsap";
+import { IServicesPage } from "@/types/pageTypes";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function ServicesPanelWrapper({children}: {children?: React.ReactNode}) {
+type Props = {
+  children?: React.ReactNode;
+  bottomText: IServicesPage["bottomText"];
+};
+export default function ServicesPanelWrapper({ children, bottomText }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const endTrigger = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -24,7 +29,7 @@ export default function ServicesPanelWrapper({children}: {children?: React.React
         id: `${i + 1}`,
       });
 
-        ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
 
       return () => {
         ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -37,17 +42,17 @@ export default function ServicesPanelWrapper({children}: {children?: React.React
       className="w-full relative pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18"
       ref={containerRef}
     >
-      {
-        children
-      }
-      
+      {children}
+
       <div
         ref={endTrigger}
         className="z-10 w-full pt-10 md:pt-14 lg:pt-18 xl:pt-20 2xl:pt-24"
       >
         <Container className="w-full flex flex-col">
-            <p className="bold text-center mb-2 lg:mb-0">DIGITAL DESIGN EXPERIENCE CREATIVE STUDIO</p>
-          <h2 className="wt_fs-big text-center heading">GET IN TOUCH</h2>
+          <p className="bold text-center mb-2 lg:mb-0">
+            {bottomText?.expression}
+          </p>
+          <h2 className="wt_fs-big text-center heading">{bottomText?.title}</h2>
         </Container>
       </div>
     </section>

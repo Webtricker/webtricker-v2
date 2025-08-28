@@ -21,10 +21,11 @@ export const PUT = async (req: NextRequest) => {
         }
 
         // Use the _id from the data object to find and update
-        const aboutHomeData = await About.findByIdAndUpdate(id, data);
+        const aboutPageData = await About.findByIdAndUpdate(id, data);
+
 
         // If no document was found with that ID, handle the case
-        if (!aboutHomeData) {
+        if (!aboutPageData) {
             return NextResponse.json(
                 { success: false, error: true, message: "Document not found" },
                 { status: 404 }
@@ -32,7 +33,7 @@ export const PUT = async (req: NextRequest) => {
         }
 
         return NextResponse.json(
-            { success: true, message: "Data updated", data: aboutHomeData },
+            { success: true, message: "Data updated", data: aboutPageData },
             { status: 200 }
         );
     } catch (error: any) {

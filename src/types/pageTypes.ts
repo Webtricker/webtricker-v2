@@ -24,6 +24,7 @@ export interface IHomePage {
 
     // clients section
     clientSectionSubtitle: string;
+    clientsBanners:string[];
 
     // service section
     serviceSectionTitle: {
@@ -65,7 +66,7 @@ export interface IAboutPage {
     scrollDwonText: string;
     bannerBottomText: string;
     bannerBottomBtnText: string;
-    bannerBottomBtnLink:string;
+    bannerBottomBtnLink: string;
     bannerBackgroundImage: string;
 
     // intro images
@@ -98,7 +99,8 @@ export interface IAboutPage {
     // what we offer
     whatWeOfferTitle: string;
     whatWeOfferSubtitle: string;
-    whatWeOfferCurveIcon: string;
+    whatWeOfferCurveIconWhite: string;
+    whatWeOfferCurveIconBlack: string;
 
     // what we offer
     whatWeOfferItems: string[];
@@ -111,9 +113,13 @@ export interface IAboutPage {
         title: string;
         subTitle: string;
         teamMembers: string;
+        teamMembersText: string;
         projectsCompleted: string;
+        projectsCompletedText: string;
         growingRate: string;
+        growingRateText: string;
         yearsOfExperience: string;
+        yearsOfExperienceText: string;
     };
 
     // Our Clients
@@ -124,3 +130,54 @@ export interface IAboutPage {
     resumeeSendingEmail: string;
     bottomTextLarge: string;
 }
+
+
+type BottomText = {
+    expression: string;
+    title: string;
+}
+
+
+export interface IServicesPage {
+    banner: {
+        title: string;
+        description: string;
+    }
+    bannerBG: {
+        type: "image" | "video";
+        src: string;
+    };
+    servicesShotcut: {
+        iconWhite: string;
+        iconBlack: string;
+        title: string;
+        subtitle: string;
+    },
+    bottomText: BottomText
+}
+
+
+export interface IPortfolioPage {
+    bannerSlider: {
+        img: string;
+        technology: string;
+        name: string;
+        _id?:string;
+    }[];
+    projectIntroduction: {
+        companyName: string;
+        title: string;
+        description: string;
+    };
+    bottomText: BottomText
+}
+
+export interface IBlogPage {
+    bannerBG: {
+        type: "image" | "video";
+        src: string;
+    };
+    title: string;
+    description: string;
+}
+

@@ -65,7 +65,7 @@ const ImageUploaderBtn = ({ setMediaData }: ImageUploaderBtnProps) => {
         {isLoading ? (
           <LoadingSpinner />
         ) : (
-          <button className="flex flex-col items-center justify-center">
+          <button type="button" className="flex flex-col items-center justify-center">
             <div onClick={triggerFileDialog} className="relative">
               <GallerySingleIcon className="w-10 h-10" />
               <PlusIcon className="w-7 h-7 absolute top-[50%] left-[50%] -translate-x-[50%] -translate-y-[50%] text-white" />
@@ -120,6 +120,7 @@ const ModalImage = ({ cb, setMediaData, img }: TModalImage) => {
       />
 
       <button
+      type="button"
         data-prevent-body-trigger
         onClick={(e) => {
           e.preventDefault();

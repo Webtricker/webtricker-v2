@@ -15,3 +15,4 @@ const teamInfoSchema = new Schema<ITeam>(
 
 const Team = models.Team || model<ITeam>('Team', teamInfoSchema);
 export default Team;
+    

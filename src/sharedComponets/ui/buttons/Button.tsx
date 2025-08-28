@@ -9,6 +9,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   labelStyle?: string;
+  type?: "submit" | "button";
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,6 +18,7 @@ const Button: React.FC<ButtonProps> = ({
   cb,
   disabled = false,
   labelStyle = "",
+  type = "button",
 }) => {
   const dispatch = useDispatch();
 
@@ -33,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type={type}
       onMouseOverCapture={() => toggleDot(false)}
       onMouseOutCapture={() => toggleDot(true)}
       onClick={handleClick}
