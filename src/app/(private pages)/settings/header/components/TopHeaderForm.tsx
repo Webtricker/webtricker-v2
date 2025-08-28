@@ -120,10 +120,6 @@ export default function BlogsPageForm() {
         <LoadingSpinner />
       </ConditionalReturnContainer>
     );
-
-  console.log(contactFields, " contact fields");
-  console.log(defaultValues, " default values");
-
   return (
     <>
       <form

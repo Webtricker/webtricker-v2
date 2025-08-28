@@ -78,6 +78,21 @@ export const pageApi = createApi({
             })
         }),
 
+        // ===== Blogs Page Endpoints =====
+        getContactPageData: builder.query({
+            query: () => ({
+                url: "/contact-page"
+            })
+        }),
+
+        updateContactPageData: builder.mutation({
+            query: (data) => ({
+                url: `/contact-page`,
+                method: "POST",
+                body: data,
+            })
+        }),
+
     })
 })
 
@@ -99,5 +114,9 @@ export const {
 
     // ===== Blog Page Endpoints =====
     useGetBlogsPageDataQuery,
-    useUpdateBlogsPageDataMutation
+    useUpdateBlogsPageDataMutation,
+
+    // ===== Contact Page Endpoints =====
+    useGetContactPageDataQuery,
+    useUpdateContactPageDataMutation
 } = pageApi;

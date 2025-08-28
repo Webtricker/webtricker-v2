@@ -8,7 +8,6 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
-import PageTransition from "@/sharedComponets/DOM/PageTransition";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -64,7 +63,9 @@ export default function RootLayout({
       <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
-            <PageTransition>{children}</PageTransition>
+            {/* <PageTransition> */}
+              {children}
+              {/* </PageTransition> */}
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />
