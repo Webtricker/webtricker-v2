@@ -1,11 +1,11 @@
 import React from "react";
-import ServicesBanner from "./components/ServicesBanner";
-import OurServices from "./components/OurServices";
-import ServicesPanelWrapper from "./components/ServicesPanelWrapper";
-import ServicePanels from "./components/ServicePanels";
-import { getServicesData, getServicesPageData } from "@/utils/pageData";
+// import ServicesBanner from "./components/ServicesBanner";
+// import OurServices from "./components/OurServices";
+// import ServicesPanelWrapper from "./components/ServicesPanelWrapper";
+// import ServicePanels from "./components/ServicePanels";
+// import { getServicesData, getServicesPageData } from "@/utils/pageData";
 // import shortLogo from "@/assets/images/home/webtricker-w.png";
-import { IServicesPage } from "@/types/pageTypes";
+// import { IServicesPage } from "@/types/pageTypes";
 
 // export async function generateMetadata() {
 //   const data = await getServicesData();
@@ -31,12 +31,12 @@ import { IServicesPage } from "@/types/pageTypes";
 // }
 
 export default async function ServicesPage() {
-  const serviceData = (await getServicesData()) ?? [];
-  const pageData = ((await getServicesPageData()) as IServicesPage) ?? {};
+  // const serviceData = (await getServicesData()) ?? [];
+  // const pageData = ((await getServicesPageData()) as IServicesPage) ?? {};
 
   return (
     <main className="w-full z-0">
-      <ServicesBanner
+      {/* <ServicesBanner
         bg={pageData?.bannerBG || {}}
         banner={pageData?.banner || {}}
       />
@@ -46,7 +46,7 @@ export default async function ServicesPage() {
       />
       <ServicesPanelWrapper bottomText={pageData?.bottomText || {}}>
         <ServicePanels services={serviceData} />
-      </ServicesPanelWrapper>
+      </ServicesPanelWrapper> */}
     </main>
   );
 }
