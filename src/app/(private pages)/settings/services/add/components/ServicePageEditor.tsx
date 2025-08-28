@@ -29,8 +29,8 @@ export default function ServicePageEditor() {
   const [keyServices, setKeyServices] = useState<string[]>([]);
   const [excerp, setExcerp] = useState("");
   const [thumnail, setThumnail] = useState<TMedia | null>(null);
-  const [icon, setIcon] = useState<string>('');
-  const [selectedCategory, setSelectedCategory] = useState<string|null>(null);
+  const [icon, setIcon] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [postService, { isLoading }] = useAddServiceMutation();
 
   const handleSave = async () => {
@@ -38,7 +38,6 @@ export default function ServicePageEditor() {
       toast.error("Title is required");
       return;
     }
-    
 
     if (!des.trim()) {
       toast.error("Description is required");
@@ -79,13 +78,11 @@ export default function ServicePageEditor() {
       return;
     }
 
-  
-
     const serviceData: TService = {
       title,
       slug: `${makeSlug(title)}`,
       description: des,
-      excerp,
+      excerpt: excerp,
       thumnail: {
         width: thumnail?.width,
         height: thumnail?.height,
@@ -109,7 +106,7 @@ export default function ServicePageEditor() {
         // reset form fields
         setTitle("");
         setDes("");
-        setIcon('');
+        setIcon("");
         setKeyServices([]);
         setTags([]);
         setExcerp("");
@@ -155,12 +152,15 @@ export default function ServicePageEditor() {
 
         <KeyService keyServices={keyServices} setKeyServices={setKeyServices} />
         <Tag tags={tags} setTags={setTags} />
-        <ServiceCategory selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+        <ServiceCategory
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
         <EditorContainer editorRef={editorRef} />
 
-        {isLoading ? ( 
+        {isLoading ? (
           <div className="w-[50px] lg:hidden mt-6 md:mt-8">
-            <LoadingSpinner /> 
+            <LoadingSpinner />
           </div>
         ) : (
           <div className="w-auto lg:hidden mt-6 md:mt-8">
