@@ -46,7 +46,7 @@ export default async function Services({
             </div>
           </div>
           {/* services info */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[800px]">
             {(serviceData as IService[]).map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}
