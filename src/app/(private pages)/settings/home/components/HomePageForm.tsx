@@ -16,10 +16,10 @@ import BannerSpinningIcon from "./BannerSpinningIcon";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import BannerRoundVideo from "./BannerRoundVideo";
 import IntroVideo from "./IntroVideo";
-import { ITestimonialsInfo, TService } from "@/types/data";
+import { ITestimonialsInfo } from "@/types/data";
 import TestimonialsContainer from "./TestimonialsContainer";
 import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
-import { IBlog } from "@/types/post";
+import { IBlog, IService } from "@/types/post";
 import BottomSlider from "./BottomSlider";
 import { toast } from "react-toastify";
 import ClientsBanner from "./ClientsBanner";
@@ -30,7 +30,7 @@ const bannerDescription = `Webtricker designs, develops, and delivers high-quali
 
 type Props = {
   testimonials: ITestimonialsInfo[];
-  serviceData: TService[];
+  serviceData: IService[];
   posts: IBlog[] | null;
 };
 
