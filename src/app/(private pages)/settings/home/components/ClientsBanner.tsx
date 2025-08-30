@@ -84,7 +84,7 @@ export default function ClientsBanner({ setValue, clientsBanners }: Props) {
     dispatch(toggleModal(ACTIVE_KEY));
   };
 
-  console.log(items, ' item from')
+  console.log(items, " item from");
 
   return (
     <>
@@ -125,10 +125,10 @@ const BannerItem = ({
   <button
     type="button"
     onClick={() => onChange(item.id)}
-    className="w-20 min-w-20 h-20 rounded-full mx-2 border border-slate-300 dark:border-slate-700 relative"
+    className="w-40 min-w-40 h-20 rounded-xl mx-2 border border-slate-300 dark:border-slate-700 relative"
   >
     <Image
-      className="block w-full h-full rounded-full"
+      className="block w-full h-full rounded-xl"
       src={item.src}
       width={100}
       height={100}
