@@ -7,11 +7,11 @@ import React, { useEffect, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-type Props = {
+type IconProps = {
   setValue: UseFormSetValue<IContactPage>;
   icons: {
-    white: IContactPage["greetings"]["iconWhite"];
-    black: IContactPage["greetings"]["iconBlack"];
+    white: string;
+    black: string;
   };
 };
 
@@ -20,7 +20,7 @@ type TTarget = "iconWhite" | "iconBlack";
 // variables
 const ACTIVE_KEY = "OPEN_GREETING_LOGO_MODAL";
 
-export default function GreetingImages({ setValue, icons }: Props) {
+export default function ContactIcon({ setValue, icons }: IconProps) {
   //hooks
   const dispatch = useDispatch();
   const [blackLogo, setBlackLogo] = useState(icons?.white);
@@ -28,20 +28,19 @@ export default function GreetingImages({ setValue, icons }: Props) {
   const [target, setTarget] = useState<TTarget>("iconBlack");
 
   useEffect(() => {
-    setValue("greetings.iconWhite", icons?.white || "");
-    setValue("greetings.iconBlack", icons?.black || "");
+    setValue("contactNumber.iconWhite", icons?.white || "");
+    setValue("contactNumber.iconBlack", icons?.black || "");
   }, [icons, setValue]);
 
   // handlers
   const handleSelect = (media: TMedia) => {
-    console.log('clicked')
     if (target === "iconBlack") {
       setBlackLogo(media.secure_url);
     } else {
       setWhiteLogo(media.secure_url);
     }
 
-    setValue(`greetings.${target}`, media.secure_url);
+    setValue(`contactNumber.${target}`, media.secure_url);
     dispatch(toggleModal(null));
   };
 
@@ -50,13 +49,11 @@ export default function GreetingImages({ setValue, icons }: Props) {
     dispatch(toggleModal(ACTIVE_KEY));
   };
 
-  console.log(blackLogo,' black logo');
-
   return (
     <>
       <button onClick={() => handleModalOpen("iconBlack")} type="button">
         <Image
-          className="inline dark:hidden w-16"
+          className="inline dark:hidden min-w-5 max-w-6"
           width={70}
           height={100}
           src={blackLogo || ""}
@@ -65,20 +62,18 @@ export default function GreetingImages({ setValue, icons }: Props) {
       </button>
       <button onClick={() => handleModalOpen("iconWhite")} type="button">
         <Image
-          className="hidden dark:inline w-16"
+          className="hidden dark:inline min-w-5 max-w-6"
           width={70}
           height={100}
           src={whiteLogo || ""}
           alt="Star"
         />
       </button>
-
-
       <MediaModal
         allowedMediaTypeToShow={["img"]}
         activeKey={ACTIVE_KEY}
         key={ACTIVE_KEY}
-        cb={(media:TMedia)=>console.log(media)}
+        cb={handleSelect}
       />
     </>
   );

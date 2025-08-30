@@ -11,24 +11,25 @@ import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/Conditional
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import { toast } from "react-toastify";
 import Button from "@/sharedComponets/ui/buttons/Button";
-import ContactForm from "@/app/(public pages)/contact/components/ContactForm";
-import {
-  EmailIcon,
-  MapPinIcon,
-  PhoneIcon,
-} from "@/app/(public pages)/contact/components/Icons";
-import Link from "next/link";
 import GreetingImages from "./GreetingImages";
 import LeftPanelBtns from "./LeftPanelBtns";
+import AddressIcons from "./AddressIcons";
+import Addresses from "./Addresses";
+import ContactIcon from "./ContactIcon";
+import MailIcon from "./MailIcon";
+import Mails from "./Mails";
+import Phones from "./Phone";
 
 export default function ContactPageForm() {
-  // react hook form
-  const { control, watch, register, setValue, handleSubmit } =
-    useForm<IContactPage>();
-
   //   page data
   const { data, isLoading } = useGetContactPageDataQuery({});
   const contactPageData = data?.data || ({} as IContactPage);
+
+  // react hook form
+  const { control, watch, register, setValue, handleSubmit } =
+    useForm<IContactPage>({
+      // defaultValues: contactPageData,
+    });
 
   //   hook to update page data
   const [updateContactPage, { isLoading: loading }] =
@@ -37,6 +38,8 @@ export default function ContactPageForm() {
   // handlers
   const onSubmit = async (updateData: IContactPage) => {
     console.log(updateData, " update data ");
+    return;
+
     try {
       const res = await updateContactPage({
         id: data?.data?._id,
@@ -52,6 +55,10 @@ export default function ContactPageForm() {
       toast.error("Failed to update contact page data");
     }
   };
+
+  // useEffect(() => {
+  //   reset(contactPageData);
+  // }, []);
 
   if (isLoading)
     return (
@@ -92,9 +99,7 @@ export default function ContactPageForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
-      <div
-        className={`relative w-full mt-[130px]`}
-      >
+      <div className={`relative w-full mt-[130px]`}>
         <Container>
           <div className="w-full max-w-[1120px] mx-auto">
             <p className="bold mb-2 flex items-center gap-1">
@@ -144,7 +149,95 @@ export default function ContactPageForm() {
                   </div>
                 </div>
               </div>
-              <ContactForm />
+              <div className="w-full flex flex-col gap-5">
+                {/* ======= input === */}
+                <div className="w-full">
+                  <label className="block mb-2" htmlFor="contactName">
+                    <input
+                      id="form.name.label"
+                      className="page-input py-1.5 pl-1 w-full leading_normal"
+                      {...register("form.name.label", { required: true })}
+                      placeholder="label ex:Name"
+                      defaultValue={
+                        contactPageData?.form?.name?.label || "Send Message"
+                      }
+                    />
+                  </label>
+                  <input
+                    id="form.name.placeholder"
+                    className="page-input py-1.5 w-full pl-1 leading_normal"
+                    {...register("form.name.placeholder", { required: true })}
+                    placeholder="placeholder ex: Your name"
+                    defaultValue={
+                      contactPageData?.form?.name?.placeholder || ""
+                    }
+                  />
+                </div>
+                {/* ======= input === */}
+                <div className="w-full">
+                  <label className="block mb-2" htmlFor="contactEmail">
+                    <input
+                      id="form.email.label"
+                      className="page-input py-1.5 w-full pl-1 leading_normal"
+                      {...register("form.email.label", { required: true })}
+                      placeholder="label ex: Email"
+                      defaultValue={contactPageData?.form?.email?.label || ""}
+                    />
+                  </label>
+                  <input
+                    id="form.email.placeholder"
+                    className="page-input py-1.5 w-full pl-1 leading_normal"
+                    {...register("form.email.placeholder", {
+                      required: true,
+                    })}
+                    placeholder="placeholder: email@company.com"
+                    defaultValue={
+                      contactPageData?.form?.email?.placeholder || ""
+                    }
+                  />
+                </div>
+                {/* ======= input === */}
+                <div className="w-full">
+                  <label className="block mb-2" htmlFor="contactMessage">
+                    <input
+                      id="form.message.label"
+                      className="page-input py-1.5 w-full pl-1 leading_normal"
+                      {...register("form.message.label", { required: true })}
+                      placeholder="label ex: Your Queries"
+                      defaultValue={contactPageData?.form?.message?.label || ""}
+                    />
+                  </label>
+                  <input
+                    id="form.message.placeholder"
+                    className="page-input w-full py-1.5 pl-1 leading_normal"
+                    {...register("form.message.placeholder", {
+                      required: true,
+                    })}
+                    placeholder="placeholder: Let'us know how we can help you"
+                    defaultValue={
+                      contactPageData?.form?.message?.placeholder || ""
+                    }
+                  />
+                </div>
+                <div className="w-full">
+                  <input
+                    id="form.btnText"
+                    className="page-input bg-black text-center py-1.5 dark:bg-white text-white dark:text-black w-full pl-1 leading_normal"
+                    {...register("form.btnText", { required: true })}
+                    placeholder="Send Message"
+                    defaultValue={contactPageData?.form?.btnText || ""}
+                  />
+                </div>
+                <div className="w-full">
+                  <input
+                    id="form.btnText"
+                    className="page-input  py-1.5 w-full pl-1 leading_normal"
+                    {...register("form.btnText", { required: true })}
+                    placeholder="mailto:"
+                    defaultValue={contactPageData?.form?.btnText || ""}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </Container>
@@ -174,7 +267,7 @@ export default function ContactPageForm() {
           <h4 className="heading 2xl:font-semibold !leading-[100%]">
             <input
               id="contactInformationTitle"
-              className="page-input w-full pl-1 leading_normal"
+              className="page-input w-full pl-1 leading_normal max-w-[600px]"
               {...register("contactInformationTitle", { required: true })}
               placeholder="Contact Information"
               defaultValue={contactPageData?.contactInformationTitle || ""}
@@ -182,111 +275,113 @@ export default function ContactPageForm() {
           </h4>
           <div className="w-full flex flex-col lg:flex-row gap-10 md:gap-14 2xl:gap-20 ">
             <div className="w-full flex flex-col gap-8 lg:gap-10 max-w-[550px]">
-              <div className="w-full flex gap-5 mt-10 items-start">
-                <MapPinIcon className="min-w-5 w-6" />
+              <div className="w-full flex gap-2 mt-10 items-start">
+                <AddressIcons
+                  icons={{
+                    white: contactPageData?.address?.iconWhite,
+                    black: contactPageData?.address?.iconBlack,
+                  }}
+                  setValue={setValue}
+                />
                 <div className="grow not-italic">
-                  <h6 className="heading mb-1">Address</h6>
-                  <address className="not-italic">
-                    <strong>US Office</strong>: Hurst, Texas, United States
-                  </address>
-                  <address className="not-italic">
-                    <strong>Dhaka Office</strong>: KHL Laboni&apos;s Dream,
-                    Plot-06, Afroza Begum Rd, Dhaka 1229
-                  </address>
-                  <address className="not-italic">
-                    <strong>Jamalpur Office</strong>: House No-46, Zia College
-                    Moar, Beside Sohid Minar, Jamalpur, Bangladesh.
-                  </address>
+                  <h6 className="heading mb-1">
+                    <input
+                      id="address.title"
+                      className="page-input w-full pl-1 py-1 leading_normal max-w-[600px]"
+                      {...register("address.title", {
+                        required: true,
+                      })}
+                      placeholder="Address"
+                      defaultValue={contactPageData?.address?.title || ""}
+                    />
+                  </h6>
+                  <Addresses register={register} control={control} />
                 </div>
               </div>
-              <div className="w-full flex gap-5 items-start">
-                <PhoneIcon className="min-w-5 w-6 mt-1" />
-                <div className="grow">
-                  <h6 className="heading mb-1">Phone</h6>
-                  <a
-                    href="tel:+8809639237100"
-                    className="block animate-underline w-fit"
-                  >
-                    +8809639237100
-                  </a>
-                  <a
-                    href="tel:+8809639237101"
-                    className="block animate-underline w-fit"
-                  >
-                    +8809639237101
-                  </a>
-                  <a
-                    href="tel:+16824726184"
-                    className="block animate-underline w-fit"
-                  >
-                    +1 (682) 472-6184
-                  </a>
-                  <a
-                    href="tel:+8801712377577"
-                    className="block animate-underline w-fit"
-                  >
-                    +8801712377577
-                  </a>
-                  <a
-                    href="tel+8801785696469:"
-                    className="block animate-underline w-fit"
-                  >
-                    +8801785696469
-                  </a>
-                  <a
-                    href="tel:+8801793544335"
-                    className="block animate-underline w-fit"
-                  >
-                    +8801793544335
-                  </a>
+
+              <div className="w-full flex gap-2 mt-10 items-start">
+                <ContactIcon
+                  icons={{
+                    white: contactPageData?.address?.iconWhite,
+                    black: contactPageData?.address?.iconBlack,
+                  }}
+                  setValue={setValue}
+                />
+                <div className="grow not-italic">
+                  <h6 className="heading mb-1">
+                    <input
+                      id="contactNumber.title"
+                      className="page-input w-full pl-1 py-1 leading_normal max-w-[600px]"
+                      {...register("contactNumber.title", {
+                        required: true,
+                      })}
+                      placeholder="Phone"
+                      defaultValue={contactPageData?.contactNumber?.title || ""}
+                    />
+                  </h6>
+                  <Phones register={register} control={control} />
                 </div>
               </div>
-              <div className="w-full flex gap-5 items-start">
-                <EmailIcon className="min-w-5 w-6 mt-1" />
-                <div className="grow flex flex-col">
-                  <h6 className="heading mb-1">Email</h6>
-                  <Link
-                    title="Email"
-                    href="mailto:info@webtricker.com"
-                    className="animate-underline w-fit"
-                  >
-                    info@webtricker.com
-                  </Link>
-                  <Link
-                    title="Email"
-                    href="mailto:inquiry@webtricker.com"
-                    className="animate-underline w-fit "
-                  >
-                    inquiry@webtricker.com
-                  </Link>
-                  <Link
-                    title="Email"
-                    href="mailto:career@webtricker.com"
-                    className="animate-underline w-fit"
-                  >
-                    career@webtricker.com
-                  </Link>
-                  <Link
-                    title="Email"
-                    href="mailto:admin@webtricker.com"
-                    className="animate-underline w-fit"
-                  >
-                    admin@webtricker.com
-                  </Link>
+
+              <div className="w-full flex gap-2 mt-10 items-start">
+                <MailIcon
+                  icons={{
+                    white: contactPageData?.contactMails?.iconWhite,
+                    black: contactPageData?.contactMails?.iconBlack,
+                  }}
+                  setValue={setValue}
+                />
+                <div className="grow not-italic">
+                  <h6 className="heading mb-1">
+                    <input
+                      id="contactMails.title"
+                      className="page-input w-full pl-1 py-1 leading_normal max-w-[600px]"
+                      {...register("contactMails.title", {
+                        required: true,
+                      })}
+                      placeholder="Email"
+                      defaultValue={contactPageData?.contactMails?.title || ""}
+                    />
+                  </h6>
+                  <Mails register={register} control={control} />
                 </div>
               </div>
             </div>
 
             {/* ======= map ======== */}
-            <div className="w-full overflow-hidden rounded-[10px]">
-              <h6 className="heading mb-5">Find us on google map:</h6>
-              <iframe
-                className="min-h-[400px]"
-                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14474.096950431665!2d89.941474!3d24.914205!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd7f5ce07e179d%3A0x209802aa6366f9da!2sWebtricker%20Web%20Design%20%26%20Development%20Agency!5e0!3m2!1sen!2sus!4v1693518943068!5m2!1sen!2sus"
-                width="100%"
-                height="100%"
-                loading="lazy"
-              ></iframe>
+            <div className="w-full overflow-hidden">
+              <h6 className="heading mb-5">
+                <input
+                  id="googleMap.title"
+                  className="page-input w-full pl-1 py-1 leading_normal max-w-[600px]"
+                  {...register("googleMap.title", {
+                    required: true,
+                  })}
+                  placeholder="Find us on google map:"
+                  defaultValue={contactPageData?.googleMap?.title || ""}
+                />
+              </h6>
+              <div className="w-full relative z-0">
+                <iframe
+                  className="min-h-[400px] z-10"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d14474.096950431665!2d89.941474!3d24.914205!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39fd7f5ce07e179d%3A0x209802aa6366f9da!2sWebtricker%20Web%20Design%20%26%20Development%20Agency!5e0!3m2!1sen!2sus!4v1693518943068!5m2!1sen!2sus"
+                  width="100%"
+                  height="100%"
+                  loading="lazy"
+                ></iframe>
+
+                <div className="w-full h-full absolute top-0 left-0 bg-slate-900/30 flex items-center justify-center z-50">
+                  <textarea
+                    id="googleMap.iframe"
+                    className="page-input w-full leading_normal max-w-[700px] min-h-[200px] bg-white text-black p-4 rounded-[8px]"
+                    {...register("googleMap.iframe", {
+                      required: true,
+                    })}
+                    placeholder="Enter google map iframe url"
+                    defaultValue={contactPageData?.googleMap?.iframe || ""}
+                  ></textarea>
+                </div>
+              </div>
             </div>
           </div>
         </Container>

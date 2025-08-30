@@ -22,7 +22,8 @@ const contactFormSchema = new Schema(
 
 const contactAddressSchema = new Schema(
   {
-    icon: { type: String, required: true },
+    iconWhite: { type: String, required: true },
+    iconBlack: { type: String, required: true },
     title: { type: String, required: true },
     addresses: [
       {
@@ -36,7 +37,8 @@ const contactAddressSchema = new Schema(
 
 const phoneSchema = new Schema(
   {
-    icon: { type: String, required: true },
+    iconWhite: { type: String, required: true },
+    iconBlack: { type: String, required: true },
     title: { type: String, required: true },
     numbers: [{ type: String, required: true }],
   },
@@ -45,7 +47,8 @@ const phoneSchema = new Schema(
 
 const emailSchema = new Schema(
   {
-    icon: { type: String, required: true },
+    iconWhite: { type: String, required: true },
+    iconBlack: { type: String, required: true },
     title: { type: String, required: true },
     mails: [{ type: String, required: true }],
   },

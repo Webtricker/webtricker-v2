@@ -15,7 +15,7 @@ import {
 import { useDispatch } from "react-redux";
 
 // variables
-const ACTIVE_KEY = "OPEN_LEFT_PANEL_SOCIAL_ICON_MODAL";
+const ACTIVE_KEY = "OPEN_FOOTER_SOCIAL_ICON_MODAL";
 
 type Props = {
   control: Control<IContactPage, any, IContactPage>;
@@ -24,7 +24,7 @@ type Props = {
   setValue: UseFormSetValue<IContactPage>;
 };
 
-export default function LeftPanelBtns({
+export default function SocialLinks({
   watch,
   control,
   register,
@@ -58,12 +58,12 @@ export default function LeftPanelBtns({
 
   return (
     <>
-      <div className="flex flex-col absolute left-0 bottom-0 gap-5 w-5">
+      <div className="flex flex-col gap-5 w-5">
         {socialLinks.map((link, index) => {
           const currentIcon = updatedLinks?.[index]?.icon;
           return (
             <div key={link.id} className="flex relative gap-5 mb-4 w-full">
-              <div className="w-full flex items-center absolute min-w-[220px]">
+              <div className="w-full flex items-center min-w-[220px]">
                 {currentIcon ? (
                   <Image width={20} height={20} src={currentIcon} alt="Icon" />
                 ) : (

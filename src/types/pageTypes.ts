@@ -197,19 +197,22 @@ type ContactForm = {
 
 
 type TContactAddress = {
-    icon: string;
+    iconWhite: string;
+    iconBlack: string;
     title: string;
     addresses: { office: string; location: string }[];
 }
 
 type TPhone = {
-    icon: string;
+    iconWhite: string;
+    iconBlack: string;
     title: string;
     numbers: string[];
 }
 
 type TEmail = {
-    icon: string;
+    iconWhite: string;
+    iconBlack: string;
     title: string;
     mails: string[];
 }

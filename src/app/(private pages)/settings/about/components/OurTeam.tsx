@@ -10,22 +10,6 @@ import galleryModern from "@/app/fonts/gallery";
 import { TTeamData } from "@/types/data";
 
 export default function OurTeam({ teamData }: { teamData: TTeamData[] }) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    gsap.from(containerRef.current, {
-      x: "-100%",
-      duration: 1.5,
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: "top bottom",
-        // markers:true,
-      },
-    });
-  }, [containerRef]);
-
   if (!teamData.length)
     return (
       <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
@@ -35,13 +19,12 @@ export default function OurTeam({ teamData }: { teamData: TTeamData[] }) {
 
   return (
     <div
-      ref={containerRef}
       className="w-full flex flex-nowrap cursor-hide gap-10 mx-auto max-w-[80vw] overflow-x-auto"
     >
       {teamData.map((item) => (
         <div
           key={item.name}
-          className="group min-w-[400px] overflow-hidden rounded-[8px] shadow-md"
+          className="group min-w-[400px] overflow-hidden relative rounded-[8px] shadow-md"
         >
           <HoverEffectMoveable
             moveAmount={20}
