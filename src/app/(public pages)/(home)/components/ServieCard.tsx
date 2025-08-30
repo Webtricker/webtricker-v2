@@ -1,26 +1,13 @@
 "use client";
-import { TService } from "@/types/data";
+import { IService } from "@/types/post";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
-const ServiceCard = ({ service }: { service: TService }) => {
+const ServiceCard = ({ service }: { service: IService }) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
   return (
-    // <div className="flex items-center gap-5 md:gap-6 lg:gap-8 2xl:gap-10">
-    //   <Image
-    //     width={40}
-    //     height={40}
-    //     className="h-auto"
-    //     alt="Service icon"
-    //     src={service.icon || ""}
-    //   />
-    //   <div className="grow">
-    //     <h6 className="heading font-semibold">{service.title}</h6>
-    //     <p>{service.excerpt}</p>
-    //   </div>
-    // </div>
-
     <div className="p-4 shadow-md border border-green-500 rounded-xl rounded-br-none">
       <div className="flex items-center gap-4">
         <Image
@@ -42,7 +29,9 @@ const ServiceCard = ({ service }: { service: TService }) => {
         <div className="flex items-baseline justify-between gap-2">
           <div className="mt-2 flex items-center gap-1">
             <p className="!text-base">For more:</p>
-            <button className="font-semibold underline">Click here</button>
+            <Link href={`/services/${service.slug}`}>
+              <button className="font-semibold underline">Click here</button>
+            </Link>
           </div>
           <span
             className="text-4xl font-bold cursor-pointer"

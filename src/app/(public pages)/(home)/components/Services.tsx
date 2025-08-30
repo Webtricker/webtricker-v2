@@ -1,10 +1,10 @@
 import galleryModern from "@/app/fonts/gallery";
 import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
 import Container from "@/sharedComponets/ui/wrapper/Container";
-import { TService } from "@/types/data";
 import { getServicesData } from "@/utils/pageData";
 import React from "react";
 import ServiceCard from "./ServieCard";
+import { IService } from "@/types/post";
 
 type PageProps = {
   serviceSectionTitle: {
@@ -47,7 +47,7 @@ export default async function Services({
           </div>
           {/* services info */}
           <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            {(serviceData as TService[]).map((service) => (
+            {(serviceData as IService[]).map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}
           </div>
