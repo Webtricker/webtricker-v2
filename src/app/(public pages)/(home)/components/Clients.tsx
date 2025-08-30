@@ -26,7 +26,7 @@ export default function Clients({ title, clientsBanners = [] }: Props) {
           >
             {clientsBanners.map((item) => (
               <Image
-                className="block border border-slate-300 dark:border-slate-700 mx-12 w-20 h-20 rounded-full"
+                className="block border border-slate-300 dark:border-slate-700 mx-12 w-40 h-20 rounded-xl"
                 key={item}
                 src={item}
                 width={100}
