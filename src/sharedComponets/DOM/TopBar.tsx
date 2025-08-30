@@ -5,7 +5,7 @@ import Link from "next/link";
 
 function TopBar({ info }: { info: ITopBarInfo }) {
   return (
-    <section className="!bg-gradient-to-r from-slate-900 to-slate-600 -mt-4 py-1 mb-2">
+    <section className="!bg-gradient-to-r from-slate-900 to-slate-600 -mt-4 py-1 mb-2 hidden md:block">
       <Container>
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-4 text-white">
