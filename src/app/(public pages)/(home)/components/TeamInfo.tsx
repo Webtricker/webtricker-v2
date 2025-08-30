@@ -7,8 +7,6 @@ import "swiper/css/pagination";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import Image from "next/image";
-import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveable";
-import galleryModern from "@/app/fonts/gallery";
 import { TTeamData } from "@/types/data";
 
 export default function TeamInfo({
@@ -50,7 +48,7 @@ export default function TeamInfo({
         <Swiper
           //  dir="ltr"
           modules={[Navigation, Autoplay, Pagination]}
-          spaceBetween={16}
+          spaceBetween={20}
           navigation={false}
           centeredSlides={true}
           loop={true}
@@ -78,28 +76,18 @@ export default function TeamInfo({
           className="w-full"
         >
           {[...teamData, ...teamData, ...teamData].map((item, index) => (
-            <SwiperSlide
-              className="cursor-hide overflow-hidden rounded-[8px]"
-              key={index}
-            >
-              <div className="group overflow-hidden rounded-[8px] shadow-md">
-                <HoverEffectMoveable
-                  moveAmount={20}
-                  className="w-full h-full min-h-full !p-0"
-                >
-                  <Image
-                    className="w-full h-[350px] 2xl:h-[400px] scale-110 group-hover:scale-125 duration-1000"
-                    src={item.profile}
-                    width={200}
-                    height={400}
-                    alt="Team Profile"
-                  />
-                </HoverEffectMoveable>
-                <div className="w-full duration-500 opacity-0 group-hover:opacity-100 h-full absolute left-0 pb-10 bottom-0 bg-gradient-to-t text-white from-black to-transparent pointer-events-none flex flex-col justify-end items-center p-2">
-                  <p className="uppercase">{item.role}</p>
-                  <h4 className={`uppercase ${galleryModern.className}`}>
-                    {item.name}
-                  </h4>
+            <SwiperSlide className="" key={index}>
+              <div className="border p-4 flex flex-col gap-2 items-center max-w-[300px] rounded-2xl min-h-[320px] border-green-600">
+                <Image
+                  className="w-[200px] h-[200px] rounded-full"
+                  src={item?.profile}
+                  alt={item?.name}
+                  width={200}
+                  height={200}
+                />
+                <div className="text-center">
+                  <h6 className="font-bold">{item.name}</h6>
+                  <p className="italic">{item.role}</p>
                 </div>
               </div>
             </SwiperSlide>
