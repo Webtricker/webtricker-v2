@@ -20,3 +20,34 @@ export interface ITopHeader {
         href: string;
     }[]
 }
+
+
+
+
+// ======= footer ==========
+
+type ShortLinks = {
+    title: string;
+    links: {
+        label: string;
+        href: string;
+        isExternal: boolean;
+    }[]
+}
+export interface IFooter {
+    logo: {
+        white: string;
+        black: string;
+    };
+    description: string;
+    pages: ShortLinks;
+    services: ShortLinks;
+    socialLinks: ShortLinks;
+    newsLater: {
+        title: string;
+        placeholder: string;
+        formMail: string;
+    };
+    bounchingTxt: string;
+    copyrightTxt: string;
+}

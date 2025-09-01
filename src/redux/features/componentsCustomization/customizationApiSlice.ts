@@ -8,8 +8,8 @@ export const customizationApi = createApi({
     }),
     endpoints: (builder) => ({
 
-        // ===== Home Page Endpoints =====
-       getTopHeaderData: builder.query({
+        // ===== Top Header Endpoints =====
+        getTopHeaderData: builder.query({
             query: () => ({
                 url: `/top-header`
             })
@@ -21,10 +21,37 @@ export const customizationApi = createApi({
                 body: data,
             })
         }),
+
+        // ===== Top Header Endpoints =====
+        getFooterData: builder.query({
+            query: () => ({
+                url: `/footer`
+            })
+        }),
+        updateFooterData: builder.mutation({
+            query: (data) => ({
+                url: `/footer`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+        postFooterData: builder.mutation({
+            query: (data) => ({
+                url: `/footer`,
+                method: "POST",
+                body: data,
+            })
+        }),
+
     })
 })
 
 export const {
-  useGetTopHeaderDataQuery,
-  useUpdateTopHeaderDataMutation
+    useGetTopHeaderDataQuery,
+    useUpdateTopHeaderDataMutation,
+
+    // ===== Top Header Endpoints =====
+    useGetFooterDataQuery,
+    useUpdateFooterDataMutation,
+    usePostFooterDataMutation
 } = customizationApi;

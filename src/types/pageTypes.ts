@@ -24,7 +24,7 @@ export interface IHomePage {
 
     // clients section
     clientSectionSubtitle: string;
-    clientsBanners:string[];
+    clientsBanners: string[];
 
     // service section
     serviceSectionTitle: {
@@ -162,7 +162,7 @@ export interface IPortfolioPage {
         img: string;
         technology: string;
         name: string;
-        _id?:string;
+        _id?: string;
     }[];
     projectIntroduction: {
         companyName: string;
@@ -181,3 +181,69 @@ export interface IBlogPage {
     description: string;
 }
 
+
+type TFormInput = {
+    label: string;
+    placeholder: string;
+}
+
+type ContactForm = {
+    name: TFormInput;
+    email: TFormInput;
+    message: TFormInput;
+    btnText: string;
+    mailTo: string;
+}
+
+
+type TContactAddress = {
+    iconWhite: string;
+    iconBlack: string;
+    title: string;
+    addresses: { office: string; location: string }[];
+}
+
+type TPhone = {
+    iconWhite: string;
+    iconBlack: string;
+    title: string;
+    numbers: string[];
+}
+
+type TEmail = {
+    iconWhite: string;
+    iconBlack: string;
+    title: string;
+    mails: string[];
+}
+
+type TGreetings = {
+    topTxt: string;
+    bottomTxt: string;
+    iconBlack: string;
+    iconWhite: string;
+}
+
+type TLeftPanel = {
+    socialLinks: { icon: string; href: string; }[];
+    text: string;
+}
+
+type TGoogleMap = {
+    title: string;
+    iframe: string;
+}
+
+
+export interface IContactPage {
+    branding: string;
+    title: string;
+    greetings: TGreetings;
+    form: ContactForm;
+    leftPanel: TLeftPanel;
+    contactInformationTitle: string;
+    address: TContactAddress;
+    contactNumber: TPhone;
+    contactMails: TEmail;
+    googleMap: TGoogleMap;
+}

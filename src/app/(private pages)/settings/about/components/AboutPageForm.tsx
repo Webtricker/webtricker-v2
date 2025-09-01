@@ -54,7 +54,12 @@ type Props = {
   testimonialsData: ITestimonialsInfo[];
 };
 export default function AboutPageForm({ teamData, testimonialsData }: Props) {
-  const { register, setValue, handleSubmit } = useForm<IAboutPage>();
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<IAboutPage>();
   const { data, isLoading } = useGetAboutPageDataQuery({});
   const aboutPageData = data?.data || ({} as IAboutPage);
   const [bannerBG, setBannerBG] = useState(""); // TODO: have to change it later.
@@ -104,6 +109,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
       </ConditionalReturnContainer>
     );
 
+  console.log(errors, " error from about form");
   return (
     <div className="w-full overflow-hidden">
       <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
@@ -569,7 +575,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
           </Container>
         </section>
         <section className="section ">
-          {loading ? <LoadingSpinner /> : <Button label="Save" type="submit" />}
+          {loading ? <LoadingSpinner /> : <Button type="submit" label="Save" />}
         </section>
       </form>
     </div>

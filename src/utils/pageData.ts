@@ -193,3 +193,18 @@ export const getBlogsPageData = async () => {
         return {};
     }
 }
+
+export const getPublicFooterData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/footer`);
+        if (!res.ok) {
+            console.error("Failed to fetch footer data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching footer data:", error);
+        return {};
+    }
+}

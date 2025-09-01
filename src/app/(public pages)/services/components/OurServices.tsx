@@ -17,7 +17,7 @@ export default function OurServices({ services = [], servicesShotcut }: Props) {
         <p className='w-full flex items-center gap-2 wt_fs-md'>
           {servicesShotcut?.iconBlack && (
             <Image
-              src={servicesShotcut.iconBlack}
+              src={servicesShotcut?.iconBlack}
               width={16}
               height={16}
               alt='Service Icon'
@@ -36,11 +36,13 @@ export default function OurServices({ services = [], servicesShotcut }: Props) {
           )}
           <span>{servicesShotcut.subtitle}</span>
         </p>
-        <h4 className='heading !leading-[100%] max-w-[850px]'>{servicesShotcut.title} </h4>
-        <div className='max-w-[1200px] grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-10 ml-auto w-full mt-10 md:mt-12 lg:mt-14 2xl:mt-18'>
-          {services.map((service) => (
-            <div key={service._id} className='w-full'>
-              <div className='w-full'>
+        <h4 className="heading !leading-[100%] max-w-[850px]">
+          {servicesShotcut.title}{" "}
+        </h4>
+        <div className="max-w-[1200px] grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-10 ml-auto w-full mt-10 md:mt-12 lg:mt-14 2xl:mt-18">
+          {services?.map((service) => (
+            <div key={service._id} className="w-full">
+              <div className="w-full">
                 <Image
                   className='w-12 md:w-14 lg:w-16 h-auto'
                   src={service.icon}

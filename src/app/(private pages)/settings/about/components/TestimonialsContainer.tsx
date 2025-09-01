@@ -43,8 +43,8 @@ export default function TestimonialsContainer({
     dispatch(toggleModal(null));
   };
   return (
-    <section className="relative py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-      <div className="w-full min-h-[300px] relative z-0 border border-slate-500">
+    <section className="relative max-w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
+      <div className="w-full min-h-[500px] relative z-0 border border-slate-500">
         <Image
           className="w-full h-[85%] object-cover absolute top-0 left-0 -z-10"
           src={bg}
@@ -65,16 +65,18 @@ export default function TestimonialsContainer({
         </div>
 
         <Container className="relative z-10">
-          <div className="w-full flex justify-end ">
-            <button
-              onClick={() => dispatch(toggleModal(KEY))}
-              type="button"
-              className=" grow min-h-full wt_fs-lg text-black"
-            >
-              <span className="inline-block p-1 bg-white rounded-full px-4">
-                Click Edit Background
-              </span>
-            </button>
+          <div className="w-full flex justify-between ">
+            <div className="grow">
+              <button
+                onClick={() => dispatch(toggleModal(KEY))}
+                type="button"
+                className=" grow w-full min-h-full wt_fs-lg text-black"
+              >
+                <span className="inline-block p-1 bg-white rounded-full px-4">
+                  Click to Edit Background
+                </span>
+              </button>
+            </div>
             <Link
               href="/settings/testimonials"
               className="testimonials-container max-w-[500px] text-white"
@@ -94,7 +96,7 @@ export default function TestimonialsContainer({
                 }}
                 loop={true}
                 modules={[EffectFade, Autoplay]}
-                className="mySwiper"
+                className="mySwiper max-w-[500px]"
               >
                 {testimonials.map((testimonial) => (
                   <SwiperSlide key={testimonial._id}>

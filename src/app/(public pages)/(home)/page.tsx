@@ -85,7 +85,7 @@ export default async function Home() {
       <LargeMarquee />
       <Portfolios portfolios={firstSixPortfolios} />
 
-      {secondSixPortfolios.length > 5 ? (
+      {secondSixPortfolios?.length > 5 ? (
         <PortfolioSlider
           linkText={homeData?.allProjectBtnText}
           portfolios={secondSixPortfolios}

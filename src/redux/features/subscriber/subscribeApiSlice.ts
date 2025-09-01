@@ -25,4 +25,4 @@ export const subscribeApi = createApi({
   }),
 });
 
-export const {useAddSubscriberMutation,useVerfifySubscriberMutation} = subscribeApi;
+export const {useAddSubscriberMutation, useVerfifySubscriberMutation} = subscribeApi;
