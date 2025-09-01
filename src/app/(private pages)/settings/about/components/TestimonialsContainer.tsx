@@ -79,11 +79,11 @@ export default function TestimonialsContainer({
             </div>
             <Link
               href="/settings/testimonials"
-              className="grow max-w-[600px] p-5 bg-gray-200"
+              className="testimonials-container max-w-[500px] text-white"
             >
               <h6>Testimonials</h6>
               <h4
-                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}
+                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className} !text-green-500`}
               >
                 From Our Cients
               </h4>
