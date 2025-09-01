@@ -22,6 +22,18 @@ export interface ITopHeader {
 }
 
 
+export interface IMainHeader {
+    logo: {
+        white: string;
+        black: string;
+    };
+    links: {
+        label: string;
+        href: string;
+        isExternal:boolean;
+    }[]
+}
+
 
 
 // ======= footer ==========

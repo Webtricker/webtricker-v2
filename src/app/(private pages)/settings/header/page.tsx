@@ -3,6 +3,7 @@ import React from "react";
 import PrivatePageWrapper from "../../components/PrivatePageWrapper";
 import TopHeaderForm from "./components/TopHeaderForm";
 import Container from "@/sharedComponets/ui/wrapper/Container";
+import MainHeaderForm from "./components/MainHeaderForm";
 
 export default function HeaderCustomizationPage() {
   return (
@@ -13,6 +14,11 @@ export default function HeaderCustomizationPage() {
         </section>
         <Container className="grow flex items-center justify-center">
           <TopHeaderForm />
+        </Container>
+
+
+        <Container className="grow flex items-center justify-center">
+          <MainHeaderForm />
         </Container>
       </main>
     </PrivatePageWrapper>
