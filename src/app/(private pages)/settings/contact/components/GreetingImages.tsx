@@ -78,7 +78,7 @@ export default function GreetingImages({ setValue, icons }: Props) {
         allowedMediaTypeToShow={["img"]}
         activeKey={ACTIVE_KEY}
         key={ACTIVE_KEY}
-        cb={(media:TMedia)=>console.log(media)}
+        cb={handleSelect}
       />
     </>
   );

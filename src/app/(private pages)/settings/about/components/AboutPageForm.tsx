@@ -109,8 +109,7 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
       </ConditionalReturnContainer>
     );
 
-
-    console.log(errors, ' error from about form')
+  console.log(errors, " error from about form");
   return (
     <div className="w-full overflow-hidden">
       <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>

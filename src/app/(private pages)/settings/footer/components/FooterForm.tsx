@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { useForm } from "react-hook-form";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
@@ -14,6 +14,7 @@ import { IFooter } from "@/types/componentsType";
 import FooterLogos from "./FooterLogos";
 import PagesLinks from "./PagesLinks";
 import ServicesLinks from "./ServicesLinks";
+import SocialLinks from "./SocialLinks";
 
 const footerDes = `Looking for a reliable digital partner? We provide end-to-end solutions—design, development, marketing, SEO, and more. Let&apos;s collaborate for lasting success.`;
 
@@ -23,7 +24,8 @@ export default function FooterForm() {
   const footerData = data?.data || ({} as IFooter);
 
   // react hook form
-  const { control, register, setValue, handleSubmit } = useForm<IFooter>();
+  const { control, reset, register, watch, setValue, handleSubmit } =
+    useForm<IFooter>();
 
   //   hook to update page data
   const [updateFooterData, { isLoading: loading }] =
@@ -31,28 +33,28 @@ export default function FooterForm() {
 
   // handlers
   const onSubmit = async (updateData: IFooter) => {
-    console.log(updateData, " update footer data ");
-    return;
-
+    console.log(updateData, ' udated')
     try {
       const res = await updateFooterData({
         id: data?.data?._id,
         data: updateData,
       }).unwrap();
       if (res?.success) {
-        toast.success("Contact page data updated");
+        toast.success("footer data updated");
       } else {
-        toast.error("Failed to update contact page data");
+        toast.error("Failed to update footer data");
       }
     } catch (error: any) {
-      console.log(error, " error updating contact page data");
-      toast.error("Failed to update contact page data");
+      console.log(error, " error updating footer data");
+      toast.error("Failed to update footer data");
     }
   };
 
-  // useEffect(() => {
-  //   reset(contactPageData);
-  // }, []);
+  useEffect(() => {
+    if (data?.data) {
+      reset(data?.data);
+    }
+  }, [data, reset]);
 
   if (isLoading)
     return (
@@ -104,13 +106,13 @@ export default function FooterForm() {
         {/* ===== our services == */}
         <div className="w-full">
           <h5>
-              <input
+            <input
               id="services.title"
               className="page-input w-full max-w-[300px] pl-1 py-1 leading_normal"
               {...register("services.title", { required: true })}
               placeholder="Our services"
             />
-            </h5>
+          </h5>
           <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
             <ServicesLinks control={control} register={register} />
           </div>
@@ -120,42 +122,74 @@ export default function FooterForm() {
 
         <div className="w-full">
           <h5>
-             <input
+            <input
               id="socialLinks.title"
               className="page-input w-full max-w-[300px] pl-1 py-1 leading_normal"
               {...register("socialLinks.title", { required: true })}
               placeholder="Follow Us on"
             />
-            </h5>
+          </h5>
           <div className="flex gap-5 md:gap-7 w-full mt-3">
             {/* TODO: ============= */}
-            {/* <SocialLinks /> */}
+            <SocialLinks
+              watch={watch}
+              control={control}
+              register={register}
+              setValue={setValue}
+            />
           </div>
           <div className="w-full mt-7">
-            <label className="wt_fs-md">Subscribe to our newsletter:</label>
-            {/* <NewsLetterForm /> */}
+            <label className="wt_fs-md">
+              <input
+                id="newsLater.title"
+                className="page-input w-full max-w-[300px] pl-1 py-1 leading_normal"
+                {...register("newsLater.title", { required: true })}
+                placeholder="Subscribe to our newsletter:"
+              />
+            </label>
+            <br />
+            <input
+              id="newsLater.placeholder"
+              className="page-input w-full max-w-[300px] pl-1 py-1 leading_normal mt-4"
+              {...register("newsLater.placeholder", { required: true })}
+              placeholder="Placeholder text"
+            />
+            <br />
+            <input
+              id="newsLater.formMail"
+              className="page-input w-full max-w-[300px] pl-1 py-1 leading_normal mt-4"
+              {...register("newsLater.formMail", { required: true })}
+              placeholder="Enter receiver email"
+            />
           </div>
         </div>
 
         <div className="w-full flex items-center justify-center">
-          {/* <BouncingText
-              size="wt_fs-7xl"
-              text="Contact Us"
-              interval={100}
-              duration={4}
-            /> */}
+          <h2 className="wt_fs-7xl">
+            <input
+              id="bounchingTxt"
+              className="page-input w-full max-w-[800px] text-center pl-1 py-1 leading_normal mt-4"
+              {...register("bounchingTxt", { required: true })}
+              placeholder="Contact Us"
+            />
+          </h2>
         </div>
 
         <div className="w-full h-[1px] bg-slate-400/40 dark:bg-slate-800"></div>
-        <div className="text-center mt-5 lg:mt-10">
+        <div className="text-center my-5 lg:my-10">
           <p>
-            All rights reserved — {new Date().getFullYear()} &copy; Webtricker
+            <input
+              id="copyrightTxt"
+              className="page-input w-full max-w-[800px] text-center pl-1 py-1 leading_normal mt-4"
+              {...register("copyrightTxt", { required: true })}
+              placeholder="Copy right text"
+            />
           </p>
         </div>
       </Container>
       <section className="section ">
         <Container>
-          {loading ? <LoadingSpinner /> : <Button label="Save" />}
+          {loading ? <LoadingSpinner /> : <Button type="submit" label="Save" />}
         </Container>
       </section>
     </form>

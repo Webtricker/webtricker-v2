@@ -19,7 +19,7 @@ const ShortLinksSchema = new mongoose.Schema<IFooter['pages']>({
         isExternal: {
             type: Boolean,
             required: true
-        }
+        },
     }]
 });
 

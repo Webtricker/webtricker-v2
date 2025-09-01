@@ -2,8 +2,6 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
 import Image from "next/image";
 import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveable";
 import galleryModern from "@/app/fonts/gallery";

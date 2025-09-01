@@ -2,7 +2,7 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import { TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
 import { IFooter } from "@/types/componentsType";
 import React from "react";
-import { Control, useFieldArray, UseFormRegister } from "react-hook-form";
+import { Control, Controller, useFieldArray, UseFormRegister } from "react-hook-form";
 
 type Props = {
   control: Control<IFooter, any, IFooter>;
@@ -21,7 +21,10 @@ export default function PagesLinks({ control, register }: Props) {
   return (
     <>
       {pageLinks.map((address, index) => (
-        <div key={address.id} className="flex w-full max-w-[1000px] relative gap-1 mb-2">
+        <div
+          key={address.id}
+          className="flex w-full max-w-[1000px] relative gap-1 mb-2"
+        >
           <input
             placeholder="Enter label"
             {...register(`pages.links.${index}.label` as const)}
@@ -33,12 +36,17 @@ export default function PagesLinks({ control, register }: Props) {
             className="page-input min-w-[5  00px] py-0.5 px-1.5 grow"
           />
           <p className="flex items-center gap-1 wt_fs-lg ml-2 mr-10">
-            <input
-              {...register(`pages.links.${index}.isExternal` as const)}
-              type="checkbox"
-              className="w-5 h-5"
-              name=""
-              id=""
+            <Controller
+              control={control}
+              name={`pages.links.${index}.isExternal`}
+              render={({ field }) => (
+                <input
+                  type="checkbox"
+                  checked={field.value}
+                  onChange={(e) => field.onChange(e.target.checked)}
+                  className="w-5 h-5"
+                />
+              )}
             />
             <span>target=&apos;_blank&apos; ?</span>
           </p>

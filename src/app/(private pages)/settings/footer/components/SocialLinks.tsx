@@ -1,12 +1,14 @@
 import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
+import Button from "@/sharedComponets/ui/buttons/Button";
 import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { PlusIcon, TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
 import { TMedia } from "@/types/commonTypes";
-import { IContactPage } from "@/types/pageTypes";
+import { IFooter } from "@/types/componentsType";
 import Image from "next/image";
 import React, { useState } from "react";
 import {
   Control,
+  Controller,
   useFieldArray,
   UseFormRegister,
   UseFormSetValue,
@@ -18,10 +20,10 @@ import { useDispatch } from "react-redux";
 const ACTIVE_KEY = "OPEN_FOOTER_SOCIAL_ICON_MODAL";
 
 type Props = {
-  control: Control<IContactPage, any, IContactPage>;
-  watch: UseFormWatch<IContactPage>;
-  register: UseFormRegister<IContactPage>;
-  setValue: UseFormSetValue<IContactPage>;
+  control: Control<IFooter, any, IFooter>;
+  watch: UseFormWatch<IFooter>;
+  register: UseFormRegister<IFooter>;
+  setValue: UseFormSetValue<IFooter>;
 };
 
 export default function SocialLinks({
@@ -31,7 +33,7 @@ export default function SocialLinks({
   setValue,
 }: Props) {
   const dispatch = useDispatch();
-  const updatedLinks = watch("leftPanel.socialLinks");
+  const updatedLinks = watch("socialLinks.links");
 
   const {
     fields: socialLinks,
@@ -39,13 +41,13 @@ export default function SocialLinks({
     remove: removeLink,
   } = useFieldArray({
     control,
-    name: "leftPanel.socialLinks",
+    name: "socialLinks.links",
   });
   const [activeIndex, setActiveIndex] = useState(0);
 
   // handlers
   const handleSelect = (media: TMedia) => {
-    setValue(`leftPanel.socialLinks.${activeIndex}.icon`, media.secure_url, {
+    setValue(`socialLinks.links.${activeIndex}.label`, media.secure_url, {
       shouldDirty: true,
     });
     dispatch(toggleModal(null));
@@ -58,14 +60,20 @@ export default function SocialLinks({
 
   return (
     <>
-      <div className="flex flex-col gap-5 w-5">
+      <div className="flex flex-col gap-3 w-full max-w-[900px]">
         {socialLinks.map((link, index) => {
-          const currentIcon = updatedLinks?.[index]?.icon;
+          const currentIcon = updatedLinks?.[index]?.label;
           return (
-            <div key={link.id} className="flex relative gap-5 mb-4 w-full">
-              <div className="w-full flex items-center min-w-[220px]">
+            <div key={link.id} className="flex relative gap-5 w-full">
+              <div className="w-full flex items-center gap-4 min-w-[220px]">
                 {currentIcon ? (
-                  <Image width={20} height={20} src={currentIcon} alt="Icon" />
+                  <Image
+                    onClick={() => handleClick(index)}
+                    width={25}
+                    height={25}
+                    src={currentIcon}
+                    alt="Icon"
+                  />
                 ) : (
                   <button
                     type="button"
@@ -77,9 +85,25 @@ export default function SocialLinks({
                 )}
                 <input
                   placeholder="Enter link"
-                  {...register(`leftPanel.socialLinks.${index}.href` as const)}
-                  className="page-input py-0.5 ml-1 px-1.5 wt_fs-xs grow"
+                  {...register(`socialLinks.links.${index}.href` as const)}
+                  className="page-input py-0.5 ml-1 px-1.5 grow"
                 />
+
+                <p className="flex items-center gap-1 wt_fs-lg ml-2 mr-10">
+                  <Controller
+                    control={control}
+                    name={`socialLinks.links.${index}.isExternal`}
+                    render={({ field }) => (
+                      <input
+                        type="checkbox"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                        className="w-5 h-5"
+                      />
+                    )}
+                  />
+                  <span>target=&apos;_blank&apos; ?</span>
+                </p>
                 <button
                   type="button"
                   onClick={() => removeLink(index)}
@@ -92,15 +116,12 @@ export default function SocialLinks({
           );
         })}
 
-        <div className="w-full flex justify-center">
-          <button
-            type="button"
-            className="p-0 outline-0  border-0"
-            onClick={() => addLink({ icon: "", href: "" })}
-          >
-            {" "}
-            <PlusIcon className="w-4 h-4 " />
-          </button>
+        <div className="w-full flex mt-3">
+          <Button
+            label="Add Link"
+            className="!py-2"
+            cb={() => addLink({ label: "", href: "", isExternal: false })}
+          />
         </div>
       </div>
 

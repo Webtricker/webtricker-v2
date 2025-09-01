@@ -8,7 +8,11 @@ import { useAddSubscriberMutation } from "@/redux/features/subscriber/subscribeA
 import LoadingSpinner from "../loading/LoadingSpinner";
 import NewsLetterVerifyForm from "./NewsLetterVerifyForm";
 
-export default function NewsLetterForm() {
+export default function NewsLetterForm({
+  placeholder,
+}: {
+  placeholder: string;
+}) {
   const ACTIVE_KEY = "OPEN_SUBSCRIBE_VERIFICATION_MODAL";
 
   // hook
@@ -55,7 +59,7 @@ export default function NewsLetterForm() {
           onBlur={() => setIsFocused(false)}
           type="email"
           className="py-2 px-2.5  2xl:px-3.5 outline-none focus:outline-none border-none grow"
-          placeholder="Enter your email"
+          placeholder={placeholder}
           value={mail}
           onChange={(e) => setMail(e.target.value)}
         />
