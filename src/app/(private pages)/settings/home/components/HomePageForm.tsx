@@ -16,21 +16,21 @@ import BannerSpinningIcon from "./BannerSpinningIcon";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import BannerRoundVideo from "./BannerRoundVideo";
 import IntroVideo from "./IntroVideo";
-import { ITestimonialsInfo, TService } from "@/types/data";
+import { ITestimonialsInfo } from "@/types/data";
 import TestimonialsContainer from "./TestimonialsContainer";
-import { ServiceCard } from "@/app/(public pages)/(home)/components/Services";
 import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
-import { IBlog } from "@/types/post";
+import { IBlog, IService } from "@/types/post";
 import BottomSlider from "./BottomSlider";
 import { toast } from "react-toastify";
 import ClientsBanner from "./ClientsBanner";
+import ServiceCard from "@/app/(public pages)/(home)/components/ServieCard";
 
 // TODO: Have to remove these default data
 const bannerDescription = `Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?`;
 
 type Props = {
   testimonials: ITestimonialsInfo[];
-  serviceData: TService[];
+  serviceData: IService[];
   posts: IBlog[] | null;
 };
 
@@ -179,7 +179,10 @@ export default function HomePageForm({
                   defaultValue={homePageData?.clientSectionSubtitle || ""}
                 />
               </p>
-             <ClientsBanner setValue={setValue} clientsBanners={homePageData?.clientsBanners || []} />
+              <ClientsBanner
+                setValue={setValue}
+                clientsBanners={homePageData?.clientsBanners || []}
+              />
             </div>
           </Container>
         </section>

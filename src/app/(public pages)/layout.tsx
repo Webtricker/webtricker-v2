@@ -5,6 +5,7 @@ import SiteLogoLong from "@/sharedComponets/ui/logos/SiteLogoLong";
 import { getSiteLogos } from "@/utils/logo";
 import React, { ReactNode } from "react";
 import webtrickerW from "@/assets/images/home/webtricker-w.png";
+import { getTobBarInfo } from "@/utils/TopBar";
 
 export default async function PublicLayout({
   children,
@@ -22,9 +23,10 @@ export default async function PublicLayout({
   }
 
   const finalSmallLogo = smallLogo || webtrickerW;
+  const topBarInfo = await getTobBarInfo();
   return (
     <>
-      <Navbar siteShortLogoUrl={finalSmallLogo}>
+      <Navbar siteShortLogoUrl={finalSmallLogo} topBarInfo={topBarInfo}>
         <SiteLogoLong />
       </Navbar>
       {children}

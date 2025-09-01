@@ -1,7 +1,7 @@
 export type TTechnology = {
   name: string;
   src: string;
-}
+};
 
 export type TTestimonial = {
   id: string;
@@ -15,7 +15,7 @@ export type TTeamData = {
   profile: string;
   name: string;
   role: string;
-}
+};
 
 export type TBlog = {
   thumnail: string;
@@ -23,7 +23,7 @@ export type TBlog = {
   excerpt: string;
   date: string;
   id: string;
-}
+};
 
 export type TService = {
   icon?: string;
@@ -34,8 +34,7 @@ export type TService = {
   relatedWork: string[];
   _id: string;
   parmalink: string;
-}
-
+};
 
 export type TPortFolioSlider = {
   id: string;
@@ -43,35 +42,30 @@ export type TPortFolioSlider = {
   subTitle: string;
   href: string;
   img: string;
-}
-
+};
 
 export type TUploadResponse = {
   success: boolean;
   error: boolean;
   message: string;
   uploadedFiles: string[];
-}
-
-
+};
 
 // category
-export type TCategory = { _id: string; name: string }
-export type ITechnology = { _id: string; name: string }
+export type TCategory = { _id: string; name: string };
+export type ITechnology = { _id: string; name: string };
 
 // navbar link
 export type TNavlink = {
   label: string;
   href: string;
   target: "_blank" | "_self";
-}
-
+};
 
 export interface ITeam {
   profile: string;
   name: string;
   role: string;
-
 }
 
 export interface ITeamInfo extends ITeam {
@@ -88,7 +82,6 @@ export interface ITestimonialsInfo extends ITestimonials {
   _id: string;
 }
 
-
 type SocialLink = {
   url: string;
   icon: string;
@@ -102,23 +95,38 @@ export type TOurLeader = {
   socialLinks: SocialLink[];
 };
 
-
 export type TSocialLink = {
   iconURL: string;
   link: string;
   _id: number;
-}
-
+};
 
 export interface ILeader {
   profile: string;
   name: string;
   role: string;
-  facebookLink:string;
-  instagramLink:string;
-  linkedInLink:string;
+  facebookLink: string;
+  instagramLink: string;
+  linkedInLink: string;
 }
 
 export interface ILeaderInfo extends ILeader {
   _id: string;
+}
+
+export interface ITopBarInfo {
+  contactLinks: [
+    {
+      _id: string;
+      text: string;
+      icon: string;
+    }
+  ];
+  socialLinks: [
+    {
+      _id: string;
+      href: string;
+      icon: string;
+    }
+  ];
 }

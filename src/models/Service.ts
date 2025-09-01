@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 interface IService {
   title: string;
   slug: string;
   description: string;
   subServices: string[];
-  excerp: string;
-  icon:string;
+  excerpt: string;
+  icon: string;
   thumnail: {
     width?: number;
     height?: number;
@@ -16,34 +16,38 @@ interface IService {
   content: string;
 }
 
-const ServiceSchema = new mongoose.Schema<IService>({
-  title: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
-  description: { type: String, required: true },
-  subServices: { type: [String], default: [] },
-  excerp: { type: String, required: true },
-  icon: { type: String, required: true },
-  thumnail: {
-    width: { type: Number },
-    height: { type: Number },
-    url: { type: String },
+const ServiceSchema = new mongoose.Schema<IService>(
+  {
+    title: { type: String, required: true },
+    slug: { type: String, required: true, unique: true },
+    description: { type: String, required: true },
+    subServices: { type: [String], default: [] },
+    excerpt: { type: String, required: true },
+    icon: { type: String, required: true },
+    thumnail: {
+      width: { type: Number },
+      height: { type: Number },
+      url: { type: String },
+    },
+    tags: { type: [String], default: [] },
+    category: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    content: { type: String, required: true },
   },
-  tags: { type: [String], default: [] },
-  category: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  content: { type: String, required: true },
-}, {
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  }
+);
 
 // Indexes at schema definition level
 ServiceSchema.index({ postType: 1 });
 ServiceSchema.index({ tags: 1 });
 ServiceSchema.index({ createdAt: -1 });
 
-const Service = mongoose.models.Service || mongoose.model<IService>('Service', ServiceSchema);
+const Service =
+  mongoose.models.Service || mongoose.model<IService>("Service", ServiceSchema);
 
 export default Service;
