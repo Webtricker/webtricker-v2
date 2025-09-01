@@ -77,11 +77,11 @@ export default function TestimonialsContainer({
             </button>
             <Link
               href="/settings/testimonials"
-              className="testimonials-container"
+              className="testimonials-container max-w-[500px] text-white"
             >
               <h6>Testimonials</h6>
               <h4
-                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className}`}
+                className={`heading font-semibold mb-5 mt-1 ${galleryModern.className} !text-green-500`}
               >
                 From Our Cients
               </h4>
