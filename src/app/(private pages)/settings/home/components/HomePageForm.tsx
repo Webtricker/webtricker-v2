@@ -258,7 +258,7 @@ export default function HomePageForm({
                 title="Click to update service"
                 className="w-full flex flex-col gap-8 lg:gap-10 2xl:gap-12"
               >
-                {serviceData?.map((service) => (
+                {serviceData?.slice(0, 1).map((service) => (
                   <ServiceCard key={service._id} service={service} />
                 ))}
               </Link>
