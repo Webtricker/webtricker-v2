@@ -28,7 +28,6 @@ export default function SidebarForm() {
 
     // react & form hooks
     const onSubmit: SubmitHandler<ISidebar> = async (data) => {
-        console.log(data, 'sidebar data ')
         try {
             const res = await updateSidebar({
                 id: sidebarData?.data?._id,

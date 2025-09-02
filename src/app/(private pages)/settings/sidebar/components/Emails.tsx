@@ -5,7 +5,7 @@ import React from "react";
 import { Control, useFieldArray, UseFormRegister } from "react-hook-form";
 
 type Props = {
-    control: Control<ISidebar, string[]>
+    control: Control<ISidebar>
     register: UseFormRegister<ISidebar>;
 };
 
@@ -16,7 +16,7 @@ export default function Emails({ control, register }: Props) {
         remove: removeMail,
     } = useFieldArray({
         control,
-        name: "information.mails",
+        name: "information.mails" as "socialLinks.links",
     });
     return (
         <>
@@ -44,7 +44,7 @@ export default function Emails({ control, register }: Props) {
                 <Button
                     type="button"
                     className="!py-1.5 !px-4"
-                    cb={() => addEmail("")}
+                    cb={() => addEmail("" as any)}
                     label="Add Email"
                 />
             </div>

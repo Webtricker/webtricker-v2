@@ -3,7 +3,7 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { PlusIcon, TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
 import { TMedia } from "@/types/commonTypes";
-import { IFooter, ISidebar } from "@/types/componentsType";
+import { ISidebar } from "@/types/componentsType";
 import Image from "next/image";
 import React, { useState } from "react";
 import {

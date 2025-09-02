@@ -5,7 +5,7 @@ import React from "react";
 import { Control, useFieldArray, UseFormRegister } from "react-hook-form";
 
 type Props = {
-    control: Control<ISidebar, string[]>
+    control: Control<ISidebar>
     register: UseFormRegister<ISidebar>;
 };
 
@@ -16,7 +16,7 @@ export default function Addresses({ control, register }: Props) {
         remove: removeAddress,
     } = useFieldArray({
         control,
-        name: "information.addresses",
+        name: "information.addresses" as any,
     });
     return (
         <>

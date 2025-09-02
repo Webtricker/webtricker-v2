@@ -16,7 +16,7 @@ export default function Phones({ control, register }: Props) {
         remove: removePhone,
     } = useFieldArray({
         control,
-        name: "information.phones",
+        name: "information.phones" as "socialLinks.links",
     });
     return (
         <>
@@ -44,7 +44,7 @@ export default function Phones({ control, register }: Props) {
                 <Button
                     type="button"
                     className="!py-1.5 !px-4"
-                    cb={() => addPhone("")}
+                    cb={() => addPhone("" as any)}
                     label="Add Phone"
                 />
             </div>
