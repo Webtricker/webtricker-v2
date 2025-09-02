@@ -30,7 +30,7 @@ export interface IMainHeader {
     links: {
         label: string;
         href: string;
-        isExternal:boolean;
+        isExternal: boolean;
     }[]
 }
 
@@ -62,4 +62,22 @@ export interface IFooter {
     };
     bounchingTxt: string;
     copyrightTxt: string;
+}
+
+
+// ===== side panel ========
+
+type TInformation = {
+    title: string;
+    phones: string[];
+    mails: string[];
+    addresses: string[];
+}
+export interface ISidebar {
+    shortLogo: string;
+    closeIcon: string;
+    title: string;
+    description: string;
+    information: TInformation;
+    socialLinks: ShortLinks;
 }
