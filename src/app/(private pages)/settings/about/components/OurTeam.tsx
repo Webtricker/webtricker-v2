@@ -3,11 +3,10 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Image from "next/image";
-import HoverEffectMoveable from "@/sharedComponets/ui/effects/HoverEffectMoveable";
-import galleryModern from "@/app/fonts/gallery";
-import { TTeamData } from "@/types/data";
+import { ITeamInfo } from "@/types/data";
+import Link from "next/link";
 
-export default function OurTeam({ teamData }: { teamData: TTeamData[] }) {
+export default function OurTeam({ teamData }: { teamData: ITeamInfo[] }) {
   if (!teamData.length)
     return (
       <div className="flex items-center justify-center w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
@@ -16,33 +15,23 @@ export default function OurTeam({ teamData }: { teamData: TTeamData[] }) {
     );
 
   return (
-    <div
-      className="w-full flex flex-nowrap cursor-hide gap-10 mx-auto max-w-[80vw] overflow-x-auto"
-    >
+    <div className="w-full flex flex-wrap justify-center gap-4">
       {teamData.map((item) => (
-        <div
-          key={item.name}
-          className="group min-w-[400px] overflow-hidden relative rounded-[8px] shadow-md"
-        >
-          <HoverEffectMoveable
-            moveAmount={20}
-            className="w-full h-full min-h-full !p-0"
-          >
+        <Link href={`/settings/teams/${item._id}`} key={item.name}>
+          <div className="border p-4 flex flex-col gap-2 items-center max-w-[300px] rounded-2xl min-h-[320px] border-green-600">
             <Image
-              className="w-full h-[350px] 2xl:h-[400px] scale-110 group-hover:scale-125 duration-1000"
-              src={item.profile}
+              className="w-[200px] h-[200px] rounded-full"
+              src={item?.profile}
+              alt={item?.name}
               width={200}
-              height={400}
-              alt="Team Profile"
+              height={200}
             />
-          </HoverEffectMoveable>
-          <div className="w-full duration-500 opacity-0 group-hover:opacity-100 h-full absolute left-0 pb-10 bottom-0 bg-gradient-to-t text-white from-black to-transparent pointer-events-none flex flex-col justify-end items-center">
-            <p className="uppercase">{item.role}</p>
-            <h4 className={`uppercase ${galleryModern.className}`}>
-              {item.name}
-            </h4>
+            <div className="text-center">
+              <h6 className="font-bold">{item.name}</h6>
+              <p className="italic">{item.role}</p>
+            </div>
           </div>
-        </div>
+        </Link>
       ))}
     </div>
   );
