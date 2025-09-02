@@ -18,7 +18,7 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   title: {
-    default: "Webtricker",
+    default: "",
     template: "%s | Webtricker",
   },
   description: "Web Design and Development Agency",
@@ -64,8 +64,8 @@ export default function RootLayout({
         <ThemeProvider>
           <ReduxProvider>
             {/* <PageTransition> */}
-              {children}
-              {/* </PageTransition> */}
+            {children}
+            {/* </PageTransition> */}
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />
