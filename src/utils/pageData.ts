@@ -208,3 +208,55 @@ export const getPublicFooterData = async () => {
         return {};
     }
 }
+
+
+export const getTobBarInfo = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/top-header`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
+
+    if (!res.ok) return null;
+    const result = await res.json();
+
+    if (!result || !result?.data) return null;
+    return result.data;
+  } catch (error) {
+    console.log("Error fetching top bar information ", error);
+    return null;
+  }
+};
+
+
+export const getMainHeaderData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/main-header`);
+        if (!res.ok) {
+            console.error("Failed to fetch header data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching header data:", error);
+        return {};
+    }
+}
+
+export const getSidebarData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sidebar`);
+        if (!res.ok) {
+            console.error("Failed to fetch header data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching header data:", error);
+        return {};
+    }
+}

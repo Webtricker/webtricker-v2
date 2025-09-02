@@ -22,6 +22,18 @@ export interface ITopHeader {
 }
 
 
+export interface IMainHeader {
+    logo: {
+        white: string;
+        black: string;
+    };
+    links: {
+        label: string;
+        href: string;
+        isExternal: boolean;
+    }[]
+}
+
 
 
 // ======= footer ==========
@@ -50,4 +62,21 @@ export interface IFooter {
     };
     bounchingTxt: string;
     copyrightTxt: string;
+}
+
+
+// ===== side panel ========
+
+type TInformation = {
+    title: string;
+    phones: string[];
+    mails: string[];
+    addresses: string[];
+}
+export interface ISidebar {
+    shortLogo: string;
+    title: string;
+    description: string;
+    information: TInformation;
+    socialLinks: ShortLinks;
 }
