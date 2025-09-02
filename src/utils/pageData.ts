@@ -245,3 +245,18 @@ export const getMainHeaderData = async () => {
         return {};
     }
 }
+
+export const getSidebarData = async () => {
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/sidebar`);
+        if (!res.ok) {
+            console.error("Failed to fetch header data");
+            return {};
+        }
+        const result = await res.json();
+        return result?.data || {};
+    } catch (error) {
+        console.error("Error fetching header data:", error);
+        return {};
+    }
+}

@@ -75,7 +75,6 @@ type TInformation = {
 }
 export interface ISidebar {
     shortLogo: string;
-    closeIcon: string;
     title: string;
     description: string;
     information: TInformation;

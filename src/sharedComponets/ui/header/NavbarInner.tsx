@@ -1,5 +1,5 @@
-import { IMainHeader, ITopHeader } from "@/types/componentsType";
-import { getMainHeaderData, getTobBarInfo } from "@/utils/pageData";
+import { IMainHeader, ISidebar, ITopHeader } from "@/types/componentsType";
+import { getMainHeaderData, getSidebarData, getTobBarInfo } from "@/utils/pageData";
 import React from "react";
 import SiteLogoLong from "../logos/SiteLogoLong";
 import SiteLogo from "./SiteLogo";
@@ -7,13 +7,13 @@ import SidebarToggler from "./SidebarToggler";
 import Container from "../wrapper/Container";
 import TopBar from "@/sharedComponets/DOM/TopBar";
 import Sidebar from "./Sidebar";
-import webtrickerW from "@/assets/images/home/webtricker-w.png";
 import Link from "next/link";
 // import { getSiteLogos } from "@/utils/logo";
 
 export default async function NavbarInner() {
   const mainHeaderData = (await getMainHeaderData()) as IMainHeader;
   const topBarInfo = (await getTobBarInfo()) as ITopHeader;
+  const sidebarData = (await getSidebarData()) as ISidebar;
   return (
     <>
       <TopBar info={topBarInfo} />
@@ -38,7 +38,7 @@ export default async function NavbarInner() {
         </div>
       </Container>
 
-      <Sidebar siteShortLogoUrl={webtrickerW} key="PUBLIC_SIDEBAR" />
+      <Sidebar navlinks={mainHeaderData?.links || []} sidebarData={sidebarData} key="PUBLIC_SIDEBAR" />
     </>
   );
 }

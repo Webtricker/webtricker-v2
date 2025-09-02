@@ -24,7 +24,6 @@ export default function MainHeaderForm() {
 
   // react & form hooks
   const onSubmit: SubmitHandler<IMainHeader> = async (data) => {
-    console.log("Submitted data:", data);
     try {
       const res = await updateTopHeader({
         id: headerData?.data?._id,

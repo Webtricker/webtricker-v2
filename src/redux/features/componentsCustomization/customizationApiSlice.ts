@@ -49,6 +49,20 @@ export const customizationApi = createApi({
                 body: data,
             })
         }),
+
+        // ===== public footer Endpoints =====
+        getSidebarData: builder.query({
+            query: () => ({
+                url: `/sidebar`
+            })
+        }),
+        updateSidebarData: builder.mutation({
+            query: (data) => ({
+                url: `/sidebar`,
+                method: "PUT",
+                body: data,
+            })
+        }),
     })
 })
 
@@ -64,6 +78,11 @@ export const {
     // ======= public footer data =====
     useGetFooterDataQuery,
     useUpdateFooterDataMutation,
-    
+
+
+    // ==== sidebar data =========
+    useGetSidebarDataQuery,
+    useUpdateSidebarDataMutation
+
 
 } = customizationApi;

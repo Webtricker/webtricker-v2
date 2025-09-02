@@ -101,7 +101,7 @@ export default function SocialLinks({
                         className="w-5 h-5"
                       />
                     )}
-                  />
+                  />  
                   <span>target=&apos;_blank&apos; ?</span>
                 </p>
                 <button
