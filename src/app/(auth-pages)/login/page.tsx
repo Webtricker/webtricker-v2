@@ -12,7 +12,7 @@ export default async function LoginPage() {
         <Container>
           <div className="w-full max-w-[500px] mx-auto">
             <LoginForm>
-              <SiteLogoLong />
+              <SiteLogoLong logos={{white:"" ,black:""}} />
             </LoginForm>
           </div>
         </Container>

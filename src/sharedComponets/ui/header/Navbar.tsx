@@ -1,28 +1,15 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import Container from "@/sharedComponets/ui/wrapper/Container";
-import Link from "next/link";
-import Sidebar from "./Sidebar";
-import SiteLogo from "./SiteLogo";
-import SidebarToggler from "./SidebarToggler";
 import { getLenisInstance } from "@/utils/lenis";
-import { navLinks } from "@/data/navLinks";
-import { StaticImageData } from "next/image";
-import TopBar from "@/sharedComponets/DOM/TopBar";
-import { ITopBarInfo } from "@/types/data";
 
 type Props = {
   navStyle?: string;
   children?: React.ReactNode;
-  siteShortLogoUrl: string | StaticImageData;
-  topBarInfo: ITopBarInfo;
 };
 
 export default function Navbar({
   navStyle = "",
-  children = <></>,
-  siteShortLogoUrl,
-  topBarInfo,
+  children = <></>
 }: Props) {
   // variables
   const THRESHOLD = 150;
@@ -83,29 +70,7 @@ export default function Navbar({
         scrollY === 0 ? "duration-1000" : ""
       } ${showBorder ? "shadow" : "border-0"}`}
     >
-      <TopBar info={topBarInfo} />
-      <Container>
-        <div className="w-full flex items-center justify-center">
-          <SiteLogo>{children}</SiteLogo>
-
-          {/* links */}
-          <div className="hidden mt-[8px] lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8 2xl:gap-10">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                className="wt_header-navlink heading uppercase cursor-pointer"
-                key={label}
-                href={href}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-
-          <SidebarToggler />
-        </div>
-      </Container>
-
-      <Sidebar siteShortLogoUrl={siteShortLogoUrl} key="PUBLIC_SIDEBAR" />
+      {children}
     </header>
   );
 }

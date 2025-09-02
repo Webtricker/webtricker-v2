@@ -113,20 +113,3 @@ export interface ILeader {
 export interface ILeaderInfo extends ILeader {
   _id: string;
 }
-
-export interface ITopBarInfo {
-  contactLinks: [
-    {
-      _id: string;
-      text: string;
-      icon: string;
-    }
-  ];
-  socialLinks: [
-    {
-      _id: string;
-      href: string;
-      icon: string;
-    }
-  ];
-}

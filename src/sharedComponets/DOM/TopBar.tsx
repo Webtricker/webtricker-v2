@@ -1,9 +1,9 @@
-import { ITopBarInfo } from "@/types/data";
 import Container from "../ui/wrapper/Container";
 import Image from "next/image";
 import Link from "next/link";
+import { ITopHeader } from "@/types/componentsType";
 
-function TopBar({ info }: { info: ITopBarInfo }) {
+function TopBar({ info }: { info: ITopHeader }) {
   return (
     <section className="!bg-gradient-to-r from-slate-900 to-slate-600 -mt-4 py-1 mb-2 hidden md:block">
       <Container>
@@ -30,7 +30,7 @@ function TopBar({ info }: { info: ITopBarInfo }) {
           <div className="flex items-center gap-4 text-white">
             {info?.socialLinks?.map((link) => {
               return (
-                <Link key={link._id} href={link.href}>
+                <Link key={link.href + link.icon} href={link.href}>
                   <Image
                     src={link.icon}
                     width={20}
