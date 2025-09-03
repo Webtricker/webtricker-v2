@@ -1,5 +1,9 @@
 import { IMainHeader, ISidebar, ITopHeader } from "@/types/componentsType";
-import { getMainHeaderData, getSidebarData, getTobBarInfo } from "@/utils/pageData";
+import {
+  getMainHeaderData,
+  getSidebarData,
+  getTobBarInfo,
+} from "@/utils/pageData";
 import React from "react";
 import SiteLogoLong from "../logos/SiteLogoLong";
 import SiteLogo from "./SiteLogo";
@@ -8,7 +12,6 @@ import Container from "../wrapper/Container";
 import TopBar from "@/sharedComponets/DOM/TopBar";
 import Sidebar from "./Sidebar";
 import Link from "next/link";
-// import { getSiteLogos } from "@/utils/logo";
 
 export default async function NavbarInner() {
   const mainHeaderData = (await getMainHeaderData()) as IMainHeader;
@@ -24,21 +27,26 @@ export default async function NavbarInner() {
           </SiteLogo>
           {/* links */}
           <div className="hidden mt-[8px] lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8 2xl:gap-10">
-            {mainHeaderData?.links && mainHeaderData?.links.map(({ href, label }) => (
-              <Link
-                className="wt_header-navlink heading uppercase cursor-pointer"
-                key={label}
-                href={href}
-              >
-                {label}
-              </Link>
-            ))}
+            {mainHeaderData?.links &&
+              mainHeaderData?.links.map(({ href, label }) => (
+                <Link
+                  className="wt_header-navlink heading uppercase cursor-pointer"
+                  key={label}
+                  href={href}
+                >
+                  {label}
+                </Link>
+              ))}
           </div>
           <SidebarToggler />
         </div>
       </Container>
 
-      <Sidebar navlinks={mainHeaderData?.links || []} sidebarData={sidebarData} key="PUBLIC_SIDEBAR" />
+      <Sidebar
+        navlinks={mainHeaderData?.links || []}
+        sidebarData={sidebarData}
+        key="PUBLIC_SIDEBAR"
+      />
     </>
   );
 }
