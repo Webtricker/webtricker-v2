@@ -20,22 +20,19 @@ export default function BannerSpinningIcon({ setValue, data }: Props) {
   const [blackLogo, setBlackLogo] = useState(data?.bannerSpinningIconBlack);
   const [whiteLogo, setWhiteLogo] = useState(data?.bannerSpinningIconWhite);
 
-  useEffect(() => {
-    setValue("bannerSpinningIconBlack", data?.bannerSpinningIconBlack || "");
-    setValue("bannerSpinningIconWhite", data?.bannerSpinningIconWhite || "");
-  }, [data?.bannerSpinningIconBlack, data?.bannerSpinningIconWhite, setValue]);
-
   // handlers
   const handleBlackLogoSelect = (selectedMedia: TMedia) => {
     setBlackLogo(selectedMedia.secure_url);
     setValue("bannerSpinningIconBlack", selectedMedia.secure_url);
     dispatch(toggleModal(null));
   };
+
   const handleWhiteLogoSelect = (selectedMedia: TMedia) => {
     setWhiteLogo(selectedMedia.secure_url);
     setValue("bannerSpinningIconWhite", selectedMedia.secure_url);
     dispatch(toggleModal(null));
   };
+  
   return (
     <>
       <button

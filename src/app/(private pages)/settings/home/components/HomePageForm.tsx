@@ -24,6 +24,7 @@ import BottomSlider from "./BottomSlider";
 import { toast } from "react-toastify";
 import ClientsBanner from "./ClientsBanner";
 import ServiceCard from "@/app/(public pages)/(home)/components/ServieCard";
+import Technologies from "./Technologies";
 
 // TODO: Have to remove these default data
 const bannerDescription = `Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?`;
@@ -44,6 +45,8 @@ export default function HomePageForm({
     register,
     setValue,
     handleSubmit,
+    control,
+    watch
     // formState: { errors },
   } = useForm<IHomePage>();
   const { data, isLoading } = useGetHomePageDataQuery({});
@@ -97,7 +100,6 @@ export default function HomePageForm({
                 className="page-input pl-1"
                 {...register("greeting.top", { required: true })}
                 placeholder="Hello"
-                defaultValue={homePageData?.greeting?.top || ""}
               />
               <br />
               <input
@@ -105,7 +107,6 @@ export default function HomePageForm({
                 className="page-input mt-1 pl-1"
                 {...register("greeting.bottom", { required: true })}
                 placeholder="People! We’re"
-                defaultValue={homePageData?.greeting?.bottom || ""}
               />
             </span>
             <input
@@ -113,7 +114,6 @@ export default function HomePageForm({
               className={`text-center max-w-[50vw] !rounded-[10px] sm:w-auto sm:text-left wt_fs-giant banner-large-text heading page-input px-4 ${galleryModern.className}`}
               {...register("bannerText.top", { required: true })}
               placeholder="Creative"
-              defaultValue={homePageData?.bannerText?.top || ""}
             />
             <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
               <BannerSpinningIcon data={homePageData} setValue={setValue} />
@@ -127,7 +127,6 @@ export default function HomePageForm({
               className={`max-w-[555px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.left", { required: true })}
               placeholder="Digital"
-              defaultValue={homePageData?.bannerText?.left || ""}
             />
             <span className="tp-hero-title-img">
               <BannerRoundVideo data={homePageData} setValue={setValue} />
@@ -137,7 +136,6 @@ export default function HomePageForm({
               className={`max-w-[575px] w-full page-input ${galleryModern.className}`}
               {...register("bannerText.right", { required: true })}
               placeholder="Studio"
-              defaultValue={homePageData?.bannerText?.right || ""}
             />
           </h1>
 
@@ -149,7 +147,6 @@ export default function HomePageForm({
                 className={`min-h-[100px] w-full page-input p-2 ${galleryModern.className}`}
                 {...register("bannerDescription", { required: true })}
                 placeholder={bannerDescription}
-                defaultValue={homePageData?.bannerDescription || ""}
               ></textarea>
               <Link
                 href="/contact"
@@ -176,7 +173,6 @@ export default function HomePageForm({
                   className={`w-full min-w-[260px] page-input px-1 py-2 wt_fs-md`}
                   {...register("clientSectionSubtitle", { required: true })}
                   placeholder="Clients we've worked with"
-                  defaultValue={homePageData?.clientSectionSubtitle || ""}
                 />
               </p>
               <ClientsBanner
@@ -322,6 +318,21 @@ export default function HomePageForm({
           <div className="mx-5 px-5 flex items-center justify-center min-h-[100px] border border-slate-400 rounded-[10px]">
             <h4>Update team members from left panel</h4>
           </div>
+        </section>
+
+        <section className="py-8 px-5 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
+          <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
+            <h3 className="w-full text-center middle-border">
+              <input
+                id="technologoySectionTitle"
+                className={`px-2 text-center py-2.5 w-full page-input`}
+                {...register("technologoySectionTitle", { required: true })}
+                placeholder="Technologies that we are experts in"
+                defaultValue={homePageData?.technologoySectionTitle || ""}
+              />
+            </h3>
+          </div>
+          <Technologies control={control} register={register} setValue={setValue} watch={watch} />
         </section>
 
         <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">

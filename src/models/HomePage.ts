@@ -1,8 +1,13 @@
+
 import { IHomePage } from '@/types/pageTypes';
 import { Schema, model, models } from 'mongoose';
 
 
 
+const technologySchema = new Schema({
+    icon: { type: String, required: true },
+    name: { type: String, required: true },
+}, { _id: false });
 
 const homePageSchema = new Schema<IHomePage>(
     {
@@ -24,7 +29,7 @@ const homePageSchema = new Schema<IHomePage>(
         bannerDescription: { type: String, required: true },
         introVideo: { type: String, required: true },
         clientSectionSubtitle: { type: String, required: true },
-        clientsBanners:{type: [String], required:true},
+        clientsBanners: { type: [String], required: true },
         testimonialsBg: { type: String, required: true },
 
         serviceSectionTitle: {
@@ -39,7 +44,8 @@ const homePageSchema = new Schema<IHomePage>(
         leadersSectionTitle: { type: String, required: true },
 
         teamSectionTitle: { type: String, required: true },
-
+        technologoySectionTitle: { type: String, required: true },
+        technologies: [{ type: technologySchema }],
         blogSectionTitle: {
             large: { type: String, required: true },
             medium: { type: String, required: true },

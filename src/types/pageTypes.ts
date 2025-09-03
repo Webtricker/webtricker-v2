@@ -38,11 +38,16 @@ export interface IHomePage {
     // leaders section
     leadersSectionTitle: string;
 
-
-
     // team section
     teamSectionTitle: string;
 
+    // technologoies
+    technologoySectionTitle: string;
+    technologies: {
+        icon: string;
+        name: string;
+    }[]
+    ,
     // home latest blog
     blogSectionTitle: {
         large: string;
