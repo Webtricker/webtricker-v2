@@ -9,7 +9,10 @@ const ServiceCard = ({ service }: { service: IService }) => {
   const [showDetails, setShowDetails] = useState<boolean>(false);
 
   return (
-    <div className="p-4 shadow-md border border-green-500 rounded-xl rounded-br-none">
+    <div
+      className="p-4 shadow-md border border-green-500 rounded-xl rounded-br-none"
+      id={service._id}
+    >
       <div className="flex items-center gap-4">
         <Image
           width={40}

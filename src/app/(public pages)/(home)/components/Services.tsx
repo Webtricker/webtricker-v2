@@ -5,6 +5,7 @@ import { getServicesData } from "@/utils/pageData";
 import React from "react";
 import ServiceCard from "./ServieCard";
 import { IService } from "@/types/post";
+import ServiceButtons from "./ServiceButtons";
 
 type PageProps = {
   serviceSectionTitle: {
@@ -38,6 +39,7 @@ export default async function Services({
                   {serviceSectionTitle?.small || "We Think a lot"}
                 </h6>
               </div>
+              <ServiceButtons serviceData={serviceData} />
               <LinkButton
                 className="mt-5"
                 label={allServiceTxt || "See All Services"}
