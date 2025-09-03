@@ -5,6 +5,7 @@ import { getServicesData } from "@/utils/pageData";
 import React from "react";
 import ServiceCard from "./ServieCard";
 import { IService } from "@/types/post";
+import ServiceButtons from "./ServiceButtons";
 
 type PageProps = {
   serviceSectionTitle: {
@@ -38,6 +39,7 @@ export default async function Services({
                   {serviceSectionTitle?.small || "We Think a lot"}
                 </h6>
               </div>
+              <ServiceButtons serviceData={serviceData} />
               <LinkButton
                 className="mt-5"
                 label={allServiceTxt || "See All Services"}
@@ -46,7 +48,7 @@ export default async function Services({
             </div>
           </div>
           {/* services info */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6 md:max-w-[800px]">
+          <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 md:max-w-[800px]">
             {(serviceData as IService[]).map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}

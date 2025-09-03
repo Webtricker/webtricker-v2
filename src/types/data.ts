@@ -113,3 +113,9 @@ export interface ILeader {
 export interface ILeaderInfo extends ILeader {
   _id: string;
 }
+
+export interface HTechnology {
+  _id: string;
+  name: string;
+  icon: string;
+}

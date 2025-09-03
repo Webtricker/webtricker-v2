@@ -19,13 +19,13 @@ import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import { Metadata } from "next";
-import shortLogo from "@/assets/images/home/webtricker-w.png";
+import Technologies from "./components/Technologies";
 
 // export const revalidate = 900; // page rebuild in every 15 min
 export const revalidate = 20; // page rebuild in every 15 min
 
 export const metadata: Metadata = {
-  title: "Expert Web Design & Digital Services | Home",
+  title: "Expert Web Design & Digital Services",
   description:
     "We are Webtricker, specializing in responsive web design and development. Delivering pixel-perfect, high-quality websites for our valued clients.",
   keywords: [
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     url: "https://webtricker.com",
     images: [
       {
-        url: `${shortLogo.src}`,
+        url: "/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Webtricker - Expert Web Design & Digital Services",
@@ -78,6 +78,7 @@ export default async function Home() {
         sectionBg={homeData?.testimonialsBg}
         testimonials={testimonialsData}
       />
+      <Technologies technologies={homeData?.technologies} />
       <Services
         allServiceTxt={homeData?.allServiceBtnText}
         serviceSectionTitle={homeData?.serviceSectionTitle}
