@@ -3,7 +3,7 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IContactPage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -18,7 +18,7 @@ type IconProps = {
 type TTarget = "iconWhite" | "iconBlack";
 
 // variables
-const ACTIVE_KEY = "OPEN_GREETING_LOGO_MODAL";
+const ACTIVE_KEY = "OPEN_ADDRESS_ICON__MODAL";
 
 export default function AddressIcons({ setValue, icons }: IconProps) {
   //hooks
@@ -26,11 +26,6 @@ export default function AddressIcons({ setValue, icons }: IconProps) {
   const [blackLogo, setBlackLogo] = useState(icons?.white);
   const [whiteLogo, setWhiteLogo] = useState(icons?.black);
   const [target, setTarget] = useState<TTarget>("iconBlack");
-
-  useEffect(() => {
-    setValue("address.iconWhite", icons?.white || "");
-    setValue("address.iconBlack", icons?.black || "");
-  }, [icons, setValue]);
 
   // handlers
   const handleSelect = (media: TMedia) => {

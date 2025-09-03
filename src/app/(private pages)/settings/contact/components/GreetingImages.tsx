@@ -3,7 +3,7 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IContactPage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -23,24 +23,17 @@ const ACTIVE_KEY = "OPEN_GREETING_LOGO_MODAL";
 export default function GreetingImages({ setValue, icons }: Props) {
   //hooks
   const dispatch = useDispatch();
-  const [blackLogo, setBlackLogo] = useState(icons?.white);
-  const [whiteLogo, setWhiteLogo] = useState(icons?.black);
+  const [blackLogo, setBlackLogo] = useState(icons?.white || "");
+  const [whiteLogo, setWhiteLogo] = useState(icons?.black || "");
   const [target, setTarget] = useState<TTarget>("iconBlack");
-
-  useEffect(() => {
-    setValue("greetings.iconWhite", icons?.white || "");
-    setValue("greetings.iconBlack", icons?.black || "");
-  }, [icons, setValue]);
 
   // handlers
   const handleSelect = (media: TMedia) => {
-    console.log('clicked')
     if (target === "iconBlack") {
       setBlackLogo(media.secure_url);
     } else {
       setWhiteLogo(media.secure_url);
     }
-
     setValue(`greetings.${target}`, media.secure_url);
     dispatch(toggleModal(null));
   };
@@ -49,8 +42,6 @@ export default function GreetingImages({ setValue, icons }: Props) {
     setTarget(val);
     dispatch(toggleModal(ACTIVE_KEY));
   };
-
-  console.log(blackLogo,' black logo');
 
   return (
     <>

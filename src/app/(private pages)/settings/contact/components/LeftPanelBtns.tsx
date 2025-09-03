@@ -65,7 +65,9 @@ export default function LeftPanelBtns({
             <div key={link.id} className="flex relative gap-5 mb-4 w-full">
               <div className="w-full flex items-center absolute min-w-[220px]">
                 {currentIcon ? (
-                  <Image width={20} height={20} src={currentIcon} alt="Icon" />
+                  <Image
+                    onClick={() => handleClick(index)}
+                    width={20} height={20} src={currentIcon} alt="Icon" />
                 ) : (
                   <button
                     type="button"

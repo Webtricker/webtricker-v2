@@ -88,7 +88,7 @@ export const pageApi = createApi({
         updateContactPageData: builder.mutation({
             query: (data) => ({
                 url: `/contact-page`,
-                method: "POST",
+                method: "PUT",
                 body: data,
             })
         }),

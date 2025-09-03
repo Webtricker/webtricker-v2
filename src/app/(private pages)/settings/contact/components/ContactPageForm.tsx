@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IContactPage } from "@/types/pageTypes";
 import {
@@ -26,10 +26,8 @@ export default function ContactPageForm() {
   const contactPageData = data?.data || ({} as IContactPage);
 
   // react hook form
-  const { control, watch, register, setValue, handleSubmit } =
-    useForm<IContactPage>({
-      // defaultValues: contactPageData,
-    });
+  const { control, watch, reset, register, setValue, handleSubmit } =
+    useForm<IContactPage>();
 
   //   hook to update page data
   const [updateContactPage, { isLoading: loading }] =
@@ -37,9 +35,6 @@ export default function ContactPageForm() {
 
   // handlers
   const onSubmit = async (updateData: IContactPage) => {
-    console.log(updateData, " update data ");
-    return;
-
     try {
       const res = await updateContactPage({
         id: data?.data?._id,
@@ -56,9 +51,11 @@ export default function ContactPageForm() {
     }
   };
 
-  // useEffect(() => {
-  //   reset(contactPageData);
-  // }, []);
+  useEffect(() => {
+    if (data?.data) {
+      reset(data?.data);
+    }
+  }, [data?.data, reset]);
 
   if (isLoading)
     return (
@@ -73,24 +70,6 @@ export default function ContactPageForm() {
         <p>Add contact page data</p>
       </ConditionalReturnContainer>
     );
-
-  // <textarea
-  //               id="introText"
-  //               className="page-input w-full  min-h-[450px] pl-1"
-  //               {...register("introText", { required: true })}
-  //               placeholder={defaultIntroText}
-  //               defaultValue={contactPageData?.introText || ""}
-  //             ></textarea>
-
-  // <input
-  //                 id="ourMissionText"
-  //                 className="page-input w-full pl-1 leading_normal"
-  //                 {...register("ourMissionText", { required: true })}
-  //                 placeholder="Our mission"
-  //                 defaultValue={contactPageData?.ourMissionText || ""}
-  //               />
-
-  console.log(contactPageData, " contact page data");
 
   const icons = {
     white: contactPageData?.greetings?.white || "",
@@ -109,7 +88,6 @@ export default function ContactPageForm() {
                   className="page-input w-full min-w-[290px] pl-1 leading_normal"
                   {...register("branding", { required: true })}
                   placeholder="Webtricker Web & Design Solutions"
-                  defaultValue={contactPageData?.branding || ""}
                 />
               </span>
               <span className="w-10 h-[1px] mt-1.5 bg-black dark:bg-white"></span>
@@ -120,7 +98,6 @@ export default function ContactPageForm() {
                 className="page-input w-full pl-1 leading_normal"
                 {...register("title", { required: true })}
                 placeholder="Get in touch"
-                defaultValue={contactPageData?.title || ""}
               />
             </h1>
             <div className="w-full max-w-[900px] ml-auto flex flex-col gap-5 sm:flex-row pt-8 md:pt-10">
@@ -131,7 +108,6 @@ export default function ContactPageForm() {
                     className="page-input w-full pl-1 leading_normal"
                     {...register("greetings.topTxt", { required: true })}
                     placeholder="SAY HELLO TO US"
-                    defaultValue={contactPageData?.greetings?.topTxt || ""}
                   />
                 </h6>
                 <div className="w-full flex items-start mt-2">
@@ -141,7 +117,6 @@ export default function ContactPageForm() {
                       className="page-input w-full pl-1 leading_normal"
                       {...register("greetings.bottomTxt", { required: true })}
                       placeholder="WRITE TO US"
-                      defaultValue={contactPageData?.greetings?.bottomTxt || ""}
                     />
                   </p>
                   <div className="hidden sm:block w-full mt-4">
@@ -158,9 +133,6 @@ export default function ContactPageForm() {
                       className="page-input py-1.5 pl-1 w-full leading_normal"
                       {...register("form.name.label", { required: true })}
                       placeholder="label ex:Name"
-                      defaultValue={
-                        contactPageData?.form?.name?.label || "Send Message"
-                      }
                     />
                   </label>
                   <input
@@ -168,9 +140,6 @@ export default function ContactPageForm() {
                     className="page-input py-1.5 w-full pl-1 leading_normal"
                     {...register("form.name.placeholder", { required: true })}
                     placeholder="placeholder ex: Your name"
-                    defaultValue={
-                      contactPageData?.form?.name?.placeholder || ""
-                    }
                   />
                 </div>
                 {/* ======= input === */}
@@ -181,7 +150,6 @@ export default function ContactPageForm() {
                       className="page-input py-1.5 w-full pl-1 leading_normal"
                       {...register("form.email.label", { required: true })}
                       placeholder="label ex: Email"
-                      defaultValue={contactPageData?.form?.email?.label || ""}
                     />
                   </label>
                   <input
@@ -191,9 +159,6 @@ export default function ContactPageForm() {
                       required: true,
                     })}
                     placeholder="placeholder: email@company.com"
-                    defaultValue={
-                      contactPageData?.form?.email?.placeholder || ""
-                    }
                   />
                 </div>
                 {/* ======= input === */}
@@ -204,7 +169,7 @@ export default function ContactPageForm() {
                       className="page-input py-1.5 w-full pl-1 leading_normal"
                       {...register("form.message.label", { required: true })}
                       placeholder="label ex: Your Queries"
-                      defaultValue={contactPageData?.form?.message?.label || ""}
+
                     />
                   </label>
                   <input
@@ -214,9 +179,6 @@ export default function ContactPageForm() {
                       required: true,
                     })}
                     placeholder="placeholder: Let'us know how we can help you"
-                    defaultValue={
-                      contactPageData?.form?.message?.placeholder || ""
-                    }
                   />
                 </div>
                 <div className="w-full">
@@ -225,7 +187,6 @@ export default function ContactPageForm() {
                     className="page-input bg-black text-center py-1.5 dark:bg-white text-white dark:text-black w-full pl-1 leading_normal"
                     {...register("form.btnText", { required: true })}
                     placeholder="Send Message"
-                    defaultValue={contactPageData?.form?.btnText || ""}
                   />
                 </div>
                 <div className="w-full">
@@ -234,7 +195,6 @@ export default function ContactPageForm() {
                     className="page-input  py-1.5 w-full pl-1 leading_normal"
                     {...register("form.btnText", { required: true })}
                     placeholder="mailto:"
-                    defaultValue={contactPageData?.form?.btnText || ""}
                   />
                 </div>
               </div>
@@ -257,7 +217,6 @@ export default function ContactPageForm() {
               className="page-input w-full pl-1 leading_normal"
               {...register("leftPanel.text", { required: true })}
               placeholder="Follow us"
-              defaultValue={contactPageData?.leftPanel?.text || ""}
             />
           </p>
         </div>
@@ -270,7 +229,6 @@ export default function ContactPageForm() {
               className="page-input w-full pl-1 leading_normal max-w-[600px]"
               {...register("contactInformationTitle", { required: true })}
               placeholder="Contact Information"
-              defaultValue={contactPageData?.contactInformationTitle || ""}
             />
           </h4>
           <div className="w-full flex flex-col lg:flex-row gap-10 md:gap-14 2xl:gap-20 ">
@@ -292,7 +250,6 @@ export default function ContactPageForm() {
                         required: true,
                       })}
                       placeholder="Address"
-                      defaultValue={contactPageData?.address?.title || ""}
                     />
                   </h6>
                   <Addresses register={register} control={control} />
@@ -316,7 +273,6 @@ export default function ContactPageForm() {
                         required: true,
                       })}
                       placeholder="Phone"
-                      defaultValue={contactPageData?.contactNumber?.title || ""}
                     />
                   </h6>
                   <Phones register={register} control={control} />
@@ -340,7 +296,6 @@ export default function ContactPageForm() {
                         required: true,
                       })}
                       placeholder="Email"
-                      defaultValue={contactPageData?.contactMails?.title || ""}
                     />
                   </h6>
                   <Mails register={register} control={control} />
@@ -358,7 +313,6 @@ export default function ContactPageForm() {
                     required: true,
                   })}
                   placeholder="Find us on google map:"
-                  defaultValue={contactPageData?.googleMap?.title || ""}
                 />
               </h6>
               <div className="w-full relative z-0">
@@ -378,7 +332,6 @@ export default function ContactPageForm() {
                       required: true,
                     })}
                     placeholder="Enter google map iframe url"
-                    defaultValue={contactPageData?.googleMap?.iframe || ""}
                   ></textarea>
                 </div>
               </div>
@@ -387,7 +340,7 @@ export default function ContactPageForm() {
         </Container>
       </div>
       <section className="section ">
-        {loading ? <LoadingSpinner /> : <Button label="Save" />}
+        {loading ? <LoadingSpinner /> : <Button type="submit" label="Save" />}
       </section>
     </form>
   );

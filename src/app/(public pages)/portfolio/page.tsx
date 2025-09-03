@@ -42,7 +42,6 @@ export async function generateMetadata() {
 export default async function PortfolioPage() {
   const technologiesData = await getTechnologies();
   const pageData = (await getPortfolioPageData()) as IPortfolioPage;
-
   return (
     <main className="w-full z-0">
       <PortfolioBanner

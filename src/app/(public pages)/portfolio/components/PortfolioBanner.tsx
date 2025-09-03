@@ -15,8 +15,8 @@ type Props = {
   height?: number;
   rows?: number;
   cols?: number;
-  imageDuration?: number;
-  transitionDuration?: number;
+  imageDuration?: number; // how long an image stays fully visible
+  transitionDuration?: number; // how long transition lasts
 };
 
 const PortfolioBanner: React.FC<Props> = ({
@@ -25,8 +25,8 @@ const PortfolioBanner: React.FC<Props> = ({
   height = 600,
   rows = 8,
   cols = 8,
-  imageDuration = 10000,
-  transitionDuration = 4000,
+  imageDuration = 4000,
+  transitionDuration = 2000,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const swiperRef = useRef<SwiperCore | null>(null);
@@ -44,7 +44,6 @@ const PortfolioBanner: React.FC<Props> = ({
     const wx = width / cols;
     const wy = height / rows;
 
-    let frame = 0;
     let index = 0;
     let coverImg: HTMLImageElement;
     let canvasImg: HTMLImageElement;
@@ -58,55 +57,70 @@ const PortfolioBanner: React.FC<Props> = ({
 
     function switchImages() {
       coverImg = imgEls[index];
-      canvasImg = imgEls[index + 1] || imgEls[0];
-      index = index === imgEls.length - 2 ? 0 : index + 1;
+      const nextIndex = (index + 1) % imgEls.length;
+      canvasImg = imgEls[nextIndex];
 
-      // 🔥 sync Swiper when image changes
+      // 🔥 sync Swiper
       if (swiperRef.current) {
-        swiperRef.current.slideToLoop(index); // loop index sync
+        swiperRef.current.slideToLoop(nextIndex);
       }
+
+      index = nextIndex;
     }
     switchImages();
 
-    // 🔥 timing
-    const transitionFrames = Math.round((transitionDuration / 1000) * 60);
-    const totalFrames = Math.round((imageDuration / 1000) * 60);
+    // frame calculation
+    const fps = 60;
+    const transitionFrames = Math.round((transitionDuration / 1000) * fps);
+    const holdFrames = Math.round((imageDuration / 1000) * fps);
 
-    function draw(t: number) {
-      if (!ctx) return;
+    let frame = 0;
+    let phase: "hold" | "transition" = "hold";
 
-      ctx.drawImage(canvasImg, 0, 0, width, height);
+    function drawHold() {
+      ctx?.drawImage(coverImg, 0, 0, width, height);
+    }
 
-      if (t <= transitionFrames) {
-        const bx = (t / transitionFrames) * wx;
-        const by = (t / transitionFrames) * wy;
+    function drawTransition(t: number) {
+      ctx?.drawImage(canvasImg, 0, 0, width, height);
 
-        for (let i = 0; i < cols; i++) {
-          for (let j = 0; j < rows; j++) {
-            ctx.drawImage(
-              coverImg,
-              i * wx,
-              j * wy,
-              wx - bx,
-              wy - by,
-              i * wx,
-              j * wy,
-              wx - bx,
-              wy - by
-            );
-          }
+      const bx = (t / transitionFrames) * wx;
+      const by = (t / transitionFrames) * wy;
+
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          ctx?.drawImage(
+            coverImg,
+            i * wx,
+            j * wy,
+            wx - bx,
+            wy - by,
+            i * wx,
+            j * wy,
+            wx - bx,
+            wy - by
+          );
         }
       }
     }
 
     let frameId: number;
     function render() {
-      draw(frame);
-      frame++;
-
-      if (frame > totalFrames) {
-        frame = 0;
-        switchImages();
+      if (phase === "hold") {
+        drawHold();
+        frame++;
+        if (frame > holdFrames) {
+          frame = 0;
+          phase = "transition";
+        }
+      } else if (phase === "transition") {
+        drawTransition(frame);
+        frame++;
+        if (frame > transitionFrames) {
+          frame = 0;
+          phase = "hold";
+          switchImages();
+        }
       }
 
       frameId = requestAnimationFrame(render);
@@ -114,15 +128,7 @@ const PortfolioBanner: React.FC<Props> = ({
     render();
 
     return () => cancelAnimationFrame(frameId);
-  }, [
-    width,
-    height,
-    rows,
-    cols,
-    imageDuration,
-    transitionDuration,
-    bannerSlider,
-  ]);
+  }, [width, height, rows, cols, imageDuration, transitionDuration, bannerSlider]);
 
   return (
     <section className="w-full relative">
@@ -138,7 +144,7 @@ const PortfolioBanner: React.FC<Props> = ({
             pagination={{ clickable: false }}
             modules={[Pagination]}
             className="portfolio-slider w-full h-full p-10"
-            onSwiper={(swiper) => (swiperRef.current = swiper)} // save swiper instance
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
           >
             {bannerSlider.map((slide) => (
               <SwiperSlide
