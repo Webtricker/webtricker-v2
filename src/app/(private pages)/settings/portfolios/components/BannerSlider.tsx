@@ -8,6 +8,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import type { Swiper as SwiperType } from "swiper";
+import { ObjectId } from "bson";
 
 // Import Swiper styles
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -39,7 +40,7 @@ export default function BannerSlider({ bannerSlider, setValue }: Props) {
   //   handlers
   const handleAdd = () => {
     const newData: TSliderEl = {
-      _id: crypto.randomUUID(), // stable id
+      _id: new ObjectId().toHexString(),
       img: "",
       technology: "",
       name: "",
@@ -105,7 +106,6 @@ const SwiperSliderSlide = ({
   setSliderElements,
   slideId,
 }: SlideProps) => {
-  console.log(el, " element from the slide");
 
   // variables
   const BG_MODAL_KEY = `OPEN_BG_CHANGE_MODAL_${slideId}`;
@@ -143,19 +143,11 @@ const SwiperSliderSlide = ({
       console.log(prev, " prevous elements");
       const next = prev.map((s) => {
         if (s._id === slideId) {
-          console.log("previous slide", prev);
-          console.log("slide to change", s);
           return { ...s, img: bg, technology: tech, name: portfolio };
         }
-
         return s;
-
-        //  s._id === slideId
-        //   ? { ...s, img: bg, technology: tech, name: portfolio }
-        //   : s
       });
 
-      console.log(next, " next elements");
       setValue("bannerSlider", next);
       return next;
     });

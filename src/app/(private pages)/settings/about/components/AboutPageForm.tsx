@@ -78,7 +78,6 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
 
   // handlers
   const onSubmit = async (updateData: IAboutPage) => {
-    console.log(updateData, " update data ");
     try {
       const res = await updateAboutPage({
         id: data?.data?._id,
@@ -115,11 +114,10 @@ export default function AboutPageForm({ teamData, testimonialsData }: Props) {
       <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
         <section
           style={{
-            backgroundImage: `url(${
-              bannerBG ||
+            backgroundImage: `url(${bannerBG ||
               aboutPageData?.bannerBackgroundImage ||
               defaultBannerBG
-            })`,
+              })`,
           }}
           className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative`}
         >

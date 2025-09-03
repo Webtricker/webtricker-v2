@@ -2,7 +2,7 @@ import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IHomePage } from "@/types/pageTypes";
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 type Props = {
@@ -16,10 +16,6 @@ export default function IntroVideo({ setValue, data }: Props) {
   //hooks
   const dispatch = useDispatch();
   const [video, setVideo] = useState(data?.introVideo);
-
-  useEffect(() => {
-    setValue("introVideo", data?.introVideo || "");
-  }, [data?.introVideo, setValue]);
 
   // handlers
   const handleSelect = (selectedMedia: TMedia) => {

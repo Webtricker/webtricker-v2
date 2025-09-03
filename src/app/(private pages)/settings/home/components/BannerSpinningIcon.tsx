@@ -3,7 +3,7 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -20,22 +20,19 @@ export default function BannerSpinningIcon({ setValue, data }: Props) {
   const [blackLogo, setBlackLogo] = useState(data?.bannerSpinningIconBlack);
   const [whiteLogo, setWhiteLogo] = useState(data?.bannerSpinningIconWhite);
 
-  useEffect(() => {
-    setValue("bannerSpinningIconBlack", data?.bannerSpinningIconBlack || "");
-    setValue("bannerSpinningIconWhite", data?.bannerSpinningIconWhite || "");
-  }, [data?.bannerSpinningIconBlack, data?.bannerSpinningIconWhite, setValue]);
-
   // handlers
   const handleBlackLogoSelect = (selectedMedia: TMedia) => {
     setBlackLogo(selectedMedia.secure_url);
     setValue("bannerSpinningIconBlack", selectedMedia.secure_url);
     dispatch(toggleModal(null));
   };
+
   const handleWhiteLogoSelect = (selectedMedia: TMedia) => {
     setWhiteLogo(selectedMedia.secure_url);
     setValue("bannerSpinningIconWhite", selectedMedia.secure_url);
     dispatch(toggleModal(null));
   };
+  
   return (
     <>
       <button

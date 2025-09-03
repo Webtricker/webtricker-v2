@@ -84,8 +84,6 @@ export default function ClientsBanner({ setValue, clientsBanners }: Props) {
     dispatch(toggleModal(ACTIVE_KEY));
   };
 
-  console.log(items, " item from");
-
   return (
     <>
       <div className="flex max-w-[100%] overflow-x-auto border grow min-h-24 items-center">

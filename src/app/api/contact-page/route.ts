@@ -45,31 +45,6 @@ export const PUT = async (req: NextRequest) => {
     }
 };
 
-
-export const POST = async (req: NextRequest) => {
-    try {
-        await connectToDatabase();
-        await verifyAdmin(req);
-
-        // Expect a single data object from the request body
-        const { data } = await req.json();
-
-        // Use the _id from the data object to find and update
-        const contactPageData = await ContactPage.create(data);
-
-        return NextResponse.json(
-            { success: true, message: "Data updated", data: contactPageData },
-            { status: 200 }
-        );
-    } catch (error: any) {
-        console.error(error);
-        return NextResponse.json(
-            { success: false, message: 'Internal Server Error' },
-            { status: 500 }
-        );
-    }
-};
-
 export const GET = async () => {
     try {
         await connectToDatabase();

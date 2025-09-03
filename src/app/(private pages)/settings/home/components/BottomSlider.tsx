@@ -3,7 +3,7 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 type Props = {
@@ -13,9 +13,6 @@ type Props = {
 
 export default function BottomSlider({ setValue, data }: Props) {
   const KEY = "OPEN_HOME_BOTTOM_SLIDER_MODAL";
-  useEffect(() => {
-    setValue("bottomSlider", data?.bottomSlider || []);
-  }, [data.bottomSlider, setValue]);
   //   hooks
   const dispatch = useDispatch();
   const [sliderImages, setSliderImages] = useState<string[]>(

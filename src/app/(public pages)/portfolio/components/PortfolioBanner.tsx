@@ -31,6 +31,37 @@ const PortfolioBanner: React.FC<Props> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const swiperRef = useRef<SwiperCore | null>(null);
 
+  // helper: draw image like background-size: cover into target ctx
+  function drawImageCoverToCanvas(
+    img: HTMLImageElement,
+    targetCanvas: HTMLCanvasElement
+  ) {
+    const ctx = targetCanvas.getContext("2d");
+    if (!ctx) return;
+
+    const { width: w, height: h } = targetCanvas;
+
+    const imgRatio = img.width / img.height;
+    const canvasRatio = w / h;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (imgRatio > canvasRatio) {
+      drawHeight = h;
+      drawWidth = img.width * (h / img.height);
+      offsetX = -(drawWidth - w) / 2;
+      offsetY = 0;
+    } else {
+      drawWidth = w;
+      drawHeight = img.height * (w / img.width);
+      offsetX = 0;
+      offsetY = -(drawHeight - h) / 2;
+    }
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+  }
+
   useEffect(() => {
     if (!canvasRef.current || bannerSlider.length < 2) return;
 
@@ -46,8 +77,11 @@ const PortfolioBanner: React.FC<Props> = ({
 
     let frame = 0;
     let index = 0;
-    let coverImg: HTMLImageElement;
-    let canvasImg: HTMLImageElement;
+
+    const coverCanvas = document.createElement("canvas");
+    const nextCanvas = document.createElement("canvas");
+    coverCanvas.width = nextCanvas.width = width;
+    coverCanvas.height = nextCanvas.height = height;
 
     // preload images
     const imgEls: HTMLImageElement[] = bannerSlider.map((el) => {
@@ -56,26 +90,32 @@ const PortfolioBanner: React.FC<Props> = ({
       return img;
     });
 
+    let coverImg: HTMLImageElement;
+    let canvasImg: HTMLImageElement;
+
     function switchImages() {
       coverImg = imgEls[index];
       canvasImg = imgEls[index + 1] || imgEls[0];
       index = index === imgEls.length - 2 ? 0 : index + 1;
 
-      // 🔥 sync Swiper when image changes
+      // pre-render both to canvases with "cover"
+      drawImageCoverToCanvas(coverImg, coverCanvas);
+      drawImageCoverToCanvas(canvasImg, nextCanvas);
+
       if (swiperRef.current) {
-        swiperRef.current.slideToLoop(index); // loop index sync
+        swiperRef.current.slideToLoop(index);
       }
     }
     switchImages();
 
-    // 🔥 timing
     const transitionFrames = Math.round((transitionDuration / 1000) * 60);
     const totalFrames = Math.round((imageDuration / 1000) * 60);
 
     function draw(t: number) {
       if (!ctx) return;
 
-      ctx.drawImage(canvasImg, 0, 0, width, height);
+      // always background = next image
+      ctx.drawImage(nextCanvas, 0, 0, width, height);
 
       if (t <= transitionFrames) {
         const bx = (t / transitionFrames) * wx;
@@ -84,7 +124,7 @@ const PortfolioBanner: React.FC<Props> = ({
         for (let i = 0; i < cols; i++) {
           for (let j = 0; j < rows; j++) {
             ctx.drawImage(
-              coverImg,
+              coverCanvas,
               i * wx,
               j * wy,
               wx - bx,
@@ -138,7 +178,7 @@ const PortfolioBanner: React.FC<Props> = ({
             pagination={{ clickable: false }}
             modules={[Pagination]}
             className="portfolio-slider w-full h-full p-10"
-            onSwiper={(swiper) => (swiperRef.current = swiper)} // save swiper instance
+            onSwiper={(swiper) => (swiperRef.current = swiper)}
           >
             {bannerSlider.map((slide) => (
               <SwiperSlide

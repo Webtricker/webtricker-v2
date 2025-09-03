@@ -18,7 +18,6 @@ type Props = {
   navlinks: IMainHeader['links'];
 };
 export default function Sidebar({ navlinks, sidebarData }: Props) {
-  console.log(sidebarData,  ' sidebar data')
   const dispatch = useDispatch();
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
 
