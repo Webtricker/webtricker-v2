@@ -1,6 +1,7 @@
 import { trimText } from "@/utils/blog";
 import { formatDateToShortString } from "@/utils/date";
 import Image from "next/image";
+import Link from "next/link";
 import React, { ReactNode } from "react";
 
 type Props = {
@@ -19,9 +20,13 @@ export default function BlogCardWrapper({
   excerpt = "",
   description,
   children,
+  slug,
 }: Props) {
   return (
-    <div className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px]">
+    <Link
+      href={`/blog/${slug}`}
+      className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px] lg:hover:shadow-xl shadow-md"
+    >
       <div className="w-full h-[230px]">
         <Image
           src={thumnail}
@@ -41,7 +46,7 @@ export default function BlogCardWrapper({
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
 
