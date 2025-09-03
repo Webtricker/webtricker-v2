@@ -14,7 +14,7 @@ function ServiceButtons({ serviceData }) {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-8">
       {(serviceData as IService[]).map((service) => (
         <button
           key={service._id}
