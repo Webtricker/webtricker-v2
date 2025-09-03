@@ -19,6 +19,7 @@ import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import { Metadata } from "next";
+import Technologies from "./components/Technologies";
 
 // export const revalidate = 900; // page rebuild in every 15 min
 export const revalidate = 20; // page rebuild in every 15 min
@@ -77,6 +78,7 @@ export default async function Home() {
         sectionBg={homeData?.testimonialsBg}
         testimonials={testimonialsData}
       />
+      <Technologies technologies={homeData?.technologies} />
       <Services
         allServiceTxt={homeData?.allServiceBtnText}
         serviceSectionTitle={homeData?.serviceSectionTitle}
