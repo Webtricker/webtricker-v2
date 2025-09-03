@@ -3,7 +3,7 @@ import MediaModal from "@/sharedComponets/ui/editor/MediaModal";
 import { TMedia } from "@/types/commonTypes";
 import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 

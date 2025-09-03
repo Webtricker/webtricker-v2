@@ -1,6 +1,6 @@
 import { ITestimonialsInfo } from "@/types/data";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import defaultBanner from "@/assets/images/home/testimonials-banner.webp";
 import { UseFormSetValue } from "react-hook-form";
 import { IHomePage } from "@/types/pageTypes";
@@ -32,10 +32,6 @@ export default function TestimonialsContainer({
   //hooks
   const dispatch = useDispatch();
   const [bg, setBg] = useState(data?.testimonialsBg || defaultBanner);
-
-  useEffect(() => {
-    setValue("testimonialsBg", data?.testimonialsBg || "");
-  }, [setValue, data?.testimonialsBg]);
 
   // handlers
   const handleSelect = (selectedMedia: TMedia) => {
