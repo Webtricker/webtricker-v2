@@ -18,9 +18,9 @@ export default function OurTeam({ teamData }: { teamData: ITeamInfo[] }) {
     <div className="w-full flex flex-wrap justify-center gap-4">
       {teamData.map((item) => (
         <Link href={`/settings/teams/${item._id}`} key={item.name}>
-          <div className="border p-4 flex flex-col gap-2 items-center max-w-[300px] rounded-2xl min-h-[320px] border-green-600">
+          <div className="p-4 flex flex-col gap-6 items-center max-w-[350px] min-h-[450px] justify-center shadow-effect-large rounded-[8px]">
             <Image
-              className="w-[200px] h-[200px] rounded-full"
+              className="w-[250px] h-[250px] rounded-full"
               src={item?.profile}
               alt={item?.name}
               width={200}
@@ -28,7 +28,7 @@ export default function OurTeam({ teamData }: { teamData: ITeamInfo[] }) {
             />
             <div className="text-center">
               <h6 className="font-bold">{item.name}</h6>
-              <p className="italic">{item.role}</p>
+              <p>{item.role}</p>
             </div>
           </div>
         </Link>
