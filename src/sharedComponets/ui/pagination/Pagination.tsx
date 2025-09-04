@@ -16,6 +16,8 @@ export default function Pagination({
   buttonStyle = "",
   containerStyle = "",
 }: Props) {
+
+  console.log(totalPages,' total pages')
   const maxVisiblePages = useResponsivePageWindow();
 
   if (totalPages <= 1) return null;

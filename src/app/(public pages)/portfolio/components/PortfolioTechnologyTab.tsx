@@ -1,28 +1,33 @@
+import Button from "@/sharedComponets/ui/buttons/Button";
 import { ITechnology } from "@/types/data";
 import React, { Dispatch, SetStateAction } from "react";
 
 
 interface Props {
-setSelectedTechnology:Dispatch<SetStateAction<ITechnology>>;
-selectedTechnology:ITechnology;
-technologies: ITechnology[];
+  setSelectedTechnology: Dispatch<SetStateAction<ITechnology | null>>;
+  selectedTechnology: ITechnology | null;
+  technologies: ITechnology[];
 }
 
 export default function PortfolioTechnologyTab({
   technologies = [],
-  setSelectedTechnology,
-  selectedTechnology
+  setSelectedTechnology
 }: Props) {
   return (
-    <div className="w-full flex flex-wrap lg:flex-nowrap gap-x-10 gap-y-3  lg:gap-0 justify-center overflow-x-auto mb-5 md:mb-7">
+    <div className="w-full flex py-1 flex-wrap lg:flex-nowrap gap-x-5 gap-y-3 justify-center overflow-x-auto mb-5 md:mb-7">
       {technologies.map((technology) => (
-        <button
-         onClick={()=>setSelectedTechnology(technology)}
-          className={`block z-0 min-h-12 duration-300 choose-technology-btn h-auto lg:w-full relative whitespace-nowrap lg:min-w-[100px] hover:text-blue-600 ${selectedTechnology?._id===technology?._id?"text-blue-600":""}`}
+        <Button
+          cb={() => setSelectedTechnology(technology?.name === "All" ? null : technology)}
           key={technology._id}
-        >
-          <span className="data-wt-hide-cursor relative text-center">{technology.name}</span>
-        </button>
+          label={technology.name}
+        />
+        // <button
+        //  onClick={()=>setSelectedTechnology(technology)}
+        //   className={`block z-0 min-h-12 duration-300 choose-technology-btn h-auto lg:w-full relative whitespace-nowrap lg:min-w-[100px] hover:text-blue-600 ${selectedTechnology?._id===technology?._id?"text-blue-600":""}`}
+        //   key={technology._id}
+        // >
+        //   <span className="data-wt-hide-cursor relative text-center">{technology.name}</span>
+        // </button>
       ))}
     </div>
   );
