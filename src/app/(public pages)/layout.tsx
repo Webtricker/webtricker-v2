@@ -8,7 +8,7 @@ export default async function PublicLayout({
   children,
 }: {
   children: ReactNode;
-}) {  
+}) {
   return (
     <>
       <Navbar>
