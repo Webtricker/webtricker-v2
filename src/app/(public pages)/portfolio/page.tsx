@@ -9,33 +9,50 @@ import { IPortfolioPage } from "@/types/pageTypes";
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {
   const technologiesData = await getTechnologies();
+
+  // flatten technology names into keyword array
+  const techKeywords = technologiesData.map((tech: { name: string }) => tech.name);
+
+  const title = "Webtricker - Our Portfolio";
+  const description =
+    "Explore our portfolio showcasing the latest and greatest projects from Webtricker Studio.";
+  const ogImageUrl = shortLogo.src;
+
   return {
-    title: "Webtricker - Our Portfolio",
-    description:
-      "Explore our portfolio showcasing the latest and greatest projects from Webtricker Studio.",
-    keywords: [
-      "Webtricker",
-      technologiesData
-        .map((tech: { name: string }) => tech.name)
-        .join(", ")
-        .split(", "),
-    ],
+    title,
+    description,
+    keywords: ["Webtricker", ...techKeywords],
+
     openGraph: {
-      title: "Webtricker - Our Portfolio",
-      description:
-        "Explore our portfolio showcasing the latest and greatest projects from Webtricker",
-      url: "https://webtricker.com/portfolio",
+      type: "website",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio`,
+      siteName: "Webtricker",
+      title,
+      description,
       images: [
         {
-          url: `${shortLogo.src}`,
+          url: ogImageUrl,
           width: 1200,
           height: 630,
           alt: "Webtricker Portfolio",
         },
       ],
-      siteName: "Webtricker",
-      type: "website",
     },
+
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title,
+      description,
+      images: [ogImageUrl],
+    },
+
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio`,
+    },
+
+    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+    category: "technology",
   };
 }
 

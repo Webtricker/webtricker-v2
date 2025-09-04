@@ -20,29 +20,56 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   title: {
-    default: "",
+    default: "Webtricker",
     template: "%s | Webtricker",
   },
-  description: "Web Design and Development Agency",
-  twitter: {
-    card: "summary_large_image",
-    description: "webtricker web design and development agency",
+  description: "Webtricker - Web Design and Development Agency offering professional websites, apps, and digital solutions.",
+  keywords: [
+    "web design",
+    "web development",
+    "Next.js",
+    "React",
+    "SEO",
+    "digital agency",
+    "Webtricker",
+  ],
+  authors: [{ name: "Webtricker Team", url: "https://webtricker.com" }],
+  creator: "Webtricker",
+  publisher: "Webtricker",
+
+  // For social media
+  openGraph: {
+    type: "website",
+    url: "https://webtricker.com",
+    title: "Webtricker - Web Design and Development Agency",
+    description: "We create fast, modern, and SEO-friendly websites & applications.",
+    siteName: "Webtricker",
     images: [
       {
-        alt: "webtricker web design and development agency",
         url: "/opengraph-image.png",
+        alt: "webtricker web design and development agency",
+        width: 1200,
+        height: 630,
       },
     ],
+    locale: "en_US",
   },
 
-  openGraph: {
-    images: [
-      {
-        alt: "webtricker web design and development agency",
-        url: "/opengraph-image.png",
-      },
-    ],
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker",
+    title: "Webtricker - Web Design and Development Agency",
+    description: "We build websites, apps, and digital experiences that grow your business.",
+    images: ["/opengraph-image.png"],
   },
+
+  alternates: {
+    canonical: "https://webtricker.com",
+    languages: {
+      "en-US": "https://webtricker.com",
+    },
+  },
+
   verification: {
     google: "3yJ9kU21qPn-t-QHCQtsra9Rv8UoWS03zAEy4p1yf6Q",
 
@@ -53,7 +80,10 @@ export const metadata: Metadata = {
       "google-analytics": "G-F53LQ46RXD",
     },
   },
+  category: "technology",
+  metadataBase: new URL("https://webtricker.com"),
 };
+
 
 export default function RootLayout({
   children,

@@ -18,41 +18,9 @@ import {
 import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
-import { Metadata } from "next";
 import Technologies from "./components/Technologies";
 
-// export const revalidate = 900; // page rebuild in every 15 min
-export const revalidate = 20; // page rebuild in every 15 min
-
-export const metadata: Metadata = {
-  title: "Expert Web Design & Digital Services",
-  description:
-    "We are Webtricker, specializing in responsive web design and development. Delivering pixel-perfect, high-quality websites for our valued clients.",
-  keywords: [
-    "Expert Web Design & Digital Services",
-    "web development company",
-    "pixel-perfect  websites",
-    "Best web development services",
-    "Best web design services in bangladesh",
-    "Best bangladeshi web development company",
-  ],
-  openGraph: {
-    title: "Webtricker - Expert Web Design & Digital Services",
-    description:
-      "Get premium responsive web design for a stunning, seamless website on all devices.",
-    url: "https://webtricker.com",
-    images: [
-      {
-        url: "/opengraph-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Webtricker - Expert Web Design & Digital Services",
-      },
-    ],
-    siteName: "Webtricker",
-    type: "website",
-  },
-};
+export const revalidate = 120;  // page rebuild in every 2 min
 
 export default async function Home() {
   const teamData = await getTeamData();

@@ -9,7 +9,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 
-const REVALIDATE_SECONDS = 60 * 60; // 3600 seconds = 1 hour
+// const REVALIDATE_SECONDS = 60 * 60; // 3600 seconds = 1 hour
+const REVALIDATE_SECONDS = 10 * 60; // 600 seconds = 10 min
 
 const getBlogData = async (slug: string) => {
   try {
@@ -80,22 +81,34 @@ export async function generateMetadata({
 
   const post = data.post as IBlog;
   return {
-    title: post.title,
+    title: `${post.title} | Webtricker`,
     description: post.description,
+    keywords: [post?.category?.name || 'Article'],
+    authors: [{ name: "Webtricker Team" }],
     openGraph: {
+      type: "article",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blogs/${slug}`,
       title: post.title,
       description: post.description,
       images: [
         {
           url: post.thumnail.url,
-          width: post.thumnail.width || 1200,
-          height: post.thumnail.height || 630,
+          width: post.thumnail?.width || 1200,
+          height: post.thumnail?.height || 630,
           alt: post.title,
         },
       ],
     },
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title: post.title,
+      description: post.description,
+      images: [post.thumnail.url],
+    },
   };
 }
+
 
 // Main component for the single blog page
 export default async function SingleBlogPage({

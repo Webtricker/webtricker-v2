@@ -20,22 +20,42 @@ export async function generateMetadata({
   const data = await getCategoryPosts(id);
 
   if (!data.success) return { title: "Invalid category" };
+  const categoryName = data?.category?.name;
 
   return {
-    title: data.category?.name,
-    description: `Explore our blog posts about ${data.category?.name}.`,
+    title: `${categoryName} | Webtricker`,
+    description: `Explore our blog posts about ${categoryName}.`,
+    keywords: [categoryName, "Webtricker blog", "web design", "web development"],
+
     openGraph: {
-      title: data.category?.name,
-      description: `Explore our blog posts about ${data.category?.name}.`,
+      type: "article",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${id}`,
+      title: `${categoryName} | Webtricker`,
+      description: `Explore our blog posts about ${categoryName}.`,
       images: [
         {
           url: `${shortLogo.src}`,
           width: 1200,
           height: 630,
-          alt: "Webtricker - Expert Web Design & Digital Services",
+          alt: `Webtricker - Blog posts about ${categoryName}`,
         },
       ],
     },
+
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title: `${categoryName} | Webtricker`,
+      description: `Explore our blog posts about ${categoryName}.`,
+      images: [shortLogo.src],
+    },
+
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${id}`,
+    },
+
+    metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),
+    category: "technology",
   };
 }
 

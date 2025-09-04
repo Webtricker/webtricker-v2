@@ -18,29 +18,58 @@ import AboutGallery from "./components/AboutGallery";
 import { Metadata } from "next";
 import { IAboutPage } from "@/types/pageTypes";
 
-// export const revalidate = 3600; // page rebuild in every 1 hour
-// TODO: have to uncomment above line
-
-// export const revalidate = 300; // page rebuild in every 5 min
 export const revalidate = 120; // page rebuild in every 2 min
 
+
 export const metadata: Metadata = {
-  title: "webtricker | About Webtricker: Our Mission and Vision",
+  title: "About Webtricker: Our Mission and Vision | Webtricker",
   description:
-    "Learn about us: A leading responsive web design agency creating stunning, user-friendly websites.",
+    "Discover Webtricker’s mission and vision. We are a responsive web design & development agency creating user-friendly, modern, and SEO-optimized websites.",
+  keywords: [
+    "about Webtricker",
+    "web design agency",
+    "web development",
+    "mission and vision",
+    "responsive websites",
+    "SEO-friendly websites",
+    "digital agency",
+  ],
+  authors: [{ name: "Webtricker Team", url: "https://webtricker.com" }],
+  creator: "Webtricker",
+  publisher: "Webtricker",
+
   openGraph: {
+    type: "website",
+    url: "https://webtricker.com/about",
+    siteName: "Webtricker",
     title: "About Webtricker: Our Mission and Vision",
     description:
-      "Learn about us: A leading responsive web design agency creating stunning, user-friendly websites.",
+      "Discover Webtricker’s mission and vision. We are a responsive web design & development agency creating user-friendly, modern, and SEO-optimized websites.",
     images: [
       {
-        url: `${shortLogo.src}`,
+        url: shortLogo.src,
         width: 1200,
         height: 630,
         alt: "Webtricker - Expert Web Design & Digital Services",
       },
     ],
+    locale: "en_US",
   },
+
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker", 
+    title: "About Webtricker: Our Mission and Vision",
+    description:
+      "Meet Webtricker: a web design & development agency building modern, SEO-friendly, and responsive websites.",
+    images: [shortLogo.src],
+  },
+
+  alternates: {
+    canonical: "https://webtricker.com/about",
+  },
+
+  category: "technology",
 };
 
 export default async function AboutPage() {

@@ -11,22 +11,50 @@ export async function generateMetadata() {
   const data = await getServicesData();
   const titles = data?.map((service: { title: string }) => service.title) ?? [];
 
+  const metaTitle = "Our Services | Webtricker";
+  const metaDescription =
+    "Discover the full range of professional web design, development, and digital services we offer at Webtricker.";
+
   return {
-    title: "Our Services | Webtricker",
-    description: "Explore the range of services we offer at Webtricker.",
-    keywords: titles,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: [
+      "Webtricker services",
+      "web design",
+      "web development",
+      "SEO",
+      "UI/UX design",
+      ...titles,
+    ],
     openGraph: {
-      title: "Webtricker - Our Services",
-      description: "Explore the range of services we offer at Webtricker.",
+      type: "website",
+      url: "https://webtricker.com/services",
+      siteName: "Webtricker",
+      title: metaTitle,
+      description: metaDescription,
       images: [
         {
-          url: `${shortLogo.src}`,
+          url: shortLogo?.src,
           width: 1200,
           height: 630,
-          alt: "Webtricker Services Banner",
+          alt: "Webtricker - Our Services",
         },
       ],
+      locale: "en_US",
     },
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title: metaTitle,
+      description: metaDescription,
+      images: [shortLogo.src],
+    },
+    alternates: {
+      canonical: "https://webtricker.com/services",
+    },
+    category: "technology",
+    authors: [{ name: "Webtricker Team", url: "https://webtricker.com" }],
+    publisher: "Webtricker",
   };
 }
 
