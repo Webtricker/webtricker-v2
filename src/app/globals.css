@@ -755,6 +755,16 @@ p.bouncing-text {
   @apply border border-slate-300 rounded-[3px] hover:border-slate-500 focus:border-slate-500 outline-none;
 }
 
+/* Whats app chat */
+.whatsApp-chat {
+     position: fixed;
+     bottom: 48px;
+     right: auto;
+     left: 24px;
+     width: 40px;
+     z-index: 9;
+ }
+
 /* ====== animation ======= */
 .animate-underline {
   position: relative;
