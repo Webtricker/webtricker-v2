@@ -8,13 +8,13 @@ import React from 'react'
 
 const REVALIDATE_SECONDS = 60 * 60;
 
-// Helper function to fetch a single service data
+// ===== Helper: fetch a single portfolio by slug =====
 const getPortfolioData = async (slug: string) => {
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios/${slug}`,
             {
-                next: { revalidate: REVALIDATE_SECONDS }, // ISG Revalidation for this specific service
+                next: { revalidate: REVALIDATE_SECONDS },
             }
         );
         if (!res.ok) {
@@ -23,43 +23,97 @@ const getPortfolioData = async (slug: string) => {
             );
             return null;
         }
-        const data = await res.json();
-        return data;
+        return res.json();
     } catch (error) {
         console.error("Error fetching portfolio data:", error);
         return null;
     }
 };
 
+// ===== Helper: fetch all portfolio slugs for SSG =====
+const getAllPortfolioSlugs = async () => {
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios?limit=999`,
+            {
+                cache: "no-store",
+            }
+        );
+        if (!res.ok) {
+            console.error(`Failed to fetch all portfolio slugs, Status: ${res.status}`);
+            return [];
+        }
+        const { portfolios } = await res.json();
+        return portfolios.map((portfolio: TPortfolio) => ({ slug: portfolio.slug }));
+    } catch (error) {
+        console.error("Error fetching all portfolio slugs:", error);
+        return [];
+    }
+};
 
-// Helper function to fetch all service slugs for generateStaticParams
-// const getAllPortfolioSlugs = async () => {
-//     try {
-//         const res = await fetch(
-//             `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios?limit=999`,
-//             {
-//                 cache: "no-store",
-//             }
-//         );
+// ===== Pre-render all portfolio paths =====
+export async function generateStaticParams() {
+    return getAllPortfolioSlugs();
+}
 
-//         if (!res.ok) {
-//             console.error(`Failed to fetch all porfolio slugs, Status: ${res.status}`);
-//             return [];
-//         }
-//         const { portfolios } = await res.json();
-//         return portfolios.map((portfolio: TPortfolio) => ({ slug: portfolio.slug }));
-//     } catch (error) {
-//         console.error("Error fetching all portfolio slugs:", error);
-//         return [];
-//     }
-// };
+// ===== Dynamic Metadata =====
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ title: string }>;
+}) {
+    const { title } = await params;
+    const result = await getPortfolioData(title);
 
+    if (!result?.portfolio) {
+        return {
+            title: "Portfolio Not Found",
+            description: "The portfolio you are looking for does not exist.",
+        };
+    }
 
-// generateStaticParams tells Next.js which slugs to pre-render at build time
-// export async function generateStaticParams() {
-//     const slugs = await getAllPortfolioSlugs();
-//     return slugs;
-// }
+    const portfolio = result?.portfolio as TPortfolio;
+
+    const metaTitle = `${portfolio?.title} | Webtricker Portfolio`;
+    const metaDescription =
+        portfolio?.description ||
+        `Explore details about ${portfolio.title}, a project from Webtricker Studio.`;
+
+    const ogImage = portfolio?.thumnail?.url;
+
+    return {
+        title: metaTitle,
+        description: metaDescription,
+        openGraph: {
+            type: "article",
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio/${portfolio.slug}`,
+            siteName: "Webtricker",
+            title: metaTitle,
+            description: metaDescription,
+            images: ogImage
+                ? [
+                    {
+                        url: ogImage,
+                        width: portfolio.thumnail?.width || 1200,
+                        height: portfolio.thumnail?.height || 630,
+                        alt: portfolio.title,
+                    },
+                ]
+                : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            site: "@webtricker",
+            title: metaTitle,
+            description: metaDescription,
+            images: ogImage ? [ogImage] : [],
+        },
+        alternates: {
+            canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio/${portfolio.slug}`,
+        },
+        category: "technology",
+    };
+}
 
 
 // ===== root page component =======
@@ -74,7 +128,7 @@ export default async function PortfolioDetailsPage({
     if (!result?.portfolio) {
         return {
             title: "Portfolio Not Found",
-            description: "The blog post you are looking for does not exist.",
+            description: "The portfolio you are looking for does not exist.",
         };
     }
 
