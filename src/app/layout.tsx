@@ -8,6 +8,9 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
+import { Suspense } from "react";
+import LiveChat from "@/sharedComponets/DOM/LiveChat";
+import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -96,6 +99,14 @@ export default function RootLayout({
             {/* <PageTransition> */}
             {children}
             {/* </PageTransition> */}
+
+            {/* Live chat */}
+            <Suspense fallback={null}>
+              <LiveChat></LiveChat>
+            </Suspense>
+
+            {/* WhatsApp chat */}
+            <WhatsAppChat />
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />
