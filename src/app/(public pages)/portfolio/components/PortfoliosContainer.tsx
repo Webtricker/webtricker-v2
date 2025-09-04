@@ -10,7 +10,7 @@ export default function PortfoliosContainer({
 }: {
   technologies: ITechnology[];
 }) {
-    const [selectedTechnology,setSelectedTechnology] = useState(technologies[0]||{})
+    const [selectedTechnology,setSelectedTechnology] = useState<ITechnology | null>(null)
   return (
     <section className="w-full">
       <Container className="">

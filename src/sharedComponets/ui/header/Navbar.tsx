@@ -28,10 +28,14 @@ export default function Navbar({
       const prevScroll = prevScrollRef.current;
 
       // set the border
-      if (prevScrollRef.current > 50 && !showBorder) {
-        setShowBorder(true);
+      if (prevScrollRef.current > 50) {
+        if (!showBorder) {
+          setShowBorder(true);
+        }
       } else {
-        setShowBorder(false);
+        if (showBorder) {
+          setShowBorder(false);
+        }
       }
 
       const isScrollingDown = currentScroll > prevScroll;
@@ -66,9 +70,8 @@ export default function Navbar({
   return (
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}
-      className={`z-[999] wt_header fixed top-0 left-0 py-4 w-full h-auto ${navStyle} ${
-        scrollY === 0 ? "duration-1000" : ""
-      } ${showBorder ? "shadow" : "border-0"}`}
+      className={`z-[999] wt_header fixed top-0 left-0 py-4 w-full h-auto ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
+        } ${showBorder ? "shadow" : "border-0"}`}
     >
       {children}
     </header>

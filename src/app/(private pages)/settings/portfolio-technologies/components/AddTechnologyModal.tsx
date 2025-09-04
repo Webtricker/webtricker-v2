@@ -1,6 +1,7 @@
 "use client";
 import { addTechnologies } from "@/redux/features/category/technologies";
 import { useAddTechnologyMutation } from "@/redux/features/category/technologyApiSlice";
+import { toggleModal } from "@/redux/features/modalToggler/ModalTogglerSlice";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import {
@@ -29,6 +30,7 @@ export default function AddTechnologyModal() {
           name: res.technology.name,
         };
         dispatch(addTechnologies([addedTechnology]));
+        dispatch(toggleModal(null))
         toast.success(res.message);
       } else {
         toast.error(res.message);

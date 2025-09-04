@@ -29,17 +29,15 @@ export default function PortfolioTechonology({
   }, [data, dispatch, technologies.length]);
 
   if (isLoading) return <LoadingSpinner />;
-
-  console.log(technologies, " technologies above condition");
   return (
     <div className="w-full">
       <div className="w-full">
         <span className="font-semibold mb-2 block">Technology:</span>
-        <ul className="space-y-2 flex flex-wrap gap-x-10">
+        <ul className="flex items-center flex-wrap gap-x-10">
           {technologies.map((technology, _i) => (
             <li
               key={technology._id + _i}
-              className="flex items-center space-x-2"
+              className="flex items-center gap-2"
             >
               <input
                 type="checkbox"

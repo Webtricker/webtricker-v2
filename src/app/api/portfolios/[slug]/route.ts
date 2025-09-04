@@ -16,7 +16,7 @@ export const GET = async (
     try {
         await connectToDatabase();
 
-        const res = await Portfolio.findOne({ slug });
+        const res = await Portfolio.findOne({ slug }).populate('technology');
 
         if (!res) {
             return NextResponse.json(
