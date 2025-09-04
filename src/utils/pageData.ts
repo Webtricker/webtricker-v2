@@ -1,3 +1,4 @@
+import { TCategory } from "@/types/data";
 import { IBlog } from "@/types/post";
 
 export const getTeamData = async () => {
@@ -15,6 +16,41 @@ export const getTeamData = async () => {
         return [];
     }
 }
+
+
+export const getAllBlogSlugs = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/blog-slugs`);
+
+    if (!res.ok) {
+      console.error("Failed to fetch all blog slugs for generateStaticParams");
+      return [];
+    }
+    const { blogs } = await res.json();
+    return blogs.map((blog: { slug: string }) => ({ slug: blog.slug }));
+  } catch (error) {
+    console.error("Error fetching all blog slugs:", error);
+    return [];
+  }
+};
+
+
+
+export const getCategories = async (): Promise<TCategory[]> => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`);
+
+    if (!res.ok) {
+      console.error("Failed to fetch categories (Server)");
+      return [];
+    }
+    const result = await res.json();
+    return result?.categories || [];
+  } catch (error) {
+    console.error("Error fetching categories (Server):", error);
+    return [];
+  }
+};
 
 export const getTestimonialsData = async () => {
     try {
