@@ -9,22 +9,51 @@ import { Metadata } from "next";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact | Webtricker",
   description:
-    "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
+    "Get in touch with Webtricker — a responsive web design & development agency. Reach out for project inquiries, collaborations, or support.",
+  keywords: [
+    "contact Webtricker",
+    "web design agency contact",
+    "web development agency",
+    "business inquiries",
+    "collaborations",
+    "support",
+  ],
+
   openGraph: {
+    type: "website",
+    url: "https://webtricker.com/contact",
+    siteName: "Webtricker",
     title: "Talk to Us: Contact Webtricker Today",
     description:
-      "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
+      "Connect with Webtricker — a web design & development agency. Let’s discuss your project, collaborations, or support needs.",
     images: [
       {
-        url: `${shortLogo.src}`,
+        url: shortLogo.src,
         width: 1200,
         height: 630,
         alt: "Webtricker - Expert Web Design & Digital Services",
       },
     ],
+    locale: "en_US",
   },
+
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker", // your brand Twitter handle
+    title: "Talk to Us: Contact Webtricker Today",
+    description:
+      "Reach out to Webtricker for web design & development inquiries, collaborations, or support.",
+    images: [shortLogo.src],
+  },
+
+  alternates: {
+    canonical: "https://webtricker.com/contact",
+  },
+
+  category: "technology",
+  metadataBase: new URL("https://webtricker.com"),
 };
 
 export default function ContactPage() {
