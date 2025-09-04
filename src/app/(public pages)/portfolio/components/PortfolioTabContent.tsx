@@ -31,7 +31,6 @@ export default function PortfolioTabContent({ selectedTechnology }: Props) {
             const pages = Math.ceil(res?.pagination?.total / limit) || 1
             setTotalPages(pages);
           }
-          console.log(res, ' res from total pages');
         } else {
           setPortfolios([]);
         }

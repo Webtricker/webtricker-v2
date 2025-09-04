@@ -57,16 +57,11 @@ export const GET = async (req: NextRequest) => {
                 { status: 400 }
             );
         }
-
-        console.log(query, ' query before finding database');
-
+        
         const [portfolios, total] = await Promise.all([
             Portfolio.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
             Portfolio.countDocuments(query)
         ]);
-
-        console.log(portfolios, ' portfolios')
-        console.log(total, ' total')
 
         return NextResponse.json(
             {

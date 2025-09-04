@@ -21,13 +21,6 @@ export default function PortfolioTechnologyTab({
           key={technology._id}
           label={technology.name}
         />
-        // <button
-        //  onClick={()=>setSelectedTechnology(technology)}
-        //   className={`block z-0 min-h-12 duration-300 choose-technology-btn h-auto lg:w-full relative whitespace-nowrap lg:min-w-[100px] hover:text-blue-600 ${selectedTechnology?._id===technology?._id?"text-blue-600":""}`}
-        //   key={technology._id}
-        // >
-        //   <span className="data-wt-hide-cursor relative text-center">{technology.name}</span>
-        // </button>
       ))}
     </div>
   );
