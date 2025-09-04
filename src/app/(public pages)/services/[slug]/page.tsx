@@ -9,7 +9,8 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
 import ParallaxBanner from "./components/ServiceBanner";
 
-const REVALIDATE_SECONDS = 60 * 60;
+// const REVALIDATE_SECONDS = 60 * 60;
+const REVALIDATE_SECONDS = 10 * 60; // default 10 min
 
 // Helper function to fetch a single service data
 const getServiceData = async (slug: string) => {
@@ -72,26 +73,59 @@ export async function generateMetadata({
   const data = await getServiceData(slug);
 
   if (!data?.service) {
-    return { title: "Service Not Found" };
+    return {
+      title: "Service Not Found | Webtricker",
+      description: "The service you are looking for does not exist.",
+    };
   }
 
   const service = data.service as IService;
 
+  const metaTitle = `${service.title} | Webtricker Services`;
+  const metaDescription =
+    service.description ||
+    `Learn more about our ${service.title} service at Webtricker.`;
+
   return {
-    title: service.title,
-    description: service.description,
+    title: metaTitle,
+    description: metaDescription,
+    keywords: [
+      service.title,
+      "Webtricker services",
+      "web design",
+      "web development",
+      "SEO",
+      "digital agency",
+    ],
     openGraph: {
-      title: service.title,
-      description: service.description,
+      type: "article",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/services/${service.slug}`,
+      siteName: "Webtricker",
+      title: metaTitle,
+      description: metaDescription,
       images: [
         {
-          url: service.thumnail.url,
-          width: service.thumnail.width || 1200,
-          height: service.thumnail.height || 630,
+          url: service.thumnail?.url || "/default-service-image.png",
+          width: service.thumnail?.width || 1200,
+          height: service.thumnail?.height || 630,
           alt: service.title,
         },
       ],
+      locale: "en_US",
     },
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title: metaTitle,
+      description: metaDescription,
+      images: [service.thumnail?.url || "/default-service-image.png"],
+    },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/services/${service.slug}`,
+    },
+    category: "technology",
+    authors: [{ name: "Webtricker Team", url: "https://webtricker.com" }],
+    publisher: "Webtricker",
   };
 }
 
