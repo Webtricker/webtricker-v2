@@ -8,6 +8,9 @@ import Link from "next/link";
 import { Metadata } from "next";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 
+
+export const revalidate = 120; // page rebuild in every 2 min
+
 export const metadata: Metadata = {
   title: "Contact | Webtricker",
   description:

@@ -18,7 +18,7 @@ import AboutGallery from "./components/AboutGallery";
 import { Metadata } from "next";
 import { IAboutPage } from "@/types/pageTypes";
 
-export const revalidate = 900; // page rebuild in every 15 min
+export const revalidate = 120; // page rebuild in every 2 min
 
 
 export const metadata: Metadata = {

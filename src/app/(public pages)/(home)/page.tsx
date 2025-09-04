@@ -20,7 +20,7 @@ import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
 
-export const revalidate = 900;  // page rebuild in every 15 min
+export const revalidate = 120;  // page rebuild in every 2 min
 
 export default async function Home() {
   const teamData = await getTeamData();
