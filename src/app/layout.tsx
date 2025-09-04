@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
+import { Suspense } from "react";
+import LiveChat from "@/sharedComponets/DOM/LiveChat";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -66,6 +68,9 @@ export default function RootLayout({
             {/* <PageTransition> */}
             {children}
             {/* </PageTransition> */}
+            <Suspense fallback={null}>
+              <LiveChat></LiveChat>
+            </Suspense>
 
             {/* Demo dark theme toggler to check dark / light theem */}
             <DemoThemeToggler />
