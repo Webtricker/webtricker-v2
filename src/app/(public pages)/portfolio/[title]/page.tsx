@@ -1,17 +1,15 @@
 // import { TPortfolio } from '@/types/portfolio';
 import HtmlContentParser from '@/sharedComponets/ui/editor/HtmlContentParser';
 import BlogPageContainer from '@/sharedComponets/ui/wrapper/BlogPageContainer';
-import { IPortfolio, TPortfolio } from '@/types/portfolio';
+import { TPortfolio } from '@/types/portfolio';
 import { formatDateToShortString } from '@/utils/date';
 import Image from 'next/image';
 import React from 'react'
 
-
-
 const REVALIDATE_SECONDS = 60 * 60;
 
 // Helper function to fetch a single service data
-export const getPortfolioData = async (slug: string) => {
+const getPortfolioData = async (slug: string) => {
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios/${slug}`,
