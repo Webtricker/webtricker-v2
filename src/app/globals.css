@@ -757,13 +757,13 @@ p.bouncing-text {
 
 /* Whats app chat */
 .whatsApp-chat {
-     position: fixed;
-     bottom: 48px;
-     right: auto;
-     left: 24px;
-     width: 40px;
-     z-index: 9;
- }
+  position: fixed;
+  bottom: 26px;
+  right: auto;
+  left: 24px;
+  width: 40px;
+  z-index: 9;
+}
 
 /* ====== animation ======= */
 .animate-underline {
