@@ -81,7 +81,7 @@ export default async function ContactPage() {
                 <h6 className="bold">{contactPageData?.greetings?.topTxt}</h6>
                 <div className="w-full flex items-start mt-2">
                   <p className="bold whitespace-nowrap">
-                    {contactPageData?.greetings.bottomTxt}
+                    {contactPageData?.greetings?.bottomTxt}
                   </p>
                   <div className="hidden sm:block w-full mt-4">
                     <Image
