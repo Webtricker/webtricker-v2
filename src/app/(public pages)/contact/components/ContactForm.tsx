@@ -12,8 +12,29 @@ type FormData = {
   message: string;
 };
 
+type fetchedFormData = {
+  name: {
+    label: string;
+    placeholder: string;
+  };
+  email: {
+    label: string;
+    placeholder: string;
+  };
+  message: {
+    label: string;
+    placeholder: string;
+  };
+  btnText: string;
+  mailTo: string;
+};
+
 // ===== root component ======
-export default function ContactForm() {
+export default function ContactForm({
+  fetchedFormData,
+}: {
+  fetchedFormData: fetchedFormData;
+}) {
   // hooks
   const [submitForm, { isLoading }] = useSubmitContactFormMutation();
   const {
@@ -46,14 +67,14 @@ export default function ContactForm() {
       {/* ======= input === */}
       <div className="w-full">
         <label className="block" htmlFor="contactName">
-          Name
+          {fetchedFormData?.name?.label}
         </label>
         <input
           data-wt-hide-cursor
           className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           id="contactName"
           type="text"
-          placeholder="Your Name"
+          placeholder={fetchedFormData?.name?.placeholder}
           {...register("name", { required: "Name is required" })}
         />
         {errors?.name ? (
@@ -64,13 +85,13 @@ export default function ContactForm() {
       </div>
       {/* ======= input === */}
       <div className="w-full">
-        <label htmlFor="contactEmail">Email</label>
+        <label htmlFor="contactEmail">{fetchedFormData?.email?.label}</label>
         <input
           data-wt-hide-cursor
           className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           type="text"
           id="contactEmail"
-          placeholder="email@company.com"
+          placeholder={fetchedFormData?.email?.placeholder}
           {...register("email", {
             required: "Email is required",
             pattern: {
@@ -87,11 +108,13 @@ export default function ContactForm() {
       </div>
       {/* ======= input === */}
       <div className="w-full">
-        <label htmlFor="contactMessage">Your Queries</label>
+        <label htmlFor="contactMessage">
+          {fetchedFormData?.message?.label}
+        </label>
         <textarea
           data-wt-hide-cursor
           id="contactMessage"
-          placeholder="Let us know how we can help you"
+          placeholder={fetchedFormData?.message?.placeholder}
           className="cursor-hide min-h-[100px] block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
           {...register("message", { required: "Message is required" })}
         ></textarea>
@@ -116,7 +139,7 @@ export default function ContactForm() {
           {isLoading ? (
             <LoadingSpinner className="w-6 h-6 mx-auto my-1" />
           ) : (
-            <span>Send Message</span>
+            <span>{fetchedFormData?.btnText}</span>
           )}
         </button>
       </div>

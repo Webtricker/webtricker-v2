@@ -3,11 +3,32 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['liko.foxthemes.me','webtricker.com','res.cloudinary.com','images.unsplash.com','firebasestorage.googleapis.com'],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "liko.foxthemes.me",
+      },
+      {
+        protocol: "https",
+        hostname: "webtricker.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+      },
+    ],
   },
-  compiler:{
+  compiler: {
     //  removeConsole: process.env.NODE_ENV === 'production',
-  }
+  },
 };
 
 export default nextConfig;
