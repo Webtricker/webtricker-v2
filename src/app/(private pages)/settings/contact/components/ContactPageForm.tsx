@@ -259,8 +259,8 @@ export default function ContactPageForm() {
               <div className="w-full flex gap-2 mt-10 items-start">
                 <ContactIcon
                   icons={{
-                    white: contactPageData?.address?.iconWhite,
-                    black: contactPageData?.address?.iconBlack,
+                    white: contactPageData?.contactNumber?.iconWhite,
+                    black: contactPageData?.contactNumber?.iconBlack,
                   }}
                   setValue={setValue}
                 />

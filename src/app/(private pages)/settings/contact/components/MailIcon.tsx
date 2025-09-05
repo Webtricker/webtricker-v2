@@ -23,8 +23,8 @@ const ACTIVE_KEY = "OPEN_MAIL_ICON__MODAL";
 export default function MailIcon({ setValue, icons }: IconProps) {
   //hooks
   const dispatch = useDispatch();
-  const [blackLogo, setBlackLogo] = useState(icons?.white);
-  const [whiteLogo, setWhiteLogo] = useState(icons?.black);
+  const [blackLogo, setBlackLogo] = useState(icons?.black);
+  const [whiteLogo, setWhiteLogo] = useState(icons?.white);
   const [target, setTarget] = useState<TTarget>("iconBlack");
 
   // handlers
