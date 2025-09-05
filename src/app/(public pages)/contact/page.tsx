@@ -62,7 +62,6 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const contactPageData = (await getContactPageData()) as IContactPage;
-  console.log(contactPageData);
 
   return (
     <main className="w-full z-0">
@@ -107,12 +106,12 @@ export default async function ContactPage() {
             </div>
           </div>
         </Container>
-        <ContactCTABtns />
+        <ContactCTABtns sidePanelData={contactPageData?.leftPanel} />
       </div>
       <div className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
         <Container className="">
           <h4 className="heading 2xl:font-semibold !leading-[100%]">
-            Contact Information
+            {contactPageData?.contactInformationTitle}
           </h4>
           <div className="w-full flex flex-col lg:flex-row gap-10 md:gap-14 2xl:gap-20 ">
             <div className="w-full flex flex-col gap-8 lg:gap-10 max-w-[550px]">
