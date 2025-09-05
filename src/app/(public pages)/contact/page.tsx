@@ -3,7 +3,7 @@ import ContactForm from "./components/ContactForm";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
 import ContactCTABtns from "./components/ContactCTABtns";
-import { EmailIcon, MapPinIcon, PhoneIcon } from "./components/Icons";
+import { EmailIcon, PhoneIcon } from "./components/Icons";
 import Link from "next/link";
 import { Metadata } from "next";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
@@ -116,9 +116,17 @@ export default async function ContactPage() {
           <div className="w-full flex flex-col lg:flex-row gap-10 md:gap-14 2xl:gap-20 ">
             <div className="w-full flex flex-col gap-8 lg:gap-10 max-w-[550px]">
               <div className="w-full flex gap-5 mt-10 items-start">
-                <MapPinIcon className="min-w-5 w-6" />
+                <Image
+                  src={contactPageData?.address?.iconBlack}
+                  alt={contactPageData?.address?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6"
+                />
                 <div className="grow not-italic">
-                  <h6 className="heading mb-1">Address</h6>
+                  <h6 className="heading mb-1">
+                    {contactPageData?.address?.title}
+                  </h6>
                   <address className="not-italic">
                     <strong>US Office</strong>: Hurst, Texas, United States
                   </address>
