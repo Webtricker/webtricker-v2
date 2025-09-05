@@ -7,7 +7,8 @@ import { EmailIcon, MapPinIcon, PhoneIcon } from "./components/Icons";
 import Link from "next/link";
 import { Metadata } from "next";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
-
+import { getContactPageData } from "@/utils/pageData";
+import { IContactPage } from "@/types/pageTypes";
 
 export const revalidate = 120; // page rebuild in every 2 min
 
@@ -59,7 +60,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://webtricker.com"),
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const contactPageData = (await getContactPageData()) as IContactPage;
+  console.log(contactPageData);
+
   return (
     <main className="w-full z-0">
       <div
@@ -68,28 +72,30 @@ export default function ContactPage() {
         <Container>
           <div className="w-full max-w-[1120px] mx-auto">
             <p className="bold flex items-center gap-1">
-              <span>Webtricker Web & Design Solutions</span>
+              <span>{contactPageData?.branding}</span>
               <span className="w-10 h-[1px] mt-1.5 bg-black dark:bg-white"></span>
             </p>
             <h1 className="heading xl:font-semibold !leading-[100%]">
-              Get in touch
+              {contactPageData?.title}
             </h1>
             <div className="w-full flex flex-col gap-5 sm:flex-row pt-8 md:pt-10">
               <div className="w-full">
-                <h6 className="bold">SAY HELLO TO US</h6>
+                <h6 className="bold">{contactPageData?.greetings?.topTxt}</h6>
                 <div className="w-full flex items-start mt-2">
-                  <p className="bold whitespace-nowrap">WRITE TO US</p>
+                  <p className="bold whitespace-nowrap">
+                    {contactPageData?.greetings.bottomTxt}
+                  </p>
                   <div className="hidden sm:block w-full mt-4">
                     <Image
                       className="w-16 md:w-16 h-auto  dark:hidden"
-                      src="/images/contact/contact-line-draw.png"
+                      src={contactPageData?.greetings?.iconBlack}
                       width={70}
                       height={100}
                       alt="Line svg"
                     />
                     <Image
                       className="w-16 md:w-16 h-auto hidden dark:inline-block"
-                      src="/images/contact/contact-form-line-white.png"
+                      src={contactPageData?.greetings?.iconWhite}
                       width={70}
                       height={100}
                       alt="Line svg"
@@ -97,7 +103,7 @@ export default function ContactPage() {
                   </div>
                 </div>
               </div>
-              <ContactForm />
+              <ContactForm fetchedFormData={contactPageData?.form} />
             </div>
           </div>
         </Container>
