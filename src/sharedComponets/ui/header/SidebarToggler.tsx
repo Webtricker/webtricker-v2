@@ -3,6 +3,7 @@ import {
   SET_EXPAND,
   updatePreventScrolling,
 } from "@/redux/features/rootModyfier/Modyfier";
+import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import { getLenisInstance } from "@/utils/lenis";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -44,7 +45,9 @@ export default function SidebarToggler() {
     };
   }, [expand]);
 
-  const expandStyle = expand ? "!max-w-[400px] lg:!max-w-[550px]" : "max-w-[300px]"; 
+  const expandStyle = expand
+    ? "!max-w-[400px] lg:!max-w-[550px]"
+    : "max-w-[300px]";
   return (
     <div
       className={`w-full duration-1000 flex items-center justify-end ${expandStyle}`}
@@ -56,6 +59,7 @@ export default function SidebarToggler() {
         <span></span>
         <span></span>
       </button>
+      <DemoThemeToggler />
     </div>
   );
 }

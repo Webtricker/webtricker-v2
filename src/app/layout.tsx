@@ -5,7 +5,6 @@ import ReduxProvider from "@/provider/reduxProvider";
 import BodyEventListeners from "@/sharedComponets/DOM/BodyEventListeners";
 import ReactToastifyMessage from "@/sharedComponets/DOM/ReactToastifyMessage";
 import { ThemeProvider } from "@/provider/ThemeProvider";
-import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import { Suspense } from "react";
@@ -109,7 +108,7 @@ export default function RootLayout({
             <WhatsAppChat />
 
             {/* Demo dark theme toggler to check dark / light theem */}
-            <DemoThemeToggler />
+            {/* <DemoThemeToggler /> */}
 
             {/* ===== portal to show modals ====== */}
             <div className="w-full" id="modal_portal"></div>
