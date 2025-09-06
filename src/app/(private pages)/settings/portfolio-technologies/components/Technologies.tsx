@@ -85,9 +85,10 @@ export default function Technologies() {
     );
   return (
     <div className="w-full  flex items-center flex-wrap gap-10">
-      {technologies.map((technology) => (
-        <TechnologyCard key={technology._id} technology={technology} />
-      ))}
+      {!!data?.technologies &&
+        data?.technologies?.map((technology) => (
+          <TechnologyCard key={technology._id} technology={technology} />
+        ))}
     </div>
   );
 }

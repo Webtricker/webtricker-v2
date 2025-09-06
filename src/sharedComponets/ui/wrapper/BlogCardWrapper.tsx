@@ -11,7 +11,7 @@ type Props = {
   excerpt?: string;
   description: string;
   slug: string;
-  createdAt: Date;
+  createdAt: string;
 };
 export default function BlogCardWrapper({
   thumnail,

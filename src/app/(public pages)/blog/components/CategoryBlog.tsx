@@ -42,8 +42,7 @@ export default async function CategoryBlog({
 }: {
   category: TCategory;
 }) {
-
-  console.log("render info Category blog")
+  console.log("render info Category blog");
 
   const posts = await getPostsForCategory(category._id);
   if (!posts || posts.length === 0) {
@@ -67,7 +66,7 @@ export default async function CategoryBlog({
         {posts.slice(0, 4).map((blog: IBlog) => (
           <BlogCardWrapper
             key={blog._id}
-            createdAt={blog.createdAt}
+            createdAt={new Date(blog.createdAt).toString()}
             description={blog.description}
             slug={blog.slug}
             thumnail={blog.thumnail.url}

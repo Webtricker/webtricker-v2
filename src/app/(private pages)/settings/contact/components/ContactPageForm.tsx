@@ -72,8 +72,8 @@ export default function ContactPageForm() {
     );
 
   const icons = {
-    white: contactPageData?.greetings?.white || "",
-    black: contactPageData?.greetings?.black || "",
+    white: contactPageData?.greetings?.iconWhite || "",
+    black: contactPageData?.greetings?.iconBlack || "",
   };
 
   return (
@@ -169,7 +169,6 @@ export default function ContactPageForm() {
                       className="page-input py-1.5 w-full pl-1 leading_normal"
                       {...register("form.message.label", { required: true })}
                       placeholder="label ex: Your Queries"
-
                     />
                   </label>
                   <input

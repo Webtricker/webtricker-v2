@@ -23,9 +23,11 @@ const ACTIVE_KEY = "OPEN_GREETING_LOGO_MODAL";
 export default function GreetingImages({ setValue, icons }: Props) {
   //hooks
   const dispatch = useDispatch();
-  const [blackLogo, setBlackLogo] = useState(icons?.white || "");
-  const [whiteLogo, setWhiteLogo] = useState(icons?.black || "");
+  const [blackLogo, setBlackLogo] = useState(icons?.black || "");
+  const [whiteLogo, setWhiteLogo] = useState(icons?.white || "");
   const [target, setTarget] = useState<TTarget>("iconBlack");
+
+  console.log(icons, "icons");
 
   // handlers
   const handleSelect = (media: TMedia) => {
@@ -63,7 +65,6 @@ export default function GreetingImages({ setValue, icons }: Props) {
           alt="Star"
         />
       </button>
-
 
       <MediaModal
         allowedMediaTypeToShow={["img"]}

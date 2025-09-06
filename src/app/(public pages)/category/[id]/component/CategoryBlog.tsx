@@ -16,7 +16,7 @@ export default function CategoryBlog({ blogs }: { blogs: IBlog[] }) {
       {blogs.map((blog) => (
         <BlogCardWrapper
           key={blog._id}
-          createdAt={blog.createdAt}
+          createdAt={new Date(blog.createdAt).toString()}
           description={blog.description}
           slug={blog.slug}
           thumnail={blog.thumnail.url}
