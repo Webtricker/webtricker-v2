@@ -69,8 +69,8 @@ export default function Testimonials({
                   modules={[EffectFade, Autoplay]}
                   className="mySwiper"
                 >
-                  {testimonials.map((testimonial) => (
-                    <SwiperSlide key={testimonial._id}>
+                  {testimonials.map((testimonial, idx) => (
+                    <SwiperSlide key={testimonial._id + idx}>
                       <p>{testimonial.review}</p>
 
                       <div className="w-full gap-5 flex items-center mt-10">

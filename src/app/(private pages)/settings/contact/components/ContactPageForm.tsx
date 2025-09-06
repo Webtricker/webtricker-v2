@@ -169,7 +169,6 @@ export default function ContactPageForm() {
                       className="page-input py-1.5 w-full pl-1 leading_normal"
                       {...register("form.message.label", { required: true })}
                       placeholder="label ex: Your Queries"
-
                     />
                   </label>
                   <input
@@ -259,8 +258,8 @@ export default function ContactPageForm() {
               <div className="w-full flex gap-2 mt-10 items-start">
                 <ContactIcon
                   icons={{
-                    white: contactPageData?.address?.iconWhite,
-                    black: contactPageData?.address?.iconBlack,
+                    white: contactPageData?.contactNumber?.iconWhite,
+                    black: contactPageData?.contactNumber?.iconBlack,
                   }}
                   setValue={setValue}
                 />

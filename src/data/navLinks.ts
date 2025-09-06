@@ -13,10 +13,7 @@ export const navLinks: TLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-
 export const settingsLinks: TLink[] = [
-  { label: "Logos", href: "/settings/logos" },
-  { label: "Menu", href: "/settings/menu" },
   { label: "Header", href: "/settings/header" },
   { label: "Sidebar", href: "/settings/sidebar" },
   { label: "Home", href: "/settings/home" },
@@ -32,15 +29,12 @@ export const settingsLinks: TLink[] = [
   { label: "Testimonials", href: "/settings/testimonials" },
   {
     label: "Footer",
-    href: "/settings/footer"
+    href: "/settings/footer",
   },
-]
-
-
-
+];
 
 // social links
-const getRandomID = () => parseInt((Math.random() * 30) + '');
+const getRandomID = () => parseInt(Math.random() * 30 + "");
 export const socialLinks: TSocialLink[] = [
   {
     iconURL: "/icons/home/facebook.svg",
@@ -50,21 +44,21 @@ export const socialLinks: TSocialLink[] = [
   {
     _id: getRandomID(),
     iconURL: "/icons/home/twitter.svg",
-    link: "https://x.com/webtricker"
+    link: "https://x.com/webtricker",
   },
   {
     _id: getRandomID(),
     iconURL: "/icons/home/linkedIn.svg",
-    link: 'https://www.linkedin.com/company/webtricker'
+    link: "https://www.linkedin.com/company/webtricker",
   },
   {
     _id: getRandomID(),
     iconURL: "/icons/home/pinterest.svg",
-    link: "https://www.pinterest.com/webtricker"
+    link: "https://www.pinterest.com/webtricker",
   },
   {
     _id: getRandomID(),
     iconURL: "/icons/home/instagram.svg",
-    link: "https://www.instagram.com/webtricker"
+    link: "https://www.instagram.com/webtricker",
   },
-] 
+];

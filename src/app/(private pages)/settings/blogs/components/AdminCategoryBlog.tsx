@@ -45,7 +45,7 @@ export const AdminBlogCard = ({ blog, refetch }: TBlogProps) => {
   return (
     <BlogCardWrapper
       key={`${blog._id}`}
-      createdAt={blog.createdAt}
+      createdAt={new Date(blog.createdAt).toString()}
       description={blog.description}
       slug={blog.slug}
       thumnail={blog.thumnail.url}
@@ -58,9 +58,7 @@ export const AdminBlogCard = ({ blog, refetch }: TBlogProps) => {
         </div>
       ) : (
         <>
-          <Link href={`/settings/blogs/${blog.slug}`}>
-            <Button label="Edit" className="!text-sm !py-2.5" />
-          </Link>
+          <Button label="Edit" className="!text-sm !py-2.5" />
           <Button
             cb={() => handleDelete(blog._id)}
             label="Delete"

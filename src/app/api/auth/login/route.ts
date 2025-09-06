@@ -21,7 +21,6 @@ export const POST = async (req: NextRequest) => {
 
   const user = await User.findOne({ email });
 
-
   if (!user) {
     return NextResponse.json(
       { success: false, error: true, message: "Invalid credentials" },
@@ -39,7 +38,11 @@ export const POST = async (req: NextRequest) => {
   }
 
   // Generate token
-  const token = generateToken({ email: user.email, name: user.name, role: user.role });
+  const token = generateToken({
+    email: user.email,
+    name: user.name,
+    role: user.role,
+  });
 
   // Create the response object
   const response = NextResponse.json({
@@ -62,12 +65,12 @@ export const POST = async (req: NextRequest) => {
     path: "/",
     sameSite: "strict",
   });
-   return response;
+  return response;
 
   // Send email to site admin
   try {
     const transporter = getMailTransporter();
-    const html = getAdminMailTemplate()
+    const html = getAdminMailTemplate();
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER || "no-reply@example.com",
@@ -78,5 +81,4 @@ export const POST = async (req: NextRequest) => {
   } catch (err) {
     printErr(err);
   }
-
 };

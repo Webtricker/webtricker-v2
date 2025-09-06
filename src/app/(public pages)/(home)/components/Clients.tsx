@@ -24,10 +24,10 @@ export default function Clients({ title, clientsBanners = [] }: Props) {
             pauseOnHover={false}
             className="flex items-center"
           >
-            {clientsBanners.map((item) => (
+            {clientsBanners.map((item, idx) => (
               <Image
                 className="block border border-slate-300 dark:border-slate-700 mx-12 w-40 h-20 rounded-xl"
-                key={item}
+                key={item + idx}
                 src={item}
                 width={100}
                 height={100}

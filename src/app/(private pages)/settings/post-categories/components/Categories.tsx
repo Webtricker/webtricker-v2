@@ -1,18 +1,14 @@
 "use client";
-import {
-  addCategories,
-  deleteCategory,
-} from "@/redux/features/category/categories";
+import { deleteCategory } from "@/redux/features/category/categories";
 import {
   useDeleteCategoryMutation,
-  useGetCategoriesQuery,
+  useLazyGetCategoriesQuery,
 } from "@/redux/features/category/categoryApiSlice";
-import { RootState } from "@/redux/store";
 import { TrashCanIcon } from "@/sharedComponets/ui/icons/Icons";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import { TCategory } from "@/types/data";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 const CategoryCard = ({ category }: { category: TCategory }) => {
@@ -55,16 +51,26 @@ const CategoryCard = ({ category }: { category: TCategory }) => {
 };
 
 export default function Categories() {
-  // hooks
-  const dispatch = useDispatch();
-  const { data, isLoading } = useGetCategoriesQuery({});
-  const { categories } = useSelector((state: RootState) => state.categories);
+  const [categories, setCategories] = useState<TCategory[]>([]);
+  const [loadCategories, { isLoading }] = useLazyGetCategoriesQuery();
 
   useEffect(() => {
-    if (data?.categories && !categories.length) {
-      dispatch(addCategories(data.categories));
+    const loadData = async () => {
+      try {
+        const res = await loadCategories({}).unwrap();
+        if (res.success && res.categories) {
+          setCategories(res.categories);
+        } else {
+          throw new Error("Error loading categories");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    if (categories.length === 0) {
+      loadData();
     }
-  }, [data?.categories, dispatch, categories.length]);
+  }, [categories.length, loadCategories]);
 
   if (isLoading)
     return (

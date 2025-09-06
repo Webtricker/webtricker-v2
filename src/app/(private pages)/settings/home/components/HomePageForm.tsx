@@ -41,14 +41,8 @@ export default function HomePageForm({
   serviceData,
   posts,
 }: Props) {
-  const {
-    register,
-    setValue,
-    handleSubmit,
-    control,
-    watch,
-    reset
-  } = useForm<IHomePage>();
+  const { register, setValue, handleSubmit, control, watch, reset } =
+    useForm<IHomePage>();
   const { data, isLoading } = useGetHomePageDataQuery({});
   const [updateHomePage, { isLoading: loading }] =
     useUpdateHomePageDataMutation();
@@ -72,7 +66,7 @@ export default function HomePageForm({
   };
 
   useEffect(() => {
-    reset(data?.data)
+    reset(data?.data);
   }, [data?.data, reset]);
 
   if (isLoading)
@@ -243,15 +237,14 @@ export default function HomePageForm({
               </div>
 
               {/* services info */}
-              <Link
-                href="/settings/services"
+              <div
                 title="Click to update service"
                 className="w-full flex flex-col gap-8 lg:gap-10 2xl:gap-12"
               >
                 {serviceData?.slice(0, 1).map((service) => (
                   <ServiceCard key={service._id} service={service} />
                 ))}
-              </Link>
+              </div>
             </div>
           </Container>
         </section>
@@ -322,7 +315,12 @@ export default function HomePageForm({
               />
             </h3>
           </div>
-          <Technologies control={control} register={register} setValue={setValue} watch={watch} />
+          <Technologies
+            control={control}
+            register={register}
+            setValue={setValue}
+            watch={watch}
+          />
         </section>
 
         <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
@@ -359,16 +357,14 @@ export default function HomePageForm({
               {posts?.map((blog) => (
                 <BlogCardWrapper
                   key={blog._id}
-                  createdAt={blog.createdAt}
+                  createdAt={new Date(blog.createdAt).toString()}
                   description={blog.description}
                   slug={blog.slug}
                   thumnail={blog.thumnail.url}
                   title={blog.title}
                   excerpt={blog.excerp}
                 >
-                  <Link href={`/blog/${blog.slug}`}>
-                    <Button label="Read More" className="!text-sm !py-2.5" />
-                  </Link>
+                  <Button label="Read More" className="!text-sm !py-2.5" />
                 </BlogCardWrapper>
               ))}
             </div>

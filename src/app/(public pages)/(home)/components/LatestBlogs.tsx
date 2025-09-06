@@ -3,10 +3,6 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IBlog } from "@/types/post";
-// import { trimText } from "@/utils/blog";
-// import { formatDateToShortString } from "@/utils/date";
-// import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 
 const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
@@ -66,16 +62,14 @@ export default async function LatestBlogs({ blogSectionTitle }: BlogProps) {
           {posts.map((blog) => (
             <BlogCardWrapper
               key={blog._id}
-              createdAt={blog.createdAt}
+              createdAt={new Date(blog.createdAt).toString()}
               description={blog.description}
               slug={blog.slug}
               thumnail={blog.thumnail.url}
               title={blog.title}
               excerpt={blog.excerp}
             >
-              <Link href={`/blog/${blog.slug}`}>
-                <Button label="Read More" className="!text-sm !py-2.5" />
-              </Link>
+              <Button label="Read More" className="!text-sm !py-2.5" />
             </BlogCardWrapper>
           ))}
         </div>
