@@ -72,8 +72,8 @@ export default function ContactPageForm() {
     );
 
   const icons = {
-    white: contactPageData?.greetings?.white || "",
-    black: contactPageData?.greetings?.black || "",
+    white: contactPageData?.greetings?.iconWhite || "",
+    black: contactPageData?.greetings?.iconBlack || "",
   };
 
   return (
