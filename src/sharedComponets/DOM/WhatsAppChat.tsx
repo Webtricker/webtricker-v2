@@ -12,7 +12,9 @@ function WhatsAppChat() {
           rel="noreferrer"
           aria-label="whatsapp redirect link"
         >
-          <Image width={50} height={50} src={whatsAppImg.src} alt="whatsApp" />
+          <Image
+            priority
+            width={50} height={50} src={whatsAppImg.src} alt="whatsApp" />
         </Link>
       </div>
     </>

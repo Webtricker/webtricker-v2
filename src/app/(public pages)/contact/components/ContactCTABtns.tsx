@@ -7,8 +7,8 @@ export default function ContactCTABtns({ sidePanelData }) {
     <div className="hidden lg:flex absolute top-[50%] rotate-90 left-0 translate-x-[-45%] xl:translate-x-[-30%] items-center gap-5">
       <div className="flex gap-5">
         {sidePanelData?.socialLinks?.map(
-          (link: { icon: string; href: string }) => (
-            <Link href={link?.href} target="_blank" key={link?.href}>
+          (link: { icon: string; href: string }, indx) => (
+            <Link href={link?.href} target="_blank" key={link?.href + indx}>
               <Image
                 src={link.icon}
                 width={16}

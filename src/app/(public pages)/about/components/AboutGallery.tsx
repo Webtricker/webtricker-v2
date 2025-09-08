@@ -18,7 +18,6 @@ export default function AboutGallery({ introImages}: Props) {
   //   const parentContainerRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
-    console.log(longImageRef, " image ref");
     if (
       !longImageRef.current ||
       !mediumImageRef.current ||
