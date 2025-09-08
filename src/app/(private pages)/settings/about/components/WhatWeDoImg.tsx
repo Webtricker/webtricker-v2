@@ -42,10 +42,10 @@ export default function WhatWeDoImg({ setValue, data }: Props) {
   return (
     <>
       <button
-       type="button"
-       title="click to open modal"
+        type="button"
+        title="click to open modal"
         onClick={() => dispatch(toggleModal(active_key))}
-        className="min-h-[96px] min-w-[65px] border border-red-400 w-full mt-4"
+        className="min-h-[96px] min-w-[65px] border border-slate-300 w-full mt-4"
       >
         <Image
           className="w-16 md:w-16 h-auto inline-block  dark:hidden"
