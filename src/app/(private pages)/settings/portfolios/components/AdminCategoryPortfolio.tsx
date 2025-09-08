@@ -4,7 +4,7 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { ITechnology } from "@/types/data";
-import {  TPortfolio } from "@/types/portfolio";
+import { TPortfolio } from "@/types/portfolio";
 import Link from "next/link";
 import AdminPortfolioCard from "./AdminPortfolioCard";
 
@@ -13,10 +13,18 @@ export default function AdminCategoryPortfolio({
 }: {
   technology: ITechnology;
 }) {
+
+
+
+  console.log(technology, ' technology id f')
   const { data, isLoading, isError, error, refetch } = useGetPortfoliosQuery({
     technologyId: technology._id,
+    page: 1,
     limit: 7,
   });
+
+  // return if the category data type is All. 
+  if (technology?.name === "All") return <></>
 
   // conditional rendering
   if (isLoading) {
@@ -26,6 +34,9 @@ export default function AdminCategoryPortfolio({
       </Container>
     );
   }
+
+  console.log(data, ' data before rendering the page')
+
   if (!data || !data?.portfolios?.length || isError) {
     console.log(error);
     return <></>;

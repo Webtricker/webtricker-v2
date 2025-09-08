@@ -11,7 +11,6 @@ export const PUT = async (req: NextRequest) => {
 
         // Expect a single data object from the request body
         const { id, data } = await req.json();
-        console.log(data, ' data to update')
         // Check if the data and its ID are present
         if (!id) {
             return NextResponse.json(

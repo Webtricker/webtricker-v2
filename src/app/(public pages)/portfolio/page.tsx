@@ -67,7 +67,6 @@ export default async function PortfolioPage() {
         rows={4}
         cols={7}
       />
-
       <section className="section-speacing">
         <Container className="!max-w-[1200px]">
           <p className="bold flex items-center gap-1">
