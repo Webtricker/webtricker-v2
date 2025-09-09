@@ -10,21 +10,17 @@ import AdminPortfolioCard from "./AdminPortfolioCard";
 
 export default function AdminCategoryPortfolio({
   technology,
+  limit = 7,
 }: {
   technology: ITechnology;
+  limit?: number
 }) {
 
-
-
-  console.log(technology, ' technology id f')
   const { data, isLoading, isError, error, refetch } = useGetPortfoliosQuery({
     technologyId: technology._id,
     page: 1,
-    limit: 7,
+    limit,
   });
-
-  // return if the category data type is All. 
-  if (technology?.name === "All") return <></>
 
   // conditional rendering
   if (isLoading) {
@@ -34,8 +30,6 @@ export default function AdminCategoryPortfolio({
       </Container>
     );
   }
-
-  console.log(data, ' data before rendering the page')
 
   if (!data || !data?.portfolios?.length || isError) {
     console.log(error);
@@ -48,7 +42,7 @@ export default function AdminCategoryPortfolio({
         <h4>{technology.name}</h4>
 
         {data.portfolios?.length > 6 ? (
-          <Link href={`/settings/portfolios/${technology._id}`}>
+          <Link href={`/settings/portfolio-technologies/${technology._id}`}>
             <Button label="Show All" className="!py-2.5 lg:!py-3" />
           </Link>
         ) : (

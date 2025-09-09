@@ -1,11 +1,9 @@
 "use client";
-import { RootState } from "@/redux/store";
 import { ITechnology } from "@/types/data";
-import React, { SetStateAction, Dispatch, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { SetStateAction, Dispatch, useEffect, useState } from "react";
+import { useDispatch} from "react-redux";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import { useGetTechnologiesQuery } from "@/redux/features/category/technologyApiSlice";
-import { addTechnologies } from "@/redux/features/category/technologies";
 
 type Props = {
   setSelectedTechnology: Dispatch<SetStateAction<ITechnology | null>>;
@@ -17,16 +15,14 @@ export default function PortfolioTechonology({
   setSelectedTechnology,
 }: Props) {
   const dispatch = useDispatch();
-  const { technologies } = useSelector(
-    (state: RootState) => state.technologies
-  );
+  const [technologies, setTechnologies] = useState<ITechnology[]>([])
   const { data, isLoading } = useGetTechnologiesQuery({});
 
   useEffect(() => {
-    if (data?.technologies && !technologies.length) {
-      dispatch(addTechnologies(data?.technologies));
+    if (data?.technologies) {
+      setTechnologies(data?.technologies);
     }
-  }, [data, dispatch, technologies.length]);
+  }, [data, dispatch]);
 
   if (isLoading) return <LoadingSpinner />;
   return (
