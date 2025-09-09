@@ -15,7 +15,7 @@ export default function AdminPortfolios() {
   } = useGetTechnologiesQuery({});
 
   const technologies = data?.technologies ?? [];
-
+  
   // Show loading spinner
   if (isLoading) {
     return (
@@ -44,6 +44,7 @@ export default function AdminPortfolios() {
       </Container>
     );
   }
+
   // Render categories
   return (
     <>

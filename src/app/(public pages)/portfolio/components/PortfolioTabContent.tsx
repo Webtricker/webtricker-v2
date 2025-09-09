@@ -16,6 +16,8 @@ export default function PortfolioTabContent({ selectedTechnology }: Props) {
   const [portfolios, setPortfolios] = useState<TPortfolio[]>([]);
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
+
+  // load the data 
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -25,6 +27,7 @@ export default function PortfolioTabContent({ selectedTechnology }: Props) {
           page: currentPage,
 
         }).unwrap();
+
         if (res?.success && res?.portfolios) {
           setPortfolios(res.portfolios);
           if (res?.pagination?.total) {
@@ -41,6 +44,12 @@ export default function PortfolioTabContent({ selectedTechnology }: Props) {
 
     loadData();
   }, [selectedTechnology, currentPage, loadPortfolioData]);
+
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [selectedTechnology])
+
 
   if (isLoading)
     return (

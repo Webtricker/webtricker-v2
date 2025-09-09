@@ -332,3 +332,18 @@ export const getSidebarData = async () => {
     return {};
   }
 };
+
+export const getPortfolioTechnology = async (id: string) => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolio-technologies/${id}`);
+    if (!res.ok) {
+      console.error("Failed to fetch header data");
+      return {};
+    }
+    const result = await res.json();
+    return result?.technology || {};
+  } catch (error) {
+    console.error("Error fetching header data:", error);
+    return {};
+  }
+};

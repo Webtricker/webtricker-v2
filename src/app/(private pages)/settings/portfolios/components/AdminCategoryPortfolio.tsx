@@ -4,18 +4,22 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { ITechnology } from "@/types/data";
-import {  TPortfolio } from "@/types/portfolio";
+import { TPortfolio } from "@/types/portfolio";
 import Link from "next/link";
 import AdminPortfolioCard from "./AdminPortfolioCard";
 
 export default function AdminCategoryPortfolio({
   technology,
+  limit = 7,
 }: {
   technology: ITechnology;
+  limit?: number
 }) {
+
   const { data, isLoading, isError, error, refetch } = useGetPortfoliosQuery({
     technologyId: technology._id,
-    limit: 7,
+    page: 1,
+    limit,
   });
 
   // conditional rendering
@@ -26,6 +30,7 @@ export default function AdminCategoryPortfolio({
       </Container>
     );
   }
+
   if (!data || !data?.portfolios?.length || isError) {
     console.log(error);
     return <></>;
@@ -37,7 +42,7 @@ export default function AdminCategoryPortfolio({
         <h4>{technology.name}</h4>
 
         {data.portfolios?.length > 6 ? (
-          <Link href={`/settings/portfolios/${technology._id}`}>
+          <Link href={`/settings/portfolio-technologies/${technology._id}`}>
             <Button label="Show All" className="!py-2.5 lg:!py-3" />
           </Link>
         ) : (

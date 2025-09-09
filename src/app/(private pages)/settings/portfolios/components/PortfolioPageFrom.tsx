@@ -28,7 +28,6 @@ export default function PortfolioPageFrom() {
 
   // handlers
   const onSubmit = async (updateData: IPortfolioPage) => {
-    console.log(updateData, " updated data");
     try {
       const res = await updatePortfolioPage({
         id: portfolioPageData?._id,

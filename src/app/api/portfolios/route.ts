@@ -48,6 +48,7 @@ export const GET = async (req: NextRequest) => {
         const page = parseInt(searchParams.get("page") || "1", 10);
         const limit = parseInt(searchParams.get("limit") || "20", 10);
         const skip = (page - 1) * limit;
+
         const query: any = {};
         if (technologyId && mongoose.Types.ObjectId.isValid(technologyId)) {
             query['technology'] = new mongoose.Types.ObjectId(technologyId);
@@ -57,7 +58,7 @@ export const GET = async (req: NextRequest) => {
                 { status: 400 }
             );
         }
-        
+
         const [portfolios, total] = await Promise.all([
             Portfolio.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit),
             Portfolio.countDocuments(query)

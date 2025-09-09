@@ -31,6 +31,7 @@ type Props = {
 };
 
 export default function BannerSlider({ bannerSlider, setValue }: Props) {
+
   //hooks
   const [sliderElements, setSliderElements] = useState<TSliderEl[]>(
     (bannerSlider as TSliderEl[]) || []
@@ -140,14 +141,13 @@ const SwiperSliderSlide = ({
 
   const handleSaveSlide = () => {
     setSliderElements((prev) => {
-      console.log(prev, " prevous elements");
       const next = prev.map((s) => {
         if (s._id === slideId) {
           return { ...s, img: bg, technology: tech, name: portfolio };
         }
         return s;
       });
-
+      console.log(next, ' data to save in the background');
       setValue("bannerSlider", next);
       return next;
     });
