@@ -87,6 +87,8 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
                 key={label}
                 href={href}
                 target={isExternal ? "_blank" : "_self"}
+
+                onClick={handleClose}
               >
                 {label}
               </Link>
