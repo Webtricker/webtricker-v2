@@ -10,6 +10,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import { Suspense } from "react";
 import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
+import PageTransition from "@/sharedComponets/DOM/PageTransition";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     default: "Webtricker",
     template: "%s | Webtricker",
   },
-  description: "Webtricker - Web Design and Development Agency offering professional websites, apps, and digital solutions.",
+  description:
+    "Webtricker - Web Design and Development Agency offering professional websites, apps, and digital solutions.",
   keywords: [
     "web design",
     "web development",
@@ -42,7 +44,8 @@ export const metadata: Metadata = {
     type: "website",
     url: "https://webtricker.com",
     title: "Webtricker - Web Design and Development Agency",
-    description: "We create fast, modern, and SEO-friendly websites & applications.",
+    description:
+      "We create fast, modern, and SEO-friendly websites & applications.",
     siteName: "Webtricker",
     images: [
       {
@@ -59,7 +62,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@webtricker",
     title: "Webtricker - Web Design and Development Agency",
-    description: "We build websites, apps, and digital experiences that grow your business.",
+    description:
+      "We build websites, apps, and digital experiences that grow your business.",
     images: ["/opengraph-image.png"],
   },
 
@@ -84,7 +88,6 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://webtricker.com"),
 };
 
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -95,9 +98,7 @@ export default function RootLayout({
       <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
-            {/* <PageTransition> */}
-            {children}
-            {/* </PageTransition> */}
+            <PageTransition>{children}</PageTransition>
 
             {/* Live chat */}
             <Suspense fallback={null}>
