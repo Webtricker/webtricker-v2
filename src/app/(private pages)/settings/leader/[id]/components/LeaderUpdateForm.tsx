@@ -38,7 +38,7 @@ export default function LeaderUpdateForm({ member }: Props) {
     try {
       const res = await updateLeader({
         id: member._id,
-        data: { profile, name, role },
+        data: { profile, name, role, facebookLink, instagramLink, linkedInLink },
       }).unwrap();
       if (res.success) {
         toast.success("Leader member info updated");
@@ -60,9 +60,8 @@ export default function LeaderUpdateForm({ member }: Props) {
     member.linkedInLink === linkedInLink;
   return (
     <div
-      className={`w-full grow flex items-center justify-center ${
-        !!isLoading && "pointer-events-none"
-      }`}
+      className={`w-full grow flex items-center justify-center ${!!isLoading && "pointer-events-none"
+        }`}
     >
       <LeaderForm
         activeKey="OPEN_LEADER_INFO_UPDATE_MODAL"
