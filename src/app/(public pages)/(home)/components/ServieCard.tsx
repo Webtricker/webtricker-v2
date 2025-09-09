@@ -10,7 +10,9 @@ const ServiceCard = ({ service }: { service: IService }) => {
 
   return (
     <div
-      className="p-4 shadow-md border border-green-500 rounded-xl rounded-br-none"
+      className={`p-4 shadow-md border border-slate-300 rounded-xl rounded-br-none hover:shadow-xl duration-300 ${
+        !showDetails && "max-h-[340px]"
+      }`}
       id={service._id}
     >
       <div className="flex items-center gap-4">
@@ -25,14 +27,16 @@ const ServiceCard = ({ service }: { service: IService }) => {
       </div>
       <div className="mt-2">
         {!showDetails ? (
-          <p className="text-justify">{service.description.slice(0, 300)}</p>
+          <p className="text-justify">
+            {service?.description?.split(" ").slice(0, 50).join(" ")}
+          </p>
         ) : (
           <p className="text-justify">{service.description}</p>
         )}
 
         <div className="flex items-baseline justify-between gap-2">
           <div className="mt-2 flex items-center gap-1">
-            <p className="!text-xs">See more about:</p>
+            <p className="!text-base">See more:</p>
             <Link href={`/services/${service.slug}`}>
               <button className="underline text-base hover:text-green-500 flex items-center gap-1 duration-300">
                 {service.title} <ArrowUpRightIcon />

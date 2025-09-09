@@ -15,7 +15,7 @@ export default function Portfolios({
           {!!portfolios[0] && (
             <div className="flex items-center w-full sm:w-[45%] 2xl:w-[47%] max-w-[800px] h-auto">
               <ParallaxImage
-                containerStyle="w-full  h-[400px] sm:h-[413px] sm:max-w-[600px]"
+                containerStyle="w-full  h-[400px] sm:h-[413px] sm:max-w-[600px] shadow-xl"
                 href=""
                 src={portfolios[0].thumnail.url || ""}
                 imgStyle=""
@@ -27,7 +27,7 @@ export default function Portfolios({
           {!!portfolios[1] && (
             <div className="flex w-full sm:w-[45%] 2xl:w-[47%] max-w-[750px] h-auto">
               <ParallaxImage
-                containerStyle="w-full h-[400px] sm:h-[500px] md:h-[600px] 2xl:h-[764px] sm:max-w-[600px]"
+                containerStyle="w-full h-[400px] sm:h-[500px] md:h-[600px] 2xl:h-[764px] sm:max-w-[600px] shadow-xl"
                 href=""
                 src={portfolios[1].thumnail.url || ""}
                 imgStyle=""
@@ -39,7 +39,7 @@ export default function Portfolios({
           {!!portfolios[2] && (
             <div className="w-full sm:w-[45%] 2xl:w-[47%] flex justify-end max-w-[700px] h-auto">
               <ParallaxImage
-                containerStyle="w-full h-[400px] sm:h-[500px] md:h-[550px] 2xl:h-[589px] sm:max-w-[447px]"
+                containerStyle="w-full h-[400px] sm:h-[500px] md:h-[550px] 2xl:h-[589px] sm:max-w-[447px] shadow-xl"
                 href=""
                 src={portfolios[2].thumnail.url || ""}
                 imgStyle=""
@@ -51,7 +51,7 @@ export default function Portfolios({
           {!!portfolios[3] && (
             <div className="w-full sm:w-[45%] 2xl:w-[47%] flex items-end justify-center max-w-[800px] h-auto">
               <ParallaxImage
-                containerStyle="w-full h-[382px] sm:max-w-[318px]"
+                containerStyle="w-full h-[382px] sm:max-w-[318px] shadow-xl"
                 href=""
                 src={portfolios[3].thumnail.url || ""}
                 imgStyle=""
@@ -63,7 +63,7 @@ export default function Portfolios({
           {!!portfolios[4] && (
             <div className="sm:mt-10 md:mt-20 flex lg:mt-[120px] 2xl:mt-[160px] w-full sm:w-[45%] 2xl:w-[47%] max-w-[800px] h-auto">
               <ParallaxImage
-                containerStyle="w-full h-[400px] sm:h-[500px] lg:h-[600px] 2xl:h-[752px] max-w-[596px]"
+                containerStyle="w-full h-[400px] sm:h-[500px] lg:h-[600px] 2xl:h-[752px] max-w-[596px] shadow-xl"
                 href=""
                 src={portfolios[4].thumnail.url || ""}
                 imgStyle=""
@@ -75,7 +75,7 @@ export default function Portfolios({
           {!!portfolios[4] && (
             <div className="sm:mt-10 md:mt-20 lg:mt-[80px] 2xl:mt-[160px] flex items-start 2xl:pt-20 justify-end w-full sm:w-[45%] 2xl:w-[47%] max-w-[800px] h-auto">
               <ParallaxImage
-                containerStyle="w-full h-[382px] lg:h-[449px] max-w-[700px]"
+                containerStyle="w-full h-[382px] lg:h-[449px] max-w-[700px] shadow-xl"
                 href=""
                 src={portfolios[5].thumnail.url || ""}
                 imgStyle=""

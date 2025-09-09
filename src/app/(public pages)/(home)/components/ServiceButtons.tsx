@@ -14,11 +14,11 @@ function ServiceButtons({ serviceData }) {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 my-8">
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 my-8">
       {(serviceData as IService[]).map((service) => (
         <button
           key={service._id}
-          className="cursor-pointer border p-2 rounded-full text-base hover:shadow-2xl duration-300 border-green-500"
+          className="cursor-pointer border p-2 rounded-full text-base hover:shadow-2xl duration-300 border-slate-300 shadow-md"
           onClick={() => scrollToSection(service._id, -120)}
         >
           {service.title}
