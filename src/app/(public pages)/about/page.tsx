@@ -20,7 +20,6 @@ import { IAboutPage } from "@/types/pageTypes";
 
 export const revalidate = 120; // page rebuild in every 2 min
 
-
 export const metadata: Metadata = {
   title: "About Webtricker: Our Mission and Vision | Webtricker",
   description:
@@ -47,7 +46,7 @@ export const metadata: Metadata = {
       "Discover Webtricker’s mission and vision. We are a responsive web design & development agency creating user-friendly, modern, and SEO-optimized websites.",
     images: [
       {
-        url: shortLogo.src,
+        url: "/opengraph-aboutus.jpg",
         width: 1200,
         height: 630,
         alt: "Webtricker - Expert Web Design & Digital Services",
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    site: "@webtricker", 
+    site: "@webtricker",
     title: "About Webtricker: Our Mission and Vision",
     description:
       "Meet Webtricker: a web design & development agency building modern, SEO-friendly, and responsive websites.",
