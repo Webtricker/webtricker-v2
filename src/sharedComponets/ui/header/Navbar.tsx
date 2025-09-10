@@ -7,10 +7,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function Navbar({
-  navStyle = "",
-  children = <></>
-}: Props) {
+export default function Navbar({ navStyle = "", children = <></> }: Props) {
   // variables
   const THRESHOLD = 150;
 
@@ -70,8 +67,9 @@ export default function Navbar({
   return (
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}
-      className={`z-[999] wt_header fixed top-0 left-0 py-4 w-full h-auto ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
-        } ${showBorder ? "shadow" : "border-0"}`}
+      className={`z-[999] wt_header fixed top-0 left-0 py-2 md:py-4 w-full h-auto ${navStyle} ${
+        scrollY === 0 ? "duration-1000" : ""
+      } ${showBorder ? "shadow" : "border-0"}`}
     >
       {children}
     </header>

@@ -42,7 +42,7 @@ export default async function Footer() {
             </Link>
             <p className="mt-3 wt_fs-md">{footerData?.description || ""}</p>
           </div>
-          <div className="ms-0 md:ms-8 w-full">
+          <div className="ms-0 md:ms-6 w-full">
             <h5>{footerData?.pages?.title || ""}</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.pages?.links &&
