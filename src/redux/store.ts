@@ -66,7 +66,8 @@ export const store = configureStore({
       concat(portfolioApi.middleware).
       concat(technologyApi.middleware).
       concat(pageApi.middleware).
-      concat(customizationApi.middleware)
+      concat(customizationApi.middleware).
+      concat(contactApi.middleware)
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

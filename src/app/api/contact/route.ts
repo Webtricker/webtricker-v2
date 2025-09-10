@@ -9,6 +9,7 @@ export const POST = async (req: NextRequest) => {
     }
 
     try {
+        // TODO: Have to take the mail from server
         await transporter.sendMail({
             from: `"${name}" <${email}>`,
             to: process.env.EMAIL_TO,

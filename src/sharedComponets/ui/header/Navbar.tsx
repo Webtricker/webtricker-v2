@@ -70,7 +70,7 @@ export default function Navbar({
   return (
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}
-      className={`z-[999] wt_header fixed top-0 left-0 py-4 w-full h-auto ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
+      className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
         } ${showBorder ? "shadow" : "border-0"}`}
     >
       {children}

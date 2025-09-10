@@ -75,7 +75,7 @@ export default function AboutGallery({ introImages}: Props) {
     return () => ctx.revert(); // clean up on unmount
   }, []);
   return (
-    <section className="section-speacing">
+    <section className="section-speacing mb-20 lg:mb-10 xl:mb-0 ">
       <div className="w-full section-inner-speacing"></div>
       <Container className="flex">
         <div className="w-full flex items-center flex-col md:flex-row gap-10 lg:gap-20 justify-between">
@@ -108,7 +108,7 @@ export default function AboutGallery({ introImages}: Props) {
                 ref={shortImageRef}
                 width={600}
                 height={900}
-                className="w-full h-full max-w-[230px]"
+                className="w-full opacity-0 xl:opacity-100 h-full max-w-[230px]"
                 src={introImages?.small || ""}
                 alt="Small Image"
               />

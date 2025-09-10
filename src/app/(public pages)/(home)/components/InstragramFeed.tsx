@@ -3,7 +3,7 @@ import Image from "next/image";
 import React from "react";
 import Marquee from "react-fast-marquee";
 
-export default function InstragramFeed({images}:{images:string[]}) {  
+export default function InstragramFeed({ images }: { images: string[] }) {
   return (
     <section className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <div className="w-full relative">
@@ -16,7 +16,7 @@ export default function InstragramFeed({images}:{images:string[]}) {
           >
             <path fill="currentColor" d="M0,100L1440,100Q720,0 0,100Z"></path>
           </svg>
-          <div className="w-full h-1"></div>
+          {/* <div className="w-full h-1"></div> */}
         </div>
         <Marquee
           speed={80}
@@ -36,16 +36,17 @@ export default function InstragramFeed({images}:{images:string[]}) {
             </div>
           ))}
         </Marquee>
-        <div className=" w-full rounded-edge-container absolute -bottom-1 z-50 pointer-events-none">
-          <svg 
+        <div className=" w-full rounded-edge-container absolute -bottom-0 overflow-hidden z-50 pointer-events-none">
+          <svg
             id="wave"
             viewBox="0 0 1440 100"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
+          // className=""
           >
             <path fill="currentColor" d="M0,100L1440,100Q720, 0 0,100Z"></path>
           </svg>
-          <div className="w-full h-1"></div>
+          {/* <div className="w-full bg-red-500 h-6"></div> */}
         </div>
       </div>
     </section>

@@ -90,7 +90,7 @@ export default async function AboutPage() {
               <h6>{pageData?.bannerIntroText?.top || ""}</h6>
               <h6>{pageData?.bannerIntroText?.bottom || ""}</h6>
             </div>
-            <h1 className="!text-white mt-4 !leading-[90%] max-w-[500px] -ml-1 md:-ml-1.5 lg:-ml-2 xl:-ml-2.5 font-semibold tracking-tight">
+            <h1 className="!text-white mt-4 !leading-[90%] max-w-[500px] wt_fs-giant -ml-1 md:-ml-1.5 lg:-ml-2 xl:-ml-2.5 font-semibold tracking-tight">
               {pageData?.bannerLargeText || ""}
             </h1>
             <p className="!text-white wt_text-shadow max-w-[500px] wt_fs-xl bold mt-5">

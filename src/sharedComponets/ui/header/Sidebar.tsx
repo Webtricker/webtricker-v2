@@ -130,7 +130,7 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
             <h6 className="heading uppercase mb-2 text-center lg:text-start">
               {sidebarData?.socialLinks?.title || ""}
             </h6>
-            <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap">
+            <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap items-center justify-center">
               {
                 sidebarData?.socialLinks?.links?.map(link => <Link key={link.href} target={link?.isExternal ? "_blank" : "_self"} href={link.href}>
                   <Image src={link.label} width={26} height={26} alt="Social icon" />
