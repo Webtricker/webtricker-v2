@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import React from "react";
 import Marquee from "react-fast-marquee";
@@ -7,7 +7,7 @@ export default function InstragramFeed({ images }: { images: string[] }) {
   return (
     <section className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
       <div className="w-full relative">
-        <div className="w-full rounded-edge-container absolute rotate-180 -top-1 z-50 pointer-events-none">
+        <div className="w-full rounded-edge-container absolute rotate-180 -top-[6px] z-50 pointer-events-none">
           <svg
             id="wave"
             viewBox="0 0 1440 100"
@@ -36,7 +36,7 @@ export default function InstragramFeed({ images }: { images: string[] }) {
             </div>
           ))}
         </Marquee>
-        <div className=" w-full rounded-edge-container absolute -bottom-0 overflow-hidden z-50 pointer-events-none">
+        <div className=" w-full rounded-edge-container absolute -bottom-[6px] z-50 pointer-events-none">
           <svg
             id="wave"
             viewBox="0 0 1440 100"

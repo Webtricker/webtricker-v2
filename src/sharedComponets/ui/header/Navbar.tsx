@@ -7,10 +7,7 @@ type Props = {
   children?: React.ReactNode;
 };
 
-export default function Navbar({
-  navStyle = "",
-  children = <></>
-}: Props) {
+export default function Navbar({ navStyle = "", children = <></> }: Props) {
   // variables
   const THRESHOLD = 150;
 
