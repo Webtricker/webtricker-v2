@@ -45,7 +45,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
           </div>
         </div>
         <h1
-          className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 text-6xl xl:text-[150px] flex w-full items-center justify-center heading overflow-hidden`}
+          className={`flex-col sm:flex-row ${galleryModern.className} mt-2 md:mt-8 lg:mt-10 2xl:mt-14 text-6xl xl:text-[150px] flex w-full items-center justify-center heading overflow-hidden`}
         >
           <LeftAnimation word={homeData?.bannerText?.left || "Digital"} />
           <span className="tp-hero-title-img">
