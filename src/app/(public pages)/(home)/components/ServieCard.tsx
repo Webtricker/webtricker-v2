@@ -34,11 +34,11 @@ const ServiceCard = ({ service }: { service: IService }) => {
           <p className="text-justify">{service.description}</p>
         )}
 
-        <div className="flex items-baseline justify-between gap-2">
+        <div className="flex items-baseline justify-between gap-1 md:gap-2">
           <div className="mt-2 flex items-center gap-1">
             <p className="!text-base">See more:</p>
             <Link href={`/services/${service.slug}`}>
-              <button className="underline text-base hover:text-green-500 flex items-center gap-1 duration-300">
+              <button className="underline text-[14px] hover:text-green-500 flex items-center gap-1 duration-300">
                 {service.title} <ArrowUpRightIcon />
               </button>
             </Link>
