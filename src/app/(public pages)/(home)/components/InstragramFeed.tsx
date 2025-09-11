@@ -42,7 +42,7 @@ export default function InstragramFeed({ images }: { images: string[] }) {
             viewBox="0 0 1440 100"
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
-          // className=""
+            // className=""
           >
             <path fill="currentColor" d="M0,100L1440,100Q720, 0 0,100Z"></path>
           </svg>
