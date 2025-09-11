@@ -41,7 +41,7 @@ export default async function Services({
               </div>
               <ServiceButtons serviceData={serviceData} />
               <LinkButton
-                className="mt-5"
+                className="mt-5 w-full text-center"
                 label={allServiceTxt || "See All Services"}
                 href="/services"
               />
