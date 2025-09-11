@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SidebarImages from "./SidebarImages";
 import { IMainHeader, ISidebar } from "@/types/componentsType";
+import { usePathname } from "next/navigation";
 // import SocialLinks from "../footer/SocialLinks";
 
 type Props = {
@@ -18,6 +19,7 @@ type Props = {
   navlinks: IMainHeader['links'];
 };
 export default function Sidebar({ navlinks, sidebarData }: Props) {
+  const pathname = usePathname();
   const dispatch = useDispatch();
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
 
@@ -70,7 +72,7 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
           data-lenis-prevent
           className="sidebar_scrollable_container grow w-full overflow-y-auto px-4 md:px-5 lg:px-8 xl:px-9"
         >
-          <div className="w-full mt-5 lg:mt-16">
+          <div className="w-full hidden lg:block mt-5 lg:mt-16">
             <h5 className="heading font-semibold text-center lg:text-start">
               {sidebarData?.title || ""}
             </h5>
@@ -81,9 +83,17 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
 
           {/* links */}
           <div className="lg:hidden inline-flex w-full flex-col items-center mt-10 lg:mt-20 gap-5">
+            <Link
+              className={`uppercase cursor-pointer ${pathname === "/" && "wt_active-navlink"}`}
+              key="home_link"
+              href="/"
+              onClick={handleClose}
+            >
+              Home
+            </Link>
             {navlinks?.map(({ isExternal, href, label }) => (
               <Link
-                className="uppercase cursor-pointer"
+                className={`uppercase cursor-pointer ${pathname === href && "wt_active-navlink"}`}
                 key={label}
                 href={href}
                 target={isExternal ? "_blank" : "_self"}

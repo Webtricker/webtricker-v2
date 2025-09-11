@@ -427,20 +427,18 @@ body {
   @apply relative;
 }
 
-.wt_header-navlink::before {
-  /* @apply w-0 duration-300 h-1 block absolute left-0 top-full;
+.animate-underline::after, .wt_header-navlink::before {
   content: "";
-  background-color: var(--clr-primary); */
-
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2px;
-  background: var(--clr-primary);
   transform: scaleX(0);
+  background: var(--clr-text-body);
+  @apply h-0.5 left-0 -bottom-0.5 absolute w-full;
 }
+
+.dark .animate-underline::after,
+.dark .wt_header-navlink::before {
+  background: var(--clr-text-body-dark);
+}
+
 .wt_header-navlink:hover::before {
   animation: underline-in 0.5s forwards;
 }
@@ -771,17 +769,6 @@ p.bouncing-text {
   text-decoration: none;
 }
 
-.animate-underline::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 100%;
-  height: 2px;
-  background: black;
-  transform: scaleX(0);
-}
-
 .animate-underline:hover::after {
   animation: underline-in 0.5s forwards;
 }
@@ -810,4 +797,10 @@ p.bouncing-text {
     transform: scaleX(0);
     transform-origin: right;
   }
+}
+
+
+/* ===== sidebar active link styles ======= */
+.wt_active-navlink{
+  @apply text-red-500;
 }

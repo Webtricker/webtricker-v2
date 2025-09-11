@@ -16,7 +16,7 @@ export default function OurLeader({
         <h3 className="text-center middle-border">{title || "Our Leaders"}</h3>
       </div>
       <div className="w-full overflow-x-auto">
-        <Container className="py-2 team-members-wrap flex flex-wrap justify-center w-full gap-5 lg:gap-10 items-center">
+        <Container className="py-2 team-members-wrap flex flex-wrap justify-center w-full gap-8 sm:gap-5 lg:gap-10 items-center">
           {leaderData.map((team) => (
             <TeammemberCard team={team} key={team.name} />
           ))}
