@@ -48,7 +48,7 @@ export default function NewsLetterForm({
   return (
     <>
       <div
-        className={`w-full flex group mt-2 border rounded-[6px] overflow-hidden ${
+        className={`w-full hover:shadow-lg dark:hover:shadow-slate-600 flex group mt-2 border rounded-[6px] overflow-hidden ${
           isFocused
             ? "border-slate-700 dark:border-slate-200"
             : "border-slate-400 dark:border-slate-400"

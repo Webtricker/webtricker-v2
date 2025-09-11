@@ -25,7 +25,7 @@ export default function Navbar({ navStyle = "", children = <></> }: Props) {
       const prevScroll = prevScrollRef.current;
 
       // set the border
-      if (prevScrollRef.current > 50) {
+      if (prevScrollRef.current > 100) {
         if (!showBorder) {
           setShowBorder(true);
         }
@@ -68,7 +68,7 @@ export default function Navbar({ navStyle = "", children = <></> }: Props) {
     <header
       style={{ transform: `translateY(-${scrollY}px)` }}
       className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
-        } ${showBorder ? "shadow" : "border-0"}`}
+        } ${showBorder ? "shadow dark:shadow-slate-700" : "border-0"}`}
     >
       {children}
     </header>
