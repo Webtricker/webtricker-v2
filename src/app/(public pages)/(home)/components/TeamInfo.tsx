@@ -76,7 +76,7 @@ export default function TeamInfo({
           className="w-full"
         >
           {[...teamData, ...teamData, ...teamData].map((item, index) => (
-            <SwiperSlide className="my-4" key={index}>
+            <SwiperSlide className="my-4 ms-[6.8px] md:ms-0" key={index}>
               <div className="p-4 flex flex-col gap-6 items-center max-w-[350px] min-h-[450px] justify-center shadow-effect-large rounded-[8px]">
                 <Image
                   className="w-[250px] h-[250px] rounded-full"

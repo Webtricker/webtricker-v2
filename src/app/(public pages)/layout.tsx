@@ -3,6 +3,7 @@ import Footer from "@/sharedComponets/ui/footer/Footer";
 import Navbar from "@/sharedComponets/ui/header/Navbar";
 import React, { ReactNode } from "react";
 import NavbarInner from "@/sharedComponets/ui/header/NavbarInner";
+import PageTransition from "@/sharedComponets/DOM/PageTransition";
 
 export default async function PublicLayout({
   children,
@@ -11,12 +12,14 @@ export default async function PublicLayout({
 }) {
   return (
     <>
-      <Navbar>
-        <NavbarInner />
-      </Navbar>
-      {children}
-      <CursorDot />
-      <Footer />
+      <PageTransition>
+        <Navbar>
+          <NavbarInner />
+        </Navbar>
+        {children}
+        <CursorDot />
+        <Footer />
+      </PageTransition>
     </>
   );
 }

@@ -10,7 +10,6 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import { Suspense } from "react";
 import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
-import PageTransition from "@/sharedComponets/DOM/PageTransition";
 
 const syne = Syne({
   subsets: ["latin"],
@@ -98,7 +97,7 @@ export default function RootLayout({
       <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
-            <PageTransition>{children}</PageTransition>
+            {children}
 
             {/* Live chat */}
             <Suspense fallback={null}>
