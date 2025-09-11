@@ -14,13 +14,13 @@ import { XMarkIcon } from "@/sharedComponets/ui/icons/Icons";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import { removeAccessToken } from "@/utils/auth";
 import { toast } from "react-toastify";
-
+import DemoThemeToggler from "@/tests/DemoThemeToggler";
 
 type Props = {
   navStyle?: string;
   children?: React.ReactNode;
 };
-export default function PrivateSidebar({children=<></>}:Props) {
+export default function PrivateSidebar({ children = <></> }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ export default function PrivateSidebar({children=<></>}:Props) {
         throw new Error("Something went wrong");
       }
     } catch (error) {
-      toast.warn("Something went wrong")
+      toast.warn("Something went wrong");
       console.log(error);
     }
   };
@@ -58,16 +58,15 @@ export default function PrivateSidebar({children=<></>}:Props) {
         } duration-500 z-[999]`}
     >
       <div className="w-full flex flex-col h-full">
-        <div className="w-full py-2 px-5 flex items-center justify-between">
-          <SiteLogo>
-            {children}
-          </SiteLogo>
+        <div className="w-full px-5 flex items-center justify-between">
+          <SiteLogo>{children}</SiteLogo>
           <button className="lg:hidden" onClick={handleClose}>
             <XMarkIcon />
           </button>
+          <DemoThemeToggler />
         </div>
         <div className="w-full flex flex-col items-start mt-2 grow border-t border-slate-300 dark:border-slate-700">
-          {settingsLinks.map ((link) => (
+          {settingsLinks.map((link) => (
             <Link
               key={link.href}
               className={`duration-200 px-5 py-2 w-full ${
