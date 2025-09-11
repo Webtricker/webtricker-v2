@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function TeammemberCard({ team }: { team: ILeaderInfo }) {
   return (
-    <div className="shadow-effect-large p-10 rounded-[8px] max-w-[330px]">
-      <div className="w-[200px] lg:w-[250px] h-[200px] lg:h-[250px] overflow-hidden rounded-full">
+    <div className="shadow-effect-large p-10 rounded-[8px] w-full mx-0.5 sm:mx-0 sm:max-w-[330px]">
+      <div className="w-[200px] lg:w-[250px] mx-auto h-[200px] lg:h-[250px] overflow-hidden rounded-full">
         <Image
           className="w-full h-full rounded-full object-cover"
           src={team?.profile}
