@@ -373,7 +373,7 @@ section {
 }
 
 body {
-  font-family: var(--font-syne), "Roboto", sans-serif;
+  font-family: var(--font-lato), "Roboto", sans-serif;
   background-color: var(--clr-bg-body);
   color: var(--clr-text-body);
   padding: 20px;

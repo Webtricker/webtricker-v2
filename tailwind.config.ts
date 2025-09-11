@@ -18,7 +18,7 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        syne: ['var(--font-syne)'],
+        syne: ['var(--font-loto)'],
       },
     },
   },
