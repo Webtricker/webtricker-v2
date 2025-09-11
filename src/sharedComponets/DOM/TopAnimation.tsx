@@ -18,7 +18,7 @@ export default function TopAnimation({ word }: { word?: string }) {
       scale: 0.3,
     });
 
-    const tl = gsap.timeline({ delay: 0.5 });
+    const tl = gsap.timeline({ delay: 1.8 });
 
     letters.forEach((letter, index) => {
       tl.to(
