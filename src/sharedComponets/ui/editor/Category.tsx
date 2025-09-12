@@ -1,10 +1,8 @@
 "use client";
-import { addCategories } from "@/redux/features/category/categories";
 import { useLazyGetCategoriesQuery } from "@/redux/features/category/categoryApiSlice";
-import { RootState } from "@/redux/store";
 import { TCategory } from "@/types/data";
-import React, { SetStateAction, useEffect, Dispatch } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { SetStateAction, useEffect, Dispatch, useState } from "react";
+import { useDispatch } from "react-redux";
 import LoadingSpinner from "../loading/LoadingSpinner";
 
 type Props = {
@@ -16,8 +14,8 @@ export default function Category({
   selectedCategory,
   setSelectedCategory,
 }: Props) {
+  const [categories, setCategories] = useState<TCategory[]>([]);
   const dispatch = useDispatch();
-  const { categories } = useSelector((state: RootState) => state.categories);
   const [loadCategories, { isLoading }] = useLazyGetCategoriesQuery();
 
   useEffect(() => {
@@ -25,7 +23,7 @@ export default function Category({
       try {
         const res = await loadCategories({}).unwrap();
         if (res.success && res.categories) {
-          dispatch(addCategories(res.categories));
+          setCategories(res.categories);
           const uncategorized = res.categories.find(
             (cat: TCategory) =>
               cat.name === "Uncategorized" || cat.name === "uncategorized"
@@ -43,7 +41,13 @@ export default function Category({
     if (categories.length === 0) {
       loadData();
     }
-  }, [loadCategories, dispatch,categories.length, setSelectedCategory, selectedCategory]);
+  }, [
+    loadCategories,
+    dispatch,
+    categories.length,
+    setSelectedCategory,
+    selectedCategory,
+  ]);
 
   if (isLoading) return <LoadingSpinner />;
 
