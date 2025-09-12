@@ -31,7 +31,7 @@ export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
   }, []);
 
   return (
-    <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative">
+    <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative hidden md:block">
       <div ref={triggerEl} className="w-full h-[0.1px]"></div>
       <div ref={pinContainer} className="w-full ">
         <div
