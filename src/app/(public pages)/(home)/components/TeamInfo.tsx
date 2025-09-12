@@ -55,7 +55,8 @@ export default function TeamInfo({
           breakpoints={{
             0: {
               slidesPerView: 1.5,
-              spaceBetween: 12,   // less gap for mobile
+              spaceBetween: 14,
+              centeredSlides: false
             },
             640: {
               slidesPerView: 1.5,
@@ -67,18 +68,22 @@ export default function TeamInfo({
             },
             1024: {
               slidesPerView: 3.5,
-              spaceBetween: 20,
+              spaceBetween: 24,
             },
             1280: {
               slidesPerView: 4.5,
-              spaceBetween: 24,
+              spaceBetween: 30,
+            },
+            1620: {
+              slidesPerView: 5.5,
+              spaceBetween: 35,
             },
           }}
           className="w-full"
         >
           {[...teamData, ...teamData, ...teamData].map((item, index) => (
             <SwiperSlide className="my-4 ms-[6.8px] md:ms-0" key={index}>
-              <div className="p-4 flex flex-col gap-6 items-center max-w-[350px] min-h-[450px] justify-center shadow-effect-large rounded-[8px]">
+              <div className="p-4 flex flex-col gap-6 items-center min-h-[450px] justify-center shadow-effect-large rounded-[8px]">
                 <Image
                   className="w-[250px] h-[250px] rounded-full"
                   src={item?.profile}

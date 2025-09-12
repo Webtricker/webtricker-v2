@@ -802,5 +802,5 @@ p.bouncing-text {
 
 /* ===== sidebar active link styles ======= */
 .wt_active-navlink {
-  @apply text-red-500;
+  @apply text-[#aa013f];
 }
