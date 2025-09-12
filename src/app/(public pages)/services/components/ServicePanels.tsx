@@ -1,5 +1,6 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IService } from "@/types/post";
+import { getSlicedText } from "@/utils/slicedText";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -39,14 +40,23 @@ export default async function ServicePanels({
                 <PanelHeader index={index} />
                 <h4 className="mb-2 md:mb-4 lg:mb-6">{item.category}</h4>
                 <div className="w-full flex flex-col items-start xl:ml-10 2xl:ml-12">
-                  <p>{item.excerpt}</p>
+                  <p className="hidden lg:block ">{item.excerpt}</p>
+                  <p className="lg:hidden">{getSlicedText(item.excerpt || '', 300)}</p>
                   {subServices?.length > 0 && (
-                    <ul className="my-2 md:my-4 lg:my-6 list-disc list-inside flex flex-col md:gap-2">
+                    <ul className="my-2 lg:flex md:my-4 lg:my-6 list-disc list-inside hidden flex-col md:gap-2">
                       {item.subServices.map((work, i) => (
                         <li key={work + i}>{work}</li>
                       ))}
                     </ul>
                   )}
+
+                  {subServices?.length > 0 ? (
+                    <ul className="my-2 flex lg:hidden md:my-4 lg:my-6 list-disc list-inside flex-col md:gap-2">
+                      {item.subServices.slice(0,5).map((work, i) => (
+                        <li key={work + (i+5) }>{work}</li>
+                      ))}
+                    </ul>
+                  ) : <></>}
                 </div>
                 <div className="w-full flex items-center justify-between mt-4">
                   <Link

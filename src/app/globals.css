@@ -348,7 +348,7 @@ section {
 }
 
 body {
-  font-family: var(--font-syne), "Roboto", sans-serif;
+  font-family: var(--font-lato), "Roboto", sans-serif;
   background-color: var(--clr-bg-body);
   color: var(--clr-text-body);
 }
@@ -427,7 +427,8 @@ body {
   @apply relative;
 }
 
-.animate-underline::after, .wt_header-navlink::before {
+.animate-underline::after,
+.wt_header-navlink::before {
   content: "";
   transform: scaleX(0);
   background: var(--clr-text-body);
@@ -799,8 +800,7 @@ p.bouncing-text {
   }
 }
 
-
 /* ===== sidebar active link styles ======= */
-.wt_active-navlink{
+.wt_active-navlink {
   @apply text-red-500;
 }

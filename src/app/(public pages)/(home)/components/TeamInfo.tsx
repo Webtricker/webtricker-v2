@@ -52,25 +52,26 @@ export default function TeamInfo({
           navigation={false}
           centeredSlides={true}
           loop={true}
-          //   autoplay={{
-          //     delay: 5000,
-          //     disableOnInteraction: false,
-          //   }}
           breakpoints={{
             0: {
-              slidesPerView: 1,
+              slidesPerView: 1.5,
+              spaceBetween: 12,   // less gap for mobile
             },
             640: {
               slidesPerView: 1.5,
+              spaceBetween: 16,
             },
             768: {
               slidesPerView: 2.5,
+              spaceBetween: 18,
             },
             1024: {
               slidesPerView: 3.5,
+              spaceBetween: 20,
             },
             1280: {
               slidesPerView: 4.5,
+              spaceBetween: 24,
             },
           }}
           className="w-full"

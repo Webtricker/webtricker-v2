@@ -10,9 +10,8 @@ const ServiceCard = ({ service }: { service: IService }) => {
 
   return (
     <div
-      className={`p-4 shadow-md border border-slate-300 rounded-xl rounded-br-none hover:shadow-xl duration-300 ${
-        !showDetails && "max-h-[355px]"
-      }`}
+      className={`p-4 shadow-md border border-slate-300 rounded-xl rounded-br-none hover:shadow-xl duration-300 ${!showDetails && "max-h-[355px]"
+        }`}
       id={service._id}
     >
       <div className="flex items-center gap-4">

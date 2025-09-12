@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/provider/reduxProvider";
 import BodyEventListeners from "@/sharedComponets/DOM/BodyEventListeners";
@@ -7,14 +7,14 @@ import ReactToastifyMessage from "@/sharedComponets/DOM/ReactToastifyMessage";
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimationPlugin";
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
-import { Suspense } from "react";
-import LiveChat from "@/sharedComponets/DOM/LiveChat";
+// import { Suspense } from "react";
+// import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 
-const syne = Syne({
+const lato = Lato({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-syne",
+  weight: ["400", "700"],
+  variable: "--font-lato",
   display: "swap",
 });
 
@@ -94,15 +94,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`z-0 wt_fs-base ${syne.className} ${syne.variable}`}>
+      <body className={`z-0 wt_fs-base ${lato.className} ${lato.variable}`}>
         <ThemeProvider>
           <ReduxProvider>
             {children}
 
             {/* Live chat */}
-            <Suspense fallback={null}>
+            {/* <Suspense fallback={null}>
               <LiveChat></LiveChat>
-            </Suspense>
+            </Suspense> */}
 
             {/* WhatsApp chat */}
             <WhatsAppChat />
