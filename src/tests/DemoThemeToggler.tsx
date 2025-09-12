@@ -9,7 +9,7 @@ export default function DemoThemeToggler() {
       <button
         title="Theme Toggler"
         onClick={() => toggleTheme()}
-        className="pl-2 w-14 h-auto mt-2 active:outline-0 outline-0 focus:outline-0"
+        className="p-2 pr-0 w-14 h-auto mt-2 active:outline-0 outline-0 focus:outline-0"
       >
         {theme === "dark" ? (
           <>

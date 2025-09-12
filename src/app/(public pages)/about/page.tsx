@@ -85,12 +85,12 @@ export default async function AboutPage() {
         className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative bg-[url(https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]`}
       >
         <div className="w-full h-full flex-col flex grow bg-black/40">
-          <Container className="flex max-w-[1000px] pb-1 flex-col justify-center md:justify-end min-h-[700px]  max-h-[900px] h-[95vh] pt-[100px]">
+          <Container className="flex max-w-[1000px] pb-1 flex-col justify-center min-h-[700px]  max-h-[900px] h-[95vh] pt-[100px]">
             <div className="w-full text-white pl-3 lg:pl-4 border-l-2 border-white">
               <h6>{pageData?.bannerIntroText?.top || ""}</h6>
               <h6>{pageData?.bannerIntroText?.bottom || ""}</h6>
             </div>
-            <h1 className="!text-white mt-4 !leading-[90%] max-w-[500px] wt_fs-giant -ml-1 md:-ml-1.5 lg:-ml-2 xl:-ml-2.5 font-semibold tracking-tight">
+            <h1 className="!text-white mt-4 !leading-[90%] max-w-[700px] wt_fs-7xl -ml-1 md:-ml-1.5 lg:-ml-2 xl:-ml-2.5 font-semibold tracking-tight">
               {pageData?.bannerLargeText || ""}
             </h1>
             <p className="!text-white wt_text-shadow max-w-[500px] wt_fs-xl bold mt-5">
