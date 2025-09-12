@@ -56,7 +56,7 @@ export default function PageTransition({
     <>
       <div
         ref={greenOverlayRef}
-        className="fixed inset-0 z-[9999] bg-[#546b27] pointer-events-none"
+        className="fixed inset-0 z-[99999] bg-[#546b27] pointer-events-none"
       />
 
       <div
