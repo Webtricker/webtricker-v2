@@ -240,3 +240,8 @@ export interface IContactPage {
   contactMails: TEmail;
   googleMap: TGoogleMap;
 }
+
+
+// export interface IPolicyPage {
+
+// }

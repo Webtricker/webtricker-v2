@@ -41,14 +41,14 @@ export default async function Services({
               </div>
               <ServiceButtons serviceData={serviceData} />
               <LinkButton
-                className="mt-5 w-full text-center"
+                className="mt-5 w-full text-center !bg-black dark:!bg-white dark:!text-black !text-white lg:!bg-transparent dark:lg:!text-[unset] dark:lg:!bg-transparent lg:!text-[unset]"
                 label={allServiceTxt || "See All Services"}
                 href="/services"
               />
             </div>
           </div>
           {/* services info */}
-          <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-6 md:max-w-[800px]">
+          <div className="w-full grid grid-cols-1 xl:grid-cols-2 gap-6 md:max-w-[1000px]">
             {(serviceData as IService[]).map((service) => (
               <ServiceCard key={service._id} service={service} />
             ))}
