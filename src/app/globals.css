@@ -371,12 +371,14 @@ body {
 
 /* Ripple Wrapper */
 .wt_btn_cta-ripple {
-  @apply absolute top-0 left-0 right-0 bottom-0 z-[1] bg-black dark:bg-white;
+  /* @apply absolute top-0 left-0 right-0 bottom-0 z-[1] bg-black dark:bg-white; */
+  @apply absolute top-0 left-0 right-0 bottom-0 z-[1];
   border-radius: inherit;
   transform: translateY(101%);
   border-radius: 50% 50% 0 0;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1),
     border-radius 0.5s cubic-bezier(0.4, 0, 0, 1);
+  background-color: var(--clr-danger);
 }
 
 /* Title Wrapper */
@@ -391,11 +393,12 @@ body {
 
 .wt_btn_cta-title span:after {
   content: attr(data-text);
-  @apply absolute block top-[110%] w-full left-0 text-white dark:text-black;
+  /* @apply absolute block top-[110%] w-full left-0 text-white dark:text-black; */
+  @apply absolute block top-[110%] w-full left-0 text-white;
 }
-.dark .wt_btn_cta-title span:after {
+/* .dark .wt_btn_cta-title span:after {
   color: black !important;
-}
+} */
 
 /* Hover Effects */
 .wt_btn_cta:hover {

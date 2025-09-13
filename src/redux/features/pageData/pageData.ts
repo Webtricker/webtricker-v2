@@ -93,6 +93,36 @@ export const pageApi = createApi({
             })
         }),
 
+        // ===== Terms and Condition Page Endpoints =====
+        getTermsAndConditionPageData: builder.query({
+            query: () => ({
+                url: "/terms-and-conditions"
+            })
+        }),
+
+        updateTermsAndConditionPageData: builder.mutation({
+            query: (data) => ({
+                url: `/terms-and-conditions`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
+        // ===== Terms and Condition Page Endpoints =====
+        getPrivacyPolicyPageData: builder.query({
+            query: () => ({
+                url: "/privacy-policy-page"
+            })
+        }),
+
+        updatePrivacyPolicyPageData: builder.mutation({
+            query: (data) => ({
+                url: `/privacy-policy-page`,
+                method: "PUT",
+                body: data,
+            })
+        }),
+
     })
 })
 
@@ -118,5 +148,13 @@ export const {
 
     // ===== Contact Page Endpoints =====
     useGetContactPageDataQuery,
-    useUpdateContactPageDataMutation
+    useUpdateContactPageDataMutation,
+
+    // ===== terms-and-conditions page Endpoint ========
+    useGetTermsAndConditionPageDataQuery,
+    useUpdateTermsAndConditionPageDataMutation,
+
+    // ===== Privacy policy page Endpoint ========
+    useGetPrivacyPolicyPageDataQuery,
+    useUpdatePrivacyPolicyPageDataMutation,
 } = pageApi;

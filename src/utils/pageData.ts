@@ -347,3 +347,33 @@ export const getPortfolioTechnology = async (id: string) => {
     return {};
   }
 };
+
+export const getTermsAndConditionPageData = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/terms-and-conditions`);
+    if (!res.ok) {
+      console.error("Failed to fetch terms and condition data");
+      return {};
+    }
+    const result = await res.json();
+    return result?.data || {};
+  } catch (error) {
+    console.error("Error fetching terms and condition data:", error);
+    return {};
+  }
+};
+
+export const getPrivacyPolicyPageData = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/privacy-policy-page`);
+    if (!res.ok) {
+      console.error("Failed to fetch privacy policy page data");
+      return {};
+    }
+    const result = await res.json();
+    return result?.data || {};
+  } catch (error) {
+    console.error("Error fetching privacy policy page data:", error);
+    return {};
+  }
+};
