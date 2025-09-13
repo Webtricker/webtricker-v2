@@ -28,7 +28,7 @@ export default async function Footer() {
   const contactPageData = (await getContactPageData()) as IContactPage;
 
   return (
-    <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative">
+    <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative bg-[#141623]">
       <div className="absolute inset-0 w-full h-full z-10">
         <Image
           src={footerBg?.src}
@@ -38,7 +38,7 @@ export default async function Footer() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-full bg-[#141623] py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 text-slate-200">
+      <div className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 text-slate-200 z-40 relative">
         <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-6 lg:gap-8 2xl:gap-16">
           <div className="w-full md:mt-[-4px]">
             <Link className="flex items-center gap-1 bold" href="/">
