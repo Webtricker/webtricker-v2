@@ -71,7 +71,7 @@ export default function ContactForm({
         </label>
         <input
           data-wt-hide-cursor
-          className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
+          className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-400"
           id="contactName"
           type="text"
           placeholder={fetchedFormData?.name?.placeholder}
@@ -88,7 +88,7 @@ export default function ContactForm({
         <label htmlFor="contactEmail">{fetchedFormData?.email?.label}</label>
         <input
           data-wt-hide-cursor
-          className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
+          className="cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-400"
           type="text"
           id="contactEmail"
           placeholder={fetchedFormData?.email?.placeholder}
@@ -115,7 +115,7 @@ export default function ContactForm({
           data-wt-hide-cursor
           id="contactMessage"
           placeholder={fetchedFormData?.message?.placeholder}
-          className="cursor-hide min-h-[100px] block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-700"
+          className="cursor-hide min-h-[100px] block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-400"
           {...register("message", { required: "Message is required" })}
         ></textarea>
         {errors?.message ? (

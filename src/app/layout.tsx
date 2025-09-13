@@ -94,7 +94,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`z-0 wt_fs-base ${lato.className} ${lato.variable}`}>
+      <body
+        className={`z-0 wt_fs-base ${lato.className} ${lato.variable} antialiased`}
+      >
         <ThemeProvider>
           <ReduxProvider>
             {children}

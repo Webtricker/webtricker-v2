@@ -42,7 +42,7 @@ const TechnologyCard = ({ technology }: { technology: ITechnology }) => {
     }
   };
   return (
-    <div className="w-auto min-w-[200px] flex gap-5 justify-between items-center py-3 px-5 bg-slate-100 rounded-[6px]">
+    <div className="w-auto min-w-[200px] flex gap-5 justify-between items-center py-3 px-5 bg-slate-100 rounded-[6px] dark:bg-slate-800">
       <h6 className="mb-2">{technology.name}</h6>
 
       {isLoading ? (
