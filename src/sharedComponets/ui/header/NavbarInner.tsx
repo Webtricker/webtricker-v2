@@ -30,7 +30,7 @@ export default async function NavbarInner() {
             {mainHeaderData?.links &&
               mainHeaderData?.links.map(({ href, label }) => (
                 <Link
-                  className="wt_header-navlink heading uppercase cursor-pointer"
+                  className="wt_header-navlink heading capitalize cursor-pointer"
                   key={label}
                   href={href}
                 >
