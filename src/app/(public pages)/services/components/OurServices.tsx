@@ -5,6 +5,7 @@ import { IService } from "@/types/post";
 import { getSlicedText } from "@/utils/slicedText";
 import { IServicesPage } from "@/types/pageTypes";
 import arrowIcon from "@/assets/images/home/zigzag-arrow.svg";
+import arrowIconWhite from "@/assets/images/home/zigzag-arrow-white.svg";
 
 type Props = {
   servicesShotcut: IServicesPage["servicesShotcut"];
@@ -46,7 +47,14 @@ export default function OurServices({ services = [], servicesShotcut }: Props) {
             width={400}
             height={800}
             alt="Arrow"
-            className="me-[2%] hidden 2xl:block"
+            className="me-[2%] hidden not-dark:2xl:block"
+          />
+          <Image
+            src={arrowIconWhite}
+            width={400}
+            height={800}
+            alt="Arrow"
+            className="me-[2%] hidden dark:2xl:block"
           />
           <div className="max-w-[1200px] grid grid-cols-1 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-10 ml-auto w-full mt-10 md:mt-12 lg:mt-14 2xl:mt-18">
             {services?.map((service) => (
