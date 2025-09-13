@@ -1,7 +1,9 @@
+"use client";
 import { trimText } from "@/utils/blog";
 import { formatDateToShortString } from "@/utils/date";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React, { ReactNode } from "react";
 
 type Props = {
@@ -22,9 +24,10 @@ export default function BlogCardWrapper({
   children,
   slug,
 }: Props) {
+  const isDashboard = usePathname()?.includes("settings");
   return (
     <Link
-      href={`/blog/${slug}`}
+      href={isDashboard ? `/settings/blogs/${slug}` : `/blog/${slug}`}
       className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px] lg:hover:shadow-xl shadow-md"
     >
       <div className="w-full h-[230px]">
