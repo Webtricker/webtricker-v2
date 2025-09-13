@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { IHomePage } from "@/types/pageTypes";
+import Image from "next/image";
 
 export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
   const pinContainer = useRef<HTMLDivElement | null>(null);
@@ -38,13 +39,20 @@ export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
           ref={targetEl}
           className="w-full rounded-t-[16px] z-0 max-w-[35vw] overflow-hidden mx-auto"
         >
+          <Image
+            width={270}
+            height={160}
+            decoding="async"
+            className={`${homeData?.introVideo?.type === "image" ? "block " : 'hidden '} h-screen max-h-screen w-full object-cover`}
+            src={homeData?.introVideo?.src || ""}
+            alt="Intro image"
+          />
           <video
             autoPlay
             muted
             loop
-            preload="metadata"
-            className="h-screen w-full object-cover"
-            src={homeData.introVideo}
+            className={`${homeData?.introVideo?.type === "video" ? "block " : 'hidden '} h-screen max-h-screen w-full object-cover`}
+            src={homeData?.introVideo?.src}
           ></video>
         </div>
       </div>
