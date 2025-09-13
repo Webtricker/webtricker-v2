@@ -120,7 +120,14 @@ export default async function ContactPage() {
                   alt={contactPageData?.address?.title}
                   width={24}
                   height={24}
-                  className="min-w-5 w-6"
+                  className="min-w-5 w-6 block dark:hidden"
+                />
+                <Image
+                  src={contactPageData?.address?.iconWhite}
+                  alt={contactPageData?.address?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6 hidden dark:block"
                 />
                 <div className="grow not-italic">
                   <h6 className="heading mb-1">
@@ -139,7 +146,14 @@ export default async function ContactPage() {
                   alt={contactPageData?.contactNumber?.title}
                   width={24}
                   height={24}
-                  className="min-w-5 w-6 mt-1"
+                  className="min-w-5 w-6 mt-1 block dark:hidden"
+                />
+                <Image
+                  src={contactPageData?.contactNumber?.iconWhite}
+                  alt={contactPageData?.contactNumber?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6 mt-1 hidden dark:block"
                 />
                 <div className="grow">
                   <h6 className="heading mb-1">
@@ -162,7 +176,14 @@ export default async function ContactPage() {
                   alt={contactPageData?.contactMails?.title}
                   width={24}
                   height={24}
-                  className="min-w-5 w-6 mt-1"
+                  className="min-w-5 w-6 mt-1 block dark:hidden"
+                />
+                <Image
+                  src={contactPageData?.contactMails?.iconWhite}
+                  alt={contactPageData?.contactMails?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6 mt-1 hidden dark:block"
                 />
                 <div className="grow flex flex-col">
                   <h6 className="heading mb-1">
