@@ -20,7 +20,7 @@ export interface IHomePage {
 
   //   intro section
   introVideo: { type: "video" | "image"; src: string };
-  
+
   // clients section
   clientSectionSubtitle: string;
   clientsBanners: string[];
@@ -242,6 +242,8 @@ export interface IContactPage {
 }
 
 
-// export interface IPolicyPage {
-
-// }
+export interface IPolicyPage {
+  title: string;
+  description: string;
+  content: string;
+}

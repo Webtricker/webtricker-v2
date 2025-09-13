@@ -23,10 +23,12 @@ export const settingsLinks: TLink[] = [
   { label: "Post Categories", href: "/settings/post-categories" },
   { label: "Portfolios", href: "/settings/portfolios" },
   { label: "Portfolio Technologies", href: "/settings/portfolio-technologies" },
+  { label: "Privacy Policy", href: "/settings/privacy-policy" },
   { label: "Contact", href: "/settings/contact" },
   { label: "Leaders", href: "/settings/leader" },
   { label: "Teams", href: "/settings/teams" },
   { label: "Testimonials", href: "/settings/testimonials" },
+  { label: "Terms & Conditions", href: "/settings/terms-and-conditions" },
   {
     label: "Footer",
     href: "/settings/footer",
