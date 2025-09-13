@@ -19,8 +19,8 @@ export interface IHomePage {
   testimonialsBg: string;
 
   //   intro section
-  introVideo: string;
-
+  introVideo: { type: "video" | "image"; src: string };
+  
   // clients section
   clientSectionSubtitle: string;
   clientsBanners: string[];
@@ -240,3 +240,8 @@ export interface IContactPage {
   contactMails: TEmail;
   googleMap: TGoogleMap;
 }
+
+
+// export interface IPolicyPage {
+
+// }

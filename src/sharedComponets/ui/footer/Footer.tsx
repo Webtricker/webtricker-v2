@@ -56,7 +56,7 @@ export default async function Footer() {
             <h5 className="font-semibold">{footerData?.pages?.title || ""}</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.pages?.links &&
-              (footerData?.pages?.links as IFooter["pages"]["links"]).length >
+                (footerData?.pages?.links as IFooter["pages"]["links"]).length >
                 0 ? (
                 (footerData?.pages?.links as IFooter["pages"]["links"]).map(
                   (link) => (
@@ -81,29 +81,29 @@ export default async function Footer() {
             </h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.services?.links &&
-              (footerData?.services?.links as IFooter["services"]["links"])
-                .length > 0
+                (footerData?.services?.links as IFooter["services"]["links"])
+                  .length > 0
                 ? (
-                    footerData?.services?.links as IFooter["services"]["links"]
-                  ).map((link) => (
-                    <Link
-                      key={link?.href}
-                      href={link?.href || ""}
-                      target={link?.isExternal ? "_blank" : "_self"}
-                      className="animate-underline"
-                    >
-                      {link?.label || ""}
-                    </Link>
-                  ))
+                  footerData?.services?.links as IFooter["services"]["links"]
+                ).map((link) => (
+                  <Link
+                    key={link?.href}
+                    href={link?.href || ""}
+                    target={link?.isExternal ? "_blank" : "_self"}
+                    className="animate-underline"
+                  >
+                    {link?.label || ""}
+                  </Link>
+                ))
                 : servicesLinks.map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      className="animate-underline"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="animate-underline"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
             </div>
           </div>
           <div className="w-full">
@@ -112,10 +112,10 @@ export default async function Footer() {
             </h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
               {footerData?.socialLinks?.links &&
-              (
-                footerData?.socialLinks
-                  ?.links as IFooter["socialLinks"]["links"]
-              ).length > 0 ? (
+                (
+                  footerData?.socialLinks
+                    ?.links as IFooter["socialLinks"]["links"]
+                ).length > 0 ? (
                 footerData?.socialLinks?.links.map((item) => (
                   <Link
                     key={item.href}
