@@ -27,7 +27,10 @@ const homePageSchema = new Schema<IHomePage>(
             src: { type: String, required: true },
         },
         bannerDescription: { type: String, required: true },
-        introVideo: { type: String, required: true },
+        introVideo: {
+            type: { type: String, enum: ['video', 'image'], required: true },
+            src: { type: String, required: true },
+        },
         clientSectionSubtitle: { type: String, required: true },
         clientsBanners: { type: [String], required: true },
         testimonialsBg: { type: String, required: true },
