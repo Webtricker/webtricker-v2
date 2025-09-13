@@ -20,7 +20,7 @@ export default async function NavbarInner() {
   return (
     <>
       <TopBar info={topBarInfo} />
-      <Container>
+      <Container >
         <div className="w-full flex items-center justify-center">
           <SiteLogo>
             <SiteLogoLong logos={mainHeaderData?.logo} />

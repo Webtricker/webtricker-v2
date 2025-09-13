@@ -37,7 +37,7 @@ const ServiceCard = ({ service }: { service: IService }) => {
           <div className="mt-2 flex items-center gap-1">
             <p className="!text-base">Case study:</p>
             <Link href={`/services/${service.slug}`}>
-              <button className="underline text-[14px] hover:text-green-500 flex items-center gap-1 duration-300">
+              <button className="underline text-[14px] hover:text-[var(--clr-danger)] flex items-center gap-1 duration-300">
                 {service.title} <ArrowUpRightIcon />
               </button>
             </Link>
