@@ -28,7 +28,7 @@ export default function BlogCardWrapper({
   return (
     <Link
       href={isDashboard ? `/settings/blogs/${slug}` : `/blog/${slug}`}
-      className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px] lg:hover:shadow-xl shadow-md"
+      className="relative duration-200 flex flex-col lg:duration-500 lg:hover:scale-[1.02] overflow-hidden w-full rounded-[10px] border border-slate-300 hover:border-slate-400 dark:border-slate-600 min-h-[500px] lg:hover:shadow-xl shadow-md dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 shadow-slate-300 hover:shadow"
     >
       <div className="w-full h-[230px]">
         <Image
