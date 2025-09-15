@@ -7,7 +7,7 @@ import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IServicesPage } from "@/types/pageTypes";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import BannerBackground from "./BannerBackground";
@@ -21,17 +21,24 @@ const serviceShotcutDes =
   "We strongly believe that only design reinforced by strategy can provide real results.";
 
 export default function ServicePageForm() {
-  const { register, setValue, handleSubmit } = useForm<IServicesPage>();
+  const { register, setValue, reset, handleSubmit } = useForm<IServicesPage>();
   const { data, isLoading } = useGetServicesPageDataQuery({});
   const servicePageData = data?.data || ({} as IServicesPage);
-  //  background image change key
 
   const [updateServicePage, { isLoading: loading }] =
     useUpdateServicesPageDataMutation();
 
+
+  useEffect(() => {
+    if (data?.data) {
+      reset(data?.data);
+    }
+  }, [data?.data, reset]);
+
   // handlers
   const onSubmit = async (updateData: IServicesPage) => {
     try {
+
       const res = await updateServicePage({
         id: servicePageData?._id,
         data: updateData,
