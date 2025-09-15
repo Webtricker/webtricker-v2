@@ -18,7 +18,7 @@ jobs:
           username: root
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/webtricker-v2.0
+            cd /home/webtricker-v2
             git fetch --all
             git reset --hard origin/main
             pnpm install
