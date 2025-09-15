@@ -77,7 +77,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
             {homeData?.bannerDescription || ""}
             <Link
               href="/contact"
-              className="btn-line-effect !inline-flex gap-1.5 items-center dark:!bg-transparent dark:!text-white"
+              className="btn-line-effect !inline-flex gap-1.5 items-center dark:!bg-transparent !text-[#aa013f]"
             >
               <span>Let’s talk</span>
               <ArrowUpRightIcon />

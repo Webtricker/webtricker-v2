@@ -41,7 +41,9 @@ export default async function ServicePanels({
                 <h4 className="mb-2 md:mb-4 lg:mb-6">{item.category}</h4>
                 <div className="w-full flex flex-col items-start xl:ml-10 2xl:ml-12">
                   <p className="hidden lg:block ">{item.excerpt}</p>
-                  <p className="lg:hidden">{getSlicedText(item.excerpt || '', 300)}</p>
+                  <p className="lg:hidden">
+                    {getSlicedText(item.excerpt || "", 300)}
+                  </p>
                   {subServices?.length > 0 && (
                     <ul className="my-2 lg:flex md:my-4 lg:my-6 list-disc list-inside hidden flex-col md:gap-2">
                       {item.subServices.map((work, i) => (
@@ -52,16 +54,18 @@ export default async function ServicePanels({
 
                   {subServices?.length > 0 ? (
                     <ul className="my-2 flex lg:hidden md:my-4 lg:my-6 list-disc list-inside flex-col md:gap-2">
-                      {item.subServices.slice(0,5).map((work, i) => (
-                        <li key={work + (i+5) }>{work}</li>
+                      {item.subServices.slice(0, 5).map((work, i) => (
+                        <li key={work + (i + 5)}>{work}</li>
                       ))}
                     </ul>
-                  ) : <></>}
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 <div className="w-full flex items-center justify-between mt-4">
                   <Link
                     href={`/services/${item.slug}`}
-                    className="duration-200 text-blue-500 hover:underline"
+                    className="duration-200 text-[#aa013f] hover:underline"
                   >
                     Want to know more about {item.category}?
                   </Link>

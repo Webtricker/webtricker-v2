@@ -145,7 +145,7 @@ export default async function PortfolioDetailsPage({
           <a
             href={portfolio?.liveLink}
             target="_blank"
-            className="text-blue-500 font-normal flex items-center gap-1 hover:underline"
+            className="text-[#aa013f] font-normal flex items-center gap-1 hover:underline"
           >
             {portfolio?.liveLink} <ArrowUpRightIcon />
           </a>
