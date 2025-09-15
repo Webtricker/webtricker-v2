@@ -5,7 +5,7 @@ import CategoryBlog from './CategoryBlog';
 const getCategories = async (): Promise<TCategory[]> => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
-      next: { revalidate: 1800 }, // revalidate in every 30 minutes
+      next: { revalidate: 120 }, // revalidate in every 30 minutes
     });
 
     if (!res.ok) {
