@@ -128,7 +128,7 @@ export default function CursorDot() {
       });
     } else {
       gsap.to(ball, {
-        duration: 0.3, 
+        duration: 0.3,
         width: ballSize,
         height: ballSize,
         ease: "power2.out",
@@ -140,13 +140,18 @@ export default function CursorDot() {
     <div
       id="magic-cursor"
       ref={ballRef}
-      className={`duration-75 fixed pointer-events-none top-0 left-0 rounded-full z-[999999] ease-linear ${
-        text ? "flex items-center justify-center p-4 !bg-white" : "!bg-black dark:!bg-white"
+      className={`duration-75 fixed pointer-events-none top-0 left-0 rounded-full z-[999999] ease-linear hidden xl:block ${
+        text
+          ? "flex items-center justify-center p-4 !bg-white"
+          : "!bg-black dark:!bg-white"
       }`}
     >
       {text && (
         <div className="overflow-hidden min-w-full min-h-full flex items-center justify-center ">
-          <span style={{fontSize:'14px'}} className="!text-black text-center !leading-[120%]">
+          <span
+            style={{ fontSize: "14px" }}
+            className="!text-black text-center !leading-[120%]"
+          >
             {text}
           </span>
         </div>
