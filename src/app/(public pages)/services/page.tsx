@@ -11,7 +11,7 @@ export async function generateMetadata() {
   const data = await getServicesData();
   const titles = data?.map((service: { title: string }) => service.title) ?? [];
 
-  const metaTitle = "Our Services | Webtricker";
+  const metaTitle = "Our Services";
   const metaDescription =
     "Discover the full range of professional web design, development, and digital services we offer at Webtricker.";
 

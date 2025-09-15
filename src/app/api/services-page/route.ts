@@ -1,5 +1,5 @@
 import connectToDatabase from "@/lib/dbConnect";
-import PolicyPage from "@/models/PrivacyPolicyPage";
+import ServicePage from "@/models/ServicePage";
 import { verifyAdmin } from "@/utils/validator";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -21,10 +21,10 @@ export const PUT = async (req: NextRequest) => {
         }
 
         // Use the _id from the data object to find and update
-        const policyPage = await PolicyPage.create(data);
+        const servicePageData = await ServicePage.findByIdAndUpdate(id, data);
 
         // If no document was found with that ID, handle the case
-        if (!policyPage) {
+        if (!servicePageData) {
             return NextResponse.json(
                 { success: false, error: true, message: "Document not found" },
                 { status: 404 }
@@ -32,7 +32,7 @@ export const PUT = async (req: NextRequest) => {
         }
 
         return NextResponse.json(
-            { success: true, message: "Data updated", data: policyPage },
+            { success: true, message: "Data updated", data: servicePageData },
             { status: 200 }
         );
     } catch (error: any) {
@@ -48,7 +48,7 @@ export const GET = async () => {
     try {
         await connectToDatabase();
 
-        const data = await PolicyPage.findOne().lean();
+        const data = await ServicePage.findOne().lean();
 
         return NextResponse.json(
             {
@@ -58,7 +58,7 @@ export const GET = async () => {
             { status: 200 }
         );
     } catch (error) {
-        console.error('Error fetching policy page data.', error);
+        console.error('Error service page data.', error);
         return NextResponse.json(
             { success: false, message: 'Internal Server Error' },
             { status: 500 }

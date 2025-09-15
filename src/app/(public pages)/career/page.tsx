@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import careerBg from "@/assets/images/career/careerBg.jpg";
 import CareerCard from "./components/CareerCard";
+import { Metadata } from "next";
 
 export type Vacancy = {
   id: number;
@@ -13,6 +14,13 @@ export type Vacancy = {
 export type CompanyInfo = {
   id: number;
   description: string;
+};
+
+
+export const metadata: Metadata = {
+  title: "Build Your Career with Webtricker",
+  description:
+    "Join our team: Explore career opportunities with our responsive web design agency."
 };
 
 function careerPage() {

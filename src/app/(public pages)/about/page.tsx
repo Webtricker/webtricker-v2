@@ -21,7 +21,7 @@ import { IAboutPage } from "@/types/pageTypes";
 export const revalidate = 120; // page rebuild in every 2 min
 
 export const metadata: Metadata = {
-  title: "About Webtricker: Our Mission and Vision | Webtricker",
+  title: "About Webtricker: Our Mission and Vision",
   description:
     "Discover Webtricker’s mission and vision. We are a responsive web design & development agency creating user-friendly, modern, and SEO-optimized websites.",
   keywords: [

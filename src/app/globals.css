@@ -351,6 +351,17 @@ body {
   font-family: var(--font-lato), "Roboto", sans-serif;
   background-color: var(--clr-bg-body);
   color: var(--clr-text-body);
+
+  /* For WebKit browsers (Chrome, Safari) */
+  -webkit-font-smoothing: antialiased; /* Smooth thin look */
+  -webkit-font-smoothing: subpixel-antialiased; /* Default */
+
+  /* For macOS (Firefox only) */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Text rendering hints */
+  text-rendering: auto; /* default */
+  text-rendering: optimizeLegibility; /* better kerning & ligatures */
 }
 
 .dark body {

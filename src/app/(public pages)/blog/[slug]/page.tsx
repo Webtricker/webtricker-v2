@@ -81,7 +81,7 @@ export async function generateMetadata({
 
   const post = data.post as IBlog;
   return {
-    title: `${post.title} | Webtricker`,
+    title: `${post.title}`,
     description: post.description,
     keywords: [post?.category?.name || 'Article'],
     authors: [{ name: "Webtricker Team" }],

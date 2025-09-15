@@ -12,9 +12,9 @@ import { IContactPage } from "@/types/pageTypes";
 export const revalidate = 120; // page rebuild in every 2 min
 
 export const metadata: Metadata = {
-  title: "Contact | Webtricker",
+  title: "Talk to Us: Contact Webtricker Today",
   description:
-    "Get in touch with Webtricker — a responsive web design & development agency. Reach out for project inquiries, collaborations, or support.",
+    "Connect with us: Reach out to our responsive web design agency for inquiries and collaborations.",
   keywords: [
     "contact Webtricker",
     "web design agency contact",

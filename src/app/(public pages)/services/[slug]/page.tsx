@@ -74,14 +74,14 @@ export async function generateMetadata({
 
   if (!data?.service) {
     return {
-      title: "Service Not Found | Webtricker",
+      title: "Service Not Found",
       description: "The service you are looking for does not exist.",
     };
   }
 
   const service = data.service as IService;
 
-  const metaTitle = `${service.title} | Webtricker Services`;
+  const metaTitle = `${service.title} | Services`;
   const metaDescription =
     service.description ||
     `Learn more about our ${service.title} service at Webtricker.`;

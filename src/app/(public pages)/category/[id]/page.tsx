@@ -23,7 +23,7 @@ export async function generateMetadata({
   const categoryName = data?.category?.name;
 
   return {
-    title: `${categoryName} | Webtricker`,
+    title: `${categoryName}`,
     description: `Explore our blog posts about ${categoryName}.`,
     keywords: [categoryName, "Webtricker blog", "web design", "web development"],
 
