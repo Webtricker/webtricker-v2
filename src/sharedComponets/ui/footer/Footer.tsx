@@ -26,6 +26,7 @@ export default async function Footer() {
   // footer data
   const footerData = (await getPublicFooterData()) as IFooter;
   const contactPageData = (await getContactPageData()) as IContactPage;
+  const currentYear = new Date().getFullYear().toString();
 
   return (
     <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative bg-[#141623]">
@@ -38,7 +39,7 @@ export default async function Footer() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 text-slate-200 z-40 relative">
+      <div className="w-full pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18 text-slate-200 z-40 relative">
         <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-6 lg:gap-8 2xl:gap-16">
           <div className="w-full md:mt-[-4px]">
             <Link className="flex items-center gap-1 bold" href="/">
@@ -56,7 +57,7 @@ export default async function Footer() {
             <h5 className="font-semibold">{footerData?.pages?.title || ""}</h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.pages?.links &&
-                (footerData?.pages?.links as IFooter["pages"]["links"]).length >
+              (footerData?.pages?.links as IFooter["pages"]["links"]).length >
                 0 ? (
                 (footerData?.pages?.links as IFooter["pages"]["links"]).map(
                   (link) => (
@@ -81,29 +82,29 @@ export default async function Footer() {
             </h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.services?.links &&
-                (footerData?.services?.links as IFooter["services"]["links"])
-                  .length > 0
+              (footerData?.services?.links as IFooter["services"]["links"])
+                .length > 0
                 ? (
-                  footerData?.services?.links as IFooter["services"]["links"]
-                ).map((link) => (
-                  <Link
-                    key={link?.href}
-                    href={link?.href || ""}
-                    target={link?.isExternal ? "_blank" : "_self"}
-                    className="animate-underline"
-                  >
-                    {link?.label || ""}
-                  </Link>
-                ))
+                    footerData?.services?.links as IFooter["services"]["links"]
+                  ).map((link) => (
+                    <Link
+                      key={link?.href}
+                      href={link?.href || ""}
+                      target={link?.isExternal ? "_blank" : "_self"}
+                      className="animate-underline"
+                    >
+                      {link?.label || ""}
+                    </Link>
+                  ))
                 : servicesLinks.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="animate-underline"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="animate-underline"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
             </div>
           </div>
           <div className="w-full">
@@ -112,10 +113,10 @@ export default async function Footer() {
             </h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
               {footerData?.socialLinks?.links &&
-                (
-                  footerData?.socialLinks
-                    ?.links as IFooter["socialLinks"]["links"]
-                ).length > 0 ? (
+              (
+                footerData?.socialLinks
+                  ?.links as IFooter["socialLinks"]["links"]
+              ).length > 0 ? (
                 footerData?.socialLinks?.links.map((item) => (
                   <Link
                     key={item.href}
@@ -249,10 +250,16 @@ export default async function Footer() {
             />
           </div>
         </Container>
-        <div className="w-full h-[1px] bg-slate-400/40 dark:bg-slate-800"></div>
-        <Container className="text-center mt-5 lg:mt-10">
-          <p>{footerData?.copyrightTxt || ""}</p>
-        </Container>
+        <section className="!bg-black">
+          <Container className="py-2">
+            <p>
+              {footerData?.copyrightTxt?.includes("Dynamic")
+                ? footerData?.copyrightTxt?.replace("Dynamic", currentYear) ||
+                  ""
+                : footerData?.copyrightTxt || ""}
+            </p>
+          </Container>
+        </section>
       </div>
     </footer>
   );
