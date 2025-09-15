@@ -251,13 +251,25 @@ export default async function Footer() {
           </div>
         </Container>
         <section className="!bg-black">
-          <Container className="py-2">
+          <Container className="py-2 flex flex-col lg:flex-row justify-between gap-2 items-center text-center lg:text-left">
             <p>
               {footerData?.copyrightTxt?.includes("Dynamic")
                 ? footerData?.copyrightTxt?.replace("Dynamic", currentYear) ||
                   ""
                 : footerData?.copyrightTxt || ""}
             </p>
+            <div className="flex gap-2 items-center">
+              <Link href={"/privacy-policy"} className="animate-underline">
+                Privacy {"&"} Policy
+              </Link>
+              <span>|</span>
+              <Link
+                href={"/terms-and-conditions"}
+                className="animate-underline"
+              >
+                Terms {"&"} Condition
+              </Link>
+            </div>
           </Container>
         </section>
       </div>
