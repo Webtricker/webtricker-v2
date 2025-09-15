@@ -13,7 +13,7 @@ export async function generateMetadata() {
   // flatten technology names into keyword array
   const techKeywords = technologiesData.map((tech: { name: string }) => tech.name);
 
-  const title = "Webtricker - Our Portfolio";
+  const title = "Our Portfolios";
   const description =
     "Explore our portfolio showcasing the latest and greatest projects from Webtricker Studio.";
   const ogImageUrl = shortLogo.src;

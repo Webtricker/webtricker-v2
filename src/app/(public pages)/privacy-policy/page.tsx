@@ -4,8 +4,15 @@ import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import BlogPageContainer from "@/sharedComponets/ui/wrapper/BlogPageContainer";
 import { getPrivacyPolicyPageData } from "@/utils/pageData";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
+import { Metadata } from "next";
 
 export const revalidate = 120;  // page rebuild in every 2 min
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Privacy Policy Description page. this is the main page where will show all Privacy Policy information",
+};
 
 // Main component for the single blog page
 export default async function PrivacyPolicyPage() {

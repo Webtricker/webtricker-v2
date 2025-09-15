@@ -11,7 +11,7 @@ export const revalidate = 120; // page rebuild in every 2 min
 import shortLogo from "@/assets/images/home/webtricker-w.png"; // optional OG image
 
 export const metadata: Metadata = {
-  title: "Explore Our Blog: Ideas and Inspiration | Webtricker",
+  title: "Explore Our Blog: Ideas and Inspiration",
   description:
     "Read Webtricker’s blog for insights on responsive web design, UI/UX design, website optimization, and digital strategies.",
 

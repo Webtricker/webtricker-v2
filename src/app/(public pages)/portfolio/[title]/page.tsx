@@ -78,7 +78,7 @@ export async function generateMetadata({
 
   const portfolio = result?.portfolio as TPortfolio;
 
-  const metaTitle = `${portfolio?.title} | Webtricker Portfolio`;
+  const metaTitle = `${portfolio?.title} | Portfolios`;
   const metaDescription =
     portfolio?.description ||
     `Explore details about ${portfolio.title}, a project from Webtricker Studio.`;

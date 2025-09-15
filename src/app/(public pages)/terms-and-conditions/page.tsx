@@ -4,8 +4,16 @@ import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import BlogPageContainer from "@/sharedComponets/ui/wrapper/BlogPageContainer";
 import { getTermsAndConditionPageData } from "@/utils/pageData";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
+import { Metadata } from "next";
 
 export const revalidate = 120;  // page rebuild in every 2 min
+
+
+export const metadata: Metadata = {
+    title: "Terms and Conditions",
+    description:
+        "Terms and Conditions Description page. this is the main page where will show all Terms and Conditions information",
+};
 
 // Main component for the single blog page
 export default async function TermsAndConditionPage() {

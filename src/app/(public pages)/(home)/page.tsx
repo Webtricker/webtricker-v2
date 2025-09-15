@@ -19,8 +19,27 @@ import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
+import { Metadata } from "next";
 
 export const revalidate = 120;  // page rebuild in every 2 min
+
+export const metadata: Metadata = {
+  title: "Expert Web Design & Digital Services | Home",
+  description:
+    "We are Webtricker, specializing in responsive web design and development. Delivering pixel-perfect, high-quality websites for our valued clients.",
+  keywords: [
+    "Expert Web Design & Digital Services",
+    "web development company",
+    "pixel-perfect  websites",
+    "Best web development services",
+    "Best web design services in bangladesh",
+    "Best bangladeshi web development company",
+  ],
+  openGraph: {
+    description:
+      "Get premium responsive web design for a stunning, seamless website on all devices.",
+  },
+};
 
 export default async function Home() {
   const teamData = await getTeamData();
