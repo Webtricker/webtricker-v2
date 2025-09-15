@@ -135,9 +135,9 @@ export default function PortfolioSlider({
         </div>
 
         <Container>
-          <div className="w-full flex items-center justify-center lg:justify-start pb-1">
+          <div className="w-full flex items-center justify-center pt-5 pb-8 md:pb-10">
             <LinkButton
-              className=""
+              className="lg:min-w-[484px] text-center"
               label={linkText || "View All Projects"}
               href="/portfolio"
             />
