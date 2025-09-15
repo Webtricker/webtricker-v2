@@ -2,6 +2,7 @@
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 import BlogPageContainer from "@/sharedComponets/ui/wrapper/BlogPageContainer";
+import NotPageFound from "@/sharedComponets/ui/wrapper/NotPageFound";
 import { TPortfolio } from "@/types/portfolio";
 import Image from "next/image";
 import React from "react";
@@ -128,12 +129,7 @@ export default async function PortfolioDetailsPage({
   const { title } = await params;
   const result = await getPortfolioData(title);
 
-  if (!result?.portfolio) {
-    return {
-      title: "Portfolio Not Found",
-      description: "The portfolio you are looking for does not exist.",
-    };
-  }
+  if (!result?.portfolio) return <NotPageFound />
 
   const portfolio = result.portfolio as TPortfolio;
 
