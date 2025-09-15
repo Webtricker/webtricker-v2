@@ -33,7 +33,7 @@ export default function FooterForm() {
 
   // handlers
   const onSubmit = async (updateData: IFooter) => {
-    console.log(updateData, ' udated')
+    console.log(updateData, " udated");
     try {
       const res = await updateFooterData({
         id: data?.data?._id,
@@ -184,6 +184,11 @@ export default function FooterForm() {
               {...register("copyrightTxt", { required: true })}
               placeholder="Copy right text"
             />
+          </p>
+          <p>
+            Use the word{" "}
+            <span className="text-yellow-400 font-semibold">{"Dynamic"}</span>{" "}
+            where you want to dynamically show the current year.
           </p>
         </div>
       </Container>

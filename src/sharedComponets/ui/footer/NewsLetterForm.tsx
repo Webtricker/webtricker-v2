@@ -58,7 +58,7 @@ export default function NewsLetterForm({
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
           type="email"
-          className="py-2 px-2.5  2xl:px-3.5 outline-none focus:outline-none border-none grow"
+          className="py-2 px-2.5  2xl:px-3.5 outline-none focus:outline-none border-none grow pe-0"
           placeholder={placeholder}
           value={mail}
           onChange={(e) => setMail(e.target.value)}
@@ -69,7 +69,7 @@ export default function NewsLetterForm({
           className="btn-reverse-bg px-3"
         >
           {isLoading ? (
-            <LoadingSpinner  className="w-5 h-5 text-white dark:text-black" />
+            <LoadingSpinner className="w-5 h-5 text-white dark:text-black" />
           ) : (
             <svg
               className="w-5 h-5"

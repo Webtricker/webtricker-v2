@@ -14,7 +14,11 @@ function WhatsAppChat() {
         >
           <Image
             priority
-            width={50} height={50} src={whatsAppImg.src} alt="whatsApp" />
+            width={50}
+            height={50}
+            src={whatsAppImg.src}
+            alt="whatsApp"
+          />
         </Link>
       </div>
     </>

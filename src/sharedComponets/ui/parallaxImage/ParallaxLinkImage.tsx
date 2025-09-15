@@ -47,18 +47,20 @@ export default function ParallaxLinkImage({
         }
       );
 
-       gsap.fromTo(parentContainerRef.current, 
-        {  y: '0',},
+      gsap.fromTo(
+        parentContainerRef.current,
+        { y: "0" },
         {
-        y: '40%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: parentContainerRef.current,
-          start: 'bottom 60%',
-          end: 'bottom 25',
-          scrub: true,  
-        },
-      });
+          y: "40%",
+          ease: "none",
+          scrollTrigger: {
+            trigger: parentContainerRef.current,
+            start: "bottom 60%",
+            end: "bottom 25",
+            scrub: true,
+          },
+        }
+      );
     });
 
     return () => ctx.revert(); // clean up on unmount
@@ -66,16 +68,15 @@ export default function ParallaxLinkImage({
 
   return (
     <Link
-      onMouseOverCapture={() => toggleShowText("View Demo")}
+      onMouseOverCapture={() => toggleShowText("View Details")}
       onMouseLeave={() => toggleShowText(null)}
       href={href}
       className="relative cursor-hide inline w-full sm:w-auto"
     >
-      <div className={`border border-slate-300 dark:border-slate-600 relative w-full rounded-[10px] overflow-hidden ${containerStyle}`}>
-        <div
-        ref={parentContainerRef}
-          className={` w-full h-full`}
-        >
+      <div
+        className={`border border-slate-300 dark:border-slate-600 relative w-full rounded-[10px] overflow-hidden ${containerStyle}`}
+      >
+        <div ref={parentContainerRef} className={` w-full h-full`}>
           <Image
             ref={imageRef}
             className={`w-full h-[130%] object-cover ${imgStyle}`}

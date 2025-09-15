@@ -14,6 +14,9 @@ import Image from "next/image";
 import { IFooter } from "@/types/componentsType";
 import { IContactPage } from "@/types/pageTypes";
 import footerBg from "@/assets/images/footer/footer-bg.svg";
+import pinIcon from "@/assets/images/footer/pin-icon.svg";
+import phoneIcon from "@/assets/images/footer/phone-icon.svg";
+import emailIcon from "@/assets/images/footer/email-icon.svg";
 
 export default async function Footer() {
   const services = (await getServicesData(4)) as IService[];
@@ -26,6 +29,7 @@ export default async function Footer() {
   // footer data
   const footerData = (await getPublicFooterData()) as IFooter;
   const contactPageData = (await getContactPageData()) as IContactPage;
+  const currentYear = new Date().getFullYear().toString();
 
   return (
     <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative bg-[#141623]">
@@ -38,25 +42,23 @@ export default async function Footer() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 text-slate-200 z-40 relative">
-        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-6 lg:gap-8 2xl:gap-16">
-          <div className="w-full md:mt-[-4px]">
-            <Link className="flex items-center gap-1 bold" href="/">
-              <Image
-                className="inline w-[160px] md:w-[180px] lg:w-[190px] xl:w-[200px] h-auto"
-                src={footerData?.logo?.white || ""}
-                width={282}
-                height={74}
-                alt="Site logo"
-              />
-            </Link>
-            <p className="mt-3 wt_fs-md">{footerData?.description || ""}</p>
+      <div className="w-full pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18 text-slate-200 z-40 relative">
+        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-10 md:gap-6">
+          <div className="w-full md:mt-[-4px] md:col-span-2">
+            <div className="flex items-center gap-1 bold">
+              <h5 className="text-[#aa013f] font-semibold">Why Us ?</h5>
+            </div>
+            <p className="mt-3 wt_fs-md text-justify">
+              {footerData?.description || ""}
+            </p>
           </div>
-          <div className="ms-0 md:ms-6 w-full">
-            <h5 className="font-semibold">{footerData?.pages?.title || ""}</h5>
+          <div className="ms-0 lg:ms-8 w-full">
+            <h5 className="font-semibold text-[#aa013f]">
+              {footerData?.pages?.title || ""}
+            </h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.pages?.links &&
-                (footerData?.pages?.links as IFooter["pages"]["links"]).length >
+              (footerData?.pages?.links as IFooter["pages"]["links"]).length >
                 0 ? (
                 (footerData?.pages?.links as IFooter["pages"]["links"]).map(
                   (link) => (
@@ -76,46 +78,46 @@ export default async function Footer() {
             </div>
           </div>
           <div className="w-full">
-            <h5 className="font-semibold">
+            <h5 className="font-semibold text-[#aa013f]">
               {footerData?.services?.title || ""}
             </h5>
             <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
               {footerData?.services?.links &&
-                (footerData?.services?.links as IFooter["services"]["links"])
-                  .length > 0
+              (footerData?.services?.links as IFooter["services"]["links"])
+                .length > 0
                 ? (
-                  footerData?.services?.links as IFooter["services"]["links"]
-                ).map((link) => (
-                  <Link
-                    key={link?.href}
-                    href={link?.href || ""}
-                    target={link?.isExternal ? "_blank" : "_self"}
-                    className="animate-underline"
-                  >
-                    {link?.label || ""}
-                  </Link>
-                ))
+                    footerData?.services?.links as IFooter["services"]["links"]
+                  ).map((link) => (
+                    <Link
+                      key={link?.href}
+                      href={link?.href || ""}
+                      target={link?.isExternal ? "_blank" : "_self"}
+                      className="animate-underline"
+                    >
+                      {link?.label || ""}
+                    </Link>
+                  ))
                 : servicesLinks.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className="animate-underline"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                    <Link
+                      key={item.label}
+                      href={item.href}
+                      className="animate-underline"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
             </div>
           </div>
           <div className="w-full">
-            <h5 className="font-semibold">
+            <h5 className="font-semibold text-[#aa013f]">
               {footerData?.socialLinks?.title || ""}
             </h5>
             <div className="flex gap-5 md:gap-7 w-full mt-3">
               {footerData?.socialLinks?.links &&
-                (
-                  footerData?.socialLinks
-                    ?.links as IFooter["socialLinks"]["links"]
-                ).length > 0 ? (
+              (
+                footerData?.socialLinks
+                  ?.links as IFooter["socialLinks"]["links"]
+              ).length > 0 ? (
                 footerData?.socialLinks?.links.map((item) => (
                   <Link
                     key={item.href}
@@ -144,19 +146,21 @@ export default async function Footer() {
             </div>
           </div>
         </Container>
-        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 md:gap-6 lg:gap-8 2xl:gap-16 mt-6 md:mt-10">
-          <div className="w-full flex gap-5 items-start">
-            <Image
-              src={contactPageData?.address?.iconWhite}
-              alt={contactPageData?.address?.title}
-              width={24}
-              height={24}
-              className="min-w-5 w-6"
-            />
-            <div className="grow not-italic">
-              <h6 className="heading mb-1 !text-slate-200 font-semibold">
+        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-10 md:gap-6 mt-6 md:mt-10">
+          <div className="w-full flex flex-col items-start gap-5 lg:col-span-2">
+            <div className="flex items-center gap-2">
+              <Image
+                src={pinIcon?.src}
+                alt={contactPageData?.address?.title}
+                width={24}
+                height={24}
+                className="min-w-5 w-6"
+              />
+              <h6 className="heading mb-1 !text-[#aa013f] font-semibold">
                 {contactPageData?.address?.title}
               </h6>
+            </div>
+            <div className="grow not-italic space-y-3">
               {contactPageData?.address?.addresses?.map((addr) => (
                 <address className="not-italic" key={addr?.location}>
                   <strong>{addr?.office}</strong>: {addr?.location}
@@ -164,18 +168,20 @@ export default async function Footer() {
               ))}
             </div>
           </div>
-          <div className="w-full flex gap-5 items-start">
-            <Image
-              src={contactPageData?.contactNumber?.iconWhite}
-              alt={contactPageData?.contactNumber?.title}
-              width={24}
-              height={24}
-              className="min-w-5 w-6 mt-1"
-            />
-            <div className="grow">
-              <h6 className="heading mb-1 !text-slate-200 font-semibold">
+          <div className="w-full flex flex-col gap-5 items-start ms-0 lg:ms-8">
+            <div className="flex items-center gap-2">
+              <Image
+                src={phoneIcon?.src}
+                alt={contactPageData?.contactNumber?.title}
+                width={24}
+                height={24}
+                className="min-w-5 w-6"
+              />
+              <h6 className="heading mb-1 !text-[#aa013f] font-semibold">
                 {contactPageData?.contactNumber?.title}
               </h6>
+            </div>
+            <div className="grow space-y-3">
               {contactPageData?.contactNumber?.numbers
                 ?.slice(0, 3)
                 ?.map((num) => (
@@ -189,18 +195,20 @@ export default async function Footer() {
                 ))}
             </div>
           </div>
-          <div className="w-full flex gap-5 items-start">
-            <Image
-              src={contactPageData?.contactNumber?.iconWhite}
-              alt={contactPageData?.contactNumber?.title}
-              width={24}
-              height={24}
-              className="min-w-5 w-6 mt-1"
-            />
-            <div className="grow">
-              <h6 className="heading mb-1 !text-slate-200 font-semibold">
+          <div className="w-full flex flex-col gap-5 items-start">
+            <div className="flex items-center gap-2">
+              <Image
+                src={phoneIcon?.src}
+                alt={contactPageData?.contactNumber?.title}
+                width={24}
+                height={24}
+                className="min-w-5 w-6"
+              />
+              <h6 className="heading mb-1 !text-[#aa013f] f] font-semibold">
                 Hotline
               </h6>
+            </div>
+            <div className="grow space-y-3">
               {contactPageData?.contactNumber?.numbers
                 ?.slice(3, 6)
                 ?.map((num) => (
@@ -214,18 +222,20 @@ export default async function Footer() {
                 ))}
             </div>
           </div>
-          <div className="w-full flex gap-5 items-start">
-            <Image
-              src={contactPageData?.contactMails?.iconWhite}
-              alt={contactPageData?.contactMails?.title}
-              width={24}
-              height={24}
-              className="min-w-5 w-6 mt-1"
-            />
-            <div className="grow flex flex-col">
-              <h6 className="heading mb-1 !text-slate-200 font-semibold">
+          <div className="w-full flex gap-5 items-start flex-col">
+            <div className="flex gap-2 items-center">
+              <Image
+                src={emailIcon?.src}
+                alt={contactPageData?.contactMails?.title}
+                width={24}
+                height={24}
+                className="min-w-5 w-6"
+              />
+              <h6 className="heading mb-1 !text-[#aa013f] f] font-semibold">
                 {contactPageData?.contactMails?.title}
               </h6>
+            </div>
+            <div className="grow flex flex-col gap-3">
               {contactPageData?.contactMails?.mails?.map((mail) => (
                 <Link
                   key={mail}
@@ -249,10 +259,28 @@ export default async function Footer() {
             />
           </div>
         </Container>
-        <div className="w-full h-[1px] bg-slate-400/40 dark:bg-slate-800"></div>
-        <Container className="text-center mt-5 lg:mt-10">
-          <p>{footerData?.copyrightTxt || ""}</p>
-        </Container>
+        <section className="!bg-black">
+          <Container className="py-2 flex flex-col lg:flex-row justify-between gap-2 items-center text-center lg:text-left">
+            <p>
+              {footerData?.copyrightTxt?.includes("Dynamic")
+                ? footerData?.copyrightTxt?.replace("Dynamic", currentYear) ||
+                  ""
+                : footerData?.copyrightTxt || ""}
+            </p>
+            <div className="flex gap-2 items-center">
+              <Link href={"/privacy-policy"} className="animate-underline">
+                Privacy {"&"} Policy
+              </Link>
+              <span>|</span>
+              <Link
+                href={"/terms-and-conditions"}
+                className="animate-underline"
+              >
+                Terms {"&"} Condition
+              </Link>
+            </div>
+          </Container>
+        </section>
       </div>
     </footer>
   );

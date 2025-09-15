@@ -83,7 +83,7 @@ export default function TeamInfo({
         >
           {[...teamData, ...teamData, ...teamData].map((item, index) => (
             <SwiperSlide className="my-4 ms-[6.8px] md:ms-0" key={index}>
-              <div className="p-4 flex flex-col gap-6 items-center min-h-[450px] justify-center dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 duration-300 shadow-md shadow-slate-300 hover:shadow rounded-[8px]">
+              <div className="p-4 flex flex-col gap-6 items-center min-h-[450px] justify-center dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 duration-300 shadow-md shadow-slate-300 hover:shadow rounded-[8px] dark:hover:border-t dark:hover:border-t-slate-600 border-t border-t-slate-300">
                 <Image
                   className="w-[250px] h-[250px] rounded-full"
                   src={item?.profile}
