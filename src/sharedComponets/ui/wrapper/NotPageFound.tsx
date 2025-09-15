@@ -23,7 +23,7 @@ export default function NotPageFound() {
 
             <p>
               <span className="mr-1">Back to</span>
-              <Link  href="/" className="underline">
+              <Link  href="/" className="animate-underline">
                 Home
               </Link>
             </p>
