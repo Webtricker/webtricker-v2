@@ -18,7 +18,7 @@ export default function OurTeam({ teamData }: { teamData: ITeamInfo[] }) {
     <div className="w-full flex flex-wrap justify-center gap-4">
       {teamData.map((item) => (
         <Link href={`/settings/teams/${item._id}`} key={item.name}>
-          <div className="p-4 flex flex-col gap-6 items-center max-w-[350px] min-h-[450px] justify-center shadow-effect-large rounded-[8px]">
+          <div className="p-4 flex flex-col gap-6 items-center max-w-[350px] min-h-[450px] justify-center rounded-[8px] dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 duration-300 shadow-md shadow-slate-300 hover:shadow dark:hover:border-t dark:hover:border-t-slate-600">
             <Image
               className="w-[250px] h-[250px] rounded-full"
               src={item?.profile}

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function TeammemberCard({ team }: { team: ILeaderInfo }) {
   return (
-    <div className="p-10 rounded-[8px] w-full mx-0.5 sm:mx-0 sm:max-w-[330px] dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 duration-300 shadow-md shadow-slate-300 hover:shadow">
+    <div className="p-10 rounded-[8px] w-full mx-0.5 sm:mx-0 sm:max-w-[330px] dark:shadow dark:shadow-white dark:hover:shadow-md dark:hover:shadow-slate-600 duration-300 shadow-md shadow-slate-300 hover:shadow dark:hover:border-t dark:hover:border-t-slate-600">
       <div className="w-[200px] lg:w-[250px] mx-auto h-[200px] lg:h-[250px] overflow-hidden rounded-full">
         <Image
           className="w-full h-full rounded-full object-cover"
