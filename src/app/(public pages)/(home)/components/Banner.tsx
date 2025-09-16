@@ -74,7 +74,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
         <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">
           <span className="hidden lg:inline-block float-left w-[95px] h-0.5 "></span>
           <p className="text-center lg:text-left !leading-[140%]">
-            {homeData?.bannerDescription || ""}
+            <span>{homeData?.bannerDescription || ""}</span><span className="min-w-5 opacity-0">--</span>
             <Link
               href="/contact"
               className="btn-line-effect !inline-flex gap-1.5 items-center dark:!bg-transparent !text-[#aa013f]"

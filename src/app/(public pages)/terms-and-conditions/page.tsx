@@ -6,8 +6,7 @@ import { getTermsAndConditionPageData } from "@/utils/pageData";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
 import { Metadata } from "next";
 
-export const revalidate = 120;  // page rebuild in every 2 min
-
+export const revalidate = 120;
 
 export const metadata: Metadata = {
     title: "Terms and Conditions",

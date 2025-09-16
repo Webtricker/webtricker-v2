@@ -17,6 +17,9 @@ export type CompanyInfo = {
 };
 
 
+export const revalidate = 120;
+
+
 export const metadata: Metadata = {
   title: "Build Your Career with Webtricker",
   description:

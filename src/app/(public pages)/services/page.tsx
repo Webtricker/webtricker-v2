@@ -7,6 +7,8 @@ import { getServicesData, getServicesPageData } from "@/utils/pageData";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IServicesPage } from "@/types/pageTypes";
 
+export const revalidate = 120;
+
 export async function generateMetadata() {
   const data = await getServicesData();
   const titles = data?.map((service: { title: string }) => service.title) ?? [];

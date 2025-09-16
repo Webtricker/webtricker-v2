@@ -14,28 +14,35 @@ type Props = {
 export default function ServicesPanelWrapper({ children, bottomText }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const endTrigger = useRef<HTMLDivElement>(null);
+
+
   useEffect(() => {
     if (!containerRef.current || !endTrigger.current) return;
-    const pinnedPanels =
-      containerRef.current?.querySelectorAll(".service-panel");
-    pinnedPanels?.forEach((panel, i) => {
-      ScrollTrigger.create({
-        trigger: panel,
-        start: "top top",
-        endTrigger: endTrigger.current,
-        end: "top bottom",
-        pin: true,
-        pinSpacing: false,
-        id: `${i + 1}`,
+
+    // ✅ Correct modern GSAP way
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 768px)", () => {
+      const pinnedPanels =
+        containerRef.current?.querySelectorAll<HTMLDivElement>(".service-panel");
+
+      pinnedPanels?.forEach((panel, i) => {
+        ScrollTrigger.create({
+          trigger: panel,
+          start: "top top",
+          endTrigger: endTrigger.current!,
+          end: "top bottom",
+          pin: true,
+          pinSpacing: false,
+          id: `${i + 1}`,
+        });
       });
-
-      ScrollTrigger.refresh();
-
-      return () => {
-        ScrollTrigger.getAll().forEach((t) => t.kill());
-      };
     });
-  }, [containerRef, endTrigger]);
+
+    return () => {
+      mm.revert();
+    };
+  }, []);
 
   return (
     <section

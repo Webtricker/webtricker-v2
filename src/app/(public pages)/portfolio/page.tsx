@@ -7,6 +7,9 @@ import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IPortfolioPage } from "@/types/pageTypes";
 import Link from "next/link";
 
+
+export const revalidate = 120;
+
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {
   const technologiesData = await getTechnologies();
