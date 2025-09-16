@@ -8,7 +8,7 @@ export default function DemoThemeToggler() {
     <button
       title="Theme Toggler"
       onClick={() => toggleTheme()}
-      className="w-14 mt-0.5 h-auto relative active:outline-0 outline-0 focus:outline-0"
+      className="h-auto relative active:outline-0 outline-0 focus:outline-0"
     >
       {theme === "dark" ? (
         <>
