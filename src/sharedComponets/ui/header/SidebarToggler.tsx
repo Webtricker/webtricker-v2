@@ -47,7 +47,7 @@ export default function SidebarToggler() {
 
   const expandStyle = expand
     ? "!max-w-[400px] lg:!max-w-[550px]"
-    : "max-w-[300px]";
+    : "max-w-[300px] lg:pr-[90px]";
   return (
     <div
       className={`w-full duration-1000 gap-3 flex items-center justify-end ${expandStyle}`}
