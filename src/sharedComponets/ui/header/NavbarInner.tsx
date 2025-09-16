@@ -11,7 +11,7 @@ import SidebarToggler from "./SidebarToggler";
 import Container from "../wrapper/Container";
 import TopBar from "@/sharedComponets/DOM/TopBar";
 import Sidebar from "./Sidebar";
-import Link from "next/link";
+import ActiveLink from "./ActiveLink";
 
 export default async function NavbarInner() {
   const mainHeaderData = (await getMainHeaderData()) as IMainHeader;
@@ -26,16 +26,10 @@ export default async function NavbarInner() {
             <SiteLogoLong logos={mainHeaderData?.logo} />
           </SiteLogo>
           {/* links */}
-          <div className="hidden mt-[8px] lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8">
+          <div className="hidden lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8">
             {mainHeaderData?.links &&
-              mainHeaderData?.links.map(({ href, label }) => (
-                <Link
-                  className="wt_header-navlink heading capitalize cursor-pointer"
-                  key={label}
-                  href={href}
-                >
-                  {label}
-                </Link>
+              mainHeaderData?.links.map(link => (
+                <ActiveLink key={link.href} link={link} />
               ))}
           </div>
           <SidebarToggler />

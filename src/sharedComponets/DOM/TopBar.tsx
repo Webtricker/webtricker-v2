@@ -33,8 +33,9 @@ function TopBar({ info }: { info: ITopHeader }) {
                 <Link key={link.href + link.icon} href={link.href}>
                   <Image
                     src={link.icon}
-                    width={20}
-                    height={20}
+                    width={23}
+                    height={23}
+                    className="w-[23px] h-auto"
                     alt={link.href}
                   />
                 </Link>

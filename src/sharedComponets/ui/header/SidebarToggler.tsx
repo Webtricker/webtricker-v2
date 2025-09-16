@@ -50,11 +50,11 @@ export default function SidebarToggler() {
     : "max-w-[300px]";
   return (
     <div
-      className={`w-full duration-1000 flex items-center justify-end ${expandStyle}`}
+      className={`w-full duration-1000 gap-3 flex items-center justify-end ${expandStyle}`}
     >
       <button
         onClick={handleClick}
-        className="cursor-pointer wt_sidebar-toggler mt-1 lg:mt-[8px]"
+        className="cursor-pointer wt_sidebar-toggler"
       >
         <span></span>
         <span></span>

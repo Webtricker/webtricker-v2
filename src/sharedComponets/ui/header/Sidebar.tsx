@@ -72,15 +72,6 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
           data-lenis-prevent
           className="sidebar_scrollable_container grow w-full overflow-y-auto px-4 md:px-5 lg:px-8 xl:px-9"
         >
-          {/* <div className="w-full hidden lg:block mt-5 lg:mt-16">
-            <h5 className="heading font-semibold text-center lg:text-start">
-              {sidebarData?.title || ""}
-            </h5>
-            <p className="mt-2 text-center lg:text-start">
-              {sidebarData?.description || ""}
-            </p>
-          </div> */}
-
           {/* links */}
           <div className="lg:hidden inline-flex w-full flex-col items-center mt-10 lg:mt-20 gap-5">
             <Link
@@ -120,7 +111,7 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
               }
             </p>
 
-            <p className="flex flex-col gap-1">
+            <p className="flex flex-col gap-1 mt-5">
               {
                 sidebarData?.information?.mails?.map(mail => <a key={mail} target="_blank" href={`mailto:${mail}`} className="block animate-underline">
                   {mail}
