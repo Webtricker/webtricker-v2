@@ -42,7 +42,7 @@ export default async function Footer() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="w-full pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18 text-slate-200 z-40 relative">
+      <div className="w-full pt-14 xl:pt-16 2xl:pt-18 text-slate-200 z-40 relative">
         <Container className="grid  grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-14 md:gap-20">
 
           {/* ====== footer logo links ==== */}
