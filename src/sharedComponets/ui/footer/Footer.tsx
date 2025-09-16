@@ -43,49 +43,50 @@ export default async function Footer() {
         />
       </div>
       <div className="w-full pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18 text-slate-200 z-40 relative">
-        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-10 md:gap-6">
-          <div className="w-full md:mt-[-4px] md:col-span-2">
+        <Container className="grid  grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-20">
+          <div className="w-full">
             <div className="flex items-center gap-1 bold">
-              <h5 className="text-[#aa013f] font-semibold">Why Us ?</h5>
+              <h5 className="footer-heading">Why Us ?</h5>
             </div>
-            <p className="mt-3 wt_fs-md text-justify">
+            <p className="mt-2 text-justify">
               {footerData?.description || ""}
             </p>
           </div>
-          <div className="ms-0 lg:ms-8 w-full">
-            <h5 className="font-semibold text-[#aa013f]">
-              {footerData?.pages?.title || ""}
-            </h5>
-            <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
-              {footerData?.pages?.links &&
-              (footerData?.pages?.links as IFooter["pages"]["links"]).length >
-                0 ? (
-                (footerData?.pages?.links as IFooter["pages"]["links"]).map(
-                  (link) => (
-                    <Link
-                      key={link?.href}
-                      href={link?.href || ""}
-                      target={link?.isExternal ? "_blank" : "_self"}
-                      className="animate-underline"
-                    >
-                      {link?.label || ""}
-                    </Link>
+          <div className="w-full flex flex-col md:flex-row gap-14 md:gap-10 lg:gap-14">
+            <div className="w-full">
+              <h5 className="footer-heading ">
+                {footerData?.pages?.title || ""}
+              </h5>
+              <div className="mt-2 items-start flex flex-col gap-2 w-full wt_fs-md">
+                {footerData?.pages?.links &&
+                  (footerData?.pages?.links as IFooter["pages"]["links"]).length >
+                  0 ? (
+                  (footerData?.pages?.links as IFooter["pages"]["links"]).map(
+                    (link) => (
+                      <Link
+                        key={link?.href}
+                        href={link?.href || ""}
+                        target={link?.isExternal ? "_blank" : "_self"}
+                        className="animate-underline"
+                      >
+                        {link?.label || ""}
+                      </Link>
+                    )
                   )
-                )
-              ) : (
-                <></>
-              )}
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="w-full">
-            <h5 className="font-semibold text-[#aa013f]">
-              {footerData?.services?.title || ""}
-            </h5>
-            <div className="mt-3 items-start flex flex-col gap-2 w-full wt_fs-md">
-              {footerData?.services?.links &&
-              (footerData?.services?.links as IFooter["services"]["links"])
-                .length > 0
-                ? (
+            <div className="w-full">
+              <h5 className="footer-heading">
+                {footerData?.services?.title || ""}
+              </h5>
+              <div className="mt-2 items-start flex flex-col gap-2 w-full wt_fs-md">
+                {footerData?.services?.links &&
+                  (footerData?.services?.links as IFooter["services"]["links"])
+                    .length > 0
+                  ? (
                     footerData?.services?.links as IFooter["services"]["links"]
                   ).map((link) => (
                     <Link
@@ -97,7 +98,7 @@ export default async function Footer() {
                       {link?.label || ""}
                     </Link>
                   ))
-                : servicesLinks.map((item) => (
+                  : servicesLinks.map((item) => (
                     <Link
                       key={item.label}
                       href={item.href}
@@ -106,18 +107,19 @@ export default async function Footer() {
                       {item.label}
                     </Link>
                   ))}
+              </div>
             </div>
           </div>
           <div className="w-full">
-            <h5 className="font-semibold text-[#aa013f]">
+            <h5 className="footer-heading">
               {footerData?.socialLinks?.title || ""}
             </h5>
-            <div className="flex gap-5 md:gap-7 w-full mt-3">
+            <div className="flex gap-5 md:gap-7 w-full mt-2">
               {footerData?.socialLinks?.links &&
-              (
-                footerData?.socialLinks
-                  ?.links as IFooter["socialLinks"]["links"]
-              ).length > 0 ? (
+                (
+                  footerData?.socialLinks
+                    ?.links as IFooter["socialLinks"]["links"]
+                ).length > 0 ? (
                 footerData?.socialLinks?.links.map((item) => (
                   <Link
                     key={item.href}
@@ -145,39 +147,18 @@ export default async function Footer() {
               />
             </div>
           </div>
-        </Container>
-        <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-10 md:gap-6 mt-6 md:mt-10">
-          <div className="w-full flex flex-col items-start gap-5 lg:col-span-2">
-            <div className="flex items-center gap-2">
-              <Image
-                src={pinIcon?.src}
-                alt={contactPageData?.address?.title}
-                width={24}
-                height={24}
-                className="min-w-5 w-6"
-              />
-              <h6 className="heading mb-1 !text-[#aa013f] font-semibold">
-                {contactPageData?.address?.title}
-              </h6>
-            </div>
-            <div className="grow not-italic space-y-3">
-              {contactPageData?.address?.addresses?.map((addr) => (
-                <address className="not-italic" key={addr?.location}>
-                  <strong>{addr?.office}</strong>: {addr?.location}
-                </address>
-              ))}
-            </div>
-          </div>
-          <div className="w-full flex flex-col gap-5 items-start ms-0 lg:ms-8">
-            <div className="flex items-center gap-2">
+
+          {/* ======= footer links ======= */}
+          <div className="w-full">
+            <div className="footer-heading-wrap">
               <Image
                 src={phoneIcon?.src}
                 alt={contactPageData?.contactNumber?.title}
                 width={24}
                 height={24}
-                className="min-w-5 w-6"
+                className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
               />
-              <h6 className="heading mb-1 !text-[#aa013f] font-semibold">
+              <h6 className="footer-heading icon-heading">
                 {contactPageData?.contactNumber?.title}
               </h6>
             </div>
@@ -195,43 +176,81 @@ export default async function Footer() {
                 ))}
             </div>
           </div>
-          <div className="w-full flex flex-col gap-5 items-start">
-            <div className="flex items-center gap-2">
-              <Image
-                src={phoneIcon?.src}
-                alt={contactPageData?.contactNumber?.title}
-                width={24}
-                height={24}
-                className="min-w-5 w-6"
-              />
-              <h6 className="heading mb-1 !text-[#aa013f] f] font-semibold">
-                Hotline
-              </h6>
+
+
+          <div className="w-full flex flex-col md:flex-row gap-14 md:gap-10 lg:gap-14">
+
+            {/* ====== phone ======= */}
+            <div className="w-full flex flex-col gap-5">
+              <div className="footer-heading-wrap">
+                <Image
+                  src={phoneIcon?.src}
+                  alt={contactPageData?.contactNumber?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
+                />
+                <h6 className="footer-heading icon-heading">
+                  Hotline
+                </h6>
+              </div>
+              <div className="grow space-y-3">
+                {contactPageData?.contactNumber?.numbers
+                  ?.slice(3, 6)
+                  ?.map((num) => (
+                    <a
+                      key={num}
+                      href={`tel:${num}`}
+                      className="block animate-underline w-fit"
+                    >
+                      {num}
+                    </a>
+                  ))}
+              </div>
             </div>
-            <div className="grow space-y-3">
-              {contactPageData?.contactNumber?.numbers
-                ?.slice(3, 6)
-                ?.map((num) => (
-                  <a
-                    key={num}
-                    href={`tel:${num}`}
-                    className="block animate-underline w-fit"
-                  >
-                    {num}
-                  </a>
-                ))}
+
+            {/* ====== hotline ======== */}
+            <div className="w-full flex flex-col gap-5 items-start">
+              <div className="footer-heading-wrap">
+                <Image
+                  src={phoneIcon?.src}
+                  alt={contactPageData?.contactNumber?.title}
+                  width={24}
+                  height={24}
+                  className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
+                />
+                <h6 className="footer-heading icon-heading">
+                  Hotline
+                </h6>
+              </div>
+              <div className="grow space-y-3">
+                {contactPageData?.contactNumber?.numbers
+                  ?.slice(3, 6)
+                  ?.map((num) => (
+                    <a
+                      key={num}
+                      href={`tel:${num}`}
+                      className="block animate-underline w-fit"
+                    >
+                      {num}
+                    </a>
+                  ))}
+              </div>
             </div>
+
           </div>
+
+
           <div className="w-full flex gap-5 items-start flex-col">
-            <div className="flex gap-2 items-center">
+            <div className="footer-heading-wrap">
               <Image
                 src={emailIcon?.src}
                 alt={contactPageData?.contactMails?.title}
                 width={24}
                 height={24}
-                className="min-w-5 w-6"
+                className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
               />
-              <h6 className="heading mb-1 !text-[#aa013f] f] font-semibold">
+              <h6 className="footer-heading icon-heading">
                 {contactPageData?.contactMails?.title}
               </h6>
             </div>
@@ -264,7 +283,7 @@ export default async function Footer() {
             <p>
               {footerData?.copyrightTxt?.includes("Dynamic")
                 ? footerData?.copyrightTxt?.replace("Dynamic", currentYear) ||
-                  ""
+                ""
                 : footerData?.copyrightTxt || ""}
             </p>
             <div className="flex gap-2 items-center">
