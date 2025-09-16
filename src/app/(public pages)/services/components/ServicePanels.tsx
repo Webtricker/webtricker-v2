@@ -23,7 +23,7 @@ export default async function ServicePanels({
           <section
             key={item._id}
             style={{ zIndex: services?.length + index }}
-            className="service-panel !bg-slate-50 dark:!bg-slate-950 flex flex-col sm:flex-row w-full min-h-screen"
+            className="service-panel !bg-slate-50 dark:!bg-slate-950 flex flex-col sm:flex-row w-full mt-20 md:mt-0  md:min-h-screen"
           >
             <div className="w-full sm:w-3/6 h-5/12 sm:h-full">
               <Image
@@ -62,7 +62,7 @@ export default async function ServicePanels({
                     <></>
                   )}
                 </div>
-                <div className="w-full flex items-center justify-between mt-4">
+                <div className="w-full flex items-center justify-between mt-1 md:mt-4">
                   <Link
                     href={`/services/${item.slug}`}
                     className="duration-200 text-[#aa013f] hover:underline"
