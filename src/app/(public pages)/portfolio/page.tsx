@@ -5,13 +5,16 @@ import { getPortfolioPageData, getTechnologies } from "@/utils/pageData";
 import PortfolioBanner from "./components/PortfolioBanner";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IPortfolioPage } from "@/types/pageTypes";
+import Link from "next/link";
 
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {
   const technologiesData = await getTechnologies();
 
   // flatten technology names into keyword array
-  const techKeywords = technologiesData.map((tech: { name: string }) => tech.name);
+  const techKeywords = technologiesData.map(
+    (tech: { name: string }) => tech.name
+  );
 
   const title = "Our Portfolios";
   const description =
@@ -87,7 +90,7 @@ export default async function PortfolioPage() {
           {pageData?.bottomText?.expression || ""}
         </p>
         <h2 className="wt_fs-big text-center heading">
-          {pageData?.bottomText?.title || ""}
+          <Link href={"/contact"}> {pageData?.bottomText?.title || ""}</Link>
         </h2>
       </Container>
     </main>
