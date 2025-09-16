@@ -842,3 +842,7 @@ p.bouncing-text {
 .footer-col-box{
   @apply max-w-[450px] bg-red-50; 
 }
+
+.footer-link{
+  font-size: var(--fs-base);
+}
