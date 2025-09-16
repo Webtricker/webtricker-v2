@@ -17,7 +17,7 @@ export type CompanyInfo = {
 };
 
 
-export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+export const revalidate = 120;
 
 
 export const metadata: Metadata = {

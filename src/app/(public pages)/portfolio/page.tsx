@@ -8,7 +8,7 @@ import { IPortfolioPage } from "@/types/pageTypes";
 import Link from "next/link";
 
 
-export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+export const revalidate = 120;
 
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {

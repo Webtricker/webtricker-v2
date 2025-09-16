@@ -81,7 +81,7 @@ export const getTestimonialsData = async () => {
       console.error("Failed to fetch testimonial data");
       return [];
     }
-    const result = await res.json();
+    const result = await res?.json();
     return result?.testimonialsData || [];
   } catch (error) {
     console.error("Error fetching testimonial data:", error);
@@ -208,7 +208,7 @@ export const getAboutPageData = async () => {
       console.error("Failed to fetch about page data");
       return {};
     }
-    const result = await res.json();
+    const result = await res?.json();
     return result?.data || {};
   } catch (error) {
     console.error("Error fetching about page data:", error);

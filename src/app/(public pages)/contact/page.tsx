@@ -9,7 +9,7 @@ import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { getContactPageData } from "@/utils/pageData";
 import { IContactPage } from "@/types/pageTypes";
 
-export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Talk to Us: Contact Webtricker Today",

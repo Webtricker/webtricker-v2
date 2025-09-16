@@ -21,7 +21,7 @@ import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
 import { Metadata } from "next";
 
-export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Expert Web Design & Digital Services | Home",

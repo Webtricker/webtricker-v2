@@ -6,7 +6,7 @@ import { getBlogsPageData } from "@/utils/pageData";
 import { IBlogPage } from "@/types/pageTypes";
 import Image from "next/image";
 
-export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+export const revalidate = 120;
 
 import shortLogo from "@/assets/images/home/webtricker-w.png"; // optional OG image
 
