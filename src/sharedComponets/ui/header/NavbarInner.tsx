@@ -20,8 +20,8 @@ export default async function NavbarInner() {
   return (
     <>
       <TopBar info={topBarInfo} />
-      <Container >
-        <div className="w-full flex items-center justify-center">
+      <Container>
+        <div className="w-full flex items-center justify-center gap-18">
           <SiteLogo>
             <SiteLogoLong logos={mainHeaderData?.logo} />
           </SiteLogo>
