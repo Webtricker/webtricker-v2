@@ -104,7 +104,11 @@ export default async function AboutPage() {
           <Container className="flex justify-end grow items-center">
             <div className="w-full text-white max-w-[600px]">
               <h4>{pageData?.bannerBottomText || ""}</h4>
-              <LinkButton className="mt-5" label="Our Story" href="#" />
+              <LinkButton
+                className="mt-5"
+                label={pageData?.bannerBottomBtnText}
+                href={pageData?.bannerBottomBtnLink}
+              />
             </div>
           </Container>
         </div>
