@@ -6,6 +6,9 @@ import PortfolioBanner from "./components/PortfolioBanner";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IPortfolioPage } from "@/types/pageTypes";
 
+
+export const revalidate = Number(process.env.REVALIDATE_TIME) || 180;
+
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {
   const technologiesData = await getTechnologies();
