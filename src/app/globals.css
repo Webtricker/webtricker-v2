@@ -20,21 +20,18 @@
   --clr-text-heading-dark: #f5f7f5;
 
   /* ==== global font size variables ====  */
-  --fs-xxs: 12px;
-  --fs-xs: 14px;
-  --fs-sm: 16px;
-  --fs-base: 18px;
-  --fs-md: 20px;
-  --fs-lg: 22px;
-  --fs-xl: 25px;
-  --fs-2xl: 30px;
-  --fs-3xl: 35px;
-  --fs-4xl: 40px;
-  --fs-5xl: 60px;
-  --fs-6xl: 72px;
-  --fs-7xl: 100px;
-  --fs-big: 150px;
-  --fs-giant: 195px;
+  --fs-base: 17.7px;
+  --fs-md: 19.7px;
+  --fs-lg: 21.7px;
+  --fs-xl: 24.6px;
+  --fs-2xl: 29.5px;
+  --fs-3xl: 34.7px;
+  --fs-4xl: 39px;
+  --fs-5xl: 56.58px;
+  --fs-6xl: 69px;
+  --fs-7xl: 95px;
+  --fs-big: 145px;
+  --fs-giant: 190px;
 
   /* ======= line height ======== */
   --lh-normal: normal;
@@ -839,10 +836,10 @@ p.bouncing-text {
   gap: 15px;
 }
 
-.footer-col-box{
-  @apply max-w-[450px] bg-red-50; 
+.footer-col-box {
+  @apply max-w-[450px] bg-red-50;
 }
 
-.footer-link{
+.footer-link {
   font-size: var(--fs-base);
 }
