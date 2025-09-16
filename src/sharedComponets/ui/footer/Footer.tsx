@@ -120,7 +120,7 @@ export default async function Footer() {
             <h5 className="footer-heading">
               {footerData?.socialLinks?.title || ""}
             </h5>
-            <div className="flex gap-5 md:gap-7 w-full pt-1">
+            <div className="flex flex-wrap gap-5 md:gap-7 w-full pt-1">
               {footerData?.socialLinks?.links &&
                 (
                   footerData?.socialLinks
@@ -137,6 +137,7 @@ export default async function Footer() {
                       width={26}
                       height={26}
                       alt="Social icon"
+                      className="min-w-5"
                     />
                   </Link>
                 ))
