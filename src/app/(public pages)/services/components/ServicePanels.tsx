@@ -1,3 +1,4 @@
+import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IService } from "@/types/post";
 import { getSlicedText } from "@/utils/slicedText";
@@ -65,9 +66,10 @@ export default async function ServicePanels({
                 <div className="w-full flex items-center justify-between mt-4">
                   <Link
                     href={`/services/${item.slug}`}
-                    className="duration-200 text-[#aa013f] hover:underline"
+                    className="duration-200 text-[#aa013f] underline flex items-center gap-1"
                   >
-                    Want to know more about {item.category}?
+                    Want to know more about {item.category}?{" "}
+                    <ArrowUpRightIcon />
                   </Link>
                 </div>
               </Container>

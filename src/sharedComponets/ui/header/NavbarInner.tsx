@@ -20,15 +20,15 @@ export default async function NavbarInner() {
   return (
     <>
       <TopBar info={topBarInfo} />
-      <Container >
-        <div className="w-full flex items-center justify-center">
+      <Container>
+        <div className="w-full flex items-center justify-center 2xl:gap-18">
           <SiteLogo>
             <SiteLogoLong logos={mainHeaderData?.logo} />
           </SiteLogo>
           {/* links */}
           <div className="hidden lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8">
             {mainHeaderData?.links &&
-              mainHeaderData?.links.map(link => (
+              mainHeaderData?.links.map((link) => (
                 <ActiveLink key={link.href} link={link} />
               ))}
           </div>

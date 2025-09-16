@@ -17,6 +17,7 @@ import LinkButton from "@/sharedComponets/ui/buttons/LinkButton";
 import AboutGallery from "./components/AboutGallery";
 import { Metadata } from "next";
 import { IAboutPage } from "@/types/pageTypes";
+import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 
 export const revalidate = 120; // page rebuild in every 2 min
 
@@ -103,7 +104,11 @@ export default async function AboutPage() {
           <Container className="flex justify-end grow items-center">
             <div className="w-full text-white max-w-[600px]">
               <h4>{pageData?.bannerBottomText || ""}</h4>
-              <LinkButton className="mt-5" label="Our Story" href="#" />
+              <LinkButton
+                className="mt-5"
+                label={pageData?.bannerBottomBtnText}
+                href={pageData?.bannerBottomBtnLink}
+              />
             </div>
           </Container>
         </div>
@@ -167,14 +172,21 @@ export default async function AboutPage() {
       />
       <section className="pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18">
         <Container className="w-full flex flex-col">
-          <Link
-            data-wt-hide-cursor
-            target="_blank"
-            href={`mailto:${pageData?.resumeeSendingEmail}`}
-            className="bold text-center mb-2 lg:mb-0"
-          >
-            {pageData?.resumeeSendingText}
-          </Link>
+          <p className="bold text-center mb-2 lg:mb-0 flex items-center gap-1 justify-center">
+            {pageData?.resumeeSendingText
+              ?.split(" ")
+              ?.filter((item) => !item?.includes("@"))
+              ?.join(" ")}{" "}
+            <Link
+              data-wt-hide-cursor
+              target="_blank"
+              href={`mailto:${pageData?.resumeeSendingEmail}`}
+              className="text-[#aa013f] underline-[#aa013f] underline flex items-center gap-1"
+            >
+              {pageData?.resumeeSendingEmail}
+              <ArrowUpRightIcon />
+            </Link>
+          </p>
           <h2 className="wt_fs-big text-center heading">
             {pageData?.bottomTextLarge || ""}
           </h2>
