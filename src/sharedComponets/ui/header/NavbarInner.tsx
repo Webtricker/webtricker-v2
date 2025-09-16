@@ -26,7 +26,7 @@ export default async function NavbarInner() {
             <SiteLogoLong logos={mainHeaderData?.logo} />
           </SiteLogo>
           {/* links */}
-          <div className="hidden mt-[8px] lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8">
+          <div className="hidden lg:inline-flex items-center gap-5 md:gap-6 lg:gap-7 xl:gap-8">
             {mainHeaderData?.links &&
               mainHeaderData?.links.map(({ href, label }) => (
                 <Link
