@@ -3,13 +3,12 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { getLenisInstance } from "@/utils/lenis";
 
-
 type Props = {
-className?: string;
-children?:React.ReactNode;
-}
+  className?: string;
+  children?: React.ReactNode;
+};
 
-export default function SiteLogo({ className = "",children=<></> }: Props) {
+export default function SiteLogo({ className = "", children = <></> }: Props) {
   // variables
   const THRESHOLD = 270;
 
