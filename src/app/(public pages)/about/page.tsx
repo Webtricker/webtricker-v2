@@ -72,7 +72,7 @@ export const metadata: Metadata = {
   category: "technology",
 };
 
-export const revalidate = 120;
+export const revalidate = 900;
 
 export default async function AboutPage() {
   const teamData = await getTeamData();

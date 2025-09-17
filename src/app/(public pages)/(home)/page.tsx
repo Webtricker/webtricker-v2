@@ -21,7 +21,7 @@ import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
 import { Metadata } from "next";
 
-export const revalidate = 120;
+export const revalidate = 900;
 
 export const metadata: Metadata = {
   title: "Expert Web Design & Digital Services | Home",
@@ -42,13 +42,22 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const teamData = await getTeamData();
-  const leaderData = await getLeaderData();
-  const testimonialsData = await getTestimonialsData();
-  const portfoliosData = await getPortfoliosData(12);
-  const homeData = await getHomePageData();
-  const firstSixPortfolios = portfoliosData.slice(0, 6);
-  const secondSixPortfolios = portfoliosData.slice(6, 12);
+  const [teamData, leaderData, testimonialsData, portfoliosData, homeData] =
+  await Promise.all([
+    getTeamData(),
+    getLeaderData(),
+    getTestimonialsData(),
+    getPortfoliosData(12),
+    getHomePageData(),
+  ]);
+
+  // const teamData = await getTeamData();
+  // const leaderData = await getLeaderData();
+  // const testimonialsData = await getTestimonialsData();
+  // const portfoliosData = await getPortfoliosData(12);
+  // const homeData = await getHomePageData();
+  const firstSixPortfolios = portfoliosData?.slice(0, 6);
+  const secondSixPortfolios = portfoliosData?.slice(6, 12);
   return (
     <main className="w-full z-0">
       <Banner homeData={homeData} />
