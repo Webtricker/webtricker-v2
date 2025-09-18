@@ -6,7 +6,7 @@ import { getPrivacyPolicyPageData } from "@/utils/pageData";
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
 import { Metadata } from "next";
 
-export const revalidate = 900;
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

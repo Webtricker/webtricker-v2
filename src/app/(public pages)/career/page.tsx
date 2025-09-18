@@ -17,7 +17,7 @@ export type CompanyInfo = {
 };
 
 
-export const revalidate = 900;
+export const revalidate = 120;
 
 
 export const metadata: Metadata = {
