@@ -16,14 +16,12 @@ export type CompanyInfo = {
   description: string;
 };
 
-
 export const revalidate = 900;
-
 
 export const metadata: Metadata = {
   title: "Build Your Career with Webtricker",
   description:
-    "Join our team: Explore career opportunities with our responsive web design agency."
+    "Join our team: Explore career opportunities with our responsive web design agency.",
 };
 
 function careerPage() {
@@ -171,7 +169,7 @@ function careerPage() {
         <div className="max-w-[1000px] mx-auto px-4 text-center">
           <h3>Do you have the courage to be a part of challenging people?</h3>
           <p className="mt-2">
-            If you are self motivated, confident but not over confident,
+            If you are a self motivated, confident but not over confident,
             hardworking, energetic, creative, team player and eager to archive
             something extra ordinary then you are surely welcome to a dynamic
             team!
