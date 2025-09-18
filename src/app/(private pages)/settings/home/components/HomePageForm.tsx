@@ -148,9 +148,9 @@ export default function HomePageForm({
               ></textarea>
               <Link
                 href="/contact"
-                className="btn-line-effect !inline-flex gap-1.5 items-center"
+                className="btn-line-effect !bg-transparent dark:!text-white !inline-flex gap-1.5 items-center"
               >
-                <span>Let’s talk</span>
+                <span className="">Let’s talk</span>
                 <ArrowUpRightIcon />
               </Link>
             </p>
@@ -203,8 +203,8 @@ export default function HomePageForm({
                   />
                 </h2>
                 <div className="w-full flex flex-wrap lg:flex-nowrap items-end gap-2">
-                  <h2
-                    className={`heading !leading-[100%] ${galleryModern.className}`}
+                  <h3
+                    className={`heading wt_fs-7xl !leading-[100%] ${galleryModern.className}`}
                   >
                     <input
                       id="serviceSectionTitle.medium"
@@ -214,8 +214,8 @@ export default function HomePageForm({
                       })}
                       placeholder="Process"
                     />
-                  </h2>
-                  <h6 className="mb-2 md:mb-4 heading">
+                  </h3>
+                  <h4 className="mb-2 md:mb-4 heading wt_fs-md">
                     <input
                       id="serviceSectionTitle.small"
                       className={`max-w-[375px] px-1 w-full page-input`}
@@ -224,7 +224,7 @@ export default function HomePageForm({
                       })}
                       placeholder="We Think a lot"
                     />
-                  </h6>
+                  </h4>
                 </div>
                 <div className="w-full relative mt-5">
                   <input

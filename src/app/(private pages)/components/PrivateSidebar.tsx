@@ -63,6 +63,7 @@ export default function PrivateSidebar({ children = <></> }: Props) {
           <button className="lg:hidden" onClick={handleClose}>
             <XMarkIcon />
           </button>
+          <span className="w-2 h-2 min-w-2"></span>
           <DemoThemeToggler />
         </div>
         <div className="w-full flex flex-col items-start mt-2 grow border-t border-slate-300 dark:border-slate-700">

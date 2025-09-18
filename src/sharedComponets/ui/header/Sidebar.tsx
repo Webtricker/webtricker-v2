@@ -61,6 +61,7 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
           </Link>
           <button
             onClick={handleClose}
+            aria-label="Sidebar closer"
             className="duration-300 hover:rotate-90 text-black dark:text-white"
           >
             <XMarkIcon />
