@@ -17,7 +17,7 @@ export default function MediaModal({ cb, activeKey,allowedMediaTypeToShow=['img'
   const [activeTab, setActiveTab] = useState<"img" | "video">(allowedMediaTypeToShow[0]);
   return (
     <CustomModal
-      containerStyle="!max-w-[1200px] min-h-[400px]"
+      containerStyle="!max-w-[1200px] min-h-[400px] !bg-slate-300"
       activeKey={activeKey}
       key={activeKey}
     >
