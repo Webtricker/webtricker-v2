@@ -5,15 +5,15 @@ import IntroVideo from "./components/IntroVideo";
 import Services from "./components/Services";
 import LargeMarquee from "./components/LargeMarquee";
 import Portfolios from "./components/Portfolios";
-// import Testimonials from "./components/Testimonials";
+import Testimonials from "./components/Testimonials";
 import TeamInfo from "./components/TeamInfo";
-// import LatestBlogs from "./components/LatestBlogs";
+import LatestBlogs from "./components/LatestBlogs";
 import {
   getHomePageData,
   getLeaderData,
   getPortfoliosData,
   getTeamData,
-  // getTestimonialsData,
+  getTestimonialsData,
 } from "@/utils/pageData";
 import PortfolioSlider from "./components/PortfolioSlider";
 import OurLeader from "./components/OurLeader";
@@ -42,20 +42,15 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  // const [teamData, leaderData, testimonialsData, portfoliosData, homeData] =
-  // await Promise.all([
-  //   getTeamData(),
-  //   getLeaderData(),
-  //   getTestimonialsData(),
-  //   getPortfoliosData(12),
-  //   getHomePageData(),
-  // ]);
+  const [teamData, leaderData, testimonialsData, portfoliosData, homeData] =
+    await Promise.all([
+      getTeamData(),
+      getLeaderData(),
+      getTestimonialsData(),
+      getPortfoliosData(12),
+      getHomePageData(),
+    ]);
 
-  const teamData = await getTeamData();
-  const leaderData = await getLeaderData();
-  // const testimonialsData = await getTestimonialsData();
-  const portfoliosData = await getPortfoliosData(12);
-  const homeData = await getHomePageData();
   const firstSixPortfolios = portfoliosData?.slice(0, 6);
   const secondSixPortfolios = portfoliosData?.slice(6, 12);
 
@@ -70,10 +65,10 @@ export default async function Home() {
         title={homeData?.clientSectionSubtitle}
         clientsBanners={homeData?.clientsBanners}
       />
-      {/* <Testimonials
+      <Testimonials
         sectionBg={homeData?.testimonialsBg}
         testimonials={testimonialsData}
-      /> */}
+      />
       <Technologies technologies={homeData?.technologies} />
       <Services
         allServiceTxt={homeData?.allServiceBtnText}
@@ -95,7 +90,7 @@ export default async function Home() {
         title={homeData?.leadersSectionTitle}
       />
       <TeamInfo title={homeData?.teamSectionTitle} teamData={teamData} />
-      {/* <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} /> */}
+      <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} />
       <InstragramFeed images={homeData?.bottomSlider} />
     </main>
   );
