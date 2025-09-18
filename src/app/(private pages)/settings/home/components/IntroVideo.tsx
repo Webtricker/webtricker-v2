@@ -48,6 +48,7 @@ export default function IntroVideo({ setValue, data }: Props) {
         <video
           muted
           autoPlay
+          loop={true}
           className={`${introData?.type === "video" ? "block " : 'hidden '} className="h-screen max-h-screen w-full object-cover"`}
           src={introData?.src}
         ></video>

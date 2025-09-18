@@ -9,7 +9,7 @@ import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { getContactPageData } from "@/utils/pageData";
 import { IContactPage } from "@/types/pageTypes";
 
-export const revalidate = 900;
+export const revalidate = 120;
 
 export const metadata: Metadata = {
   title: "Talk to Us: Contact Webtricker Today",
@@ -80,9 +80,9 @@ export default async function ContactPage() {
               <div className="w-full">
                 <h6 className="bold">{contactPageData?.greetings?.topTxt}</h6>
                 <div className="w-full flex items-start mt-2">
-                  <p className="bold whitespace-nowrap">
+                  {/* <p className="hidden bold whitespace-nowrap">
                     {contactPageData?.greetings?.bottomTxt}
-                  </p>
+                  </p> */}
                   <div className="hidden sm:block w-full mt-4">
                     <Image
                       className="w-16 md:w-16 h-auto  dark:hidden"
@@ -213,6 +213,7 @@ export default async function ContactPage() {
                 src={contactPageData?.googleMap?.iframe}
                 width="100%"
                 height="100%"
+                title="Google Maps location of Webtricker Office"
                 loading="lazy"
               ></iframe>
             </div>

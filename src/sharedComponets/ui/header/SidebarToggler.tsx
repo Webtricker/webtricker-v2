@@ -55,6 +55,7 @@ export default function SidebarToggler() {
       <button
         onClick={handleClick}
         className="cursor-pointer wt_sidebar-toggler"
+        aria-label="Toggle sidebar"
       >
         <span></span>
         <span></span>

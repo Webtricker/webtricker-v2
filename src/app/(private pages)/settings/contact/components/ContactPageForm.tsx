@@ -111,14 +111,14 @@ export default function ContactPageForm() {
                   />
                 </h6>
                 <div className="w-full flex items-start mt-2">
-                  <p className="bold whitespace-nowrap">
+                  {/* <p className=" bold whitespace-nowrap">
                     <input
                       id="greetings.bottomTxt"
                       className="page-input w-full pl-1 leading_normal"
                       {...register("greetings.bottomTxt", { required: true })}
                       placeholder="WRITE TO US"
                     />
-                  </p>
+                  </p> */}
                   <div className="hidden sm:block w-full mt-4">
                     <GreetingImages icons={icons} setValue={setValue} />
                   </div>

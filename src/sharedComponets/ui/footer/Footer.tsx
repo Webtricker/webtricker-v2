@@ -48,7 +48,7 @@ export default async function Footer() {
           {/* ====== footer logo links ==== */}
           <div className="w-full">
             <div className="flex items-center gap-1 bold">
-              <h5 className="footer-heading">Why Us ?</h5>
+              <h6 className="footer-heading">Why Us ?</h6>
             </div>
             <p className="text-justify">
               {footerData?.description || ""}
