@@ -80,9 +80,9 @@ export default async function ContactPage() {
               <div className="w-full">
                 <h6 className="bold">{contactPageData?.greetings?.topTxt}</h6>
                 <div className="w-full flex items-start mt-2">
-                  <p className="bold whitespace-nowrap">
+                  {/* <p className="hidden bold whitespace-nowrap">
                     {contactPageData?.greetings?.bottomTxt}
-                  </p>
+                  </p> */}
                   <div className="hidden sm:block w-full mt-4">
                     <Image
                       className="w-16 md:w-16 h-auto  dark:hidden"

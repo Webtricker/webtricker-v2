@@ -66,7 +66,7 @@ export default function NewsLetterForm({
         <button
           disabled={isLoading}
           onClick={handleSubmit}
-          title="Mail Icon"
+          aria-label="Mail Icon"
           className="btn-reverse-bg px-3"
         >
           {isLoading ? (
