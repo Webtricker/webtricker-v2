@@ -213,6 +213,7 @@ export default async function ContactPage() {
                 src={contactPageData?.googleMap?.iframe}
                 width="100%"
                 height="100%"
+                title="Google Maps location of Webtricker Office"
                 loading="lazy"
               ></iframe>
             </div>
