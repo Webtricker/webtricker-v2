@@ -57,7 +57,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
                 homeData?.bannerVideo?.type === "image" && "md:block"
               } animate-pulse`}
               src={homeData?.bannerVideo?.src || ""}
-              alt=""
+              alt="Webtricker Short Logo"
             />
             <video
               muted
