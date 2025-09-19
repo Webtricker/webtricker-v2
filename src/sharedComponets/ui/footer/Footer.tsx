@@ -53,7 +53,7 @@ export default async function Footer() {
           </div>
 
           {/* ====== footer page links ==== */}
-          <div className="w-full flex flex-row gap-14 md:gap-10 lg:gap-14 col-span-2 md:col-span-1">
+          <div className="w-full flex flex-row gap-4 md:gap-10 lg:gap-12 col-span-2 md:col-span-1">
             <div className="w-full">
               <h5 className="footer-heading ">
                 {footerData?.pages?.title || ""}
@@ -176,7 +176,7 @@ export default async function Footer() {
             </div>
           </div>
 
-          <div className="w-full flex flex-row gap-14 md:gap-10 lg:gap-14 col-span-2 md:col-span-1">
+          <div className="w-full flex flex-row gap-4 md:gap-10 lg:gap-14 col-span-2 md:col-span-1">
             {/* ====== phone ======= */}
             <div className="w-full flex flex-col">
               <div className="footer-heading-wrap">
