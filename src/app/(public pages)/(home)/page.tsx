@@ -39,6 +39,35 @@ export const metadata: Metadata = {
     description:
       "Get premium responsive web design for a stunning, seamless website on all devices.",
   },
+
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker",
+    title: "Webtricker - Web Design and Development Agency",
+    description:
+      "We build websites, apps, and digital experiences that grow your business.",
+    images: ["/opengraph-image.png"],
+  },
+
+  alternates: {
+    canonical: "https://webtricker.com",
+    languages: {
+      "en-US": "https://webtricker.com",
+    },
+  },
+
+  verification: {
+    google: "3yJ9kU21qPn-t-QHCQtsra9Rv8UoWS03zAEy4p1yf6Q",
+
+    other: {
+      "p:domain_verify": "501935585d9580c201185f324b691844",
+      "msvalidate.01": "89B449D5B4F0E16D64B67CF4D3CD9C7D",
+      "google-tag-manager": "GTM-T26D8442",
+      "google-analytics": "G-F53LQ46RXD",
+    },
+  },
+  category: "technology",
+  metadataBase: new URL("https://webtricker.com"),
 };
 
 export default async function Home() {
