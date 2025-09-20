@@ -20,6 +20,8 @@ import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
 import { Metadata } from "next";
+import Banner from "./components/Banner";
+import IntroVideo from "./components/IntroVideo";
 
 export const revalidate = 120;
 
@@ -85,8 +87,8 @@ export default async function Home() {
 
   return (
     <main className="w-full z-0">
-      {/* <Banner homeData={homeData} /> */}
-      {/* <IntroVideo homeData={homeData} /> */}
+      <Banner homeData={homeData} />
+      <IntroVideo homeData={homeData} />
       <Container>
         <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
       </Container>
