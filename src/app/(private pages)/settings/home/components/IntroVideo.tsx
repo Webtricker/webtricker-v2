@@ -30,7 +30,7 @@ export default function IntroVideo({ setValue, data }: Props) {
       type: selectedMedia.resource_type,
     };
     setIntroData(selectedData);
-    setValue("bannerVideo", selectedData);
+    setValue("introVideo", selectedData);
     dispatch(toggleModal(null));
   };
 

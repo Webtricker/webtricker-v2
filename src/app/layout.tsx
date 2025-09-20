@@ -10,6 +10,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
+import Script from "next/script";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -94,6 +95,41 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
+      <head>
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "sljjh41puk");
+            `,
+          }}
+        />
+
+        <Script
+          id="schema-org"
+          type="application/ld+json"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Webtricker",
+              url: "https://webtricker.com",
+              logo: "https://webtricker.com/logo.png",
+              sameAs: [
+                "https://www.facebook.com/yourpage",
+                "https://twitter.com/yourprofile",
+              ],
+            }),
+          }}
+        />
+      </head>
+
       <body
         className={`z-0 wt_fs-base ${lato.className} ${lato.variable} antialiased`}
       >

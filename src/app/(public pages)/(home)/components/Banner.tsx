@@ -44,8 +44,8 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
             />
           </div>
         </div>
-        <h1
-          className={`flex-col sm:flex-row ${galleryModern.className} mt-2 md:mt-8 lg:mt-10 2xl:mt-14 text-6xl xl:text-[150px] flex w-full items-center justify-center heading overflow-hidden`}
+        <h2
+          className={`flex-col wt_fs-big sm:flex-row ${galleryModern.className} mt-2 md:mt-8 lg:mt-10 2xl:mt-14 text-6xl xl:text-[150px] flex w-full items-center justify-center heading overflow-hidden`}
         >
           <LeftAnimation word={homeData?.bannerText?.left || "Digital"} />
           <span className="tp-hero-title-img">
@@ -57,7 +57,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
                 homeData?.bannerVideo?.type === "image" && "md:block"
               } animate-pulse`}
               src={homeData?.bannerVideo?.src || ""}
-              alt=""
+              alt="Webtricker Short Logo"
             />
             <video
               muted
@@ -69,7 +69,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
             ></video>
           </span>
           <RightAnimation word={homeData?.bannerText?.right || "Creative"} />
-        </h1>
+        </h2>
 
         <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">
           <span className="hidden lg:inline-block float-left w-[95px] h-0.5 "></span>

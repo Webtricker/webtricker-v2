@@ -202,7 +202,7 @@
 
 /*======= font sizes ======== */
 h1 {
-  /* font-size: var(--fs-big); */
+  font-size: var(--fs-big);
   line-height: 120%;
 }
 
