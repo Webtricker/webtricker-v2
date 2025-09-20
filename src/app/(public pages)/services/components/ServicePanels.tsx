@@ -66,7 +66,7 @@ export default async function ServicePanels({
                 <div className="w-full flex items-center justify-between mt-1 md:mt-4">
                   <Link
                     href={`/services/${item.slug}`}
-                    className="duration-200 text-[#aa013f] underline flex items-center gap-1 hover:no-underline"
+                    className="duration-200 text-[var(--clr-darkGold)] underline flex items-center gap-1 hover:no-underline"
                   >
                     Want to know more about {item.category}?{" "}
                     <ArrowUpRightIcon />
