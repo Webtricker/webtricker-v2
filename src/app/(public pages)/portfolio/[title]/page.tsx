@@ -129,7 +129,7 @@ export default async function PortfolioDetailsPage({
   const { title } = await params;
   const result = await getPortfolioData(title);
 
-  if (!result?.portfolio) return <NotPageFound />
+  if (!result?.portfolio) return <NotPageFound />;
 
   const portfolio = result.portfolio as TPortfolio;
 
@@ -141,7 +141,7 @@ export default async function PortfolioDetailsPage({
           <a
             href={portfolio?.liveLink}
             target="_blank"
-            className="text-[#aa013f] font-normal flex items-center gap-1 animate-underline"
+            className="text-[var(--clr-darkGold)] font-normal flex items-center gap-1 animate-underline"
           >
             {portfolio?.liveLink} <ArrowUpRightIcon />
           </a>
