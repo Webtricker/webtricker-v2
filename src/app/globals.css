@@ -9,6 +9,7 @@
   --clr-danger: #aa013f;
   --clr-warning: #ffe600;
   --clr-white: #ffffff;
+  --clr-darkGold: #b8860b;
   --clr-black: #1c1d1e;
   --clr-bg-body: #fff;
   --clr-bg-body-semi-transparent: #ffffffe3;
@@ -445,7 +446,7 @@ body {
 .wt_header-navlink::before {
   content: "";
   transform: scaleX(0);
-  background: var(--clr-danger);
+  background: var(--clr-darkGold);
   @apply h-0.5 left-0 -bottom-0.5 absolute w-full;
 }
 
@@ -678,16 +679,16 @@ p.bouncing-text {
 }
 
 .btn-line-effect {
-  @apply relative inline-block bg-white text-[var(--clr-black)] border-none rounded-none overflow-visible p-0;
+  @apply relative inline-block bg-white text-[var(--clr-darkGold)] border-none rounded-none overflow-visible p-0;
 }
 
 .btn-line-effect:hover {
-  @apply bg-white text-[var(--clr-black)];
+  @apply bg-white text-[var(--clr-darkGold)];
 }
 
 .btn-line-effect::before,
 .btn-line-effect::after {
-  @apply absolute bottom-0.5 right-0 w-0 h-[1px] content-[''] transition-all duration-400 bg-[var(--clr-danger)];
+  @apply absolute bottom-0.5 right-0 w-0 h-[1px] content-[''] transition-all duration-400 bg-[var(--clr-darkGold)];
 }
 
 .btn-line-effect::after {
@@ -814,7 +815,7 @@ p.bouncing-text {
 /* ===== sidebar active link styles ======= */
 .wt_active-navlink,
 .wt_header-navlink.wt_active {
-  color: var(--clr-danger);
+  color: var(--clr-darkGold);
 }
 /* 
 .wt_header-navlink:hover::before { {
@@ -839,10 +840,10 @@ p.bouncing-text {
   gap: 15px;
 }
 
-.footer-col-box{
-  @apply max-w-[450px] bg-red-50; 
+.footer-col-box {
+  @apply max-w-[450px] bg-red-50;
 }
 
-.footer-link{
+.footer-link {
   font-size: var(--fs-base);
 }

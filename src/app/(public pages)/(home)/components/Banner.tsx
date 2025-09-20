@@ -78,7 +78,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
             <span className="min-w-5 opacity-0">--</span>
             <Link
               href="/contact"
-              className="btn-line-effect !inline-flex gap-1.5 items-center dark:!bg-transparent !text-[#aa013f]"
+              className="btn-line-effect !inline-flex gap-1.5 items-center dark:!bg-transparent !text-[var(--clr-darkGold)]"
             >
               <span>Let’s talk</span>
               <ArrowUpRightIcon />
