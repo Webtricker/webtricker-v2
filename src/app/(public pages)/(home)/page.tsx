@@ -1,7 +1,7 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
-import Banner from "./components/Banner";
+// import Banner from "./components/Banner";
 import Clients from "./components/Clients";
-import IntroVideo from "./components/IntroVideo";
+// import IntroVideo from "./components/IntroVideo";
 import Services from "./components/Services";
 import LargeMarquee from "./components/LargeMarquee";
 import Portfolios from "./components/Portfolios";
@@ -20,6 +20,8 @@ import OurLeader from "./components/OurLeader";
 import InstragramFeed from "./components/InstragramFeed";
 import Technologies from "./components/Technologies";
 import { Metadata } from "next";
+import Banner from "./components/Banner";
+import IntroVideo from "./components/IntroVideo";
 
 export const revalidate = 120;
 

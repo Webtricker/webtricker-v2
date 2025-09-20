@@ -12,6 +12,8 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 import Script from "next/script";
 
+export const revalidate = 240;
+
 const lato = Lato({
   subsets: ["latin"],
   weight: ["400", "700"],
