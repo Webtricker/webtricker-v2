@@ -1,7 +1,7 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
-import Banner from "./components/Banner";
+// import Banner from "./components/Banner";
 import Clients from "./components/Clients";
-import IntroVideo from "./components/IntroVideo";
+// import IntroVideo from "./components/IntroVideo";
 import Services from "./components/Services";
 import LargeMarquee from "./components/LargeMarquee";
 import Portfolios from "./components/Portfolios";
@@ -85,8 +85,8 @@ export default async function Home() {
 
   return (
     <main className="w-full z-0">
-      <Banner homeData={homeData} />
-      <IntroVideo homeData={homeData} />
+      {/* <Banner homeData={homeData} /> */}
+      {/* <IntroVideo homeData={homeData} /> */}
       <Container>
         <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
       </Container>

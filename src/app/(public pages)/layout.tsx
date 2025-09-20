@@ -82,14 +82,14 @@ export default async function PublicLayout({
 }) {
   return (
     <>
-      <PageTransition>
-        <Navbar>
-          <NavbarInner />
-        </Navbar>
-        {children}
-        <CursorDot />
-        <Footer />
-      </PageTransition>
+      {/* <PageTransition> */}
+      <Navbar>
+        <NavbarInner />
+      </Navbar>
+      {children}
+      <CursorDot />
+      <Footer />
+      {/* </PageTransition> */}
     </>
   );
 }
