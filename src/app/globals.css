@@ -390,7 +390,7 @@ body {
   border-radius: 50% 50% 0 0;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0, 1),
     border-radius 0.5s cubic-bezier(0.4, 0, 0, 1);
-  background-color: var(--clr-danger);
+  background-color: var(--clr-darkGold);
 }
 
 /* Title Wrapper */
@@ -709,7 +709,7 @@ p.bouncing-text {
   position: absolute;
   bottom: -8px;
   left: 50%;
-  background-color: var(--clr-danger);
+  background-color: var(--clr-darkGold);
   transform: translateX(-50%);
   content: "";
   width: 80px;
