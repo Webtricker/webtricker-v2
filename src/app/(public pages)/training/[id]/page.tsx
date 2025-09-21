@@ -230,9 +230,10 @@ const courses = [
 export default async function CourseDetailsPage({
   params,
 }: {
-  params: { id: Promise<any> };
+  params: Promise<{ id: string }>;
 }) {
-  const courseId = Number.parseInt(await params.id);
+  const { id } = await params;
+  const courseId = Number.parseInt(id);
   const course = courses.find((c) => c.id === courseId);
 
   if (!course) {
