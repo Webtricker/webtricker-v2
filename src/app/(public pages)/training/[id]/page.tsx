@@ -227,12 +227,12 @@ const courses = [
   },
 ];
 
-export default function CourseDetailsPage({
+export default async function CourseDetailsPage({
   params,
 }: {
-  params: { id: string };
+  params: { id: Promise<any> };
 }) {
-  const courseId = Number.parseInt(params.id);
+  const courseId = Number.parseInt(await params.id);
   const course = courses.find((c) => c.id === courseId);
 
   if (!course) {
