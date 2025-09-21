@@ -1,61 +1,82 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
-import { Metadata } from "next";
 import Image from "next/image";
 import bannerBg from "@/assets/images/training/training.webp";
+import Link from "next/link";
 
-export const revalidate = 120;
-
-import shortLogo from "@/assets/images/home/webtricker-w.png"; // optional OG image
-
-export const metadata: Metadata = {
-  title: "Explore Our Blog: Ideas and Inspiration",
-  description:
-    "Read Webtricker’s blog for insights on responsive web design, UI/UX design, website optimization, and digital strategies.",
-
-  keywords: [
-    "Webtricker blog",
-    "web design insights",
-    "UI/UX design tips",
-    "website optimization",
-    "digital agency blog",
-    "web development blog",
-  ],
-
-  openGraph: {
-    type: "website",
-    url: "https://webtricker.com/blogs",
-    siteName: "Webtricker",
-    title: "Explore Our Blog: Ideas and Inspiration",
+const courses = [
+  {
+    id: 1,
+    title: "Web Design",
     description:
-      "Read Webtricker’s blog for insights on responsive web design, UI/UX design, website optimization, and digital strategies.",
-    images: [
-      {
-        url: shortLogo.src, // OG image for blog listing
-        width: 1200,
-        height: 630,
-        alt: "Webtricker - Web Design & Development Agency Blog",
-      },
-    ],
-    locale: "en_US",
+      "Learn modern web design principles, responsive layouts, and user experience fundamentals.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
   },
-
-  twitter: {
-    card: "summary_large_image",
-    site: "@webtricker", // optional, your brand Twitter handle
-    title: "Explore Our Blog: Ideas and Inspiration",
+  {
+    id: 2,
+    title: "Web Development",
     description:
-      "Check out Webtricker’s blog for web design, UI/UX, and optimization tips for modern websites.",
-    images: [shortLogo.src],
+      "Master front-end and back-end development with modern frameworks and technologies.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
   },
-
-  alternates: {
-    canonical: "https://webtricker.com/blogs",
+  {
+    id: 3,
+    title: "Graphic Design",
+    description:
+      "Create stunning visual designs using industry-standard tools and design principles.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
   },
+  {
+    id: 4,
+    title: "UI-UX Design",
+    description:
+      "Design intuitive user interfaces and create exceptional user experiences.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
+  },
+  {
+    id: 5,
+    title: "Digital Marketing",
+    description:
+      "Learn digital marketing strategies, SEO, social media marketing, and analytics.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
+  },
+  {
+    id: 6,
+    title: "CMS Development",
+    description:
+      "Build and customize content management systems using popular platforms.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
+  },
+  {
+    id: 7,
+    title: "MERN Stack Development",
+    description:
+      "Full-stack development with MongoDB, Express.js, React, and Node.js.",
+    duration: "6 months",
+    onlineFee: 9000,
+    offlineFee: 15000,
+    currency: "BDT",
+  },
+];
 
-  category: "technology",
-  metadataBase: new URL("https://webtricker.com"),
-};
 export default async function BlogPage() {
   return (
     <main className="w-full z-0">
@@ -79,9 +100,199 @@ export default async function BlogPage() {
         />
       </section>
 
-      <section>
-        <h3 className="text-center">More Information coming soon...</h3>
-      </section>
+      <div className="min-h-screen bg-white">
+        <div className="container mx-auto px-4 py-12">
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <h1 className="!text-4xl font-bold text-black mb-4">
+              Professional Training Courses
+            </h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Enhance your skills with our comprehensive training programs
+              designed for modern professionals
+            </p>
+          </div>
+
+          {/* Courses Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course) => (
+              <div
+                key={course.id}
+                className="bg-white border border-gray-200 rounded-lg hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
+              >
+                {/* Card Header */}
+                <div className="p-6 pb-4">
+                  <h3 className="!text-xl font-semibold text-black mb-2">
+                    {course.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {course.description}
+                  </p>
+                </div>
+
+                {/* Card Content */}
+                <div className="px-6 pb-4 flex-grow">
+                  <div className="space-y-3">
+                    {/* Duration */}
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <svg
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12,6 12,12 16,14"></polyline>
+                      </svg>
+                      <span>Duration: {course.duration}</span>
+                    </div>
+
+                    {/* Pricing */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <rect
+                              x="2"
+                              y="3"
+                              width="20"
+                              height="14"
+                              rx="2"
+                              ry="2"
+                            ></rect>
+                            <line x1="8" y1="21" x2="16" y2="21"></line>
+                            <line x1="12" y1="17" x2="12" y2="21"></line>
+                          </svg>
+                          <span className="text-gray-600">Online:</span>
+                        </div>
+                        <span className="bg-gray-100 text-black px-2 py-1 rounded-md font-medium">
+                          {course.onlineFee.toLocaleString()} {course.currency}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                          <svg
+                            className="h-4 w-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                          </svg>
+                          <span className="text-gray-600">Offline:</span>
+                        </div>
+                        <span className="border border-gray-300 text-black px-2 py-1 rounded-md font-medium">
+                          {course.offlineFee.toLocaleString()} {course.currency}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Footer */}
+                <div className="p-6 pt-4">
+                  <Link href="/contact">
+                    <button className="w-full bg-black hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-md transition-colors duration-200">
+                      Enroll Now
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Additional Info Section */}
+          <div className="mt-16 text-center">
+            <div className="bg-white border border-gray-200 rounded-lg p-8 max-w-4xl mx-auto">
+              <h2 className="!text-2xl font-semibold text-black mb-4">
+                Why Choose Our Training Programs?
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <div className="text-center">
+                  <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="h-8 w-8 text-black"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="9" cy="7" r="4"></circle>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                  </div>
+                  <h3 className="!text-base font-semibold text-black mb-2">
+                    Expert Instructors
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Learn from industry professionals with years of experience
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="h-8 w-8 text-black"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <rect
+                        x="2"
+                        y="3"
+                        width="20"
+                        height="14"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <line x1="8" y1="21" x2="16" y2="21"></line>
+                      <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                  </div>
+                  <h3 className="!text-base font-semibold text-black mb-2">
+                    Flexible Learning
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Choose between online and offline modes based on your
+                    preference
+                  </p>
+                </div>
+
+                <div className="text-center">
+                  <div className="bg-gray-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                    <svg
+                      className="h-8 w-8 text-black"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <line x1="12" y1="1" x2="12" y2="23"></line>
+                      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                  </div>
+                  <h3 className="!text-base font-semibold text-black mb-2">
+                    Affordable Pricing
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Quality education at competitive prices with flexible
+                    payment options
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
