@@ -7,7 +7,6 @@ import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IPortfolioPage } from "@/types/pageTypes";
 import Link from "next/link";
 
-
 export const revalidate = 120;
 
 // dynamic metadata for the portfolio page
@@ -82,7 +81,7 @@ export default async function PortfolioPage() {
           <h2 className="heading xl:font-semibold !leading-[100%]">
             {pageData?.projectIntroduction?.title || ""}
           </h2>
-          <p className="mx-auto max-w-[500px] mt-5">
+          <p className="mx-auto max-w-[700px] mt-5 text-justify">
             {pageData?.projectIntroduction?.description || ""}
           </p>
         </Container>

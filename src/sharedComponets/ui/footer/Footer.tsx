@@ -49,7 +49,9 @@ export default async function Footer() {
             <div className="flex items-center gap-1 bold">
               <h6 className="footer-heading">Why Us ?</h6>
             </div>
-            <p className="text-justify">{footerData?.description || ""}</p>
+            <p className="text-justify !text-base">
+              {footerData?.description || ""}
+            </p>
           </div>
 
           {/* ====== footer page links ==== */}
@@ -68,7 +70,7 @@ export default async function Footer() {
                         key={link?.href}
                         href={link?.href || ""}
                         target={link?.isExternal ? "_blank" : "_self"}
-                        className="footer-link animate-underline"
+                        className="footer-link animate-underline !text-base"
                       >
                         {link?.label || ""}
                       </Link>
@@ -95,7 +97,7 @@ export default async function Footer() {
                         key={link?.href}
                         href={link?.href || ""}
                         target={link?.isExternal ? "_blank" : "_self"}
-                        className="footer-link animate-underline"
+                        className="footer-link animate-underline !text-base"
                       >
                         {link?.label || ""}
                       </Link>
@@ -104,7 +106,7 @@ export default async function Footer() {
                       <Link
                         key={item.label}
                         href={item.href}
-                        className="footer-link animate-underline"
+                        className="footer-link animate-underline !text-base"
                       >
                         {item.label}
                       </Link>
@@ -144,7 +146,7 @@ export default async function Footer() {
               )}
             </div>
             <div className="w-full mt-7">
-              <label className="wt_fs-md">
+              <label className="wt_fs-md !text-base">
                 {footerData?.newsLater?.title || ""}
               </label>
               <NewsLetterForm
@@ -169,7 +171,7 @@ export default async function Footer() {
             </div>
             <div className="grow not-italic space-y-3">
               {contactPageData?.address?.addresses?.map((addr) => (
-                <address className="not-italic" key={addr?.location}>
+                <address className="not-italic !text-base" key={addr?.location}>
                   <strong>{addr?.office}</strong>: {addr?.location}
                 </address>
               ))}
@@ -196,7 +198,7 @@ export default async function Footer() {
                     <a
                       key={num}
                       href={`tel:${num}`}
-                      className="block footer-link animate-underline w-fit"
+                      className="block footer-link animate-underline w-fit !text-base"
                     >
                       {num}
                     </a>
@@ -223,7 +225,7 @@ export default async function Footer() {
                     <a
                       key={num}
                       href={`tel:${num}`}
-                      className="block footer-link animate-underline w-fit"
+                      className="block footer-link animate-underline w-fit !text-base"
                     >
                       {num}
                     </a>
@@ -251,7 +253,7 @@ export default async function Footer() {
                   key={mail}
                   title="Email"
                   href={`mailto:${mail}`}
-                  className="footer-link animate-underline w-fit"
+                  className="footer-link animate-underline w-fit !text-base"
                 >
                   {mail}
                 </Link>
@@ -271,7 +273,7 @@ export default async function Footer() {
         </Container>
         <section className="!bg-black">
           <Container className="py-2 flex flex-col lg:flex-row justify-between gap-2 items-center text-center lg:text-left">
-            <p>
+            <p className="!text-base">
               {footerData?.copyrightTxt?.includes("Dynamic")
                 ? footerData?.copyrightTxt?.replace("Dynamic", currentYear) ||
                   ""
@@ -280,14 +282,14 @@ export default async function Footer() {
             <div className="flex gap-2 items-center">
               <Link
                 href={"/privacy-policy"}
-                className="footer-link animate-underline"
+                className="footer-link animate-underline !text-base"
               >
                 Privacy {"&"} Policy
               </Link>
               <span>|</span>
               <Link
                 href={"/terms-and-conditions"}
-                className="footer-link animate-underline"
+                className="footer-link animate-underline !text-base"
               >
                 Terms {"&"} Condition
               </Link>
