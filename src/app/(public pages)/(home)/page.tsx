@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import {
   getHomePageData,
@@ -13,20 +14,53 @@ import Banner from "./components/Banner";
 import IntroVideo from "./components/IntroVideo";
 
 // lazy-load wrapper
-import LazyLoadSection from "@/sharedComponets/DOM/LazyLoadSection";
+import LazyLoadSection, { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyLoadSection";
 
 // sections
-import Clients from "./components/Clients";
-import Services from "./components/Services";
-import LargeMarquee from "./components/LargeMarquee";
-import Portfolios from "./components/Portfolios";
-import Testimonials from "./components/Testimonials";
-import TeamInfo from "./components/TeamInfo";
-import LatestBlogs from "./components/LatestBlogs";
-import PortfolioSlider from "./components/PortfolioSlider";
-import OurLeader from "./components/OurLeader";
-import InstragramFeed from "./components/InstragramFeed";
-import Technologies from "./components/Technologies";
+const Clients = dynamic(() => import("./components/Clients"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+
+const Services = dynamic(() => import("./components/Services"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const LargeMarquee = dynamic(() => import("./components/LargeMarquee"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const Portfolios = dynamic(() => import("./components/Portfolios"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const Testimonials = dynamic(() => import("./components/Testimonials"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const TeamInfo = dynamic(() => import("./components/TeamInfo"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const LatestBlogs = dynamic(() => import("./components/LatestBlogs"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const PortfolioSlider = dynamic(() => import("./components/PortfolioSlider"), {
+  loading: () => <div className="h-48 bg-gray-200 animate-pulse rounded-lg" />,
+});
+
+const OurLeader = dynamic(() => import("./components/OurLeader"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const InstragramFeed = dynamic(() => import("./components/InstragramFeed"), {
+  loading: () => <LoadingPlaceholder />,
+});
+
+const Technologies = dynamic(() => import("./components/Technologies"), {
+  loading: () => <LoadingPlaceholder />,
+});
 
 export const revalidate = 120;
 
@@ -118,41 +152,41 @@ export default async function Home() {
       </Container>
 
       {/* lazy loaded sections */}
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <Clients
           title={homeData?.clientSectionSubtitle}
           clientsBanners={homeData?.clientsBanners}
         />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <Testimonials
           sectionBg={homeData?.testimonialsBg}
           testimonials={testimonialsData}
         />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <Technologies technologies={homeData?.technologies} />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <Services
           allServiceTxt={homeData?.allServiceBtnText}
           serviceSectionTitle={homeData?.serviceSectionTitle}
         />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <LargeMarquee />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <Portfolios portfolios={firstSixPortfolios} />
       </LazyLoadSection>
 
       {secondSixPortfolios?.length > 5 && (
-        <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+        <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
           <PortfolioSlider
             linkText={homeData?.allProjectBtnText}
             portfolios={secondSixPortfolios}
@@ -160,22 +194,22 @@ export default async function Home() {
         </LazyLoadSection>
       )}
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <OurLeader
           leaderData={leaderData}
           title={homeData?.leadersSectionTitle}
         />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <TeamInfo title={homeData?.teamSectionTitle} teamData={teamData} />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} />
       </LazyLoadSection>
 
-      <LazyLoadSection rootMargin="200px" placeholderStyle={"min-h-[558px]"} >
+      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
         <InstragramFeed images={homeData?.bottomSlider} />
       </LazyLoadSection>
     </main>

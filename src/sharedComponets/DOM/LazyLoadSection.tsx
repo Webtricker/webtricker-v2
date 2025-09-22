@@ -5,7 +5,7 @@ import LoadingSpinner from "../ui/loading/LoadingSpinner";
 
 export default function LazyLoadSection({
     children,
-    rootMargin = "0px",
+    rootMargin = "200px",
     placeholderStyle = "",
 }: {
     children: React.ReactNode;
@@ -37,12 +37,12 @@ export default function LazyLoadSection({
 
     return (
         <div ref={ref}>
-            {isVisible ? children : <DefaultPlaceholder className={placeholderStyle} />}
+            {isVisible ? children : <LoadingPlaceholder className={placeholderStyle} />}
         </div>
     );
 }
 
-function DefaultPlaceholder({ className }: { className: string }) {
+export const LoadingPlaceholder = ({ className = "" }: { className?: string }) => {
     return (
         <div className={`flex items-center justify-center w-full min-h-32 ${className}`}>
             <LoadingSpinner />

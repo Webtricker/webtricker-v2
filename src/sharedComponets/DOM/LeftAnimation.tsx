@@ -10,14 +10,15 @@ export default function LeftAnimation({ word }: { word?: string }) {
     const letters = lettersRef.current;
     if (!letters.length) return;
 
-    gsap.set(letters, {
-      opacity: 0,
-      x: -400,
-      rotation: 25,
-      scale: 0.4,
-    });
+    // gsap.set(letters, {
+    //   opacity: 0,
+    //   x: -400,
+    //   rotation: 25,
+    //   scale: 0.4,
+    // });
 
-    const tl = gsap.timeline({ delay: 1.5 });
+    // const tl = gsap.timeline({ delay: 1.5 });
+    const tl = gsap.timeline();
 
     letters.forEach((letter, index) => {
       tl.to(
@@ -56,7 +57,7 @@ export default function LeftAnimation({ word }: { word?: string }) {
           ref={(el) => {
             if (el) lettersRef.current[index] = el;
           }}
-          className="inline-block mx-1 drop-shadow-2xl"
+          className="inline-block mx-1 drop-shadow-2xl opacity-0 -translate-x-[400px] rotate-[25deg] scale-[0.4] will-change-transform"
         >
           {letter}
         </span>
