@@ -19,8 +19,6 @@ import { Metadata } from "next";
 import { IAboutPage } from "@/types/pageTypes";
 import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
 
-
-
 export const metadata: Metadata = {
   title: "About Webtricker: Our Mission and Vision",
   description:
@@ -183,7 +181,7 @@ export default async function AboutPage() {
               data-wt-hide-cursor
               target="_blank"
               href={`mailto:${pageData?.resumeeSendingEmail}`}
-              className="text-[#aa013f] underline-[#aa013f] underline flex items-center gap-1"
+              className="text-[var(--clr-darkGold)] underline-[--clr-darkGold] underline flex items-center gap-1"
             >
               {pageData?.resumeeSendingEmail}
               <ArrowUpRightIcon />

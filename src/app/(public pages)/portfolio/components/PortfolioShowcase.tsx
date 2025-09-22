@@ -76,7 +76,7 @@ export default function PortfolioShowcase({
               <a
                 href={portfolio?.liveLink}
                 target="_blank"
-                className="text-[#aa013f] font-normal flex items-center gap-1 animate-underline"
+                className="text-[var(--clr-darkGold)] font-normal flex items-center gap-1 animate-underline"
               >
                 {portfolio?.liveLink} <ArrowUpRightIcon />
               </a>

@@ -69,7 +69,7 @@ export default function Pagination({
         <button
           disabled={currentPage === 1}
           onClick={() => setCurrentPage(currentPage - 1)}
-          className={`p-1 mr-1 md:mr-2 bg-slate-200 rounded disabled:opacity-50 ${buttonStyle} hover:bg-[#aa013f] duration-200 disabled:hover:bg-slate-200 hover:text-white disabled:hover:text-slate-600`}
+          className={`p-1 mr-1 md:mr-2 bg-slate-200 rounded disabled:opacity-50 ${buttonStyle} hover:bg-[var(--clr-darkGold)] duration-200 disabled:hover:bg-slate-200 hover:text-white disabled:hover:text-slate-600`}
         >
           <AngleLeftIcon className="w-5 h-5" />
         </button>
@@ -85,8 +85,8 @@ export default function Pagination({
               onClick={() => setCurrentPage(Number(page))}
               className={`px-3 py-1 rounded ${
                 currentPage === page
-                  ? "bg-[#aa013f] text-white"
-                  : "bg-slate-200 hover:bg-[#aa013f] hover:text-white duration-200"
+                  ? "bg-[var(--clr-darkGold)] text-white"
+                  : "bg-slate-200 hover:bg-[var(--clr-darkGold)] hover:text-white duration-200"
               } ${buttonStyle}`}
             >
               {page}
@@ -97,7 +97,7 @@ export default function Pagination({
         <button
           disabled={currentPage === totalPages}
           onClick={() => setCurrentPage(currentPage + 1)}
-          className={`p-1 ml-1 md:ml-2 bg-slate-200 rounded disabled:opacity-50 ${buttonStyle} hover:bg-[#aa013f] duration-200 disabled:hover:bg-slate-200 hover:text-white disabled:hover:text-slate-600`}
+          className={`p-1 ml-1 md:ml-2 bg-slate-200 rounded disabled:opacity-50 ${buttonStyle} hover:bg-[var(--clr-darkGold)] duration-200 disabled:hover:bg-slate-200 hover:text-white disabled:hover:text-slate-600`}
         >
           <AngleRightIcon className="w-5 h-5" />
         </button>
