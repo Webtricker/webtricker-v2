@@ -3,7 +3,6 @@ import Footer from "@/sharedComponets/ui/footer/Footer";
 import Navbar from "@/sharedComponets/ui/header/Navbar";
 import React, { ReactNode } from "react";
 import NavbarInner from "@/sharedComponets/ui/header/NavbarInner";
-import PageTransition from "@/sharedComponets/DOM/PageTransition";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
