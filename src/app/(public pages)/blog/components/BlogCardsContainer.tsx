@@ -1,12 +1,15 @@
-import React from 'react';
-import { TCategory } from "@/types/data"; 
-import CategoryBlog from './CategoryBlog';
+import React from "react";
+import { TCategory } from "@/types/data";
+import CategoryBlog from "./CategoryBlog";
 
 const getCategories = async (): Promise<TCategory[]> => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`, {
-      next: { revalidate: 120 }, // revalidate in every 30 minutes
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`,
+      {
+        next: { revalidate: 120 }, // revalidate in every 30 minutes
+      },
+    );
 
     if (!res.ok) {
       console.error("Failed to fetch categories (Server)");
@@ -22,7 +25,7 @@ const getCategories = async (): Promise<TCategory[]> => {
 
 export default async function ServerCategoriesList() {
   const categories = await getCategories();
-  console.log("render info for blog cards container")
+  console.log("render info for blog cards container");
   if (!categories.length) {
     return (
       <div className="text-center">
@@ -34,10 +37,7 @@ export default async function ServerCategoriesList() {
   return (
     <>
       {categories.map((category: TCategory) => (
-        <CategoryBlog
-          key={category._id ?? category.name}
-          category={category}
-        />
+        <CategoryBlog key={category._id ?? category.name} category={category} />
       ))}
     </>
   );
