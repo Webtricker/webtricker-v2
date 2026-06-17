@@ -34,7 +34,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const servicesData = (await getServicesData()) || [];
     const servicePages: MetadataRoute.Sitemap = servicesData.map(
       (service: { slug: string }) => ({
-        url: `${baseUrl}/services/${service.slug}`,
+        url: `${baseUrl}/services/${encodeURIComponent(service.slug)}`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
@@ -45,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const portfolioData = (await getPortfoliosData(999)) || [];
     const portfolioPages: MetadataRoute.Sitemap = portfolioData.map(
       (portfolio: { slug: string }) => ({
-        url: `${baseUrl}/portfolio/${portfolio.slug}`,
+        url: `${baseUrl}/portfolio/${encodeURIComponent(portfolio.slug)}`,
         lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
@@ -65,7 +65,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogs = (await getAllBlogSlugs()) || [];
     const blogPages: MetadataRoute.Sitemap = blogs.map(
       (blog: { slug: string }) => ({
-        url: `${baseUrl}/blog/${blog.slug}`,
+        url: `${baseUrl}/blog/${encodeURIComponent(blog.slug)}`,
         lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.8,
