@@ -61,24 +61,27 @@ export const POST = async (req: NextRequest) => {
   response.cookies.set("accessToken", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24 * 7, // 1 week (adjust as needed)
+    maxAge: 60 * 60 * 24 * 7,
     path: "/",
     sameSite: "strict",
   });
+
+  // Send login notification without blocking the response
+  (async () => {
+    try {
+      const transporter = getMailTransporter();
+      const html = getAdminMailTemplate();
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER || "no-reply@example.com",
+        to: process.env.ADMIN_EMAIL || "admin@example.com",
+        subject: "Webtricker Admin Login Notification",
+        html,
+      });
+    } catch (err) {
+      printErr(err);
+    }
+  })();
+
   return response;
-
-  // Send email to site admin
-  try {
-    const transporter = getMailTransporter();
-    const html = getAdminMailTemplate();
-
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER || "no-reply@example.com",
-      to: process.env.ADMIN_EMAIL || "admin@example.com",
-      subject: "Webtricker Admin Login Notification",
-      html,
-    });
-  } catch (err) {
-    printErr(err);
-  }
 };
