@@ -22,6 +22,34 @@ export const metadata: Metadata = {
   title: "Build Your Career with Webtricker",
   description:
     "Join our team: Explore career opportunities with our responsive web design agency.",
+  openGraph: {
+    type: "website",
+    url: "https://webtricker.com/career",
+    siteName: "Webtricker",
+    title: "Build Your Career with Webtricker",
+    description:
+      "Join our team: Explore career opportunities with our responsive web design agency.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Webtricker - Career Opportunities",
+      },
+    ],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker",
+    title: "Build Your Career with Webtricker",
+    description:
+      "Join our team: Explore career opportunities with our responsive web design agency.",
+    images: ["/opengraph-image.png"],
+  },
+  alternates: {
+    canonical: "https://webtricker.com/career",
+  },
 };
 
 function careerPage() {

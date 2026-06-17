@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    url: "https://webtricker.com/blogs",
+    url: "https://webtricker.com/blog",
     siteName: "Webtricker",
     title: "Explore Our Blog: Ideas and Inspiration",
     description:
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: "https://webtricker.com/blogs",
+    canonical: "https://webtricker.com/blog",
   },
 
   category: "technology",

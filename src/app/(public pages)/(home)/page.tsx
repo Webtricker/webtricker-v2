@@ -106,6 +106,7 @@ export const metadata: Metadata = {
     title: "Webtricker - Web Design and Development Agency",
     description:
       "We build websites, apps, and digital experiences that grow your business.",
+    images: ["/opengraph-image.png"],
   },
 
   alternates: {

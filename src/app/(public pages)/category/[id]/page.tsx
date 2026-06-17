@@ -31,7 +31,7 @@ export async function generateMetadata({
 
     openGraph: {
       type: "article",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${id}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/category/${id}`,
       title: `${categoryName} | Webtricker`,
       description: `Explore our blog posts about ${categoryName}.`,
       images: [
@@ -53,7 +53,7 @@ export async function generateMetadata({
     },
 
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/categories/${id}`,
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/category/${id}`,
     },
 
     metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL!),

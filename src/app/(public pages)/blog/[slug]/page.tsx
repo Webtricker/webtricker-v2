@@ -87,7 +87,7 @@ export async function generateMetadata({
     authors: [{ name: "Webtricker Team" }],
     openGraph: {
       type: "article",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blogs/${slug}`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`,
       title: post.title,
       description: post.description,
       images: [
@@ -105,6 +105,9 @@ export async function generateMetadata({
       title: post.title,
       description: post.description,
       images: [post.thumnail.url],
+    },
+    alternates: {
+      canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${slug}`,
     },
   };
 }

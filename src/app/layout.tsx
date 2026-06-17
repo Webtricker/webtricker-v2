@@ -10,7 +10,6 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
-import Script from "next/script";
 
 export const revalidate = 240;
 
@@ -112,22 +111,33 @@ export default function RootLayout({
           }}
         />
 
-        <Script
-          id="schema-org"
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Webtricker",
-              url: "https://webtricker.com",
-              logo: "https://webtricker.com/logo.png",
-              sameAs: [
-                "https://www.facebook.com/yourpage",
-                "https://twitter.com/yourprofile",
-              ],
-            }),
+            __html: JSON.stringify([
+              {
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                name: "Webtricker",
+                url: "https://webtricker.com",
+                logo: "https://webtricker.com/logo.png",
+                description:
+                  "Webtricker is a web design and development agency offering professional websites, apps, and digital solutions.",
+                sameAs: [
+                  "https://www.facebook.com/webtricker",
+                  "https://x.com/webtricker",
+                  "https://www.linkedin.com/company/webtricker",
+                  "https://www.pinterest.com/webtricker",
+                  "https://www.instagram.com/webtricker",
+                ],
+              },
+              {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                name: "Webtricker",
+                url: "https://webtricker.com",
+              },
+            ]),
           }}
         />
       </head>

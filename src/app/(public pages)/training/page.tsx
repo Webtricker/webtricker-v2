@@ -4,6 +4,41 @@ import Image from "next/image";
 import bannerBg from "@/assets/images/training/training.webp";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Training Programs | Learn Web Design & Development",
+  description:
+    "Explore Webtricker's professional training programs in Web Design, Web Development, Graphic Design, UI/UX, Digital Marketing, and more.",
+  openGraph: {
+    type: "website",
+    url: "https://webtricker.com/training",
+    siteName: "Webtricker",
+    title: "Training Programs | Learn Web Design & Development",
+    description:
+      "Explore Webtricker's professional training programs in Web Design, Web Development, Graphic Design, UI/UX, Digital Marketing, and more.",
+    images: [
+      {
+        url: "/opengraph-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Webtricker Training Programs",
+      },
+    ],
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@webtricker",
+    title: "Training Programs | Learn Web Design & Development",
+    description:
+      "Explore Webtricker's professional training programs in Web Design, Web Development, Graphic Design, UI/UX, Digital Marketing, and more.",
+    images: ["/opengraph-image.png"],
+  },
+  alternates: {
+    canonical: "https://webtricker.com/training",
+  },
+};
 
 const courses = [
     {

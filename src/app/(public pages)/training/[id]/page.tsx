@@ -1,6 +1,7 @@
 import Button from "@/sharedComponets/ui/buttons/Button";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 const courses = [
   {
@@ -226,6 +227,50 @@ const courses = [
     tools: ["Microsoft Word", "Excel", "PowerPoint", "Outlook", "Access"],
   },
 ];
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  const course = courses.find((c) => c.id === Number.parseInt(id));
+
+  if (!course) {
+    return { title: "Course Not Found" };
+  }
+
+  return {
+    title: `${course.title} Training | Webtricker`,
+    description: course.detailedDescription,
+    openGraph: {
+      type: "website",
+      url: `https://webtricker.com/training/${id}`,
+      siteName: "Webtricker",
+      title: `${course.title} Training | Webtricker`,
+      description: course.detailedDescription,
+      images: [
+        {
+          url: "/opengraph-image.png",
+          width: 1200,
+          height: 630,
+          alt: `Webtricker - ${course.title} Training`,
+        },
+      ],
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      site: "@webtricker",
+      title: `${course.title} Training | Webtricker`,
+      description: course.detailedDescription,
+      images: ["/opengraph-image.png"],
+    },
+    alternates: {
+      canonical: `https://webtricker.com/training/${id}`,
+    },
+  };
+}
 
 export default async function CourseDetailsPage({
   params,
