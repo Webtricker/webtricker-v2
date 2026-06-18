@@ -72,10 +72,10 @@ export default function DashboardTopBar({
             aria-expanded={userMenuOpen}
             aria-haspopup="menu"
           >
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-950">
+            <div className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-xs font-semibold text-zinc-950">
               A
             </div>
-            <Badge className="hidden border-zinc-700 bg-zinc-900 text-zinc-100 sm:inline-flex">
+            <Badge className="hidden border-zinc-500 bg-zinc-800 text-zinc-50 sm:inline-flex">
               Admin
             </Badge>
           </button>
