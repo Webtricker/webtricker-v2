@@ -34,11 +34,11 @@ export default function DashboardSidebar({
         }`}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex bg-zinc-900 text-zinc-100 transition-all duration-300 ${
+        className={`fixed inset-y-0 left-0 z-50 flex border-r border-zinc-800 bg-zinc-950 text-zinc-100 transition-all duration-200 ${
           collapsed ? "w-16" : "w-[240px]"
         } ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
-        <div className="flex h-full w-full flex-col">
+        <div className="flex h-full w-full flex-col bg-zinc-950">
           <div className="flex h-16 items-center justify-between border-b border-zinc-800 px-3">
             <Link
               href="/settings"
@@ -64,7 +64,7 @@ export default function DashboardSidebar({
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-2 py-4">
+          <nav className="min-h-0 flex-1 overscroll-contain overflow-y-auto px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {dashboardNav.map((group) => (
               <div key={group.label} className="mb-5">
                 {group.label && !collapsed && (
@@ -92,6 +92,43 @@ export default function DashboardSidebar({
                       );
                     }
 
+                    if (item.href === "/settings") {
+                      return (
+                        <div
+                          key={item.href}
+                          className={`flex items-center rounded-md border-l-2 text-sm transition ${
+                            active
+                              ? "border-[#4F46E5] bg-zinc-700 text-white"
+                              : "border-transparent text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                          }`}
+                        >
+                          <Link
+                            href={item.href}
+                            onClick={onClose}
+                            title={collapsed ? item.label : undefined}
+                            className="flex min-w-0 flex-1 items-center gap-3 px-3 py-2"
+                          >
+                            <Icon className="h-4 w-4 shrink-0" />
+                            {!collapsed && (
+                              <span className="truncate">{item.label}</span>
+                            )}
+                          </Link>
+                          <button
+                            type="button"
+                            onClick={onToggleCollapse}
+                            className="grid h-8 w-8 shrink-0 place-items-center text-zinc-300 transition hover:text-white"
+                            aria-label="Toggle sidebar collapse"
+                          >
+                            {collapsed ? (
+                              <ChevronRightIcon className="h-4 w-4" />
+                            ) : (
+                              <ChevronLeftIcon className="h-4 w-4" />
+                            )}
+                          </button>
+                        </div>
+                      );
+                    }
+
                     return (
                       <Link
                         key={item.href}
@@ -115,24 +152,7 @@ export default function DashboardSidebar({
               </div>
             ))}
           </nav>
-
-          <div className="border-t border-zinc-800 p-2">
-            <button
-              type="button"
-              onClick={onToggleCollapse}
-              className="flex w-full items-center justify-center gap-2 rounded-md px-3 py-2 text-sm text-zinc-300 hover:bg-zinc-800 hover:text-white"
-              aria-label="Toggle sidebar collapse"
-            >
-              {collapsed ? (
-                <ChevronRightIcon className="h-4 w-4" />
-              ) : (
-                <>
-                  <ChevronLeftIcon className="h-4 w-4" />
-                  <span>Collapse</span>
-                </>
-              )}
-            </button>
-          </div>
+          <div className="border-t border-zinc-800 bg-zinc-950 p-2" />
         </div>
       </aside>
     </>
