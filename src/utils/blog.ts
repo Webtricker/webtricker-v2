@@ -1,18 +1,12 @@
 export function makeSlug(sentence: string): string {
-  // Trim leading/trailing whitespace
-  const trimmedSentence = sentence.trim(); // trim() handles both start and end
-
-  // Convert to lowercase
-  const lowercasedSentence = trimmedSentence.toLowerCase();
-
-  // Replace spaces with hyphens
-  let formattedSlug = lowercasedSentence.replace(/\s+/g, '-');
-
-  // Remove a question mark if it's at the very end of the slug
-  if (formattedSlug.endsWith('?')) {
-    formattedSlug = formattedSlug.slice(0, -1);
-  }
-  return formattedSlug;
+  return sentence
+    .trim()
+    .toLowerCase()
+    .replace(/\s*&\s*/g, ' and ')    // "foo & bar" → "foo and bar"
+    .replace(/[^a-z0-9\s-]/g, '')   // remove :, ', ,, ., ? and any other non-slug chars
+    .replace(/\s+/g, '-')            // spaces → hyphens
+    .replace(/-{2,}/g, '-')          // collapse double hyphens
+    .replace(/^-+|-+$/g, '');        // trim leading/trailing hyphens
 }
 
 // Your existing trimText function (no changes needed for this request)

@@ -16,11 +16,34 @@ const isExcluded = (pathname: string) =>
   excludedPaths.some((path) => pathname.startsWith(path)) ||
   staticFileExtensions.test(pathname);
 
+// Returns a clean blog slug: & → and, removes : ' , ... and any other non-slug chars
+function cleanBlogSlug(slug: string): string {
+  return slug
+    .replace(/-?&-?/g, "-and-")    // -&- → -and-
+    .toLowerCase()
+    .replace(/[^a-z0-9-]/g, "")    // remove : ' , . and anything else non-slug
+    .replace(/-{2,}/g, "-")         // collapse double hyphens
+    .replace(/^-+|-+$/g, "");       // trim leading/trailing hyphens
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip excluded/static files
   if (isExcluded(pathname)) return NextResponse.next();
+
+  // 301-redirect dirty blog slugs to their clean equivalents
+  if (pathname.startsWith("/blog/")) {
+    const rawSlug = pathname.slice("/blog/".length);
+    // nextUrl.pathname is already decoded, but guard against double-encoding
+    const decodedSlug = decodeURIComponent(rawSlug);
+    const cleanSlug = cleanBlogSlug(decodedSlug);
+    if (cleanSlug !== decodedSlug) {
+      const url = request.nextUrl.clone();
+      url.pathname = `/blog/${cleanSlug}`;
+      return NextResponse.redirect(url, { status: 301 });
+    }
+  }
 
   // Only protect `/settings` and anything that starts with `/settings/`
   const isProtected =
