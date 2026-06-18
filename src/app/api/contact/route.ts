@@ -9,21 +9,25 @@ export const POST = async (req: NextRequest) => {
     }
 
     try {
-        // TODO: Have to take the mail from server
+        const sanitizeHeader = (val: string) => val.replace(/[\r\n\t]/g, ' ').trim();
+        const safeName = sanitizeHeader(name);
+        const safeEmail = sanitizeHeader(email);
+
         await transporter.sendMail({
-            from: `"${name}" <${email}>`,
+            from: `"Webtricker Contact" <${process.env.EMAIL_USER}>`,
+            replyTo: `"${safeName}" <${safeEmail}>`,
             to: process.env.EMAIL_TO,
             subject: "New Contact Message from Webtricker",
             html: `
-         <p>You have received a new message from ${name} (${email})</p>
+         <p>You have received a new message from ${safeName} (${safeEmail})</p>
          <br />
         <p><strong>Message:</strong><br/>${message}</p>
       `,
         });
 
         await transporter.sendMail({
-            from: `"${name}" <${process.env.EMAIL_USER}>`,
-            to: email,
+            from: `"Webtricker" <${process.env.EMAIL_USER}>`,
+            to: safeEmail,
             subject: "Feedback from Webtricker",
             html: getThankingMailTemplate(),
         });
