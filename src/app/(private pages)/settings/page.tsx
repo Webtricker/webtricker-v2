@@ -135,7 +135,7 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-      <section>
+      <section className="!bg-transparent pb-5">
         <h1 className="!text-2xl font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
           {greeting}, Admin
         </h1>
@@ -181,7 +181,7 @@ export default function SettingsPage() {
         ))}
       </section>
 
-      <section>
+      <section className="!bg-transparent">
         <h2 className="!text-lg font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
           Recent Activity
         </h2>
