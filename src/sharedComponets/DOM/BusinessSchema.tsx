@@ -102,7 +102,10 @@ export default async function BusinessSchema() {
       },
     ],
     // NJ registered office with its own US calling hours
-    location: NJ_OFFICE,
+    location: {
+      ...NJ_OFFICE,
+      ...(telephone && { telephone }),
+    },
     sameAs: SAME_AS,
   };
 
