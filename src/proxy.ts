@@ -1,7 +1,6 @@
 import { TAccessTokenData } from "@/types/authToken";
 import { isTokenExpired } from "@/utils/validator";
 import { jwtDecode } from "jwt-decode";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -26,7 +25,7 @@ function cleanBlogSlug(slug: string): string {
     .replace(/^-+|-+$/g, "");       // trim leading/trailing hyphens
 }
 
-export async function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip excluded/static files
@@ -53,9 +52,8 @@ export async function middleware(request: NextRequest) {
   if (!isProtected && !authRoutes.includes(pathname))
     return NextResponse.next();
 
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get("accessToken")?.value;
-  console.log(accessToken, " accessToken from middleware");
+  const accessToken = request.cookies.get("accessToken")?.value;
+  console.log(accessToken, " accessToken from proxy");
 
   const loginURL = request.nextUrl.clone();
   loginURL.pathname = "/login";
