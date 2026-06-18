@@ -19,7 +19,10 @@ export const POST = async (req: NextRequest) => {
 
   await connectToDatabase();
 
-  const user = await User.findOne({ email });
+  const normalizedEmail = String(email).trim().toLowerCase();
+  const user = await User.findOne({ email: normalizedEmail }).select(
+    "+passwordHash +password"
+  );
 
   if (!user) {
     return NextResponse.json(
@@ -28,7 +31,23 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
-  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!user.isActive) {
+    return NextResponse.json(
+      { success: false, error: true, message: "Account is inactive" },
+      { status: 403 }
+    );
+  }
+
+  const storedPasswordHash = user.passwordHash || user.password;
+
+  if (!storedPasswordHash) {
+    return NextResponse.json(
+      { success: false, error: true, message: "Invalid credentials" },
+      { status: 401 }
+    );
+  }
+
+  const isPasswordValid = await bcrypt.compare(password, storedPasswordHash);
 
   if (!isPasswordValid) {
     return NextResponse.json(
@@ -37,11 +56,30 @@ export const POST = async (req: NextRequest) => {
     );
   }
 
+  const lastLogin = new Date();
+  const loginUpdate: Record<string, unknown> = {
+    lastLogin,
+  };
+
+  if (!user.passwordHash && user.password) {
+    loginUpdate.passwordHash = user.password;
+  }
+
+  await User.updateOne(
+    { _id: user._id },
+    {
+      $set: loginUpdate,
+      ...(user.passwordHash ? {} : { $unset: { password: "" } }),
+    }
+  );
+
   // Generate token
   const token = generateToken({
+    id: String(user._id),
     email: user.email,
     name: user.name,
     role: user.role,
+    avatar: user.avatar,
   });
 
   // Create the response object
@@ -51,9 +89,11 @@ export const POST = async (req: NextRequest) => {
     message: "Logged in successfully",
     token,
     user: {
+      id: String(user._id),
       email: user.email,
       name: user.name,
       role: user.role,
+      avatar: user.avatar,
     },
   });
 

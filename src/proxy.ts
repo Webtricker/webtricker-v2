@@ -81,8 +81,11 @@ export function proxy(request: NextRequest) {
       return NextResponse.redirect(redirectURL);
     }
 
-    // Block non-admins from accessing /settings and /settings/*
-    if (isProtected && role !== "admin") {
+    // Block roles that should not access /settings and /settings/*
+    if (
+      isProtected &&
+      !["superAdmin", "editor", "admin", "intern"].includes(role || "")
+    ) {
       return NextResponse.redirect(new URL("/unauthorized", request.url));
     }
 
