@@ -2,6 +2,7 @@
 
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Badge } from "./ui";
 import { MenuIcon } from "./icons";
 
@@ -11,6 +12,7 @@ export default function DashboardTopBar({
   onOpenSidebar: () => void;
 }) {
   const pathname = usePathname();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const segments = pathname
     .split("/")
     .filter(Boolean)
@@ -21,25 +23,33 @@ export default function DashboardTopBar({
         .join(" ")
     );
 
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", {
+      method: "GET",
+      credentials: "include",
+    });
+    window.location.href = "/";
+  };
+
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-zinc-200 bg-white/95 px-4 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/95 md:px-6 lg:px-8">
+    <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-zinc-800 bg-zinc-950 px-4 text-zinc-100 md:px-6 lg:px-8">
       <div className="flex min-w-0 items-center gap-3">
         <button
           type="button"
           onClick={onOpenSidebar}
           aria-label="Open sidebar"
-          className="rounded-md border border-zinc-200 p-2 text-zinc-700 hover:bg-zinc-100 dark:border-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-900 lg:hidden"
+          className="rounded-md border border-zinc-800 p-2 text-zinc-100 hover:bg-zinc-800 lg:hidden"
         >
           <MenuIcon className="h-5 w-5" />
         </button>
-        <nav className="flex min-w-0 items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <nav className="flex min-w-0 items-center gap-2 text-sm text-zinc-400">
           {segments.map((segment, index) => (
             <span key={`${segment}-${index}`} className="flex items-center gap-2">
-              {index > 0 && <span className="text-zinc-300">/</span>}
+              {index > 0 && <span className="text-zinc-600">/</span>}
               <span
                 className={
                   index === segments.length - 1
-                    ? "truncate font-medium text-zinc-950 dark:text-zinc-50"
+                    ? "truncate font-medium text-zinc-100"
                     : "truncate"
                 }
               >
@@ -51,12 +61,39 @@ export default function DashboardTopBar({
       </div>
 
       <div className="flex items-center gap-3">
-        <DemoThemeToggler />
-        <div className="hidden items-center gap-2 sm:flex">
-          <div className="grid h-9 w-9 place-items-center rounded-full bg-zinc-900 text-sm font-semibold text-white dark:bg-zinc-100 dark:text-zinc-950">
-            A
-          </div>
-          <Badge>Admin</Badge>
+        <div className="[&_svg]:brightness-0 [&_svg]:invert">
+          <DemoThemeToggler />
+        </div>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setUserMenuOpen((value) => !value)}
+            className="flex items-center gap-2 rounded-md border border-transparent p-1 transition hover:border-zinc-800 hover:bg-zinc-900"
+            aria-expanded={userMenuOpen}
+            aria-haspopup="menu"
+          >
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-zinc-100 text-sm font-semibold text-zinc-950">
+              A
+            </div>
+            <Badge className="hidden border-zinc-700 bg-zinc-900 text-zinc-100 sm:inline-flex">
+              Admin
+            </Badge>
+          </button>
+          {userMenuOpen && (
+            <div
+              role="menu"
+              className="absolute right-0 mt-2 w-44 rounded-md border border-zinc-800 bg-zinc-950 p-1 shadow-lg"
+            >
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="flex w-full items-center rounded-md px-3 py-2 text-left text-sm text-zinc-100 transition hover:bg-zinc-800"
+                role="menuitem"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </header>
