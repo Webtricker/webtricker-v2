@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useRef, type WheelEvent } from "react";
 import { dashboardNav } from "./dashboardNav";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "./icons";
 
@@ -24,6 +25,23 @@ export default function DashboardSidebar({
   onToggleCollapse,
 }: DashboardSidebarProps) {
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+
+  const handleSidebarWheel = (event: WheelEvent<HTMLElement>) => {
+    const nav = navRef.current;
+    if (!nav || nav.scrollHeight <= nav.clientHeight) return;
+
+    const delta =
+      event.deltaMode === 1
+        ? event.deltaY * 16
+        : event.deltaMode === 2
+          ? event.deltaY * nav.clientHeight
+          : event.deltaY;
+
+    event.preventDefault();
+    event.stopPropagation();
+    nav.scrollTop += delta;
+  };
 
   return (
     <>
@@ -34,6 +52,7 @@ export default function DashboardSidebar({
         }`}
       />
       <aside
+        onWheelCapture={handleSidebarWheel}
         className={`fixed inset-y-0 left-0 z-50 flex h-screen flex-col overflow-hidden border-r border-zinc-800 bg-zinc-950 text-zinc-100 transition-all duration-200 ${
           collapsed ? "w-16" : "w-[240px]"
         } ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
@@ -64,7 +83,10 @@ export default function DashboardSidebar({
             </button>
           </div>
 
-          <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav
+            ref={navRef}
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
             {dashboardNav.map((group) => (
               <div key={group.label} className="mb-5">
                 {group.label && !collapsed && (
