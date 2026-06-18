@@ -9,7 +9,8 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
 import bannerImg from "@/assets/images/policy-terms/privacy-policy-bg.webp";
 
-export const revalidate = 120;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

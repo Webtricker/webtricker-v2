@@ -6,7 +6,8 @@ import { IBlog } from "@/types/post";
 import Link from "next/link";
 import React from "react";
 
-const POSTS_REVALIDATE_SECONDS = 60 * 2; // 30 minutes
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 60 * 2)
+const POSTS_REVALIDATE_SECONDS = 0;
 
 const getPostsForCategory = async (
   categoryId: string

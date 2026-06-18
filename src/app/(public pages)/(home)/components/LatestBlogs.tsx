@@ -5,7 +5,8 @@ import Container from "@/sharedComponets/ui/wrapper/Container";
 import { IBlog } from "@/types/post";
 import React from "react";
 
-const POSTS_REVALIDATE_SECONDS = 60 * 30; // 30 minutes
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 60 * 30)
+const POSTS_REVALIDATE_SECONDS = 0;
 
 export const getLatestPosts = async (): Promise<IBlog[] | null> => {
   try {

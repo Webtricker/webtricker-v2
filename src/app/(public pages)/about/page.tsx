@@ -70,7 +70,8 @@ export const metadata: Metadata = {
     category: "technology",
 };
 
-export const revalidate = 120;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const revalidate = 0;
 
 export default async function AboutPage() {
     const teamData = await getTeamData();

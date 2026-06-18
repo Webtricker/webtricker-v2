@@ -36,7 +36,8 @@ async function fetchContactData() {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/contact-page`,
-      { next: { revalidate: 86400 } }
+      // TEMP: revalidate=0 for active dev — RESET before launch (was: 86400)
+      { next: { revalidate: 0 } }
     );
     if (!res.ok) return null;
     const json = await res.json();

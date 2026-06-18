@@ -7,7 +7,8 @@ import { getServicesData, getServicesPageData } from "@/utils/pageData";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import { IServicesPage } from "@/types/pageTypes";
 
-export const revalidate = 120;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const revalidate = 0;
 
 export async function generateMetadata() {
   const data = await getServicesData();

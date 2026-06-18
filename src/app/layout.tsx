@@ -12,7 +12,8 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 
-export const revalidate = 240;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 240)
+export const revalidate = 0;
 
 const lato = Lato({
   subsets: ["latin"],

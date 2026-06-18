@@ -10,7 +10,8 @@ import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 
 // const REVALIDATE_SECONDS = 60 * 60; // 3600 seconds = 1 hour
-const REVALIDATE_SECONDS = 10 * 60; // 600 seconds = 10 min
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
+const REVALIDATE_SECONDS = 0;
 
 const getBlogData = async (slug: string) => {
   try {

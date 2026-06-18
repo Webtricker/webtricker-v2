@@ -10,7 +10,8 @@ import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
 import ParallaxBanner from "./components/ServiceBanner";
 
 // const REVALIDATE_SECONDS = 60 * 60;
-const REVALIDATE_SECONDS = 10 * 60; // default 10 min
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
+const REVALIDATE_SECONDS = 0;
 
 // Helper function to fetch a single service data
 const getServiceData = async (slug: string) => {

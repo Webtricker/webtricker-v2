@@ -7,7 +7,8 @@ import { TPortfolio } from "@/types/portfolio";
 import Image from "next/image";
 import React from "react";
 
-const REVALIDATE_SECONDS = 60 * 60;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 60 * 60)
+const REVALIDATE_SECONDS = 0;
 
 // ===== Helper: fetch a single portfolio by slug =====
 const getPortfolioData = async (slug: string) => {

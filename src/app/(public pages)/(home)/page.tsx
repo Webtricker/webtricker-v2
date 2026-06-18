@@ -62,7 +62,8 @@ const Technologies = dynamic(() => import("./components/Technologies"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-export const revalidate = 120;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Expert Web Design & Digital Services",

@@ -10,7 +10,8 @@ async function getCategoryPosts(id: string) {
   );
 }
 
-export const revalidate = 120;
+// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const revalidate = 0;
 
 // generate dynamic metadata for each category page
 export async function generateMetadata({
