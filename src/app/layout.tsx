@@ -10,6 +10,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
+import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 
 export const revalidate = 240;
 
@@ -111,6 +112,8 @@ export default function RootLayout({
           }}
         />
 
+        <BusinessSchema />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -119,6 +122,7 @@ export default function RootLayout({
                 "@context": "https://schema.org",
                 "@type": "Organization",
                 name: "Webtricker",
+                legalName: "Webtricker LLC",
                 url: "https://webtricker.com",
                 logo: "https://webtricker.com/logo.png",
                 description:
