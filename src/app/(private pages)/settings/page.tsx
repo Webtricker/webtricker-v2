@@ -181,7 +181,7 @@ export default function SettingsPage() {
         ))}
       </section>
 
-      <section className="!bg-transparent">
+      <section className="!bg-transparent pt-[30px]">
         <h2 className="!text-lg font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
           Recent Activity
         </h2>
