@@ -75,7 +75,7 @@ export default function DashboardTopBar({
             <div className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-xs font-semibold text-zinc-950">
               A
             </div>
-            <Badge className="hidden border-zinc-500 bg-zinc-800 text-zinc-50 sm:inline-flex">
+            <Badge className="hidden border-zinc-500 bg-zinc-800 !text-white sm:inline-flex">
               Admin
             </Badge>
           </button>
