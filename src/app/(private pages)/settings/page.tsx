@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  BarChart3Icon,
   BriefcaseIcon,
   FileTextIcon,
   ImageIcon,
@@ -11,7 +10,6 @@ import {
   WrenchIcon,
 } from "@/dashboard/icons";
 import {
-  Badge,
   Button,
   Card,
   CardContent,
@@ -137,23 +135,14 @@ export default function SettingsPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <div>
-            <Badge>Phase 1</Badge>
-            <h1 className="mt-3 text-2xl font-semibold leading-tight text-zinc-950 md:text-3xl dark:text-zinc-50">
-              {greeting}, Admin
-            </h1>
-            <p className="mt-2 max-w-2xl text-sm text-zinc-500 dark:text-zinc-400">
-              Manage Webtricker content, media, settings, and future SEO tools
-              from one clean workspace.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-            <BarChart3Icon className="h-4 w-4 text-[#4F46E5]" />
-            Dashboard overview
-          </div>
-        </div>
+      <section>
+        <h1 className="!text-2xl font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
+          {greeting}, Admin
+        </h1>
+        <p className="mt-2 max-w-2xl !text-sm text-zinc-500 dark:text-zinc-400">
+          Manage Webtricker content, media, settings, and future SEO tools from
+          one clean workspace.
+        </p>
       </section>
 
       <section className="grid grid-cols-2 gap-3 md:gap-4 xl:grid-cols-4">
@@ -192,23 +181,15 @@ export default function SettingsPage() {
         ))}
       </section>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
-                Recent Activity
-              </h2>
-              <div className="mt-3 h-px w-full bg-zinc-200 dark:bg-zinc-800" />
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
-            Activity log will appear here in Phase 2.
-          </p>
-        </CardContent>
-      </Card>
+      <section>
+        <h2 className="!text-lg font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
+          Recent Activity
+        </h2>
+        <div className="mt-3 h-px w-full bg-zinc-200 dark:bg-zinc-800" />
+        <p className="mt-4 !text-sm text-zinc-500 dark:text-zinc-400">
+          Activity log will appear here in Phase 2.
+        </p>
+      </section>
     </div>
   );
 }

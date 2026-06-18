@@ -6,5 +6,10 @@ export default function SettingsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <DashboardShell>{children}</DashboardShell>;
+  return (
+    <>
+      <style>{`.whatsApp-chat{display:none!important;}`}</style>
+      <DashboardShell>{children}</DashboardShell>
+    </>
+  );
 }
