@@ -34,12 +34,12 @@ export default function DashboardSidebar({
         }`}
       />
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex border-r border-zinc-800 bg-zinc-950 text-zinc-100 transition-all duration-200 ${
+        className={`fixed inset-y-0 left-0 z-50 flex h-screen flex-col overflow-hidden border-r border-zinc-800 bg-zinc-950 text-zinc-100 transition-all duration-200 ${
           collapsed ? "w-16" : "w-[240px]"
         } ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
-        <div className="flex h-full w-full flex-col bg-zinc-950">
-          <div className="flex h-16 items-center justify-between border-b border-zinc-800 px-3">
+        <div className="flex h-screen min-h-0 w-full flex-col bg-zinc-950">
+          <div className="flex h-16 flex-shrink-0 items-center justify-between border-b border-zinc-800 px-3">
             <Link
               href="/settings"
               className="flex min-w-0 items-center gap-2"
@@ -64,7 +64,7 @@ export default function DashboardSidebar({
             </button>
           </div>
 
-          <nav className="min-h-0 flex-1 overscroll-contain overflow-y-auto px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {dashboardNav.map((group) => (
               <div key={group.label} className="mb-5">
                 {group.label && !collapsed && (
@@ -152,7 +152,7 @@ export default function DashboardSidebar({
               </div>
             ))}
           </nav>
-          <div className="border-t border-zinc-800 bg-zinc-950 p-2" />
+          <div className="flex-shrink-0 border-t border-zinc-800 bg-zinc-950 p-2" />
         </div>
       </aside>
     </>
