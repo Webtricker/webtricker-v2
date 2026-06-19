@@ -51,7 +51,7 @@ const SiteConfigSchema = new Schema(
     },
     offices: { type: [OfficeSchema], default: [] },
     socialLinks: { type: [SocialLinkSchema], default: [] },
-    schema: {
+    schemaConfig: {
       businessType: {
         type: String,
         required: true,

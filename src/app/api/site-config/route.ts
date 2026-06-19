@@ -1,14 +1,12 @@
 import connectToDatabase from "@/lib/dbConnect";
-import mongoose from "mongoose";
+import SiteConfig from "@/models/SiteConfig";
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
   try {
     await connectToDatabase();
 
-    const data = await mongoose.connection
-      .collection("siteconfigs")
-      .findOne({});
+    const data = await SiteConfig.findOne().lean();
 
     return NextResponse.json(
       {

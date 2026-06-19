@@ -224,7 +224,7 @@ const seedSiteConfig = async () => {
     },
     offices,
     socialLinks,
-    schema: {
+    schemaConfig: {
       businessType: "ProfessionalService",
       organizationJsonLdEnabled: true,
     },
