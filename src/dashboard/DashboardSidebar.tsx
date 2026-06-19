@@ -1,5 +1,7 @@
 "use client";
 
+import webtrickerLogo from "@/assets/images/home/webtricker-white.svg";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, type WheelEvent } from "react";
@@ -61,17 +63,19 @@ export default function DashboardSidebar({
           <div className="flex h-16 flex-shrink-0 items-center justify-between border-b border-zinc-800 px-3">
             <Link
               href="/settings"
-              className="flex min-w-0 items-center gap-2"
+              className="flex min-w-0 items-center"
               onClick={onClose}
             >
-              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-md bg-zinc-100 text-sm font-semibold text-zinc-950">
-                W
-              </span>
-              {!collapsed && (
-                <span className="truncate text-sm font-semibold">
-                  Webtricker
-                </span>
-              )}
+              <Image
+                src={webtrickerLogo}
+                alt="Webtricker"
+                priority
+                className={
+                  collapsed
+                    ? "h-auto w-10 object-contain"
+                    : "h-auto w-[150px] object-contain"
+                }
+              />
             </Link>
             <button
               type="button"
