@@ -42,6 +42,16 @@ const mergeUnique = (values: unknown[], options?: { lowercase?: boolean }) => {
   return merged;
 };
 
+const isUsPhone = (phone: string) => {
+  const digits = phone.replace(/\D/g, "");
+  return digits.length === 11 && digits.startsWith("1");
+};
+
+const orderPhonesByRegion = (phones: string[]) => [
+  ...phones.filter(isUsPhone),
+  ...phones.filter((phone) => !isUsPhone(phone)),
+];
+
 const platformFromUrl = (href: string) => {
   const normalized = href.toLowerCase();
 
@@ -181,10 +191,12 @@ const seedSiteConfig = async () => {
     );
   }
 
-  const phones = mergeUnique([
-    ...(contactPage.contactNumber?.numbers || []),
-    ...(sidebar.information?.phones || []),
-  ]);
+  const phones = orderPhonesByRegion(
+    mergeUnique([
+      ...(contactPage.contactNumber?.numbers || []),
+      ...(sidebar.information?.phones || []),
+    ])
+  );
   const emails = mergeUnique(
     [
       ...(contactPage.contactMails?.mails || []),
