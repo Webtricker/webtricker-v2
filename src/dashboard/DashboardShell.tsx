@@ -13,7 +13,7 @@ export default function DashboardShell({
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">
+    <div className="dashboard-shell min-h-screen bg-zinc-50 text-zinc-950 dark:bg-zinc-900 dark:text-zinc-50">
       <DashboardSidebar
         collapsed={collapsed}
         open={sidebarOpen}
