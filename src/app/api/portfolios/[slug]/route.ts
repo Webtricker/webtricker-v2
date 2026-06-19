@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
 import { verifyAdmin } from "@/utils/validator";
 import Portfolio from "@/models/Portfolio";
+import "@/models/Technology";
 
 
 export const GET = async (
