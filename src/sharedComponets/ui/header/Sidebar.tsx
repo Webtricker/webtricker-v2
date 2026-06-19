@@ -4,7 +4,7 @@ import {
   updatePreventScrolling,
 } from "@/redux/features/rootModyfier/Modyfier";
 import { RootState } from "@/redux/store";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { XMarkIcon } from "../icons/Icons";
 import Image from "next/image";
@@ -16,9 +16,41 @@ import { usePathname } from "next/navigation";
 
 type Props = {
   sidebarData: ISidebar;
-  navlinks: IMainHeader['links'];
+  navlinks: IMainHeader["links"];
+  siteConfigData: SiteConfig | null;
 };
-export default function Sidebar({ navlinks, sidebarData }: Props) {
+
+type SiteConfig = {
+  contact?: {
+    phones?: string[];
+    emails?: string[];
+  };
+  offices?: {
+    label: string;
+    addressText: string;
+  }[];
+  socialLinks?: {
+    platform: string;
+    href: string;
+    isExternal: boolean;
+  }[];
+};
+
+const socialIcons: Record<string, string> = {
+  facebook:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394774/bpcdltvbsjzlht4vjwxa.svg",
+  x: "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/bjzfmm45zgjhpyzrlth3.svg",
+  linkedin:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394772/jml2zlqdmneozvp51u8k.svg",
+  pinterest:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/p70y0hwlyepiaog0mkwd.svg",
+  instagram:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/fzxc3um5pqkfdj2h78zh.svg",
+  youtube:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/hudakq7c0esdgepdk1xb.svg",
+};
+
+export default function Sidebar({ navlinks, sidebarData, siteConfigData }: Props) {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const EXPAND = useSelector((state: RootState) => state.modyfier.EXPAND);
@@ -29,8 +61,12 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
     dispatch(updatePreventScrolling(false));
   };
 
-  useEffect(() => { }, []);
   const active = EXPAND === "OPEN_SIDEBAR_MENU";
+  const phones = siteConfigData?.contact?.phones ?? [];
+  const emails = siteConfigData?.contact?.emails ?? [];
+  const offices = siteConfigData?.offices ?? [];
+  const links = siteConfigData?.socialLinks ?? [];
+
   return (
     <div
       data-prevent-body-trigger
@@ -106,7 +142,7 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
             <h6 className="heading uppercase mb-1">{sidebarData?.information?.title || ""}</h6>
             <p>
               {
-                sidebarData?.information?.phones?.map(phone => <a key={phone} target="_blank" href={`tel:${phone}`} className="block animate-underline">
+                phones.map(phone => <a key={phone} target="_blank" href={`tel:${phone}`} className="block animate-underline">
                   {phone}
                 </a>)
               }
@@ -114,15 +150,15 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
 
             <p className="flex flex-col gap-1 mt-5">
               {
-                sidebarData?.information?.mails?.map(mail => <a key={mail} target="_blank" href={`mailto:${mail}`} className="block animate-underline">
+                emails.map(mail => <a key={mail} target="_blank" href={`mailto:${mail}`} className="block animate-underline">
                   {mail}
                 </a>)
               }
             </p>
 
             {
-              sidebarData?.information?.addresses?.map(address => <p key={address} className="">
-                {address}
+              offices.map(office => <p key={office.addressText} className="">
+                <strong>{office.label}</strong>: {office.addressText}
               </p>)
             }
           </div>
@@ -134,9 +170,16 @@ export default function Sidebar({ navlinks, sidebarData }: Props) {
             </h6>
             <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap items-center justify-center">
               {
-                sidebarData?.socialLinks?.links?.map(link => <Link key={link.href} target={link?.isExternal ? "_blank" : "_self"} href={link.href}>
-                  <Image src={link.label} width={26} height={26} alt="Social icon" />
-                </Link>)
+                links.map(link => {
+                  const icon = socialIcons[link.platform];
+                  if (!icon) return null;
+
+                  return (
+                    <Link key={link.href} target={link?.isExternal ? "_blank" : "_self"} href={link.href}>
+                      <Image src={icon} width={26} height={26} alt="Social icon" />
+                    </Link>
+                  );
+                })
               }
             </div>
           </div>
