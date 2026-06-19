@@ -1,8 +1,7 @@
-import { IMainHeader, ISidebar, ITopHeader } from "@/types/componentsType";
+import { IMainHeader, ISidebar } from "@/types/componentsType";
 import {
   getMainHeaderData,
   getSidebarData,
-  getTobBarInfo,
 } from "@/utils/pageData";
 import React from "react";
 import SiteLogoLong from "../logos/SiteLogoLong";
@@ -15,11 +14,10 @@ import ActiveLink from "./ActiveLink";
 
 export default async function NavbarInner() {
   const mainHeaderData = (await getMainHeaderData()) as IMainHeader;
-  const topBarInfo = (await getTobBarInfo()) as ITopHeader;
   const sidebarData = (await getSidebarData()) as ISidebar;
   return (
     <>
-      <TopBar info={topBarInfo} />
+      <TopBar />
       <Container>
         <div className="w-full flex items-center justify-center 2xl:gap-18">
           <SiteLogo>
