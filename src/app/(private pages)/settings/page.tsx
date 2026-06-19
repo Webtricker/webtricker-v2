@@ -16,7 +16,7 @@ import {
   CardHeader,
   Skeleton,
 } from "@/dashboard/ui";
-import { getCurrentDashboardUser } from "@/dashboard/auth";
+import { useCurrentDashboardUser } from "@/dashboard/auth";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -109,8 +109,8 @@ export default function SettingsPage() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const greeting = useMemo(() => getGreeting(), []);
-  const currentUser = getCurrentDashboardUser();
-  const userName = currentUser?.name || "Admin";
+  const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
+  const userName = userLoading ? "..." : currentUser?.name || "Admin";
 
   useEffect(() => {
     let mounted = true;

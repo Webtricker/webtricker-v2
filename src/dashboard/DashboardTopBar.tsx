@@ -3,7 +3,7 @@
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { getCurrentDashboardUser, getRoleBadgeClass } from "./auth";
+import { getRoleBadgeClass, useCurrentDashboardUser } from "./auth";
 import { Badge } from "./ui";
 import { MenuIcon } from "./icons";
 
@@ -14,7 +14,7 @@ export default function DashboardTopBar({
 }) {
   const pathname = usePathname();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-  const currentUser = getCurrentDashboardUser();
+  const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const userName = currentUser?.name || "Admin";
   const userRole = currentUser?.role || "admin";
   const segments = pathname
@@ -77,7 +77,9 @@ export default function DashboardTopBar({
             aria-expanded={userMenuOpen}
             aria-haspopup="menu"
           >
-            {currentUser?.avatar ? (
+            {userLoading ? (
+              <div className="h-8 w-8 animate-pulse rounded-full bg-zinc-800" />
+            ) : currentUser?.avatar ? (
               <img
                 src={currentUser.avatar}
                 alt={userName}
@@ -89,11 +91,17 @@ export default function DashboardTopBar({
               </div>
             )}
             <span className="hidden max-w-32 truncate text-sm font-medium text-zinc-100 md:inline">
-              {userName}
+              {userLoading ? (
+                <span className="block h-4 w-20 animate-pulse rounded bg-zinc-800" />
+              ) : (
+                userName
+              )}
             </span>
-            <Badge className={`hidden sm:inline-flex ${getRoleBadgeClass(userRole)}`}>
-              {userRole}
-            </Badge>
+            {!userLoading && (
+              <Badge className={`hidden sm:inline-flex ${getRoleBadgeClass(userRole)}`}>
+                {userRole}
+              </Badge>
+            )}
           </button>
           {userMenuOpen && (
             <div

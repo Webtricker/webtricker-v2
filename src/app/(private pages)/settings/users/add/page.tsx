@@ -1,22 +1,34 @@
 "use client";
 
-import { getCurrentDashboardUser } from "@/dashboard/auth";
-import { Button } from "@/dashboard/ui";
-import { UserForm } from "@/dashboard/users";
+import { useCurrentDashboardUser } from "@/dashboard/auth";
+import { Button, Card, CardContent } from "@/dashboard/ui";
+import { UserForm, UsersSkeleton } from "@/dashboard/users";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function AddUserPage() {
   const router = useRouter();
-  const currentUser = useMemo(() => getCurrentDashboardUser(), []);
+  const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (userLoading || !currentUser) return;
     if (currentUser.role !== "superAdmin") router.replace("/settings");
-  }, [currentUser, router]);
+  }, [currentUser, router, userLoading]);
+
+  if (userLoading) {
+    return (
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+        <Card>
+          <CardContent className="pt-4">
+            <UsersSkeleton />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!currentUser || currentUser.role !== "superAdmin") return null;
 

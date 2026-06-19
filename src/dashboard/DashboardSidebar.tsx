@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, type WheelEvent } from "react";
-import { getCurrentDashboardUser } from "./auth";
+import { useCurrentDashboardUser } from "./auth";
 import { dashboardNav } from "./dashboardNav";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "./icons";
 
@@ -42,7 +42,7 @@ export default function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
-  const currentUser = getCurrentDashboardUser();
+  const { user: currentUser } = useCurrentDashboardUser();
   const visibleNav = currentUser ? getVisibleNav(currentUser.role) : [];
 
   const handleSidebarWheel = (event: WheelEvent<HTMLElement>) => {

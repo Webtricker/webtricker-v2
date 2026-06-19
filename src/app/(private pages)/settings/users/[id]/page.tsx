@@ -1,28 +1,28 @@
 "use client";
 
-import { getCurrentDashboardUser } from "@/dashboard/auth";
+import { useCurrentDashboardUser } from "@/dashboard/auth";
 import { Button, Card, CardContent } from "@/dashboard/ui";
 import { UserForm, UserRecord, UsersSkeleton } from "@/dashboard/users";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function EditUserPage() {
   const router = useRouter();
   const params = useParams<{ id: string }>();
-  const currentUser = useMemo(() => getCurrentDashboardUser(), []);
+  const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const [user, setUser] = useState<UserRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (userLoading || !currentUser) return;
     if (currentUser.role !== "superAdmin") router.replace("/settings");
-  }, [currentUser, router]);
+  }, [currentUser, router, userLoading]);
 
   useEffect(() => {
-    if (!currentUser || currentUser.role !== "superAdmin") return;
+    if (userLoading || !currentUser || currentUser.role !== "superAdmin") return;
 
     let mounted = true;
 
@@ -50,7 +50,19 @@ export default function EditUserPage() {
     return () => {
       mounted = false;
     };
-  }, [currentUser, params.id]);
+  }, [currentUser, params.id, userLoading]);
+
+  if (userLoading) {
+    return (
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+        <Card>
+          <CardContent className="pt-4">
+            <UsersSkeleton />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!currentUser || currentUser.role !== "superAdmin") return null;
 

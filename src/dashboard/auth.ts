@@ -1,6 +1,13 @@
 "use client";
 
-import { jwtDecode } from "jwt-decode";
+import { useEffect, useState } from "react";
+
+// SECURITY NOTE: This file no longer reads the JWT from localStorage.
+// User session data now comes exclusively from the server-verified
+// /api/auth/me endpoint, which reads the httpOnly cookie server-side.
+// The legacy localStorage token (src/utils/auth.ts) still exists for
+// the old pre-dashboard auth flow and is a separate, larger fix -
+// flagged for future cleanup, out of scope here.
 
 export type DashboardRole = "superAdmin" | "editor" | "intern" | "admin";
 
@@ -12,42 +19,56 @@ export type DashboardUser = {
   avatar?: string;
 };
 
-const getCookieValue = (name: string) => {
-  if (typeof document === "undefined") return null;
-
-  return (
-    document.cookie
-      .split("; ")
-      .find((cookie) => cookie.startsWith(`${name}=`))
-      ?.split("=")[1] || null
-  );
+type CurrentUserState = {
+  user: DashboardUser | null;
+  loading: boolean;
+  error: string | null;
 };
 
-const getStoredAccessToken = () => {
-  if (typeof window === "undefined") return null;
+export const useCurrentDashboardUser = () => {
+  const [state, setState] = useState<CurrentUserState>({
+    user: null,
+    loading: true,
+    error: null,
+  });
 
-  return localStorage.getItem("accessToken") || getCookieValue("accessToken");
-};
+  useEffect(() => {
+    let mounted = true;
 
-export const getCurrentDashboardUser = () => {
-  const token = getStoredAccessToken();
-  if (!token) return null;
+    const loadCurrentUser = async () => {
+      try {
+        const response = await fetch("/api/auth/me", {
+          credentials: "include",
+        });
 
-  try {
-    const decoded = jwtDecode<Partial<DashboardUser>>(decodeURIComponent(token));
+        if (!response.ok) {
+          throw new Error("Unauthorized");
+        }
 
-    if (!decoded.email || !decoded.role) return null;
+        const user = (await response.json()) as DashboardUser;
 
-    return {
-      id: decoded.id || "",
-      name: decoded.name || decoded.email,
-      email: decoded.email,
-      role: decoded.role,
-      avatar: decoded.avatar,
-    } as DashboardUser;
-  } catch {
-    return null;
-  }
+        if (mounted) {
+          setState({ user, loading: false, error: null });
+        }
+      } catch (error: any) {
+        if (mounted) {
+          setState({
+            user: null,
+            loading: false,
+            error: error?.message || "Unauthorized",
+          });
+        }
+      }
+    };
+
+    loadCurrentUser();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  return state;
 };
 
 export const getRoleBadgeClass = (role: string) => {

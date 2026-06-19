@@ -1,6 +1,6 @@
 "use client";
 
-import { getCurrentDashboardUser } from "@/dashboard/auth";
+import { useCurrentDashboardUser } from "@/dashboard/auth";
 import {
   formatLastLogin,
   RoleBadge,
@@ -12,24 +12,24 @@ import {
 import { Button, Card, CardContent, CardHeader } from "@/dashboard/ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function UsersPage() {
   const router = useRouter();
-  const currentUser = useMemo(() => getCurrentDashboardUser(), []);
+  const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteUser, setDeleteUser] = useState<UserRecord | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (userLoading || !currentUser) return;
     if (currentUser.role !== "superAdmin") router.replace("/settings");
-  }, [currentUser, router]);
+  }, [currentUser, router, userLoading]);
 
   useEffect(() => {
-    if (!currentUser || currentUser.role !== "superAdmin") return;
+    if (userLoading || !currentUser || currentUser.role !== "superAdmin") return;
 
     let mounted = true;
 
@@ -57,7 +57,7 @@ export default function UsersPage() {
     return () => {
       mounted = false;
     };
-  }, [currentUser]);
+  }, [currentUser, userLoading]);
 
   const handleDelete = async () => {
     if (!deleteUser) return;
@@ -84,6 +84,18 @@ export default function UsersPage() {
       setDeleting(false);
     }
   };
+
+  if (userLoading) {
+    return (
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+        <Card>
+          <CardContent className="pt-4">
+            <UsersSkeleton />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   if (!currentUser || currentUser.role !== "superAdmin") return null;
 
