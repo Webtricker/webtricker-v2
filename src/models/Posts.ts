@@ -10,7 +10,7 @@ interface IPost {
     height?: number;
     url?: string;
   };
-  tags: string[];
+  tags: mongoose.Types.ObjectId[];
   postType: 'service' | 'blog';
   category: { _id: mongoose.Types.ObjectId; name: string };
   content: string;
@@ -39,7 +39,7 @@ const PostSchema = new mongoose.Schema<IPost>({
     height: { type: Number },
     url: { type: String },
   },
-  tags: { type: [String], default: [] },
+  tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag', default: [] }],
   postType: { type: String, enum: ['service', 'blog'], required: true },
   category: {
     type: mongoose.Schema.Types.ObjectId,

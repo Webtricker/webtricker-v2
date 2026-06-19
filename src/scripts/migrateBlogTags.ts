@@ -1,18 +1,35 @@
-import connectToDatabase from "@/lib/dbConnect";
-import Post from "@/models/Posts";
-import Tag from "@/models/Tag";
-import { makeSlug } from "@/utils/blog";
 import mongoose from "mongoose";
+import { makeSlug } from "../utils/blog";
 
 const defaultTagColor = "#4F46E5";
 
-const normalizeTagName = (value: string) => value.trim();
+const canonicalizeTagName = (value: string) => {
+  const trimmed = value.trim();
+  return trimmed.toLowerCase() === "programing" ? "Programming" : trimmed;
+};
+
+const normalizeTagName = (value: string) => canonicalizeTagName(value);
 const normalizeTagKey = (value: string) => normalizeTagName(value).toLowerCase();
+const escapeRegex = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+const connectToDatabase = async () => {
+  if (!process.env.MONGODB_URI) {
+    throw new Error("MONGODB_URI is required.");
+  }
+
+  await mongoose.connect(process.env.MONGODB_URI);
+};
 
 const migrateBlogTags = async () => {
   await connectToDatabase();
 
-  const posts = await Post.find({ postType: "blog" }).select("title slug tags");
+  const postsCollection = mongoose.connection.collection("posts");
+  const tagsCollection = mongoose.connection.collection("tags");
+
+  const posts = await postsCollection
+    .find({ postType: "blog" }, { projection: { title: 1, slug: 1, tags: 1 } })
+    .toArray();
+
   const uniqueTagNames = Array.from(
     new Set(
       posts.flatMap((post) =>
@@ -30,8 +47,8 @@ const migrateBlogTags = async () => {
   const tagsCreated: string[] = [];
 
   for (const tagName of uniqueTagNames) {
-    const existingTag = await Tag.findOne({
-      name: { $regex: `^${tagName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`, $options: "i" },
+    const existingTag = await tagsCollection.findOne({
+      name: { $regex: `^${escapeRegex(tagName)}$`, $options: "i" },
     });
 
     if (existingTag) {
@@ -39,13 +56,18 @@ const migrateBlogTags = async () => {
       continue;
     }
 
-    const createdTag = await Tag.create({
+    const tagId = new mongoose.Types.ObjectId();
+
+    await tagsCollection.insertOne({
+      _id: tagId,
       name: tagName,
       slug: makeSlug(tagName),
       color: defaultTagColor,
+      postCount: 0,
+      createdAt: new Date(),
     });
 
-    tagMap.set(normalizeTagKey(tagName), createdTag._id as mongoose.Types.ObjectId);
+    tagMap.set(normalizeTagKey(tagName), tagId);
     tagsCreated.push(tagName);
   }
 
@@ -66,7 +88,7 @@ const migrateBlogTags = async () => {
       })
       .filter(Boolean);
 
-    await Post.collection.updateOne(
+    await postsCollection.updateOne(
       { _id: post._id },
       { $set: { tags: nextTags } }
     );
@@ -89,8 +111,12 @@ const migrateBlogTags = async () => {
 };
 
 migrateBlogTags()
-  .then(() => process.exit(0))
-  .catch((error) => {
+  .then(async () => {
+    await mongoose.disconnect();
+    process.exit(0);
+  })
+  .catch(async (error) => {
     console.error("Failed to migrate blog tags:", error);
+    await mongoose.disconnect();
     process.exit(1);
   });
