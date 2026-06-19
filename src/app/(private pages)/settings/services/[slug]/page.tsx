@@ -1,34 +1,136 @@
-import React from "react";
-import PrivatePageWrapper from "@/app/(private pages)/components/PrivatePageWrapper";
-import { IService } from "@/types/post";
-import NoBlogFoundMsg from "@/app/(public pages)/blog/[slug]/components/NoBlogFoundMsg";
-import EditServicePage from "./components/EditServicePage";
+"use client";
 
-const getServiceData = async (slug: string) => {
-  // You can fetch data here on the server f
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/services/${slug}`
-    );
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error, " Error fetching data");
-  }
-  return null;
-};
+import { Button, Card, CardContent } from "@/dashboard/ui";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import ServiceForm, {
+  ServiceFormValues,
+  emptyServiceValues,
+} from "../components/ServiceForm";
 
-export default async function SingleServicePage({ params }) {
-  const { slug } = await params;
+const normalizeServiceValues = (service: any): ServiceFormValues => ({
+  ...emptyServiceValues,
+  title: service?.title || "",
+  slug: service?.slug || "",
+  icon: service?.icon || "",
+  thumnail: service?.thumnail?.url || "",
+  thumbnailAlt: service?.thumbnailAlt || "",
+  thumbnailTitle: service?.thumbnailTitle || "",
+  category: service?.category || "",
+  tags: Array.isArray(service?.tags)
+    ? service.tags.map((tag: any) => String(tag?.id || tag?._id || tag))
+    : [],
+  excerpt: service?.excerpt || "",
+  subServices: Array.isArray(service?.subServices) ? service.subServices : [],
+  content: service?.content || "",
+  seoTitle: service?.seoTitle || "",
+  seoDescription: service?.seoDescription || "",
+  focusKeyword: service?.focusKeyword || "",
+  canonicalUrl: service?.canonicalUrl || "",
+  ogImage: service?.ogImage || "",
+  ogImageAlt: service?.ogImageAlt || "",
+});
 
-  const data = await getServiceData(slug);
-  if (!data?.service) return <NoBlogFoundMsg msg="No service found" key="SERVICE_MSG"  />;
-  const service = data.service || ({} as IService);
+export default function EditServicePage() {
+  const params = useParams<{ slug: string }>();
+  const router = useRouter();
+  const [values, setValues] = useState<ServiceFormValues | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadService = async () => {
+      try {
+        const response = await fetch(`/api/services/${params.slug}`, {
+          credentials: "include",
+        });
+        const data = await response.json();
+
+        if (!response.ok || !data.service) {
+          throw new Error(data.message || "Failed to load service");
+        }
+
+        if (mounted) setValues(normalizeServiceValues(data.service));
+      } catch (error: any) {
+        toast.error(error?.message || "Failed to load service");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+
+    loadService();
+
+    return () => {
+      mounted = false;
+    };
+  }, [params.slug]);
+
+  const handleSubmit = async (nextValues: ServiceFormValues) => {
+    setSubmitting(true);
+
+    try {
+      const response = await fetch(`/api/services/${params.slug}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(nextValues),
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to update service");
+      }
+
+      toast.success("Service updated");
+      router.push("/settings/services");
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to update service");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <PrivatePageWrapper>
-      <div className="w-full flex flex-col lg:px-10 gap-5 lg:gap-20">
-        <EditServicePage service={service} />
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
+      <div className="flex items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
+            Edit Service
+          </h1>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Update service content, media, tags, and SEO metadata.
+          </p>
+        </div>
+        <Button asChild variant="secondary">
+          <Link href="/settings/services">Back</Link>
+        </Button>
       </div>
-    </PrivatePageWrapper>
+
+      {loading ? (
+        <Card>
+          <CardContent className="pt-4">
+            <div className="h-64 animate-pulse rounded-md bg-zinc-200 dark:bg-zinc-800" />
+          </CardContent>
+        </Card>
+      ) : values ? (
+        <ServiceForm
+          title="Service Details"
+          description="Write the service content and metadata."
+          initialValues={values}
+          submitting={submitting}
+          onSubmit={handleSubmit}
+        />
+      ) : (
+        <Card>
+          <CardContent className="pt-4 text-sm text-zinc-500 dark:text-zinc-400">
+            Service not found.
+          </CardContent>
+        </Card>
+      )}
+    </div>
   );
 }

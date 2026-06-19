@@ -34,7 +34,11 @@ export default function EditServicePage({ service }: { service: IService }) {
 
   //   hook
   const [des, setDes] = useState(service.description || "");
-  const [tags, setTags] = useState<string[]>(service.tags || []);
+  const [tags, setTags] = useState<string[]>(
+    (service.tags || []).map((tag) =>
+      typeof tag === "string" ? tag : tag.name
+    )
+  );
   const [keyServices, setKeyServices] = useState<string[]>(
     service.subServices || []
   );

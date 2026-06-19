@@ -11,9 +11,19 @@ interface IService {
     height?: number;
     url?: string;
   };
-  tags: string[];
+  tags: mongoose.Types.ObjectId[];
   category: string;
   content: string;
+  focusKeyword?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  thumbnailAlt?: string;
+  thumbnailTitle?: string;
+  featured: boolean;
+  published: boolean;
 }
 
 const ServiceSchema = new mongoose.Schema<IService>(
@@ -29,13 +39,26 @@ const ServiceSchema = new mongoose.Schema<IService>(
       height: { type: Number },
       url: { type: String },
     },
-    tags: { type: [String], default: [] },
+    tags: {
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+      default: [],
+    },
     category: {
       type: String,
       required: true,
       unique: true,
     },
     content: { type: String, required: true },
+    focusKeyword: { type: String },
+    seoTitle: { type: String },
+    seoDescription: { type: String },
+    canonicalUrl: { type: String },
+    ogImage: { type: String },
+    ogImageAlt: { type: String },
+    thumbnailAlt: { type: String },
+    thumbnailTitle: { type: String },
+    featured: { type: Boolean, default: false },
+    published: { type: Boolean, default: false },
   },
   {
     timestamps: true,

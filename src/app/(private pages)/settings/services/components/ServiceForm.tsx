@@ -1,0 +1,154 @@
+"use client";
+
+import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import { Button, Card, CardContent, CardHeader } from "@/dashboard/ui";
+import { useState } from "react";
+
+export type ServiceFormValues = {
+  title: string;
+  slug: string;
+  icon: string;
+  thumnail: string;
+  thumbnailAlt?: string;
+  thumbnailTitle?: string;
+  category: string;
+  tags: string[];
+  excerpt?: string;
+  subServices: string[];
+  content: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+};
+
+const serviceFields: FieldConfig[] = [
+  { name: "title", type: "text", required: true, label: "Service Title" },
+  { name: "slug", type: "slug", source: "title", required: true, label: "URL Slug" },
+  { name: "icon", type: "image", required: true, label: "Service Icon" },
+  {
+    name: "thumnail",
+    type: "image",
+    required: true,
+    label: "Featured Image",
+    altField: "thumbnailAlt",
+    titleField: "thumbnailTitle",
+  },
+  { name: "thumbnailAlt", type: "text", label: "Image Alt Text", optional: true },
+  { name: "thumbnailTitle", type: "text", label: "Image Title", optional: true },
+  { name: "category", type: "text", required: true, label: "Category" },
+  { name: "tags", type: "tags", label: "Tags", optional: true },
+  { name: "excerpt", type: "textarea", label: "Excerpt", optional: true },
+  {
+    name: "subServices",
+    type: "tags",
+    collection: "none",
+    label: "Sub-Services",
+    optional: true,
+  },
+  { name: "content", type: "richtext", required: true, label: "Content" },
+  { name: "seoTitle", type: "text", label: "SEO Title", maxLength: 60, group: "SEO" },
+  {
+    name: "seoDescription",
+    type: "textarea",
+    label: "Meta Description",
+    maxLength: 160,
+    group: "SEO",
+  },
+  { name: "focusKeyword", type: "text", label: "Focus Keyword", group: "SEO", optional: true },
+  { name: "canonicalUrl", type: "url", label: "Canonical URL", group: "SEO", optional: true },
+  { name: "ogImage", type: "image", label: "OG Image (1200x630)", group: "SEO", optional: true },
+];
+
+export const emptyServiceValues: ServiceFormValues = {
+  title: "",
+  slug: "",
+  icon: "",
+  thumnail: "",
+  thumbnailAlt: "",
+  thumbnailTitle: "",
+  category: "",
+  tags: [],
+  excerpt: "",
+  subServices: [],
+  content: "",
+  seoTitle: "",
+  seoDescription: "",
+  focusKeyword: "",
+  canonicalUrl: "",
+  ogImage: "",
+  ogImageAlt: "",
+};
+
+export default function ServiceForm({
+  title,
+  description,
+  initialValues = emptyServiceValues,
+  submitting,
+  onSubmit,
+}: {
+  title: string;
+  description: string;
+  initialValues?: ServiceFormValues;
+  submitting: boolean;
+  onSubmit: (values: ServiceFormValues) => Promise<void>;
+}) {
+  const [values, setValues] = useState<ServiceFormValues>({
+    ...emptyServiceValues,
+    ...initialValues,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const updateValue = (name: string, value: any) => {
+    setValues((current) => ({ ...current, [name]: value }));
+  };
+
+  const validate = () => {
+    const nextErrors: Record<string, string> = {};
+    if (!values.title) nextErrors.title = "Title is required";
+    if (!values.slug) nextErrors.slug = "Slug is required";
+    if (!values.icon) nextErrors.icon = "Service icon is required";
+    if (!values.thumnail) nextErrors.thumnail = "Featured image is required";
+    if (!values.category) nextErrors.category = "Category is required";
+    if (!values.content) nextErrors.content = "Content is required";
+    setErrors(nextErrors);
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <h1 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">
+          {title}
+        </h1>
+        <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          {description}
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form
+          className="grid gap-5"
+          onSubmit={async (event) => {
+            event.preventDefault();
+            if (!validate()) return;
+            await onSubmit(values);
+          }}
+        >
+          <FormBuilder
+            fields={serviceFields}
+            values={values}
+            onChange={updateValue}
+            errors={errors}
+          />
+          <div className="flex justify-end">
+            <Button type="submit" disabled={submitting}>
+              {submitting ? "Saving..." : "Save Service"}
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}

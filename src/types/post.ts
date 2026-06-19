@@ -31,7 +31,7 @@ export interface TService {
   slug: string;
   description: string;
   excerpt: string;
-  tags: string[];
+  tags: (string | { id?: string; _id?: string; name: string; slug?: string; color?: string })[];
   category: string;
   icon: string;
   subServices: string[];

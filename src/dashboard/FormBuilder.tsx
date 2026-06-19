@@ -75,7 +75,7 @@ export default function FormBuilder({
   errors = {},
 }: FormBuilderProps) {
   const [remoteOptions, setRemoteOptions] = useState<Record<string, RemoteOption[]>>({});
-  const [tagInput, setTagInput] = useState("");
+  const [tagInputs, setTagInputs] = useState<Record<string, string>>({});
 
   const collections = useMemo(
     () =>
@@ -84,6 +84,7 @@ export default function FormBuilder({
           fields
             .filter((field) => field.collection || field.type === "tags")
             .map((field) => field.collection || "tags")
+            .filter((collection) => collection !== "none")
         )
       ),
     [fields]
@@ -227,8 +228,14 @@ export default function FormBuilder({
     } else if (field.type === "tags") {
       const selectedTags = Array.isArray(value) ? value : [];
       const options = remoteOptions[field.collection || "tags"] || [];
+      const usesRemoteTags = field.collection !== "none";
+      const tagInput = tagInputs[field.name] || "";
+      const setTagInput = (nextValue: string) =>
+        setTagInputs((current) => ({ ...current, [field.name]: nextValue }));
       const getTagLabel = (tagValue: string) =>
-        options.find((option) => option.value === tagValue)?.label || tagValue;
+        usesRemoteTags
+          ? options.find((option) => option.value === tagValue)?.label || tagValue
+          : tagValue;
       const inputMatch = options.find(
         (option) => option.label.toLowerCase() === tagInput.toLowerCase()
       );
@@ -259,19 +266,21 @@ export default function FormBuilder({
               value={tagInput}
               onChange={(event) => setTagInput(event.target.value)}
               className={inputClass}
-              list={`${field.name}-options`}
+              list={usesRemoteTags ? `${field.name}-options` : undefined}
             />
-            <datalist id={`${field.name}-options`}>
-              {options.map((option) => (
-                <option key={option.value} value={option.label} />
-              ))}
-            </datalist>
+            {usesRemoteTags && (
+              <datalist id={`${field.name}-options`}>
+                {options.map((option) => (
+                  <option key={option.value} value={option.label} />
+                ))}
+              </datalist>
+            )}
             <Button
               type="button"
               variant="secondary"
               onClick={async () => {
-                let nextTag = inputMatch?.value || "";
-                if (!nextTag && tagInput.trim()) {
+                let nextTag = usesRemoteTags ? inputMatch?.value || "" : tagInput.trim();
+                if (usesRemoteTags && !nextTag && tagInput.trim()) {
                   const response = await fetch("/api/tags", {
                     method: "POST",
                     credentials: "include",
