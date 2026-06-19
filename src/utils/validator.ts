@@ -39,7 +39,7 @@ export const verifyAdmin = async (req: NextRequest): Promise<true> => {
     throw new Error('Invalid or expired token');
   }
 
-  if (decoded.role !== "admin") {
+  if (!["admin", "superAdmin", "editor"].includes(decoded.role || "")) {
     throw new Error('Forbidden: Admins only');
   }
 

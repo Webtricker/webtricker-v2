@@ -15,6 +15,8 @@ export type TTeamData = {
   profile: string;
   name: string;
   role: string;
+  bio?: string;
+  linkedin?: string;
 };
 
 export type TBlog = {
@@ -66,6 +68,8 @@ export interface ITeam {
   profile: string;
   name: string;
   role: string;
+  bio?: string;
+  linkedin?: string;
 }
 
 export interface ITeamInfo extends ITeam {

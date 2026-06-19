@@ -7,6 +7,8 @@ const teamInfoSchema = new Schema<ITeam>(
         name: { type: String, required: true },
         role: { type: String, required: true },
         profile: { type: String, required: true, unique: true },
+        bio: { type: String, default: "" },
+        linkedin: { type: String, default: "" },
     },
     {
         timestamps: false,
@@ -15,4 +17,3 @@ const teamInfoSchema = new Schema<ITeam>(
 
 const Team = models.Team || model<ITeam>('Team', teamInfoSchema);
 export default Team;
-    
