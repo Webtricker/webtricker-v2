@@ -1,7 +1,6 @@
 "use client";
 
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
-import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { getRoleBadgeClass, useCurrentDashboardUser } from "./auth";
 import { Badge } from "./ui";
@@ -12,20 +11,10 @@ export default function DashboardTopBar({
 }: {
   onOpenSidebar: () => void;
 }) {
-  const pathname = usePathname();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const userName = currentUser?.name || "Admin";
   const userRole = currentUser?.role || "admin";
-  const segments = pathname
-    .split("/")
-    .filter(Boolean)
-    .map((segment) =>
-      segment
-        .split("-")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")
-    );
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", {
@@ -47,28 +36,12 @@ export default function DashboardTopBar({
         >
           <MenuIcon className="h-5 w-5" />
         </button>
-        <nav className="flex min-w-0 items-center gap-2 text-sm text-zinc-400">
-          {segments.map((segment, index) => (
-            <span key={`${segment}-${index}`} className="flex items-center gap-2">
-              {index > 0 && <span className="text-zinc-600">/</span>}
-              <span
-                className={
-                  index === segments.length - 1
-                    ? "truncate font-medium text-zinc-100"
-                    : "truncate"
-                }
-              >
-                {segment}
-              </span>
-            </span>
-          ))}
-        </nav>
+        <div className="flex h-16 items-center [&_svg]:brightness-0 [&_svg]:invert">
+          <DemoThemeToggler />
+        </div>
       </div>
 
       <div className="flex items-center gap-3">
-        <div className="[&_svg]:brightness-0 [&_svg]:invert">
-          <DemoThemeToggler />
-        </div>
         <div className="relative">
           <button
             type="button"
