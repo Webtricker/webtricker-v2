@@ -1,42 +1,40 @@
-const SITE_URL = "https://webtricker.com";
-
-const SAME_AS = [
-  "https://www.facebook.com/webtricker",
-  "https://x.com/webtricker",
-  "https://www.linkedin.com/company/webtricker",
-  "https://www.pinterest.com/webtricker",
-  "https://www.instagram.com/webtricker",
-];
-
-// NJ registered office — hardcoded from Certificate of Formation (05/22/2026)
-const NJ_OFFICE = {
-  "@type": "LocalBusiness",
-  name: "Webtricker LLC - US Office",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "971 US Highway 202N, Ste N",
-    addressLocality: "Branchburg",
-    addressRegion: "NJ",
-    postalCode: "08876",
-    addressCountry: "US",
-  },
-  // Bare local times (no UTC offset) — schema.org parsers interpret these
-  // as Eastern Time for the stated US address, which handles EST/EDT naturally.
-  openingHoursSpecification: [
-    {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "10:00",
-      closes: "19:00",
-    },
-  ],
+type SiteConfigOffice = {
+  label: string;
+  country: string;
+  streetAddress: string;
+  locality: string;
+  region: string;
+  postalCode: string;
+  addressText: string;
+  openingHours?: {
+    days: string[];
+    opens: string;
+    closes: string;
+    timezone: string;
+  }[];
 };
 
-async function fetchContactData() {
+type SiteConfig = {
+  brand: {
+    name: string;
+    legalName: string;
+    url: string;
+    description: string;
+    logo: string;
+    sameAs: string[];
+  };
+  contact: {
+    primaryEmail: string;
+    primaryPhone: string;
+  };
+  offices: SiteConfigOffice[];
+};
+
+async function fetchSiteConfig(): Promise<SiteConfig | null> {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/contact-page`,
-      // TEMP: revalidate=0 for active dev — RESET before launch (was: 86400)
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/site-config`,
+      // TEMP: revalidate=0 for active dev - RESET before launch (was: 86400)
       { next: { revalidate: 0 } }
     );
     if (!res.ok) return null;
@@ -47,66 +45,72 @@ async function fetchContactData() {
   }
 }
 
+const formatOpeningTime = (time: string, timezone: string) => {
+  if (timezone === "Asia/Dhaka" && !time.includes("+")) return `${time}+06:00`;
+  return time;
+};
+
+const mapOpeningHours = (office?: SiteConfigOffice) =>
+  office?.openingHours?.map((hours) => ({
+    "@type": "OpeningHoursSpecification",
+    dayOfWeek: hours.days,
+    opens: formatOpeningTime(hours.opens, hours.timezone),
+    closes: formatOpeningTime(hours.closes, hours.timezone),
+  })) ?? [];
+
 export default async function BusinessSchema() {
-  const data = await fetchContactData();
-  if (!data) return null;
+  const siteConfig = await fetchSiteConfig();
+  if (!siteConfig) return null;
 
   const telephone: string | undefined =
-    data?.contactNumber?.numbers?.[0] ?? undefined;
-  const email: string | undefined =
-    data?.contactMails?.mails?.[0] ?? undefined;
+    siteConfig.contact?.primaryPhone ?? undefined;
+  const email: string | undefined = siteConfig.contact?.primaryEmail ?? undefined;
 
-  // Prefer the first office whose location contains "Dhaka"; fall back to index 0.
-  const offices: { office: string; location: string }[] =
-    data?.address?.addresses ?? [];
+  const offices = siteConfig.offices ?? [];
   const primary =
-    offices.find((a) => a.location?.toLowerCase().includes("dhaka")) ??
+    offices.find((office) => office.locality?.toLowerCase().includes("dhaka")) ??
     offices[0] ??
     undefined;
+  const usOffice = offices.find((office) => office.country === "US");
 
   if (!telephone && !email && !primary) return null;
 
   const schema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Webtricker",
-    legalName: "Webtricker LLC",
-    url: SITE_URL,
-    logo: `${SITE_URL}/logo.png`,
-    description:
-      "Webtricker is a web design and development agency offering professional websites, apps, and digital solutions.",
+    name: siteConfig.brand.name,
+    legalName: siteConfig.brand.legalName,
+    url: siteConfig.brand.url,
+    logo: siteConfig.brand.logo,
+    description: siteConfig.brand.description,
     ...(telephone && { telephone }),
     ...(email && { email }),
     ...(primary && {
       address: {
         "@type": "PostalAddress",
-        streetAddress: primary.location,
-        addressLocality: "Dhaka",
-        addressCountry: "BD",
+        streetAddress: primary.addressText,
+        addressLocality: primary.locality,
+        addressCountry: primary.country,
       },
     }),
-    // BD offices: Saturday–Thursday, Asia/Dhaka (UTC+6, no DST — fixed offset is accurate)
-    openingHoursSpecification: [
-      {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Saturday",
-          "Sunday",
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-        ],
-        opens: "09:00+06:00",
-        closes: "18:00+06:00",
+    openingHoursSpecification: mapOpeningHours(primary),
+    ...(usOffice && {
+      location: {
+        "@type": "LocalBusiness",
+        name: `${siteConfig.brand.legalName} - ${usOffice.label}`,
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: usOffice.streetAddress,
+          addressLocality: usOffice.locality,
+          addressRegion: usOffice.region,
+          postalCode: usOffice.postalCode,
+          addressCountry: usOffice.country,
+        },
+        openingHoursSpecification: mapOpeningHours(usOffice),
+        ...(telephone && { telephone }),
       },
-    ],
-    // NJ registered office with its own US calling hours
-    location: {
-      ...NJ_OFFICE,
-      ...(telephone && { telephone }),
-    },
-    sameAs: SAME_AS,
+    }),
+    sameAs: siteConfig.brand.sameAs,
   };
 
   return (
