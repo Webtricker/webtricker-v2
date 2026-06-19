@@ -43,7 +43,9 @@ export const GET = async (
     try {
         await connectToDatabase();
 
-        const res = await Post.findOne({ slug }).populate('category');
+        const res = await Post.findOne({ slug })
+            .populate('category')
+            .populate('tags');
 
         if (!res) {
             return NextResponse.json(
@@ -163,7 +165,9 @@ export const PUT = async (
                 new: true, // return the updated document
                 runValidators: true,
             }
-        ).populate("category");
+        )
+            .populate("category")
+            .populate("tags");
 
         if (!updatedPost) {
             return NextResponse.json(

@@ -106,6 +106,7 @@ export const GET = async (req: NextRequest) => {
         .skip(skip)
         .limit(limit)
         .populate("category")
+        .populate("tags")
         .lean(),
     ]);
 
