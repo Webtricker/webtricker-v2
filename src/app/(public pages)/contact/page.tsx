@@ -12,6 +12,50 @@ import { IContactPage } from "@/types/pageTypes";
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
 export const revalidate = 0;
 
+type SiteConfig = {
+  contact?: {
+    phones?: string[];
+    emails?: string[];
+  };
+  offices?: {
+    label: string;
+    addressText: string;
+  }[];
+  socialLinks?: {
+    platform: string;
+    href: string;
+    isExternal: boolean;
+  }[];
+};
+
+const socialIcons: Record<string, string> = {
+  facebook:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394774/bpcdltvbsjzlht4vjwxa.svg",
+  x: "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/bjzfmm45zgjhpyzrlth3.svg",
+  linkedin:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394772/jml2zlqdmneozvp51u8k.svg",
+  pinterest:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/p70y0hwlyepiaog0mkwd.svg",
+  instagram:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/fzxc3um5pqkfdj2h78zh.svg",
+  youtube:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/hudakq7c0esdgepdk1xb.svg",
+};
+
+async function fetchSiteConfig(): Promise<SiteConfig | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/site-config`,
+      { next: { revalidate: 0 } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
 export const metadata: Metadata = {
   title: "Talk to Us: Contact Webtricker Today",
   description:
@@ -62,6 +106,20 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const contactPageData = (await getContactPageData()) as IContactPage;
+  const siteConfig = await fetchSiteConfig();
+  const offices = siteConfig?.offices ?? [];
+  const phones = siteConfig?.contact?.phones ?? [];
+  const emails = siteConfig?.contact?.emails ?? [];
+  const sidePanelData = {
+    text: contactPageData?.leftPanel?.text,
+    socialLinks:
+      siteConfig?.socialLinks
+        ?.map((link) => ({
+          icon: socialIcons[link.platform],
+          href: link.href,
+        }))
+        .filter((link) => Boolean(link.icon)) ?? [],
+  };
 
   return (
     <main className="w-full z-0">
@@ -106,7 +164,7 @@ export default async function ContactPage() {
             </div>
           </div>
         </Container>
-        <ContactCTABtns sidePanelData={contactPageData?.leftPanel} />
+        <ContactCTABtns sidePanelData={sidePanelData} />
       </div>
       <div className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
         <Container className="">
@@ -134,9 +192,9 @@ export default async function ContactPage() {
                   <h6 className="heading mb-1">
                     {contactPageData?.address?.title}
                   </h6>
-                  {contactPageData?.address?.addresses?.map((addr) => (
-                    <address className="not-italic" key={addr?.location}>
-                      <strong>{addr?.office}</strong>: {addr?.location}
+                  {offices.map((office) => (
+                    <address className="not-italic" key={office.addressText}>
+                      <strong>{office.label}</strong>: {office.addressText}
                     </address>
                   ))}
                 </div>
@@ -160,7 +218,7 @@ export default async function ContactPage() {
                   <h6 className="heading mb-1">
                     {contactPageData?.contactNumber?.title}
                   </h6>
-                  {contactPageData?.contactNumber?.numbers?.map((num) => (
+                  {phones.map((num) => (
                     <a
                       key={num}
                       href={`tel:${num}`}
@@ -190,7 +248,7 @@ export default async function ContactPage() {
                   <h6 className="heading mb-1">
                     {contactPageData?.contactMails?.title}
                   </h6>
-                  {contactPageData?.contactMails?.mails?.map((mail) => (
+                  {emails.map((mail) => (
                     <Link
                       key={mail}
                       title="Email"
