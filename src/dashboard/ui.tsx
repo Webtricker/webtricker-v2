@@ -40,7 +40,7 @@ export const CardContent = ({
   children: React.ReactNode;
 }) => <div className={cn("p-4 pt-2", className)}>{children}</div>;
 
-type ButtonProps = {
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   asChild?: boolean;
   children: React.ReactNode;
   className?: string;
@@ -52,6 +52,7 @@ export const Button = ({
   children,
   className,
   variant = "primary",
+  ...props
 }: ButtonProps) => {
   const baseClass = cn(
     "inline-flex min-h-11 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition",
@@ -67,7 +68,11 @@ export const Button = ({
     });
   }
 
-  return <button className={baseClass}>{children}</button>;
+  return (
+    <button className={baseClass} {...props}>
+      {children}
+    </button>
+  );
 };
 
 export const Skeleton = ({ className }: { className?: string }) => (

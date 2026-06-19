@@ -3,6 +3,7 @@
 import DemoThemeToggler from "@/tests/DemoThemeToggler";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { getCurrentDashboardUser, getRoleBadgeClass } from "./auth";
 import { Badge } from "./ui";
 import { MenuIcon } from "./icons";
 
@@ -13,6 +14,9 @@ export default function DashboardTopBar({
 }) {
   const pathname = usePathname();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const currentUser = getCurrentDashboardUser();
+  const userName = currentUser?.name || "Admin";
+  const userRole = currentUser?.role || "admin";
   const segments = pathname
     .split("/")
     .filter(Boolean)
@@ -28,6 +32,7 @@ export default function DashboardTopBar({
       method: "GET",
       credentials: "include",
     });
+    localStorage.removeItem("accessToken");
     window.location.href = "/";
   };
 
@@ -72,11 +77,22 @@ export default function DashboardTopBar({
             aria-expanded={userMenuOpen}
             aria-haspopup="menu"
           >
-            <div className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-xs font-semibold text-zinc-950">
-              A
-            </div>
-            <Badge className="hidden border-zinc-500 bg-zinc-800 !text-white sm:inline-flex">
-              Admin
+            {currentUser?.avatar ? (
+              <img
+                src={currentUser.avatar}
+                alt={userName}
+                className="h-8 w-8 rounded-full object-cover"
+              />
+            ) : (
+              <div className="grid h-8 w-8 place-items-center rounded-full bg-zinc-100 text-xs font-semibold text-zinc-950">
+                {userName.charAt(0).toUpperCase()}
+              </div>
+            )}
+            <span className="hidden max-w-32 truncate text-sm font-medium text-zinc-100 md:inline">
+              {userName}
+            </span>
+            <Badge className={`hidden sm:inline-flex ${getRoleBadgeClass(userRole)}`}>
+              {userRole}
             </Badge>
           </button>
           {userMenuOpen && (

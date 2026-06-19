@@ -16,6 +16,7 @@ import {
   CardHeader,
   Skeleton,
 } from "@/dashboard/ui";
+import { getCurrentDashboardUser } from "@/dashboard/auth";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -45,6 +46,11 @@ const stats: StatConfig[] = [
     label: "Total Team Members",
     endpoint: "/api/teams",
     Icon: UsersIcon,
+  },
+  {
+    label: "Total Users",
+    endpoint: "/api/users",
+    Icon: UserPlusIcon,
   },
 ];
 
@@ -88,6 +94,7 @@ const getCountFromResponse = (data: unknown) => {
     record.portfolios,
     record.services,
     record.teamData,
+    record.users,
     record.data,
   ];
 
@@ -102,6 +109,8 @@ export default function SettingsPage() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const greeting = useMemo(() => getGreeting(), []);
+  const currentUser = getCurrentDashboardUser();
+  const userName = currentUser?.name || "Admin";
 
   useEffect(() => {
     let mounted = true;
@@ -110,7 +119,9 @@ export default function SettingsPage() {
       const entries = await Promise.all(
         stats.map(async (item) => {
           try {
-            const response = await fetch(item.endpoint);
+            const response = await fetch(item.endpoint, {
+              credentials: "include",
+            });
             if (!response.ok) return [item.label, 0] as const;
             const data = await response.json();
             return [item.label, getCountFromResponse(data)] as const;
@@ -137,7 +148,7 @@ export default function SettingsPage() {
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
       <section className="!bg-transparent pb-5">
         <h1 className="!text-2xl font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
-          {greeting}, Admin
+          {greeting}, {userName}
         </h1>
         <p className="mt-2 max-w-2xl !text-sm text-zinc-500 dark:text-zinc-400">
           Manage Webtricker content, media, settings, and future SEO tools from
@@ -145,7 +156,7 @@ export default function SettingsPage() {
         </p>
       </section>
 
-      <section className="grid grid-cols-2 gap-3 md:gap-4 xl:grid-cols-4">
+      <section className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
         {stats.map(({ label, Icon }) => (
           <Card
             key={label}

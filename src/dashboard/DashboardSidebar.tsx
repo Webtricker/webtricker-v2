@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useRef, type WheelEvent } from "react";
+import { getCurrentDashboardUser } from "./auth";
 import { dashboardNav } from "./dashboardNav";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "./icons";
 
@@ -20,6 +21,19 @@ const isActivePath = (pathname: string, href: string) => {
   return pathname === href || pathname.startsWith(`${href}/`);
 };
 
+const getVisibleNav = (role: string) => {
+  if (role === "superAdmin" || role === "admin") return dashboardNav;
+
+  const allowedGroups =
+    role === "editor"
+      ? ["", "Content", "Pages", "Site Settings", "Media"]
+      : role === "intern"
+        ? ["Content"]
+        : [];
+
+  return dashboardNav.filter((group) => allowedGroups.includes(group.label));
+};
+
 export default function DashboardSidebar({
   collapsed,
   open,
@@ -28,6 +42,8 @@ export default function DashboardSidebar({
 }: DashboardSidebarProps) {
   const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
+  const currentUser = getCurrentDashboardUser();
+  const visibleNav = currentUser ? getVisibleNav(currentUser.role) : [];
 
   const handleSidebarWheel = (event: WheelEvent<HTMLElement>) => {
     const nav = navRef.current;
@@ -91,7 +107,7 @@ export default function DashboardSidebar({
             ref={navRef}
             className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 py-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            {dashboardNav.map((group) => (
+            {visibleNav.map((group) => (
               <div key={group.label} className="mb-5">
                 {group.label && !collapsed && (
                   <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-zinc-500">
