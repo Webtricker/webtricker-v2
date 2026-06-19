@@ -32,6 +32,8 @@ export interface FieldConfig {
   options?: { label: string; value: string }[];
   collection?: string;
   default?: any;
+  altField?: string;
+  titleField?: string;
 }
 
 interface FormBuilderProps {
@@ -202,14 +204,17 @@ export default function FormBuilder({
         />
       );
     } else if (field.type === "image") {
+      const altField = field.altField || `${field.name}Alt`;
+      const titleField = field.titleField || `${field.name}Title`;
+
       control = (
         <ImageUploader
           value={value}
           onChange={(nextValue) => onChange(field.name, nextValue)}
-          altText={values[`${field.name}Alt`] || values.name || ""}
-          onAltTextChange={(nextValue) => onChange(`${field.name}Alt`, nextValue)}
-          titleText={values[`${field.name}Title`] || ""}
-          onTitleTextChange={(nextValue) => onChange(`${field.name}Title`, nextValue)}
+          altText={values[altField] || values.name || ""}
+          onAltTextChange={(nextValue) => onChange(altField, nextValue)}
+          titleText={values[titleField] || ""}
+          onTitleTextChange={(nextValue) => onChange(titleField, nextValue)}
         />
       );
     } else if (field.type === "richtext") {
@@ -222,6 +227,8 @@ export default function FormBuilder({
     } else if (field.type === "tags") {
       const selectedTags = Array.isArray(value) ? value : [];
       const options = remoteOptions[field.collection || "tags"] || [];
+      const getTagLabel = (tagValue: string) =>
+        options.find((option) => option.value === tagValue)?.label || tagValue;
       const inputMatch = options.find(
         (option) => option.label.toLowerCase() === tagInput.toLowerCase()
       );
@@ -231,7 +238,7 @@ export default function FormBuilder({
           <div className="flex flex-wrap gap-2">
             {selectedTags.map((tag: string) => (
               <Badge key={tag}>
-                {tag}
+                {getTagLabel(tag)}
                 <button
                   type="button"
                   className="ml-2"
@@ -262,8 +269,29 @@ export default function FormBuilder({
             <Button
               type="button"
               variant="secondary"
-              onClick={() => {
-                const nextTag = inputMatch?.value || tagInput.trim();
+              onClick={async () => {
+                let nextTag = inputMatch?.value || "";
+                if (!nextTag && tagInput.trim()) {
+                  const response = await fetch("/api/tags", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name: tagInput.trim() }),
+                  });
+                  const data = await response.json();
+                  nextTag = data?.tag?.id || "";
+
+                  if (nextTag) {
+                    setRemoteOptions((current) => ({
+                      ...current,
+                      tags: [
+                        ...(current.tags || []),
+                        { label: data.tag.name, value: data.tag.id, slug: data.tag.slug },
+                      ],
+                    }));
+                  }
+                }
+
                 if (!nextTag || selectedTags.includes(nextTag)) return;
                 onChange(field.name, [...selectedTags, nextTag]);
                 setTagInput("");

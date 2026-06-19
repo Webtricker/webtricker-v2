@@ -3,7 +3,35 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
 import Post from "@/models/Posts";
 import { verifyAdmin } from "@/utils/validator";
+import mongoose from "mongoose";
 
+const stripHtml = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+const asObjectId = (value: unknown) =>
+    typeof value === "string" && mongoose.Types.ObjectId.isValid(value)
+        ? new mongoose.Types.ObjectId(value)
+        : value;
+
+const normalizeThumbnail = (value: unknown) => {
+    if (typeof value === "string") return { url: value };
+    return value;
+};
+
+const normalizePostPayload = (body: Record<string, any>) => {
+    const plainContent = stripHtml(body.content || "");
+    const description =
+        body.description || body.seoDescription || body.excerp || plainContent.slice(0, 160);
+    const excerp = body.excerp || body.seoDescription || plainContent.slice(0, 160);
+
+    return {
+        ...body,
+        description,
+        excerp,
+        thumnail: normalizeThumbnail(body.thumnail),
+        category: asObjectId(body.category),
+        tags: Array.isArray(body.tags) ? body.tags.map(asObjectId) : [],
+    };
+};
 
 export const GET = async (
     req: NextRequest,
@@ -130,7 +158,7 @@ export const PUT = async (
 
         const updatedPost = await Post.findOneAndUpdate(
             { slug },
-            { $set: body },
+            { $set: normalizePostPayload(body) },
             {
                 new: true, // return the updated document
                 runValidators: true,
