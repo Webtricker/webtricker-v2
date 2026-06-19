@@ -47,10 +47,24 @@ const isUsPhone = (phone: string) => {
   return digits.length === 11 && digits.startsWith("1");
 };
 
-const orderPhonesByRegion = (phones: string[]) => [
-  ...phones.filter(isUsPhone),
-  ...phones.filter((phone) => !isUsPhone(phone)),
-];
+const formatPhone = (phone: string) => {
+  const digits = phone.replace(/\D/g, "");
+
+  if (digits.length === 11 && digits.startsWith("1")) {
+    return `+1 (${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
+  }
+
+  return phone;
+};
+
+const orderPhonesByRegion = (phones: string[]) => {
+  const formattedPhones = phones.map(formatPhone);
+
+  return [
+    ...formattedPhones.filter(isUsPhone),
+    ...formattedPhones.filter((phone) => !isUsPhone(phone)),
+  ];
+};
 
 const platformFromUrl = (href: string) => {
   const normalized = href.toLowerCase();

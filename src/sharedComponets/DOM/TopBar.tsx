@@ -5,6 +5,7 @@ import Link from "next/link";
 type SiteConfig = {
   contact?: {
     primaryPhone?: string;
+    phones?: string[];
     primaryEmail?: string;
   };
   socialLinks?: {
@@ -49,10 +50,17 @@ async function fetchSiteConfig(): Promise<SiteConfig | null> {
 
 async function TopBar() {
   const siteConfig = await fetchSiteConfig();
+  const phones = siteConfig?.contact?.phones ?? [];
+  const primaryUsPhone = phones[0] ?? siteConfig?.contact?.primaryPhone;
+  const primaryBdPhone = phones.find((phone) => phone.startsWith("+880"));
   const contactLinks = [
-    siteConfig?.contact?.primaryPhone && {
+    primaryUsPhone && {
       icon: contactIcons.phone,
-      text: siteConfig.contact.primaryPhone,
+      text: primaryUsPhone,
+    },
+    primaryBdPhone && {
+      icon: contactIcons.phone,
+      text: primaryBdPhone,
     },
     siteConfig?.contact?.primaryEmail && {
       icon: contactIcons.email,
