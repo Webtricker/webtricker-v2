@@ -4,7 +4,6 @@ import Link from "next/link";
 import NewsLetterForm from "./NewsLetterForm";
 import BouncingText from "../effects/BouncingText";
 import {
-  getContactPageData,
   getPublicFooterData,
   getServicesData,
 } from "@/utils/pageData";
@@ -12,11 +11,54 @@ import { footerServicesLink, TFooterService } from "@/data/pageData";
 import { IService } from "@/types/post";
 import Image from "next/image";
 import { IFooter } from "@/types/componentsType";
-import { IContactPage } from "@/types/pageTypes";
 import footerBg from "@/assets/images/footer/footer-bg.svg";
 import pinIcon from "@/assets/images/footer/pin-icon.svg";
 import phoneIcon from "@/assets/images/footer/phone-icon.svg";
 import emailIcon from "@/assets/images/footer/email-icon.svg";
+
+type SiteConfig = {
+  contact?: {
+    emails?: string[];
+    phones?: string[];
+  };
+  offices?: {
+    label: string;
+    addressText: string;
+  }[];
+  socialLinks?: {
+    platform: string;
+    href: string;
+    isExternal: boolean;
+  }[];
+};
+
+const socialIcons: Record<string, string> = {
+  facebook:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394774/bpcdltvbsjzlht4vjwxa.svg",
+  x: "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/bjzfmm45zgjhpyzrlth3.svg",
+  linkedin:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394772/jml2zlqdmneozvp51u8k.svg",
+  pinterest:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/p70y0hwlyepiaog0mkwd.svg",
+  instagram:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/fzxc3um5pqkfdj2h78zh.svg",
+  youtube:
+    "https://res.cloudinary.com/dnfvjnaki/raw/upload/v1756394773/hudakq7c0esdgepdk1xb.svg",
+};
+
+async function fetchSiteConfig(): Promise<SiteConfig | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/site-config`,
+      { next: { revalidate: 0 } }
+    );
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json?.data ?? null;
+  } catch {
+    return null;
+  }
+}
 
 export default async function Footer() {
   const services = (await getServicesData(4)) as IService[];
@@ -28,8 +70,12 @@ export default async function Footer() {
 
   // footer data
   const footerData = (await getPublicFooterData()) as IFooter;
-  const contactPageData = (await getContactPageData()) as IContactPage;
+  const siteConfig = await fetchSiteConfig();
   const currentYear = new Date().getFullYear().toString();
+  const footerSocialLinks = siteConfig?.socialLinks ?? [];
+  const offices = siteConfig?.offices ?? [];
+  const phones = siteConfig?.contact?.phones ?? [];
+  const emails = siteConfig?.contact?.emails ?? [];
 
   return (
     <footer className="mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18 relative bg-[#141623]">
@@ -121,26 +167,27 @@ export default async function Footer() {
               {footerData?.socialLinks?.title || ""}
             </h5>
             <div className="flex flex-wrap gap-5 md:gap-7 w-full pt-1">
-              {footerData?.socialLinks?.links &&
-              (
-                footerData?.socialLinks
-                  ?.links as IFooter["socialLinks"]["links"]
-              ).length > 0 ? (
-                footerData?.socialLinks?.links.map((item) => (
+              {footerSocialLinks.length > 0 ? (
+                footerSocialLinks.map((item) => {
+                  const icon = socialIcons[item.platform];
+                  if (!icon) return null;
+
+                  return (
                   <Link
                     key={item.href}
                     target={item?.isExternal ? "_blank" : "_self"}
                     href={item?.href || ""}
                   >
                     <Image
-                      src={item.label || ""}
+                      src={icon}
                       width={26}
                       height={26}
                       alt="Social icon"
                       className="min-w-5"
                     />
                   </Link>
-                ))
+                  );
+                })
               ) : (
                 <></>
               )}
@@ -160,19 +207,19 @@ export default async function Footer() {
             <div className="footer-heading-wrap">
               <Image
                 src={pinIcon?.src}
-                alt={contactPageData?.address?.title}
+                alt="Address"
                 width={24}
                 height={24}
                 className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
               />
               <h6 className="footer-heading icon-heading">
-                {contactPageData?.address?.title}
+                Address
               </h6>
             </div>
             <div className="grow not-italic space-y-3">
-              {contactPageData?.address?.addresses?.map((addr) => (
-                <address className="not-italic !text-base" key={addr?.location}>
-                  <strong>{addr?.office}</strong>: {addr?.location}
+              {offices.map((office) => (
+                <address className="not-italic !text-base" key={office.addressText}>
+                  <strong>{office.label}</strong>: {office.addressText}
                 </address>
               ))}
             </div>
@@ -184,7 +231,7 @@ export default async function Footer() {
               <div className="footer-heading-wrap">
                 <Image
                   src={phoneIcon?.src}
-                  alt={contactPageData?.contactNumber?.title}
+                  alt="Phone"
                   width={24}
                   height={24}
                   className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
@@ -192,7 +239,7 @@ export default async function Footer() {
                 <h6 className="footer-heading icon-heading">Phone</h6>
               </div>
               <div className="grow space-y-3">
-                {contactPageData?.contactNumber?.numbers
+                {phones
                   ?.slice(0, 3)
                   ?.map((num) => (
                     <a
@@ -211,7 +258,7 @@ export default async function Footer() {
               <div className="footer-heading-wrap">
                 <Image
                   src={phoneIcon?.src}
-                  alt={contactPageData?.contactNumber?.title}
+                  alt="Hotline"
                   width={24}
                   height={24}
                   className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
@@ -219,7 +266,7 @@ export default async function Footer() {
                 <h6 className="footer-heading icon-heading">Hotline</h6>
               </div>
               <div className="grow space-y-3">
-                {contactPageData?.contactNumber?.numbers
+                {phones
                   ?.slice(3, 6)
                   ?.map((num) => (
                     <a
@@ -238,17 +285,17 @@ export default async function Footer() {
             <div className="footer-heading-wrap">
               <Image
                 src={emailIcon?.src}
-                alt={contactPageData?.contactMails?.title}
+                alt="Email Address"
                 width={24}
                 height={24}
                 className="min-w-5 w-6 max-w-6 max-h-6 overflow-hidden"
               />
               <h6 className="footer-heading icon-heading">
-                {contactPageData?.contactMails?.title}
+                Email Address
               </h6>
             </div>
             <div className="grow flex flex-col gap-3">
-              {contactPageData?.contactMails?.mails?.map((mail) => (
+              {emails.map((mail) => (
                 <Link
                   key={mail}
                   title="Email"
