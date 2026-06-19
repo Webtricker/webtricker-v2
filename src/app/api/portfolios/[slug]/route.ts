@@ -4,6 +4,52 @@ import connectToDatabase from "@/lib/dbConnect";
 import { verifyAdmin } from "@/utils/validator";
 import Portfolio from "@/models/Portfolio";
 import "@/models/Technology";
+import "@/models/Tag";
+import mongoose from "mongoose";
+
+const stripHtml = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+const asObjectId = (value: unknown) =>
+    typeof value === "string" && mongoose.Types.ObjectId.isValid(value)
+        ? new mongoose.Types.ObjectId(value)
+        : value && typeof value === "object" && "_id" in value && mongoose.Types.ObjectId.isValid(String((value as any)._id))
+            ? new mongoose.Types.ObjectId(String((value as any)._id))
+            : value;
+
+const normalizeImage = (value: unknown) => {
+    if (typeof value === "string") return { url: value };
+    return value;
+};
+
+const normalizePortfolioPayload = (body: Record<string, any>) => {
+    const plainContent = stripHtml(body.content || "");
+    const description = body.description || body.seoDescription || body.excerp || plainContent.slice(0, 160);
+    const excerp = body.excerp || body.seoDescription || plainContent.slice(0, 160);
+
+    return {
+        ...body,
+        description,
+        excerp,
+        technology: asObjectId(body.technology),
+        tags: Array.isArray(body.tags) ? body.tags.map(asObjectId) : [],
+        thumnail: normalizeImage(body.thumnail),
+        coverImage: normalizeImage(body.coverImage),
+        featured: Boolean(body.featured),
+    };
+};
+
+const normalizeTagForResponse = (tag: any) => ({
+    id: String(tag._id || tag.id || tag),
+    name: tag.name || String(tag),
+    slug: tag.slug || "",
+    color: tag.color || "#4F46E5",
+});
+
+const normalizePortfolioForResponse = (portfolio: any) => ({
+    ...portfolio,
+    id: String(portfolio._id || portfolio.id),
+    tags: (Array.isArray(portfolio.tags) ? portfolio.tags : []).map(normalizeTagForResponse),
+});
 
 
 export const GET = async (
@@ -17,7 +63,10 @@ export const GET = async (
     try {
         await connectToDatabase();
 
-        const res = await Portfolio.findOne({ slug }).populate('technology');
+        const res = await Portfolio.findOne({ slug })
+            .populate('technology')
+            .populate('tags')
+            .lean();
 
         if (!res) {
             return NextResponse.json(
@@ -28,7 +77,7 @@ export const GET = async (
         return NextResponse.json(
             {
                 success: true,
-                portfolio: res,
+                portfolio: normalizePortfolioForResponse(res),
             },
             { status: 200 }
         );
@@ -98,12 +147,15 @@ export const PUT = async (
 
         const updatedPortfolio = await Portfolio.findOneAndUpdate(
             { slug },
-            { $set: body },
+            { $set: normalizePortfolioPayload(body) },
             {
                 new: true, // return the updated document
                 runValidators: true,
             }
         )
+            .populate('technology')
+            .populate('tags')
+            .lean()
 
         if (!updatedPortfolio) {
             return NextResponse.json(
@@ -116,7 +168,7 @@ export const PUT = async (
             {
                 success: true,
                 message: `Portfolio "${slug}" updated successfully.`,
-                portfolio: updatedPortfolio,
+                portfolio: updatedPortfolio ? normalizePortfolioForResponse(updatedPortfolio) : null,
             },
             { status: 200 }
         );

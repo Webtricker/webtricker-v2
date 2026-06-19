@@ -3,6 +3,7 @@ export interface IPortfolio {
   slug: string;
   description: string;
   technology: { _id: string; name: string };
+  tags?: { id?: string; _id?: string; name: string; slug?: string; color?: string }[];
   excerp: string;
   thumnail: {
     width?: number;
@@ -16,6 +17,16 @@ export interface IPortfolio {
   };
   liveLink: string;
   content: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  thumbnailAlt?: string;
+  thumbnailTitle?: string;
+  coverImageAlt?: string;
+  featured?: boolean;
 }
 
 

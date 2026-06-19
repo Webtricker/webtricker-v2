@@ -22,8 +22,22 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
     ref: 'Technology',
     required: true,
   },
+  tags: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
+    default: [],
+  },
   content: { type: String, required: true },
   liveLink: { type: String, required: true },
+  seoTitle: { type: String },
+  seoDescription: { type: String },
+  focusKeyword: { type: String },
+  canonicalUrl: { type: String },
+  ogImage: { type: String },
+  ogImageAlt: { type: String },
+  thumbnailAlt: { type: String },
+  thumbnailTitle: { type: String },
+  coverImageAlt: { type: String },
+  featured: { type: Boolean, default: false },
 }, {
   timestamps: true,
 });
