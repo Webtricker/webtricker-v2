@@ -73,7 +73,7 @@ export default function DashboardSidebar({
                 className={
                   collapsed
                     ? "h-auto w-10 object-contain"
-                    : "h-auto w-[150px] object-contain"
+                    : "h-auto w-[170px] object-contain"
                 }
               />
             </Link>
