@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
 import { verifyAdmin } from "@/utils/validator";
 import Service from "@/models/Service";
+import "@/models/Tag";
 import mongoose from "mongoose";
 
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();

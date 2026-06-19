@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDatabase from "@/lib/dbConnect";
 import Post from "@/models/Posts";
+import "@/models/Tag";
 import { verifyAdmin } from "@/utils/validator";
 import mongoose from "mongoose";
 

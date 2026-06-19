@@ -1,5 +1,6 @@
 import connectToDatabase from "@/lib/dbConnect";
 import Service from "@/models/Service";
+import "@/models/Tag";
 import { verifyAdmin } from "@/utils/validator";
 
 import mongoose from "mongoose";
