@@ -79,6 +79,13 @@ export const ImageIcon = (props: IconProps) => (
   </Icon>
 );
 
+export const PencilIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M17 3a2.8 2.8 0 0 1 4 4L7 21H3v-4Z" />
+    <path d="m15 5 4 4" />
+  </Icon>
+);
+
 export const LayersIcon = (props: IconProps) => (
   <Icon {...props}>
     <path d="m12 2 9 5-9 5-9-5Z" />
@@ -163,6 +170,16 @@ export const TagIcon = (props: IconProps) => (
   <Icon {...props}>
     <path d="M20 10 14 4H5v9l6 6Z" />
     <path d="M8.5 8.5h.01" />
+  </Icon>
+);
+
+export const TrashIcon = (props: IconProps) => (
+  <Icon {...props}>
+    <path d="M3 6h18" />
+    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    <path d="M19 6 18 20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+    <path d="M10 11v6" />
+    <path d="M14 11v6" />
   </Icon>
 );
 

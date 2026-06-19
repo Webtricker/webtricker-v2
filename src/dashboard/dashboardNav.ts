@@ -45,6 +45,7 @@ export const dashboardNav = [
       { label: "Team Members", href: "/settings/teams", icon: UsersIcon },
       { label: "Leaders", href: "/settings/leader", icon: ShieldIcon },
       { label: "Career Listings", href: "/settings/career", icon: FolderIcon },
+      { label: "Tags", href: "/settings/tags", icon: TagIcon },
     ],
   },
   {
