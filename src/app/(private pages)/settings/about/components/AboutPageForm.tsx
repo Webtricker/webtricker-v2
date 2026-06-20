@@ -1,581 +1,464 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Container from "@/sharedComponets/ui/wrapper/Container";
-import { IAboutPage } from "@/types/pageTypes";
+
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import { Badge, Button, Card, CardContent, Skeleton } from "@/dashboard/ui";
 import {
   useGetAboutPageDataQuery,
   useUpdateAboutPageDataMutation,
 } from "@/redux/features/pageData/pageData";
-import { ArrowDownIcon } from "@/app/(public pages)/about/components/Icons";
-import { useForm } from "react-hook-form";
-import BannerBG from "./BannerBG";
-import AboutGallery from "./AboutGallery";
-import AboutUsThumnail from "./AboutUsThumnail";
-import WhatWeDoImg from "./WhatWeDoImg";
-import OurServices from "./OurServices";
-import { ITeamInfo, ITestimonialsInfo } from "@/types/data";
-import OurTeam from "./OurTeam";
-import TestimonialsContainer from "./TestimonialsContainer";
-import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
-import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
+import { AboutPageBlock, IAboutPage } from "@/types/pageTypes";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import {
+  FiChevronDown,
+  FiChevronRight,
+  FiEye,
+  FiEyeOff,
+  FiMoreVertical,
+  FiPlus,
+  FiTrash2,
+} from "react-icons/fi";
 import { toast } from "react-toastify";
-import Button from "@/sharedComponets/ui/buttons/Button";
 
-// ================== default variables
-// TODO: have to change this url with
-const defaultBannerBG =
-  "https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]";
+const inputClass =
+  "min-h-11 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950";
 
-const defaultIntroText =
-  "We are a creative studio that specializes in providing high-quality design and branding solutions to businesses and individuals. Our team is composed of talented designers, developers, and marketers.!";
-const aboutUsDefaultDescription =
-  "Webtricker Web Design & Development Agency is a total solution of your website related requirements. From branding to web design and then web design to web development. And finally deploy to the hosting. We do everything as one stop service center.";
-
-const ourMissionDescription =
-  "Being professional in web development, mobile application, and digital marketing companies. Our mission is to provide customer-centric, result-oriented, cost-competitive innovative & functional IT Solutions to our valuable global clients";
-
-const ourGoalsDescription =
-  "We are focused on providing your users the BEST experience they can have on your website. We love creating UNIQUE, ELEGANT and USABLE websites built on solid web standards.";
-
-const whyUsDescription =
-  "One of the first things you should know about us is that we don’t do everything. But what we do, we do well. We always try to value our clients time and money. Let us prove it by involving us with you with any of the following services. We&apos;d be happy to serve you with our maximum effort.";
-
-//   ===========
-// type Props = {
-//   aboutPageData: IAboutPage;
-//   testimonials: ITestimonialsInfo[];
-//   serviceData: TService[];
-//   posts: IBlog[] | null;
-// };
-
-// TODO: have to remove the default demoJson;
-type Props = {
-  teamData: ITeamInfo[];
-  testimonialsData: ITestimonialsInfo[];
+const collectionLinks: Record<string, { label: string; href: string }> = {
+  teams: { label: "Team Members", href: "/settings/teams" },
+  testimonials: { label: "Testimonials", href: "/settings/testimonials" },
 };
-export default function AboutPageForm({ teamData, testimonialsData }: Props) {
-  const {
-    register,
-    setValue,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<IAboutPage>();
+
+const blockLabels: Record<string, string> = {
+  aboutHero: "Hero Banner",
+  aboutGallery: "Image Gallery",
+  aboutIntroText: "Intro Text",
+  aboutStory: "About / Mission / Goals / Why Us",
+  whatWeOffer: "What We Offer",
+  teamSlider: "Team Slider",
+  funFacts: "Fun Facts / Stats",
+  testimonialSlider: "Testimonials Slider",
+  resumeCta: "Resume CTA",
+};
+
+type Props = {
+  teamData?: unknown[];
+  testimonialsData?: unknown[];
+};
+
+type SortableBlockProps = {
+  section: AboutPageBlock;
+  expanded: boolean;
+  onToggleExpanded: () => void;
+  onToggleVisible: () => void;
+  onFieldChange: (name: string, value: any) => void;
+  onArrayChange: (name: string, value: any[]) => void;
+};
+
+const getByPath = (source: Record<string, any>, path: string) =>
+  path.split(".").reduce((value, key) => value?.[key], source);
+
+const setByPath = (source: Record<string, any>, path: string, value: any) => {
+  const clone = { ...source };
+  const keys = path.split(".");
+  let cursor = clone;
+
+  keys.slice(0, -1).forEach((key) => {
+    cursor[key] = { ...(cursor[key] || {}) };
+    cursor = cursor[key];
+  });
+
+  cursor[keys[keys.length - 1]] = value;
+  return clone;
+};
+
+const getFormValues = (data: Record<string, any>, fields: FieldConfig[]) =>
+  fields.reduce<Record<string, any>>((values, field) => {
+    values[field.name] = getByPath(data, field.name);
+    return values;
+  }, {});
+
+const normalizeSections = (aboutData?: IAboutPage): AboutPageBlock[] =>
+  [...(aboutData?.sections || [])]
+    .sort((a, b) => a.order - b.order)
+    .map((section, index) => ({ ...section, order: (index + 1) * 10 }));
+
+const getFriendlyLabel = (section: AboutPageBlock) =>
+  blockLabels[section.type] || section.type;
+
+const getFields = (section: AboutPageBlock): FieldConfig[] => {
+  switch (section.type) {
+    case "aboutHero":
+      return [
+        { name: "bannerIntroText.top", label: "Intro top", type: "text", required: true },
+        { name: "bannerIntroText.bottom", label: "Intro bottom", type: "text", required: true },
+        { name: "bannerLargeText", label: "Large title", type: "textarea", required: true },
+        { name: "bannerDescription", label: "Description", type: "textarea", required: true },
+        { name: "scrollDwonText", label: "Scroll label", type: "text", required: true },
+        { name: "bannerBottomText", label: "Bottom text", type: "textarea", required: true },
+        { name: "bannerBottomBtnText", label: "Button text", type: "text", required: true },
+        { name: "bannerBottomBtnLink", label: "Button link", type: "text", required: true },
+        { name: "bannerBackgroundImage", label: "Background image", type: "image", required: true },
+      ];
+    case "aboutGallery":
+      return [
+        { name: "introImages.large", label: "Large image", type: "image", required: true },
+        { name: "introImages.medium", label: "Medium image", type: "image", required: true },
+        { name: "introImages.small", label: "Small image", type: "image", required: true },
+      ];
+    case "aboutIntroText":
+      return [{ name: "introText", label: "Intro text", type: "textarea", required: true }];
+    case "aboutStory":
+      return [
+        { name: "aboutUsText", label: "Title", type: "textarea", required: true, group: "About" },
+        { name: "aboutUsDescription", label: "Description", type: "textarea", required: true, group: "About" },
+        { name: "aboutUsImage", label: "Image", type: "image", required: true, group: "About" },
+        { name: "ourMissionText", label: "Title", type: "text", required: true, group: "Mission" },
+        { name: "ourMissionDescription", label: "Description", type: "textarea", required: true, group: "Mission" },
+        { name: "ourGoalsText", label: "Title", type: "text", required: true, group: "Goals" },
+        { name: "ourGoalsDescription", label: "Description", type: "textarea", required: true, group: "Goals" },
+        { name: "whyUsText", label: "Title", type: "text", required: true, group: "Why Us" },
+        { name: "whyUsDescription", label: "Description", type: "textarea", required: true, group: "Why Us" },
+      ];
+    case "whatWeOffer":
+      return [
+        { name: "whatWeOfferTitle", label: "Title", type: "text", required: true },
+        { name: "whatWeOfferSubtitle", label: "Subtitle", type: "text", required: true },
+        { name: "whatWeOfferCurveIconWhite", label: "Curve icon white", type: "image", required: true },
+        { name: "whatWeOfferCurveIconBlack", label: "Curve icon black", type: "image", required: true },
+      ];
+    case "teamSlider":
+      return [{ name: "title", label: "Section title", type: "text", required: true }];
+    case "funFacts":
+      return [
+        { name: "aboutUsAnalytics.subTitle", label: "Subtitle", type: "text", required: true },
+        { name: "aboutUsAnalytics.title", label: "Title", type: "textarea", required: true },
+        { name: "aboutUsAnalytics.projectsCompleted", label: "Projects completed number", type: "text", required: true, group: "Projects Completed" },
+        { name: "aboutUsAnalytics.projectsCompletedText", label: "Projects completed label", type: "text", required: true, group: "Projects Completed" },
+        { name: "aboutUsAnalytics.teamMembers", label: "Team members number", type: "text", required: true, group: "Team Members" },
+        { name: "aboutUsAnalytics.teamMembersText", label: "Team members label", type: "text", required: true, group: "Team Members" },
+        { name: "aboutUsAnalytics.yearsOfExperience", label: "Years of experience number", type: "text", required: true, group: "Years of Experience" },
+        { name: "aboutUsAnalytics.yearsOfExperienceText", label: "Years of experience label", type: "text", required: true, group: "Years of Experience" },
+        { name: "aboutUsAnalytics.growingRate", label: "Growing rate number", type: "text", required: true, group: "Growing Rate" },
+        { name: "aboutUsAnalytics.growingRateText", label: "Growing rate label", type: "text", required: true, group: "Growing Rate" },
+      ];
+    case "testimonialSlider":
+      return [{ name: "sectionBg", label: "Background image", type: "image", required: true }];
+    case "resumeCta":
+      return [
+        { name: "resumeeSendingText", label: "Resume text", type: "text", required: true },
+        { name: "resumeeSendingEmail", label: "Resume email", type: "text", required: true },
+        { name: "bottomTextLarge", label: "Large bottom text", type: "text", required: true },
+      ];
+    default:
+      return [];
+  }
+};
+
+const getCollectionNote = (section: AboutPageBlock) => {
+  const collection = section.data?.collection;
+  if (!collection) return null;
+  const target = collectionLinks[collection];
+  if (!target) return null;
+
+  return (
+    <div className="rounded-md border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-100">
+      Content pulled automatically from {target.label}. Manage items in{" "}
+      <Link className="font-semibold underline" href={target.href}>
+        {target.label}
+      </Link>
+      .
+    </div>
+  );
+};
+
+function RepeatableStringEditor({
+  label,
+  values,
+  onChange,
+}: {
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-sm font-semibold">{label}</h4>
+        <Button type="button" variant="secondary" onClick={() => onChange([...values, ""])}>
+          <FiPlus /> Add
+        </Button>
+      </div>
+      <div className="grid gap-2">
+        {values.map((value, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              value={value}
+              onChange={(event) =>
+                onChange(values.map((item, itemIndex) => (itemIndex === index ? event.target.value : item)))
+              }
+              className={`${inputClass} flex-1`}
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}
+              aria-label={`Remove ${label} item`}
+            >
+              <FiTrash2 />
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SortableBlock({
+  section,
+  expanded,
+  onToggleExpanded,
+  onToggleVisible,
+  onFieldChange,
+  onArrayChange,
+}: SortableBlockProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: section.id });
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
+      : undefined,
+    transition,
+  };
+  const fields = getFields(section);
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card
+        className={`transition ${!section.visible ? "opacity-55 grayscale" : ""} ${
+          isDragging ? "relative z-20 shadow-lg" : ""
+        }`}
+      >
+        <div className="flex items-center gap-3 p-4">
+          <button
+            type="button"
+            className="grid h-10 w-10 cursor-grab place-items-center rounded-md text-zinc-500 hover:bg-zinc-100 active:cursor-grabbing dark:hover:bg-zinc-900"
+            aria-label="Drag block"
+            {...attributes}
+            {...listeners}
+          >
+            <FiMoreVertical />
+          </button>
+          <button
+            type="button"
+            onClick={onToggleExpanded}
+            className="grid h-10 w-10 place-items-center rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900"
+            aria-label={expanded ? "Collapse block" : "Expand block"}
+          >
+            {expanded ? <FiChevronDown /> : <FiChevronRight />}
+          </button>
+          <button type="button" onClick={onToggleExpanded} className="min-w-0 flex-1 text-left">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base font-semibold">{getFriendlyLabel(section)}</h3>
+              <Badge>{section.type}</Badge>
+            </div>
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              Order {section.order}
+            </p>
+          </button>
+          <button
+            type="button"
+            onClick={onToggleVisible}
+            className={`inline-flex h-9 items-center gap-2 rounded-full px-3 text-sm transition ${
+              section.visible
+                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+                : "bg-zinc-100 text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
+            }`}
+          >
+            {section.visible ? <FiEye /> : <FiEyeOff />}
+            {section.visible ? "Visible" : "Hidden"}
+          </button>
+        </div>
+
+        {expanded && (
+          <CardContent className="grid gap-5 border-t border-zinc-200 dark:border-zinc-800">
+            {getCollectionNote(section)}
+            {fields.length > 0 && (
+              <FormBuilder
+                fields={fields}
+                values={getFormValues(section.data || {}, fields)}
+                onChange={onFieldChange}
+              />
+            )}
+            {section.type === "whatWeOffer" && (
+              <RepeatableStringEditor
+                label="Offer items"
+                values={section.data?.whatWeOfferItems || []}
+                onChange={(values) => onArrayChange("whatWeOfferItems", values)}
+              />
+            )}
+          </CardContent>
+        )}
+      </Card>
+    </div>
+  );
+}
+
+export default function AboutPageForm(_: Props) {
   const { data, isLoading } = useGetAboutPageDataQuery({});
-  const aboutPageData = data?.data || ({} as IAboutPage);
-  const [bannerBG, setBannerBG] = useState(""); // TODO: have to change it later.
+  const [updateAboutPage, { isLoading: isSaving }] = useUpdateAboutPageDataMutation();
+  const [sections, setSections] = useState<AboutPageBlock[]>([]);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const aboutData = data?.data as (IAboutPage & { _id?: string }) | undefined;
+  const sectionIds = useMemo(() => sections.map((section) => section.id), [sections]);
 
   useEffect(() => {
-    setValue(
-      "bannerBackgroundImage",
-      aboutPageData?.bannerBackgroundImage || defaultBannerBG
+    if (!aboutData) return;
+    const normalized = normalizeSections(aboutData);
+    setSections(normalized);
+    setExpandedId((current) => current || normalized[0]?.id || null);
+  }, [aboutData]);
+
+  const updateSection = (id: string, updater: (section: AboutPageBlock) => AboutPageBlock) => {
+    setSections((current) =>
+      current.map((section) => (section.id === id ? updater(section) : section))
     );
-  }, [aboutPageData?.bannerBackgroundImage, setValue]);
+  };
 
-  //  background image change key
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-  const [updateAboutPage, { isLoading: loading }] =
-    useUpdateAboutPageDataMutation();
+    setSections((current) => {
+      const oldIndex = current.findIndex((section) => section.id === active.id);
+      const newIndex = current.findIndex((section) => section.id === over.id);
+      return arrayMove(current, oldIndex, newIndex).map((section, index) => ({
+        ...section,
+        order: (index + 1) * 10,
+      }));
+    });
+  };
 
-  // handlers
-  const onSubmit = async (updateData: IAboutPage) => {
+  const handleSave = async () => {
+    if (!aboutData?._id) return;
+
     try {
-      const res = await updateAboutPage({
-        id: data?.data?._id,
-        data: updateData,
+      const response = await updateAboutPage({
+        id: aboutData._id,
+        data: {
+          sections: sections.map((section, index) => ({
+            ...section,
+            order: (index + 1) * 10,
+          })),
+        },
       }).unwrap();
-      if (res?.success) {
-        toast.success("About page data updated");
+
+      if (response?.success) {
+        toast.success("About blocks saved");
       } else {
-        toast.error("Failed to update about page data");
+        toast.error("Failed to save about blocks");
       }
-    } catch (error: any) {
-      console.log(error, " error updating home page data");
-      toast.error("Failed to update home page data");
+    } catch (error) {
+      console.error("Failed to save about blocks", error);
+      toast.error("Failed to save about blocks");
     }
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
-      <ConditionalReturnContainer>
-        <LoadingSpinner />
-      </ConditionalReturnContainer>
+      <div className="mx-auto grid w-full max-w-5xl gap-4 px-4 py-8">
+        <Skeleton className="h-10 w-64" />
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton key={index} className="h-24 w-full" />
+        ))}
+      </div>
     );
+  }
 
-  if (!data)
+  if (!aboutData) {
     return (
-      <ConditionalReturnContainer>
-        <p>Add about page data</p>
-      </ConditionalReturnContainer>
+      <div className="mx-auto w-full max-w-5xl px-4 py-8">
+        <Card>
+          <CardContent className="p-6 text-sm text-zinc-500">
+            About page data was not found.
+          </CardContent>
+        </Card>
+      </div>
     );
+  }
 
-  console.log(errors, " error from about form");
   return (
-    <div className="w-full overflow-hidden">
-      <form onSubmit={handleSubmit(onSubmit)} className={`w-full`}>
-        <section
-          style={{
-            backgroundImage: `url(${bannerBG ||
-              aboutPageData?.bannerBackgroundImage ||
-              defaultBannerBG
-              })`,
-          }}
-          className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative`}
-        >
-          <div className="w-full h-full flex-col flex grow bg-black/40">
-            <Container className="flex max-w-[1000px] pb-1 flex-col justify-center md:justify-end min-h-[700px]  max-h-[900px] h-[93vh] pt-[100px]">
-              <div className="w-full text-white pl-3 lg:pl-4 border-l-2 border-white">
-                <div className="w-full flex items-center justify-between">
-                  <h6>
-                    <input
-                      id="bannerIntroText.top"
-                      className="page-input pl-1"
-                      {...register("bannerIntroText.top", { required: true })}
-                      placeholder="DIGITAL"
-                      defaultValue={aboutPageData?.bannerIntroText?.top || ""}
-                    />
-                  </h6>
-                  <BannerBG setBannerBG={setBannerBG} setValue={setValue} />
-                </div>
-                <h6>
-                  <input
-                    id="bannerIntroText.bottom"
-                    className="page-input pl-1"
-                    {...register("bannerIntroText.bottom", { required: true })}
-                    placeholder="CREATIVE AGENCY"
-                    defaultValue={aboutPageData?.bannerIntroText?.bottom || ""}
-                  />
-                </h6>
-              </div>
-              <h1 className="!text-white mt-4 !leading-[90%] max-w-[900px] -ml-1 md:-ml-1.5 lg:-ml-2 xl:-ml-2.5 font-semibold tracking-tight">
-                <textarea
-                  id="bannerLargeText"
-                  className="page-input pl-1 min-h-[430px] max-w-[900px]"
-                  {...register("bannerLargeText", { required: true })}
-                  placeholder="Building Digital Presence"
-                  defaultValue={aboutPageData?.bannerLargeText || ""}
-                ></textarea>
-              </h1>
-              <p className="!text-white wt_text-shadow max-w-[530px] wt_fs-xl bold mt-5">
-                <textarea
-                  id="bannerDescription"
-                  className="page-input pl-1 min-h-[90px] max-w-[530px] w-full"
-                  {...register("bannerDescription", { required: true })}
-                  placeholder="A leading responsive web design agency creating stunning, user-friendly websites."
-                  defaultValue={aboutPageData?.bannerDescription || ""}
-                ></textarea>
-              </p>
-            </Container>
-            <div className="w-full">
-              <div className="w-full flex justify-end px-5">
-                <button
-                  type="button"
-                  className="flex items-start gap-5 text-white"
-                >
-                  <span className="">
-                    <input
-                      id="scrollDownText"
-                      className="page-input pl-1 py-1"
-                      {...register("scrollDwonText", { required: true })}
-                      placeholder="Scroll To Explore"
-                      defaultValue={aboutPageData?.scrollDwonText || ""}
-                    />
-                  </span>{" "}
-                  <ArrowDownIcon className="animate-bounce duration-1000" />
-                </button>
-              </div>
-            </div>
-            <Container className="flex justify-end grow items-center">
-              <div className="w-full text-white max-w-[600px]">
-                <h4>
-                  <textarea
-                    id="bannerBottomText"
-                    className="page-input pl-1 max-w-[600px] w-full min-h-[155px]"
-                    {...register("bannerBottomText", { required: true })}
-                    placeholder="Liko develops, designs & delivers websites & creative campaigns that drive results,"
-                    defaultValue={aboutPageData?.bannerBottomText || ""}
-                  />
-                </h4>
-                <div className="w-full relative mt-5 ">
-                  <input
-                    id="bannerBottomBtnText"
-                    className="page-input max-w-[150px] py-3 pl-1 text-center !rounded-full"
-                    {...register("bannerBottomBtnText", { required: true })}
-                    placeholder="Our Story"
-                    defaultValue={aboutPageData?.bannerBottomBtnText || ""}
-                  />
-                  <span className="ml-5">href:</span>
-                  <input
-                    id="bannerBottomBtnLink"
-                    className="page-input w-full max-w-[350px] ml-1 py-1 pl-1"
-                    {...register("bannerBottomBtnLink", { required: true })}
-                    placeholder=""
-                    defaultValue={aboutPageData?.bannerBottomBtnLink || ""}
-                  />
-                </div>
-              </div>
-            </Container>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">About Page Blocks</h1>
+          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            Reorder sections, hide blocks, and edit the content that powers the live About page.
+          </p>
+        </div>
+        <Button type="button" onClick={handleSave} disabled={isSaving}>
+          {isSaving ? "Saving..." : "Save All Changes"}
+        </Button>
+      </div>
+
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
+          <div className="grid gap-3">
+            {sections.map((section) => (
+              <SortableBlock
+                key={section.id}
+                section={section}
+                expanded={expandedId === section.id}
+                onToggleExpanded={() =>
+                  setExpandedId((current) => (current === section.id ? null : section.id))
+                }
+                onToggleVisible={() =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    visible: !current.visible,
+                  }))
+                }
+                onFieldChange={(name, value) =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    data: setByPath(current.data || {}, name, value),
+                  }))
+                }
+                onArrayChange={(name, value) =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    data: {
+                      ...(current.data || {}),
+                      [name]: value,
+                    },
+                  }))
+                }
+              />
+            ))}
           </div>
-        </section>
-
-        {/* ======= about page gallery ===== */}
-        <section className="section-speacing">
-          <div className="w-full section-inner-speacing"></div>
-          <Container className="flex">
-            <AboutGallery data={aboutPageData} setValue={setValue} />
-          </Container>
-        </section>
-
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <Container>
-            <div className="w-full max-w-[1100px]">
-              <h3 className="w-full">
-                <textarea
-                  id="introText"
-                  className="page-input w-full  min-h-[450px] pl-1"
-                  {...register("introText", { required: true })}
-                  placeholder={defaultIntroText}
-                  defaultValue={aboutPageData?.introText || ""}
-                ></textarea>
-              </h3>
-            </div>
-          </Container>
-        </section>
-
-        {/* ======== about our mission, vission and goals ========= */}
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 mt-8 md:mt-10 lg:mt-14 xl:mt-16 2xl:mt-18">
-          <Container className="flex lg:items-center gap-12 md:gap-18 xl:gap-20 2xl:gap-28 flex-col lg:flex-row">
-            <div className="w-full flex flex-col gap-5 ">
-              <div className="w-full">
-                <h3 className="heading max-w-[600px] mb-4 !leading-[100%]">
-                  <textarea
-                    id="aboutUsText"
-                    className="page-input max-w-[610px] py-3 pl-1"
-                    {...register("aboutUsText", { required: true })}
-                    placeholder="We help to make your website creative"
-                    defaultValue={aboutPageData?.aboutUsText || ""}
-                  ></textarea>
-                </h3>
-                <p className="w-full">
-                  <textarea
-                    id="aboutUsDescription"
-                    className="page-input w-full pl-1 min-h-[110px] leading_normal"
-                    {...register("aboutUsDescription", { required: true })}
-                    placeholder={aboutUsDefaultDescription}
-                    defaultValue={aboutPageData?.aboutUsDescription || ""}
-                  ></textarea>
-                </p>
-              </div>
-              <div className="w-full">
-                <h4 className="heading md:mb-1">
-                  <input
-                    id="ourMissionText"
-                    className="page-input w-full pl-1 leading_normal"
-                    {...register("ourMissionText", { required: true })}
-                    placeholder="Our mission"
-                    defaultValue={aboutPageData?.ourMissionText || ""}
-                  />
-                </h4>
-                <p>
-                  <textarea
-                    id="ourMissionDescription"
-                    className="page-input w-full pl-1 min-h-[90px] leading_normal"
-                    {...register("ourMissionDescription", { required: true })}
-                    placeholder={ourMissionDescription}
-                    defaultValue={aboutPageData?.ourMissionDescription || ""}
-                  ></textarea>
-                </p>
-              </div>
-              <div className="w-full">
-                <h4 className="heading md:mb-1">
-                  <input
-                    id="ourGoalsText"
-                    className="page-input w-full pl-1 leading_normal"
-                    {...register("ourGoalsText", { required: true })}
-                    placeholder="Our goals"
-                    defaultValue={aboutPageData?.ourGoalsText || ""}
-                  />
-                </h4>
-                <p>
-                  <textarea
-                    id="ourGoalsDescription"
-                    className="page-input w-full pl-1 min-h-[90px] leading_normal"
-                    {...register("ourGoalsDescription", { required: true })}
-                    placeholder={ourGoalsDescription}
-                    defaultValue={aboutPageData?.ourGoalsDescription || ""}
-                  ></textarea>
-                </p>
-              </div>
-              <div className="w-full">
-                <h4 className="heading md:mb-1">
-                  <input
-                    id="whyUsText"
-                    className="page-input w-full pl-1 leading_normal"
-                    {...register("whyUsText", { required: true })}
-                    placeholder="Why us?"
-                    defaultValue={aboutPageData?.whyUsText || ""}
-                  />
-                </h4>
-                <p>
-                  <textarea
-                    id="whyUsDescription"
-                    className="page-input w-full pl-1 min-h-[110px] leading_normal"
-                    {...register("whyUsDescription", { required: true })}
-                    placeholder={whyUsDescription}
-                    defaultValue={aboutPageData?.whyUsDescription || ""}
-                  ></textarea>
-                </p>
-              </div>
-            </div>
-            <AboutUsThumnail setValue={setValue} data={aboutPageData} />
-          </Container>
-        </section>
-
-        {/* ========== what we do ========== */}
-        <section className="pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18">
-          <Container className="flex flex-col sm:flex-row items-start justify-between gap-5 !max-w-[1050px] xl:gap-6 2xl:gap-10 mx-auto">
-            <div className="w-full max-w-[280px]">
-              <h5 className="heading">
-                <input
-                  id="whatWeOfferTitle"
-                  className="page-input pl-1 max-w-[280px] py-1"
-                  {...register("whatWeOfferTitle", { required: true })}
-                  placeholder="Something"
-                  defaultValue={aboutPageData?.whatWeOfferTitle || ""}
-                />
-              </h5>
-              <div className="w-full flex items-start mt-2">
-                <p className="bold whitespace-nowrap">
-                  <input
-                    id="whatWeOfferSubtitle"
-                    className="page-input pl-1 max-w-[280px] py-1"
-                    {...register("whatWeOfferSubtitle", { required: true })}
-                    placeholder="WHAT WE DO"
-                    defaultValue={aboutPageData?.whatWeOfferSubtitle || ""}
-                  />
-                </p>
-                <WhatWeDoImg data={aboutPageData} setValue={setValue} />
-              </div>
-            </div>
-            <OurServices data={aboutPageData} setValue={setValue} />
-          </Container>
-        </section>
-
-        {/* ======== our team ======= */}
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18 relative">
-          <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-            <h3 className="text-center middle-border">
-              <input
-                id="teamInfoTitle"
-                className="page-input text-center max-w-[350px] pl-1"
-                {...register("teamInfoTitle", { required: true })}
-                placeholder="Our Team"
-                defaultValue={aboutPageData?.teamInfoTitle || ""}
-              />
-            </h3>
-          </div>
-          <OurTeam teamData={teamData} />
-        </section>
-
-        {/* ===== fun facts ======== */}
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <Container className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-y-2">
-            <div className="w-full col-span-2 lg:col-span-1 text-center md:text-left mb-3 md:mb-0">
-              <p className="bold">
-                <input
-                  id="aboutUsAnalytics.subTitle"
-                  className="page-input max-w-[350px] pl-1"
-                  {...register("aboutUsAnalytics.subTitle", { required: true })}
-                  placeholder="Fun Facts"
-                  defaultValue={aboutPageData?.aboutUsAnalytics?.subTitle || ""}
-                />
-              </p>
-              <h4 className="heading md:max-w-[350px] mt-1">
-                <textarea
-                  id="aboutUsAnalytics.title"
-                  className="page-input max-w-[300px] pl-1"
-                  {...register("aboutUsAnalytics.title", { required: true })}
-                  placeholder="Agency Snapshots"
-                  defaultValue={aboutPageData?.aboutUsAnalytics?.title || ""}
-                ></textarea>
-              </h4>
-            </div>
-            <div className="w-full flex flex-col gap-10 text-center md:text-left">
-              <div className="w-full ">
-                <span className="wt_fs-7xl bold">
-                  <input
-                    id="aboutUsAnalytics.projectsCompleted"
-                    className="page-input max-w-[200px] text-right pl-1"
-                    {...register("aboutUsAnalytics.projectsCompleted", {
-                      required: true,
-                    })}
-                    placeholder="200"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.projectsCompleted || ""
-                    }
-                  />
-                  +
-                </span>
-                <p className="bold uppercase wt_fs-md">
-                  <input
-                    id="aboutUsAnalytics.projectsCompletedText"
-                    className="page-input max-w-[400px] px-2"
-                    {...register("aboutUsAnalytics.projectsCompletedText", {
-                      required: true,
-                    })}
-                    placeholder="PROJECTS COMPLETED"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.projectsCompletedText ||
-                      ""
-                    }
-                  />
-                </p>
-              </div>
-              <div className="w-full">
-                <span className="wt_fs-7xl bold">
-                  <input
-                    id="aboutUsAnalytics.teamMembers"
-                    className="page-input max-w-[200px] text-right pl-1"
-                    {...register("aboutUsAnalytics.teamMembers", {
-                      required: true,
-                    })}
-                    placeholder="21"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.teamMembers || ""
-                    }
-                  />
-                  %
-                </span>
-                <p className="bold uppercase wt_fs-md">
-                  <input
-                    id="aboutUsAnalytics.teamMembersText"
-                    className="page-input max-w-[200px] pl-1"
-                    {...register("aboutUsAnalytics.teamMembersText", {
-                      required: true,
-                    })}
-                    placeholder="Team Members"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.teamMembersText || ""
-                    }
-                  />
-                </p>
-              </div>
-              <div className="w-full"></div>
-            </div>
-            <div className="w-full flex flex-col gap-10 text-center md:text-left">
-              <div className="w-full">
-                <span className="wt_fs-7xl bold">
-                  <input
-                    id="aboutUsAnalytics.yearsOfExperience"
-                    className="page-input max-w-[200px] text-right pl-1"
-                    {...register("aboutUsAnalytics.yearsOfExperience", {
-                      required: true,
-                    })}
-                    placeholder="17"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.yearsOfExperience || ""
-                    }
-                  />
-                  +
-                </span>
-                <p className="bold uppercase wt_fs-md">
-                  <input
-                    id="aboutUsAnalytics.yearsOfExperienceText"
-                    className="page-input max-w-[400px] px-2"
-                    {...register("aboutUsAnalytics.yearsOfExperienceText", {
-                      required: true,
-                    })}
-                    placeholder="YEARS OF EXPERIENCE"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.yearsOfExperienceText ||
-                      ""
-                    }
-                  />
-                </p>
-              </div>
-              <div className="w-full">
-                <span className="wt_fs-7xl bold">
-                  <input
-                    id="aboutUsAnalytics.growingRate"
-                    className="page-input max-w-[200px] text-right pl-1"
-                    {...register("aboutUsAnalytics.growingRate", {
-                      required: true,
-                    })}
-                    placeholder="391"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.growingRate || ""
-                    }
-                  />
-                  %
-                </span>
-                <p className="bold uppercase wt_fs-md">
-                  <input
-                    id="aboutUsAnalytics.growingRateText"
-                    className="page-input max-w-[200px] pl-1"
-                    {...register("aboutUsAnalytics.growingRateText", {
-                      required: true,
-                    })}
-                    placeholder="GROWING AGENCY"
-                    defaultValue={
-                      aboutPageData?.aboutUsAnalytics?.growingRateText || ""
-                    }
-                  />
-                </p>
-              </div>
-              <div className="w-full"></div>
-            </div>
-          </Container>
-        </section>
-
-        {/* ========== Testimonials ======  */}
-        <TestimonialsContainer
-          data={aboutPageData}
-          setValue={setValue}
-          testimonials={testimonialsData}
-        />
-
-        {/* ====== invitatiion section ========= */}
-        <section className="pt-8 md:pt-10 lg:pt-14 xl:pt-16 2xl:pt-18 pb-20">
-          <Container className="w-full flex flex-col">
-            <p className="bold text-center mb-2">
-              <input
-                id="resumeeSendingText"
-                className="page-input text-center max-w-[550px] w-full pl-1"
-                {...register("resumeeSendingText", {
-                  required: true,
-                })}
-                placeholder="SEND YOUR RESUME TO career@webtricker.com"
-                defaultValue={aboutPageData?.resumeeSendingText || ""}
-              />
-            </p>
-            <p className="bold text-center mb-2">
-              <span>mailto: </span>
-              <input
-                id="resumeeSendingEmail"
-                className="page-input max-w-[300px] w-full pl-1"
-                {...register("resumeeSendingEmail", {
-                  required: true,
-                })}
-                placeholder="career@webtricker.com"
-                defaultValue={aboutPageData?.resumeeSendingEmail || ""}
-              />
-            </p>
-            <h2 className="wt_fs-big text-center heading">
-              <input
-                id="bottomTextLarge"
-                className="page-input max-w-[950px] text-center w-full pl-1"
-                {...register("bottomTextLarge", {
-                  required: true,
-                })}
-                placeholder="JOIN US"
-                defaultValue={aboutPageData?.bottomTextLarge || ""}
-              />
-            </h2>
-          </Container>
-        </section>
-        <section className="section ">
-          {loading ? <LoadingSpinner /> : <Button type="submit" label="Save" />}
-        </section>
-      </form>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }
