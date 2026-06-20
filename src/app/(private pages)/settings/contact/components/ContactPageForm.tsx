@@ -261,7 +261,7 @@ export default function ContactPageForm() {
               Phones, emails, offices, and social links are managed in Site Settings.
             </p>
           </div>
-          <Button type="submit" disabled={submitting}>
+          <Button type="submit" disabled={submitting} className="whitespace-nowrap shrink-0">
             {submitting ? "Saving..." : "Save Changes"}
           </Button>
         </div>
