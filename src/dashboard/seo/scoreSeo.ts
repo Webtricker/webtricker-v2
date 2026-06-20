@@ -30,6 +30,16 @@ export type SeoInput = {
   updatedAt?: Date | string | null;
 };
 
+/** Minimal DOM surface the scorer actually uses — satisfied by both
+ *  DOMParser (browser) and node-html-parser (Node.js backfill script). */
+export type ParsedDoc = {
+  body: { textContent: string };
+  querySelectorAll(
+    selector: string
+  ): ArrayLike<{ getAttribute(attr: string): string | null; textContent: string }>;
+  querySelector(selector: string): { textContent: string } | null;
+};
+
 // Each category's internal max points must equal the default weight.
 // When admin changes a category weight, individual check maxes scale proportionally.
 const CATEGORY_INTERNAL_MAX = {
@@ -40,7 +50,7 @@ const CATEGORY_INTERNAL_MAX = {
   geo: 15,
 } as const;
 
-function parseDoc(html: string): Document {
+function defaultParseHtml(html: string): ParsedDoc {
   return new DOMParser().parseFromString(html || "", "text/html");
 }
 
@@ -55,9 +65,10 @@ export function scoreSeo(
   data: SeoInput,
   weights: SeoConfigWeights,
   thresholds: SeoConfigThresholds,
-  brandName: string
+  brandName: string,
+  parseHtml: (html: string) => ParsedDoc = defaultParseHtml
 ): SeoScoreResult {
-  const doc = parseDoc(data.content || "");
+  const doc = parseHtml(data.content || "");
   const bodyText = doc.body.textContent || "";
   const wordCount = countWords(bodyText);
   const keyword = (data.focusKeyword || "").toLowerCase().trim();
