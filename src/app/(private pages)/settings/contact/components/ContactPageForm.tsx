@@ -19,6 +19,7 @@ import ContactIcon from "./ContactIcon";
 import MailIcon from "./MailIcon";
 import Mails from "./Mails";
 import Phones from "./Phone";
+import DeprecatedSiteConfigNotice from "@/dashboard/DeprecatedSiteConfigNotice";
 
 export default function ContactPageForm() {
   //   page data
@@ -200,6 +201,9 @@ export default function ContactPageForm() {
             </div>
           </div>
         </Container>
+        <div className="mx-auto hidden w-full max-w-[1260px] px-5 lg:block">
+          <DeprecatedSiteConfigNotice />
+        </div>
         <div className="hidden lg:flex rotate-90 max-w-[350px] absolute bottom-[10%] -left-[9%] items-center gap-5">
           <div className="flex relative -rotate-90 border w-5 h-5 ">
             <LeftPanelBtns
@@ -251,6 +255,7 @@ export default function ContactPageForm() {
                       placeholder="Address"
                     />
                   </h6>
+                  <DeprecatedSiteConfigNotice />
                   <Addresses register={register} control={control} />
                 </div>
               </div>
@@ -274,6 +279,7 @@ export default function ContactPageForm() {
                       placeholder="Phone"
                     />
                   </h6>
+                  <DeprecatedSiteConfigNotice />
                   <Phones register={register} control={control} />
                 </div>
               </div>
@@ -297,6 +303,7 @@ export default function ContactPageForm() {
                       placeholder="Email"
                     />
                   </h6>
+                  <DeprecatedSiteConfigNotice />
                   <Mails register={register} control={control} />
                 </div>
               </div>

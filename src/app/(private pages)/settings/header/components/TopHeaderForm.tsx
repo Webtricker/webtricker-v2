@@ -16,6 +16,7 @@ import {
 import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import { toast } from "react-toastify";
+import DeprecatedSiteConfigNotice from "@/dashboard/DeprecatedSiteConfigNotice";
 
 type TActionType = {
   target: "socialLinks" | "contactLinks";
@@ -129,6 +130,7 @@ export default function BlogsPageForm() {
         {/* Contact Links Section */}
         <div className="w-full">
           <h6 className="font-bold mb-5">Contact Links</h6>
+          <DeprecatedSiteConfigNotice />
           {contactFields.map((field, index) => {
             const currentIcon = contacts?.[index]?.icon; // watch value
 
@@ -171,6 +173,7 @@ export default function BlogsPageForm() {
         {/* Social Links Section */}
         <div className="w-full my-10">
           <h6 className="font-bold mb-5">Social Links</h6>
+          <DeprecatedSiteConfigNotice />
           {socialFields.map((field, index) => {
             const currentIcon = socials?.[index]?.icon;
             return (

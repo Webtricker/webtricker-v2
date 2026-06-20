@@ -15,6 +15,7 @@ import FooterLogos from "./FooterLogos";
 import PagesLinks from "./PagesLinks";
 import ServicesLinks from "./ServicesLinks";
 import SocialLinks from "./SocialLinks";
+import DeprecatedSiteConfigNotice from "@/dashboard/DeprecatedSiteConfigNotice";
 
 const footerDes = `Looking for a reliable digital partner? We provide end-to-end solutions—design, development, marketing, SEO, and more. Let&apos;s collaborate for lasting success.`;
 
@@ -129,6 +130,7 @@ export default function FooterForm() {
               placeholder="Follow Us on"
             />
           </h5>
+          <DeprecatedSiteConfigNotice />
           <div className="flex gap-5 md:gap-7 w-full mt-3">
             {/* TODO: ============= */}
             <SocialLinks

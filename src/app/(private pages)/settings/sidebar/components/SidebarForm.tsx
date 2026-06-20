@@ -14,6 +14,7 @@ import Phones from './Phones';
 import Emails from './Emails';
 import Addresses from './Addresses';
 import SocialLinks from './SocialLinks';
+import DeprecatedSiteConfigNotice from '@/dashboard/DeprecatedSiteConfigNotice';
 
 const description = `Looking for a digital partner? We're a full-service agency providing planning, design, development, debugging, and SEO. Let&apos;s collaborate to grow your business and achieve success.`
 
@@ -110,6 +111,7 @@ export default function SidebarForm() {
                             placeholder="INFORMATION"
                         /></h6>
 
+                        <DeprecatedSiteConfigNotice />
                         <Phones control={control} register={register} />
                         <Emails control={control} register={register} />
                         <Addresses control={control} register={register} />
@@ -125,6 +127,7 @@ export default function SidebarForm() {
                                 placeholder="FOLLOW US"
                             />
                         </h6>
+                        <DeprecatedSiteConfigNotice />
                         <div className="w-full flex gap-5 lg:gap-6 xl:gap-7 flex-wrap">
                             <SocialLinks control={control} register={register} setValue={setValue} watch={watch} />
                         </div>
