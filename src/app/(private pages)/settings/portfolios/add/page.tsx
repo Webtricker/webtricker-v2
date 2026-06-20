@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -49,12 +48,12 @@ export default function AddPortfolioPage() {
             Create a portfolio item with media, technology, tags, and SEO metadata.
           </p>
         </div>
-        <Link
+        <a
           href="/settings/portfolios"
           className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
         >
           Back
-        </Link>
+        </a>
       </div>
 
       <PortfolioForm
