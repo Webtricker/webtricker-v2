@@ -1,8 +1,28 @@
 import { IAboutPage } from '@/types/pageTypes';
 import { Schema, model, models } from 'mongoose';
 
+const aboutBlockTypes = [
+    'aboutHero',
+    'aboutGallery',
+    'aboutIntroText',
+    'aboutStory',
+    'whatWeOffer',
+    'teamSlider',
+    'funFacts',
+    'testimonialSlider',
+    'resumeCta',
+] as const;
 
-
+const aboutBlockSchema = new Schema(
+    {
+        id: { type: String, required: true },
+        type: { type: String, enum: aboutBlockTypes, required: true },
+        order: { type: Number, required: true },
+        visible: { type: Boolean, default: true },
+        data: { type: Schema.Types.Mixed, default: {} },
+    },
+    { _id: false }
+);
 
 const aboutPageSchema = new Schema<IAboutPage>(
     {
@@ -75,6 +95,7 @@ const aboutPageSchema = new Schema<IAboutPage>(
         resumeeSendingText: { type: String, required: true },
         resumeeSendingEmail: { type: String, required: true },
         bottomTextLarge: { type: String, required: true },
+        sections: { type: [aboutBlockSchema], default: [] },
     },
     {
         timestamps: false,

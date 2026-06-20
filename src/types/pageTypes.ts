@@ -20,6 +20,25 @@ export type HomePageBlock = {
   data: Record<string, any>;
 };
 
+export type AboutBlockType =
+  | "aboutHero"
+  | "aboutGallery"
+  | "aboutIntroText"
+  | "aboutStory"
+  | "whatWeOffer"
+  | "teamSlider"
+  | "funFacts"
+  | "testimonialSlider"
+  | "resumeCta";
+
+export type AboutPageBlock = {
+  id: string;
+  type: AboutBlockType;
+  order: number;
+  visible: boolean;
+  data: Record<string, any>;
+};
+
 export interface IHomePage {
   // banner section
   greeting: {
@@ -151,6 +170,7 @@ export interface IAboutPage {
   resumeeSendingText: string;
   resumeeSendingEmail: string;
   bottomTextLarge: string;
+  sections?: AboutPageBlock[];
 }
 
 type BottomText = {
