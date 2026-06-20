@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { makeSlug } from "@/utils/blog";
 import { SearchIcon, TrashIcon, XIcon } from "@/dashboard/icons";
 import { Button, Skeleton } from "@/dashboard/ui";
 
@@ -81,6 +82,11 @@ function getFilename(publicId: string, format: string): string {
   return format ? `${base}.${format}` : base;
 }
 
+function toPublicIdSuggestion(filename: string): string {
+  const withoutExt = filename.replace(/\.[^.]+$/, "");
+  return makeSlug(withoutExt.replace(/_/g, "-"));
+}
+
 // ---- ConfirmDialog ----
 function ConfirmDialog({
   open,
@@ -115,6 +121,85 @@ function ConfirmDialog({
           </Button>
           <Button type="button" onClick={onConfirm} disabled={deleting}>
             {deleting ? "Deleting..." : "Delete"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ---- NamingDialog ----
+function NamingDialog({
+  files,
+  names,
+  onChangeName,
+  onCancel,
+  onConfirm,
+  uploading,
+}: {
+  files: File[];
+  names: string[];
+  onChangeName: (index: number, value: string) => void;
+  onCancel: () => void;
+  onConfirm: () => void;
+  uploading: boolean;
+}) {
+  const allNamed = names.every((n) => n.trim().length > 0);
+
+  return (
+    <div className="fixed inset-0 z-[90] grid place-items-center bg-black/50 px-4">
+      <div className="w-full max-w-lg rounded-lg border border-zinc-200 bg-white shadow-lg dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="border-b border-zinc-100 p-5 dark:border-zinc-800">
+          <h2 className="text-lg font-semibold text-zinc-950 dark:text-zinc-50">
+            Name your files
+          </h2>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            These names become the Cloudinary public_id and appear in the URL.
+            Edit before uploading.
+          </p>
+        </div>
+
+        <div className="max-h-[50vh] overflow-y-auto p-5">
+          <div className="grid gap-4">
+            {files.map((file, i) => (
+              <div key={i} className="grid gap-1.5">
+                <label className="text-xs text-zinc-500 dark:text-zinc-400">
+                  {file.name}{" "}
+                  <span className="text-zinc-400 dark:text-zinc-600">
+                    ({formatBytes(file.size)})
+                  </span>
+                </label>
+                <input
+                  autoFocus={i === 0}
+                  value={names[i] ?? ""}
+                  onChange={(e) =>
+                    onChangeName(i, makeSlug(e.target.value))
+                  }
+                  placeholder="my-file-name"
+                  className="min-h-10 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-end gap-2 border-t border-zinc-100 p-5 dark:border-zinc-800">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={onCancel}
+            disabled={uploading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            onClick={onConfirm}
+            disabled={uploading || !allNamed}
+          >
+            {uploading
+              ? "Uploading…"
+              : `Upload ${files.length} file${files.length !== 1 ? "s" : ""}`}
           </Button>
         </div>
       </div>
@@ -209,6 +294,11 @@ export default function MediaLibrary() {
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState<MediaItem | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Naming dialog state
+  const [pendingFiles, setPendingFiles] = useState<File[] | null>(null);
+  const [pendingNames, setPendingNames] = useState<string[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const fetchMedia = useCallback(async (type: "image" | "video") => {
@@ -234,7 +324,8 @@ export default function MediaLibrary() {
     fetchMedia(tab);
   }, [tab, fetchMedia]);
 
-  const handleFiles = async (files: File[]) => {
+  // Stage files for naming — called by drop zone and file input
+  const stageFiles = (files: File[]) => {
     if (!files.length) return;
     const allowed = tab === "image" ? "image/" : "video/";
     const valid = files.filter((f) => f.type.startsWith(allowed));
@@ -250,8 +341,33 @@ export default function MediaLibrary() {
       );
     }
     const batch = valid.slice(0, 10);
+    setPendingFiles(batch);
+    setPendingNames(batch.map((f) => toPublicIdSuggestion(f.name)));
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const cancelPending = () => {
+    setPendingFiles(null);
+    setPendingNames([]);
+  };
+
+  const updatePendingName = (index: number, value: string) => {
+    setPendingNames((prev) => {
+      const next = [...prev];
+      next[index] = value;
+      return next;
+    });
+  };
+
+  // Actual upload — fires after user confirms names
+  const doUpload = async () => {
+    if (!pendingFiles) return;
     const formData = new FormData();
-    batch.forEach((f) => formData.append("files", f));
+    pendingFiles.forEach((f, i) => {
+      formData.append("files", f);
+      const finalName = makeSlug(pendingNames[i] ?? "");
+      if (finalName) formData.append("names", finalName);
+    });
     setUploading(true);
     try {
       const res = await fetch("/api/upload", {
@@ -267,11 +383,12 @@ export default function MediaLibrary() {
       toast.success(
         `${uploaded.length} file${uploaded.length !== 1 ? "s" : ""} uploaded`
       );
+      setPendingFiles(null);
+      setPendingNames([]);
     } catch (err: any) {
       toast.error(err?.message || "Upload failed");
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -342,7 +459,7 @@ export default function MediaLibrary() {
           className="shrink-0 whitespace-nowrap"
         >
           <UploadIcon className="h-4 w-4" />
-          {uploading ? "Uploading..." : "Upload"}
+          Upload
         </Button>
       </div>
 
@@ -399,7 +516,7 @@ export default function MediaLibrary() {
         onDrop={(e) => {
           e.preventDefault();
           setDragging(false);
-          handleFiles(Array.from(e.dataTransfer.files));
+          stageFiles(Array.from(e.dataTransfer.files));
         }}
         onClick={() => fileInputRef.current?.click()}
         className={`mb-5 grid cursor-pointer place-items-center rounded-lg border-2 border-dashed py-8 text-center transition ${
@@ -415,7 +532,7 @@ export default function MediaLibrary() {
           accept={accept}
           className="hidden"
           onChange={(e) =>
-            e.target.files && handleFiles(Array.from(e.target.files))
+            e.target.files && stageFiles(Array.from(e.target.files))
           }
         />
         <UploadIcon
@@ -424,12 +541,10 @@ export default function MediaLibrary() {
           }`}
         />
         <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          {uploading
-            ? "Uploading…"
-            : `Drop ${tab === "image" ? "images" : "videos"} here or click to browse`}
+          {`Drop ${tab === "image" ? "images" : "videos"} here or click to browse`}
         </p>
         <p className="mt-1 text-xs text-zinc-400 dark:text-zinc-500">
-          Up to 10 files at once
+          Up to 10 files at once · you&apos;ll name each file before uploading
         </p>
       </div>
 
@@ -501,6 +616,18 @@ export default function MediaLibrary() {
             ? `${items.length} file${items.length !== 1 ? "s" : ""}`
             : `${filtered.length} of ${items.length} files`}
         </p>
+      )}
+
+      {/* Naming dialog — shown when files are staged for upload */}
+      {pendingFiles && (
+        <NamingDialog
+          files={pendingFiles}
+          names={pendingNames}
+          onChangeName={updatePendingName}
+          onCancel={cancelPending}
+          onConfirm={doUpload}
+          uploading={uploading}
+        />
       )}
 
       <ConfirmDialog
