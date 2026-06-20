@@ -36,6 +36,7 @@ export interface TService {
   icon: string;
   subServices: string[];
   content: string;
+  author?: string;
   thumnail: {
     width: number;
     height: number;
@@ -46,4 +47,5 @@ export interface TService {
 export interface IService extends TService {
   _id: string;
   createdAt: Date;
+  updatedAt?: Date;
 }

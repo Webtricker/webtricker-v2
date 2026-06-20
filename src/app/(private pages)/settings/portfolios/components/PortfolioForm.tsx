@@ -18,6 +18,7 @@ export type PortfolioFormValues = {
   excerp?: string;
   liveLink: string;
   content: string;
+  author?: string;
   featured: boolean;
   seoTitle?: string;
   seoDescription?: string;
@@ -60,6 +61,7 @@ const portfolioFields: FieldConfig[] = [
   { name: "excerp", type: "textarea", label: "Excerpt", optional: true },
   { name: "liveLink", type: "url", required: true, label: "Live Project URL" },
   { name: "content", type: "richtext", required: true, label: "Content" },
+  { name: "author", type: "text", label: "Author", optional: true },
   { name: "featured", type: "toggle", label: "Featured Project", optional: true, default: false },
   { name: "seoTitle", type: "text", label: "SEO Title", maxLength: 60, group: "SEO" },
   { name: "seoDescription", type: "textarea", label: "Meta Description", maxLength: 160, group: "SEO" },
@@ -82,6 +84,7 @@ export const emptyPortfolioValues: PortfolioFormValues = {
   excerp: "",
   liveLink: "",
   content: "",
+  author: "",
   featured: false,
   seoTitle: "",
   seoDescription: "",

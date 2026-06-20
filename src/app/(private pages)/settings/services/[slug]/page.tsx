@@ -24,6 +24,7 @@ const normalizeServiceValues = (service: any): ServiceFormValues => ({
   excerpt: service?.excerpt || "",
   subServices: Array.isArray(service?.subServices) ? service.subServices : [],
   content: service?.content || "",
+  author: service?.author || "",
   seoTitle: service?.seoTitle || "",
   seoDescription: service?.seoDescription || "",
   focusKeyword: service?.focusKeyword || "",

@@ -26,6 +26,7 @@ export interface IPortfolio {
   thumbnailAlt?: string;
   thumbnailTitle?: string;
   coverImageAlt?: string;
+  author?: string;
   featured?: boolean;
 }
 
@@ -33,4 +34,5 @@ export interface IPortfolio {
 export interface TPortfolio extends IPortfolio {
   _id: string;
   createdAt: Date;
+  updatedAt?: Date;
 }

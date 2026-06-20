@@ -26,6 +26,7 @@ const normalizePortfolioValues = (portfolio: any): PortfolioFormValues => ({
   excerp: portfolio?.excerp || "",
   liveLink: portfolio?.liveLink || "",
   content: portfolio?.content || "",
+  author: portfolio?.author || "",
   featured: Boolean(portfolio?.featured),
   seoTitle: portfolio?.seoTitle || "",
   seoDescription: portfolio?.seoDescription || "",

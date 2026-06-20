@@ -16,6 +16,7 @@ export type ServiceFormValues = {
   excerpt?: string;
   subServices: string[];
   content: string;
+  author?: string;
   seoTitle?: string;
   seoDescription?: string;
   focusKeyword?: string;
@@ -49,6 +50,7 @@ const serviceFields: FieldConfig[] = [
     optional: true,
   },
   { name: "content", type: "richtext", required: true, label: "Content" },
+  { name: "author", type: "text", label: "Author", optional: true },
   { name: "seoTitle", type: "text", label: "SEO Title", maxLength: 60, group: "SEO" },
   {
     name: "seoDescription",
@@ -74,6 +76,7 @@ export const emptyServiceValues: ServiceFormValues = {
   excerpt: "",
   subServices: [],
   content: "",
+  author: "",
   seoTitle: "",
   seoDescription: "",
   focusKeyword: "",

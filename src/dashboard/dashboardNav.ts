@@ -1,3 +1,17 @@
+import type { ReactElement } from "react";
+
+type NavItem = {
+  label: string;
+  href?: string;
+  icon: (props: { className?: string }) => ReactElement;
+  disabled?: boolean;
+};
+
+type NavGroup = {
+  label: string;
+  items: NavItem[];
+};
+
 import {
   BarChart3Icon,
   BriefcaseIcon,
@@ -20,7 +34,7 @@ import {
   WrenchIcon,
 } from "./icons";
 
-export const dashboardNav = [
+export const dashboardNav: NavGroup[] = [
   {
     label: "",
     items: [
@@ -102,6 +116,8 @@ export const dashboardNav = [
   },
   {
     label: "SEO & Schema",
-    items: [{ label: "Coming Soon", icon: SearchIcon, disabled: true }],
+    items: [
+      { label: "SEO Scoring Config", href: "/settings/seo-config", icon: SearchIcon },
+    ],
   },
 ];
