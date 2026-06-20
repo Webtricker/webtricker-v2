@@ -15,6 +15,7 @@ import IntroVideo from "./components/IntroVideo";
 
 // lazy-load wrapper
 import LazyLoadSection, { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyLoadSection";
+import { HomePageBlock, IHomePage } from "@/types/pageTypes";
 
 // sections
 const Clients = dynamic(() => import("./components/Clients"), {
@@ -61,6 +62,275 @@ const InstragramFeed = dynamic(() => import("./components/InstragramFeed"), {
 const Technologies = dynamic(() => import("./components/Technologies"), {
   loading: () => <LoadingPlaceholder />,
 });
+
+type HomeRenderContext = {
+  homeData: IHomePage;
+  testimonialsData: any[];
+  portfoliosData: any[];
+  leaderData: any[];
+  teamData: any[];
+};
+
+const lazyPlaceholderStyle = "min-h-[558px]";
+
+const buildFallbackSections = (homeData: IHomePage): HomePageBlock[] => [
+  {
+    id: "home-hero",
+    type: "hero",
+    order: 10,
+    visible: true,
+    data: {
+      greeting: homeData?.greeting,
+      bannerText: homeData?.bannerText,
+      bannerSpinningIconWhite: homeData?.bannerSpinningIconWhite,
+      bannerSpinningIconBlack: homeData?.bannerSpinningIconBlack,
+      bannerVideo: homeData?.bannerVideo,
+      bannerDescription: homeData?.bannerDescription,
+    },
+  },
+  {
+    id: "home-media-intro",
+    type: "mediaIntro",
+    order: 20,
+    visible: true,
+    data: {
+      introVideo: homeData?.introVideo,
+    },
+  },
+  {
+    id: "home-logo-marquee",
+    type: "logoMarquee",
+    order: 30,
+    visible: true,
+    data: {
+      title: homeData?.clientSectionSubtitle,
+      clientsBanners: homeData?.clientsBanners,
+    },
+  },
+  {
+    id: "home-testimonials",
+    type: "testimonialSlider",
+    order: 40,
+    visible: true,
+    data: {
+      sectionBg: homeData?.testimonialsBg,
+    },
+  },
+  {
+    id: "home-technologies",
+    type: "technologyGrid",
+    order: 50,
+    visible: true,
+    data: {
+      technologies: homeData?.technologies,
+    },
+  },
+  {
+    id: "home-services",
+    type: "collectionPreview",
+    order: 60,
+    visible: true,
+    data: {
+      variant: "homeServices",
+      serviceSectionTitle: homeData?.serviceSectionTitle,
+      allServiceBtnText: homeData?.allServiceBtnText,
+    },
+  },
+  {
+    id: "home-large-marquee",
+    type: "marquee",
+    order: 70,
+    visible: true,
+    data: {
+      variant: "largeMarquee",
+    },
+  },
+  {
+    id: "home-portfolio-showcase",
+    type: "portfolioShowcase",
+    order: 80,
+    visible: true,
+    data: {
+      range: { start: 0, end: 6 },
+    },
+  },
+  {
+    id: "home-portfolio-slider",
+    type: "portfolioSlider",
+    order: 90,
+    visible: true,
+    data: {
+      range: { start: 6, end: 12 },
+      visibleWhen: {
+        secondSixPortfoliosLengthGreaterThan: 5,
+      },
+      linkText: homeData?.allProjectBtnText,
+    },
+  },
+  {
+    id: "home-leaders",
+    type: "leaderGrid",
+    order: 100,
+    visible: true,
+    data: {
+      title: homeData?.leadersSectionTitle,
+    },
+  },
+  {
+    id: "home-team",
+    type: "teamSlider",
+    order: 110,
+    visible: true,
+    data: {
+      title: homeData?.teamSectionTitle,
+    },
+  },
+  {
+    id: "home-latest-blogs",
+    type: "collectionPreview",
+    order: 120,
+    visible: true,
+    data: {
+      variant: "latestBlogs",
+      blogSectionTitle: homeData?.blogSectionTitle,
+    },
+  },
+  {
+    id: "home-image-feed",
+    type: "imageFeed",
+    order: 130,
+    visible: true,
+    data: {
+      images: homeData?.bottomSlider,
+    },
+  },
+];
+
+const getOrderedVisibleSections = (homeData: IHomePage) => {
+  const sections = Array.isArray(homeData?.sections) && homeData.sections.length
+    ? homeData.sections
+    : buildFallbackSections(homeData);
+
+  return [...sections]
+    .filter((section) => section.visible)
+    .sort((a, b) => a.order - b.order);
+};
+
+function HomeBlockRenderer({
+  section,
+  context,
+}: {
+  section: HomePageBlock;
+  context: HomeRenderContext;
+}) {
+  const { homeData, testimonialsData, portfoliosData, leaderData, teamData } =
+    context;
+  const data = section.data || {};
+  const blockHomeData = { ...homeData, ...data };
+  const range = data.range || {};
+  const portfolioStart = Number.isFinite(range.start) ? range.start : 0;
+  const portfolioEnd = Number.isFinite(range.end) ? range.end : 6;
+
+  switch (section.type) {
+    case "hero":
+      return <Banner homeData={blockHomeData} />;
+    case "mediaIntro":
+      return (
+        <>
+          <IntroVideo homeData={blockHomeData} />
+          <Container>
+            <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
+          </Container>
+        </>
+      );
+    case "logoMarquee":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <Clients title={data.title} clientsBanners={data.clientsBanners} />
+        </LazyLoadSection>
+      );
+    case "testimonialSlider":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <Testimonials
+            sectionBg={data.sectionBg}
+            testimonials={testimonialsData}
+          />
+        </LazyLoadSection>
+      );
+    case "technologyGrid":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <Technologies technologies={data.technologies} />
+        </LazyLoadSection>
+      );
+    case "collectionPreview":
+      if (data.variant === "latestBlogs") {
+        return (
+          <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+            <LatestBlogs blogSectionTitle={data.blogSectionTitle} />
+          </LazyLoadSection>
+        );
+      }
+
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <Services
+            allServiceTxt={data.allServiceBtnText}
+            serviceSectionTitle={data.serviceSectionTitle}
+          />
+        </LazyLoadSection>
+      );
+    case "marquee":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <LargeMarquee />
+        </LazyLoadSection>
+      );
+    case "portfolioShowcase":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <Portfolios
+            portfolios={portfoliosData?.slice(portfolioStart, portfolioEnd)}
+          />
+        </LazyLoadSection>
+      );
+    case "portfolioSlider": {
+      const portfolios = portfoliosData?.slice(portfolioStart, portfolioEnd);
+      const shouldShow =
+        !data.visibleWhen?.secondSixPortfoliosLengthGreaterThan ||
+        portfolios?.length > 5;
+
+      if (!shouldShow) return null;
+
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <PortfolioSlider linkText={data.linkText} portfolios={portfolios} />
+        </LazyLoadSection>
+      );
+    }
+    case "leaderGrid":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <OurLeader leaderData={leaderData} title={data.title} />
+        </LazyLoadSection>
+      );
+    case "teamSlider":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <TeamInfo title={data.title} teamData={teamData} />
+        </LazyLoadSection>
+      );
+    case "imageFeed":
+      return (
+        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
+          <InstragramFeed images={data.images} />
+        </LazyLoadSection>
+      );
+    default:
+      return null;
+  }
+}
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
 export const revalidate = 0;
@@ -140,80 +410,23 @@ export default async function Home() {
       getHomePageData(),
     ]);
 
-  const firstSixPortfolios = portfoliosData?.slice(0, 6);
-  const secondSixPortfolios = portfoliosData?.slice(6, 12);
+  const sections = getOrderedVisibleSections(homeData as IHomePage);
 
   return (
     <main className="w-full z-0">
-      {/* above the fold */}
-      <Banner homeData={homeData} />
-      <IntroVideo homeData={homeData} />
-
-      <Container>
-        <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
-      </Container>
-
-      {/* lazy loaded sections */}
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <Clients
-          title={homeData?.clientSectionSubtitle}
-          clientsBanners={homeData?.clientsBanners}
+      {sections.map((section) => (
+        <HomeBlockRenderer
+          key={section.id}
+          section={section}
+          context={{
+            homeData: homeData as IHomePage,
+            testimonialsData,
+            portfoliosData,
+            leaderData,
+            teamData,
+          }}
         />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <Testimonials
-          sectionBg={homeData?.testimonialsBg}
-          testimonials={testimonialsData}
-        />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <Technologies technologies={homeData?.technologies} />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <Services
-          allServiceTxt={homeData?.allServiceBtnText}
-          serviceSectionTitle={homeData?.serviceSectionTitle}
-        />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <LargeMarquee />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <Portfolios portfolios={firstSixPortfolios} />
-      </LazyLoadSection>
-
-      {secondSixPortfolios?.length > 5 && (
-        <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-          <PortfolioSlider
-            linkText={homeData?.allProjectBtnText}
-            portfolios={secondSixPortfolios}
-          />
-        </LazyLoadSection>
-      )}
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <OurLeader
-          leaderData={leaderData}
-          title={homeData?.leadersSectionTitle}
-        />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <TeamInfo title={homeData?.teamSectionTitle} teamData={teamData} />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <LatestBlogs blogSectionTitle={homeData?.blogSectionTitle} />
-      </LazyLoadSection>
-
-      <LazyLoadSection placeholderStyle={"min-h-[558px]"} >
-        <InstragramFeed images={homeData?.bottomSlider} />
-      </LazyLoadSection>
+      ))}
     </main>
   );
 }
