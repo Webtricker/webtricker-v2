@@ -26,6 +26,12 @@ type StatConfig = {
   Icon: React.ComponentType<{ className?: string }>;
 };
 
+type StatValue = {
+  count: number;
+  loading: boolean;
+  error: boolean;
+};
+
 const stats: StatConfig[] = [
   {
     label: "Total Blog Posts",
@@ -105,15 +111,29 @@ const getCountFromResponse = (data: unknown) => {
   return typeof total === "number" ? total : 0;
 };
 
+const createInitialStatState = () =>
+  Object.fromEntries(
+    stats.map((stat) => [
+      stat.label,
+      {
+        count: 0,
+        loading: true,
+        error: false,
+      },
+    ])
+  ) as Record<string, StatValue>;
+
 export default function SettingsPage() {
-  const [counts, setCounts] = useState<Record<string, number>>({});
-  const [loading, setLoading] = useState(true);
+  const [statState, setStatState] = useState<Record<string, StatValue>>(
+    createInitialStatState
+  );
   const greeting = useMemo(() => getGreeting(), []);
   const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const userName = userLoading ? "..." : currentUser?.name || "Admin";
 
   useEffect(() => {
-    let mounted = true;
+    let cancelled = false;
+    const controller = new AbortController();
 
     const loadStats = async () => {
       const entries = await Promise.all(
@@ -121,26 +141,43 @@ export default function SettingsPage() {
           try {
             const response = await fetch(item.endpoint, {
               credentials: "include",
+              signal: controller.signal,
             });
-            if (!response.ok) return [item.label, 0] as const;
+            if (!response.ok) {
+              throw new Error(`Failed to load ${item.label}`);
+            }
             const data = await response.json();
-            return [item.label, getCountFromResponse(data)] as const;
+            return [
+              item.label,
+              {
+                count: getCountFromResponse(data),
+                loading: false,
+                error: false,
+              },
+            ] as const;
           } catch {
-            return [item.label, 0] as const;
+            return [
+              item.label,
+              {
+                count: 0,
+                loading: false,
+                error: true,
+              },
+            ] as const;
           }
         })
       );
 
-      if (mounted) {
-        setCounts(Object.fromEntries(entries));
-        setLoading(false);
+      if (!cancelled) {
+        setStatState(Object.fromEntries(entries));
       }
     };
 
     loadStats();
 
     return () => {
-      mounted = false;
+      cancelled = true;
+      controller.abort();
     };
   }, []);
 
@@ -157,7 +194,14 @@ export default function SettingsPage() {
       </section>
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
-        {stats.map(({ label, Icon }) => (
+        {stats.map(({ label, Icon }) => {
+          const stat = statState[label] || {
+            count: 0,
+            loading: true,
+            error: false,
+          };
+
+          return (
           <Card
             key={label}
             className="transition duration-200 hover:-translate-y-0.5"
@@ -166,11 +210,18 @@ export default function SettingsPage() {
               <Icon className="h-5 w-5 text-[#4F46E5]" />
             </CardHeader>
             <CardContent>
-              {loading ? (
+              {stat.loading ? (
                 <Skeleton className="h-9 w-20" />
+              ) : stat.error ? (
+                <p
+                  className="text-3xl font-semibold text-zinc-400 dark:text-zinc-500"
+                  title={`${label} failed to load`}
+                >
+                  -
+                </p>
               ) : (
                 <p className="text-3xl font-semibold text-zinc-950 dark:text-zinc-50">
-                  {counts[label] ?? 0}
+                  {stat.count}
                 </p>
               )}
               <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
@@ -178,7 +229,8 @@ export default function SettingsPage() {
               </p>
             </CardContent>
           </Card>
-        ))}
+          );
+        })}
       </section>
 
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
