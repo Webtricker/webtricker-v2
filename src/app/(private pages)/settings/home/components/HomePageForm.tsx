@@ -1,385 +1,528 @@
 "use client";
-import React, { useEffect } from "react";
-import Container from "@/sharedComponets/ui/wrapper/Container";
-import galleryModern from "@/app/fonts/gallery";
-import Link from "next/link";
-import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
-import { useForm } from "react-hook-form";
-import { IHomePage } from "@/types/pageTypes";
+
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import { Badge, Button, Card, CardContent, Skeleton } from "@/dashboard/ui";
 import {
   useGetHomePageDataQuery,
   useUpdateHomePageDataMutation,
 } from "@/redux/features/pageData/pageData";
-import ConditionalReturnContainer from "@/sharedComponets/ui/wrapper/ConditionalReturnContainer";
-import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
-import BannerSpinningIcon from "./BannerSpinningIcon";
-import Button from "@/sharedComponets/ui/buttons/Button";
-import BannerRoundVideo from "./BannerRoundVideo";
-import IntroVideo from "./IntroVideo";
-import { ITestimonialsInfo } from "@/types/data";
-import TestimonialsContainer from "./TestimonialsContainer";
-import BlogCardWrapper from "@/sharedComponets/ui/wrapper/BlogCardWrapper";
-import { IBlog, IService } from "@/types/post";
-import BottomSlider from "./BottomSlider";
+import { HomePageBlock, IHomePage } from "@/types/pageTypes";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { FiChevronDown, FiChevronRight, FiEye, FiEyeOff, FiMoreVertical, FiPlus, FiTrash2 } from "react-icons/fi";
 import { toast } from "react-toastify";
-import ClientsBanner from "./ClientsBanner";
-import ServiceCard from "@/app/(public pages)/(home)/components/ServieCard";
-import Technologies from "./Technologies";
 
-// TODO: Have to remove these default data
-const bannerDescription = `Webtricker designs, develops, and delivers high-quality, responsive websites with pixel-perfect precision. We’re passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?`;
+const inputClass =
+  "min-h-11 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950";
 
-type Props = {
-  testimonials: ITestimonialsInfo[];
-  serviceData: IService[];
-  posts: IBlog[] | null;
+const collectionLinks: Record<string, { label: string; href: string }> = {
+  testimonials: { label: "Testimonials", href: "/settings/testimonials" },
+  services: { label: "Services", href: "/settings/services" },
+  portfolios: { label: "Portfolio", href: "/settings/portfolios" },
+  leader: { label: "Leaders", href: "/settings/leader" },
+  teams: { label: "Team Members", href: "/settings/teams" },
+  posts: { label: "Blog Posts", href: "/settings/blogs" },
 };
 
-// TODO: have to remove the default demoJson;
-export default function HomePageForm({
-  testimonials,
-  serviceData,
-  posts,
-}: Props) {
-  const { register, setValue, handleSubmit, control, watch, reset } =
-    useForm<IHomePage>();
-  const { data, isLoading } = useGetHomePageDataQuery({});
-  const [updateHomePage, { isLoading: loading }] =
-    useUpdateHomePageDataMutation();
+const blockLabels: Record<string, string> = {
+  hero: "Hero Banner",
+  mediaIntro: "Intro Media",
+  logoMarquee: "Client Logo Marquee",
+  testimonialSlider: "Testimonials Slider",
+  technologyGrid: "Technology Grid",
+  marquee: "Large Marquee",
+  portfolioShowcase: "Portfolio Showcase",
+  portfolioSlider: "Portfolio Slider",
+  leaderGrid: "Leaders Grid",
+  teamSlider: "Team Slider",
+  imageFeed: "Image Feed",
+};
 
-  // handlers
-  const onSubmit = async (updateData) => {
+type Props = {
+  testimonials?: unknown[];
+  serviceData?: unknown[];
+  posts?: unknown[] | null;
+};
+
+type SortableBlockProps = {
+  section: HomePageBlock;
+  expanded: boolean;
+  onToggleExpanded: () => void;
+  onToggleVisible: () => void;
+  onFieldChange: (name: string, value: any) => void;
+  onArrayChange: (name: string, value: any[]) => void;
+};
+
+const getByPath = (source: Record<string, any>, path: string) =>
+  path.split(".").reduce((value, key) => value?.[key], source);
+
+const setByPath = (source: Record<string, any>, path: string, value: any) => {
+  const clone = { ...source };
+  const keys = path.split(".");
+  let cursor = clone;
+
+  keys.slice(0, -1).forEach((key) => {
+    cursor[key] = { ...(cursor[key] || {}) };
+    cursor = cursor[key];
+  });
+
+  cursor[keys[keys.length - 1]] = value;
+  return clone;
+};
+
+const getFormValues = (data: Record<string, any>, fields: FieldConfig[]) =>
+  fields.reduce<Record<string, any>>((values, field) => {
+    values[field.name] = getByPath(data, field.name);
+    return values;
+  }, {});
+
+const normalizeSections = (homeData?: IHomePage): HomePageBlock[] =>
+  [...(homeData?.sections || [])]
+    .sort((a, b) => a.order - b.order)
+    .map((section, index) => ({ ...section, order: (index + 1) * 10 }));
+
+const getFriendlyLabel = (section: HomePageBlock) => {
+  if (section.type === "collectionPreview") {
+    if (section.data?.variant === "latestBlogs") return "Latest Blog Posts";
+    if (section.data?.variant === "homeServices") return "Services Preview";
+  }
+
+  return blockLabels[section.type] || section.type;
+};
+
+const getFields = (section: HomePageBlock): FieldConfig[] => {
+  switch (section.type) {
+    case "hero":
+      return [
+        { name: "greeting.top", label: "Greeting top", type: "text", required: true },
+        { name: "greeting.bottom", label: "Greeting bottom", type: "text", required: true },
+        { name: "bannerText.top", label: "Large text top", type: "text", required: true },
+        { name: "bannerText.left", label: "Large text left", type: "text", required: true },
+        { name: "bannerText.right", label: "Large text right", type: "text", required: true },
+        { name: "bannerDescription", label: "Description", type: "textarea", required: true },
+        { name: "bannerSpinningIconWhite", label: "Spinning icon white URL", type: "url" },
+        { name: "bannerSpinningIconBlack", label: "Spinning icon black URL", type: "url" },
+        { name: "bannerVideo.type", label: "Hero media type", type: "select", options: [{ label: "Image", value: "image" }, { label: "Video", value: "video" }] },
+        { name: "bannerVideo.src", label: "Hero media URL", type: "url", required: true },
+        { name: "cta.label", label: "CTA label", type: "text" },
+        { name: "cta.href", label: "CTA link", type: "text" },
+      ];
+    case "mediaIntro":
+      return [
+        { name: "introVideo.type", label: "Intro media type", type: "select", options: [{ label: "Image", value: "image" }, { label: "Video", value: "video" }] },
+        { name: "introVideo.src", label: "Intro media URL", type: "url", required: true },
+      ];
+    case "logoMarquee":
+      return [{ name: "title", label: "Section title", type: "text", required: true }];
+    case "testimonialSlider":
+      return [{ name: "sectionBg", label: "Background image URL", type: "url" }];
+    case "collectionPreview":
+      return section.data?.variant === "latestBlogs"
+        ? [
+            { name: "blogSectionTitle.large", label: "Title large", type: "text" },
+            { name: "blogSectionTitle.medium", label: "Title medium", type: "text" },
+            { name: "blogSectionTitle.small", label: "Title small", type: "text" },
+          ]
+        : [
+            { name: "serviceSectionTitle.large", label: "Title large", type: "text" },
+            { name: "serviceSectionTitle.medium", label: "Title medium", type: "text" },
+            { name: "serviceSectionTitle.small", label: "Title small", type: "text" },
+            { name: "allServiceBtnText", label: "Button text", type: "text" },
+            { name: "href", label: "Button link", type: "text" },
+          ];
+    case "portfolioSlider":
+      return [
+        { name: "linkText", label: "Button text", type: "text" },
+        { name: "href", label: "Button link", type: "text" },
+      ];
+    case "leaderGrid":
+    case "teamSlider":
+      return [{ name: "title", label: "Section title", type: "text" }];
+    default:
+      return [];
+  }
+};
+
+const getCollectionNote = (section: HomePageBlock) => {
+  const collection =
+    section.data?.collection ||
+    (section.type === "testimonialSlider" && "testimonials") ||
+    (section.type === "portfolioShowcase" && "portfolios") ||
+    (section.type === "portfolioSlider" && "portfolios");
+  if (!collection) return null;
+  const target = collectionLinks[collection];
+  if (!target) return null;
+
+  return (
+    <div className="rounded-md border border-sky-200 bg-sky-50 p-3 text-sm text-sky-900 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-100">
+      Content pulled automatically from {target.label}. Manage items in{" "}
+      <Link className="font-semibold underline" href={target.href}>
+        {target.label}
+      </Link>
+      .
+    </div>
+  );
+};
+
+function RepeatableStringEditor({
+  label,
+  values,
+  onChange,
+}: {
+  label: string;
+  values: string[];
+  onChange: (values: string[]) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-sm font-semibold">{label}</h4>
+        <Button type="button" variant="secondary" onClick={() => onChange([...values, ""])}>
+          <FiPlus /> Add
+        </Button>
+      </div>
+      <div className="grid gap-2">
+        {values.map((value, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              value={value}
+              onChange={(event) =>
+                onChange(values.map((item, itemIndex) => (itemIndex === index ? event.target.value : item)))
+              }
+              className={`${inputClass} flex-1`}
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}
+              aria-label={`Remove ${label} item`}
+            >
+              <FiTrash2 />
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function TechnologyEditor({
+  values,
+  onChange,
+}: {
+  values: { icon: string; name: string }[];
+  onChange: (values: { icon: string; name: string }[]) => void;
+}) {
+  return (
+    <div className="grid gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <h4 className="text-sm font-semibold">Technologies</h4>
+        <Button type="button" variant="secondary" onClick={() => onChange([...values, { icon: "", name: "" }])}>
+          <FiPlus /> Add
+        </Button>
+      </div>
+      <div className="grid gap-3">
+        {values.map((item, index) => (
+          <div key={index} className="grid gap-2 rounded-md border border-zinc-200 p-3 dark:border-zinc-800 md:grid-cols-[1fr_1fr_auto]">
+            <input
+              aria-label="Technology icon URL"
+              value={item.icon}
+              onChange={(event) =>
+                onChange(values.map((value, itemIndex) => (itemIndex === index ? { ...value, icon: event.target.value } : value)))
+              }
+              className={inputClass}
+              placeholder="Icon URL"
+            />
+            <input
+              aria-label="Technology name"
+              value={item.name}
+              onChange={(event) =>
+                onChange(values.map((value, itemIndex) => (itemIndex === index ? { ...value, name: event.target.value } : value)))
+              }
+              className={inputClass}
+              placeholder="Name"
+            />
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}
+              aria-label="Remove technology"
+            >
+              <FiTrash2 />
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function SortableBlock({
+  section,
+  expanded,
+  onToggleExpanded,
+  onToggleVisible,
+  onFieldChange,
+  onArrayChange,
+}: SortableBlockProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: section.id });
+  const style = {
+    transform: transform
+      ? `translate3d(${transform.x}px, ${transform.y}px, 0) scaleX(${transform.scaleX}) scaleY(${transform.scaleY})`
+      : undefined,
+    transition,
+  };
+  const fields = getFields(section);
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <Card
+        className={`transition ${!section.visible ? "opacity-55 grayscale" : ""} ${
+          isDragging ? "relative z-20 shadow-lg" : ""
+        }`}
+      >
+      <div className="flex items-center gap-3 p-4">
+        <button
+          type="button"
+          className="grid h-10 w-10 cursor-grab place-items-center rounded-md text-zinc-500 hover:bg-zinc-100 active:cursor-grabbing dark:hover:bg-zinc-900"
+          aria-label="Drag block"
+          {...attributes}
+          {...listeners}
+        >
+          <FiMoreVertical />
+        </button>
+        <button
+          type="button"
+          onClick={onToggleExpanded}
+          className="grid h-10 w-10 place-items-center rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-900"
+          aria-label={expanded ? "Collapse block" : "Expand block"}
+        >
+          {expanded ? <FiChevronDown /> : <FiChevronRight />}
+        </button>
+        <button type="button" onClick={onToggleExpanded} className="min-w-0 flex-1 text-left">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-base font-semibold">{getFriendlyLabel(section)}</h3>
+            <Badge>{section.type}</Badge>
+            {section.data?.variant && <Badge>{section.data.variant}</Badge>}
+          </div>
+          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+            Order {section.order}
+          </p>
+        </button>
+        <button
+          type="button"
+          onClick={onToggleVisible}
+          className={`inline-flex h-9 items-center gap-2 rounded-full px-3 text-sm transition ${
+            section.visible
+              ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300"
+              : "bg-zinc-100 text-zinc-500 dark:bg-zinc-900 dark:text-zinc-400"
+          }`}
+        >
+          {section.visible ? <FiEye /> : <FiEyeOff />}
+          {section.visible ? "Visible" : "Hidden"}
+        </button>
+      </div>
+
+      {expanded && (
+        <CardContent className="grid gap-5 border-t border-zinc-200 dark:border-zinc-800">
+          {getCollectionNote(section)}
+          {fields.length > 0 && (
+            <FormBuilder
+              fields={fields}
+              values={getFormValues(section.data || {}, fields)}
+              onChange={onFieldChange}
+            />
+          )}
+          {section.type === "logoMarquee" && (
+            <RepeatableStringEditor
+              label="Client logo URLs"
+              values={section.data?.clientsBanners || []}
+              onChange={(values) => onArrayChange("clientsBanners", values)}
+            />
+          )}
+          {section.type === "technologyGrid" && (
+            <TechnologyEditor
+              values={section.data?.technologies || []}
+              onChange={(values) => onArrayChange("technologies", values)}
+            />
+          )}
+          {section.type === "imageFeed" && (
+            <RepeatableStringEditor
+              label="Image URLs"
+              values={section.data?.images || []}
+              onChange={(values) => onArrayChange("images", values)}
+            />
+          )}
+          {fields.length === 0 &&
+            !["logoMarquee", "technologyGrid", "imageFeed"].includes(section.type) && (
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                This block controls section placement and visibility only.
+              </p>
+            )}
+        </CardContent>
+      )}
+      </Card>
+    </div>
+  );
+}
+
+export default function HomePageForm(_: Props) {
+  const { data, isLoading } = useGetHomePageDataQuery({});
+  const [updateHomePage, { isLoading: isSaving }] = useUpdateHomePageDataMutation();
+  const [sections, setSections] = useState<HomePageBlock[]>([]);
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const homeData = data?.data as (IHomePage & { _id?: string }) | undefined;
+  const sectionIds = useMemo(() => sections.map((section) => section.id), [sections]);
+
+  useEffect(() => {
+    if (!homeData) return;
+    const normalized = normalizeSections(homeData);
+    setSections(normalized);
+    setExpandedId((current) => current || normalized[0]?.id || null);
+  }, [homeData]);
+
+  const updateSection = (id: string, updater: (section: HomePageBlock) => HomePageBlock) => {
+    setSections((current) =>
+      current.map((section) => (section.id === id ? updater(section) : section))
+    );
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+
+    setSections((current) => {
+      const oldIndex = current.findIndex((section) => section.id === active.id);
+      const newIndex = current.findIndex((section) => section.id === over.id);
+      return arrayMove(current, oldIndex, newIndex).map((section, index) => ({
+        ...section,
+        order: (index + 1) * 10,
+      }));
+    });
+  };
+
+  const handleSave = async () => {
+    if (!homeData?._id) return;
+
     try {
-      const res = await updateHomePage({
-        id: data?.data?._id,
-        data: updateData,
+      const response = await updateHomePage({
+        id: homeData._id,
+        data: {
+          sections: sections.map((section, index) => ({
+            ...section,
+            order: (index + 1) * 10,
+          })),
+        },
       }).unwrap();
-      if (res?.success) {
-        toast.success("Home page data updated");
+
+      if (response?.success) {
+        toast.success("Home blocks saved");
       } else {
-        toast.error("Failed to update home page data");
+        toast.error("Failed to save home blocks");
       }
-    } catch (error: any) {
-      console.log(error, " error updating home page data");
-      toast.error("Failed to update home page data");
+    } catch (error) {
+      console.error("Failed to save home blocks", error);
+      toast.error("Failed to save home blocks");
     }
   };
 
-  useEffect(() => {
-    reset(data?.data);
-  }, [data?.data, reset]);
-
-  if (isLoading)
+  if (isLoading) {
     return (
-      <ConditionalReturnContainer>
-        <LoadingSpinner />
-      </ConditionalReturnContainer>
+      <div className="mx-auto grid w-full max-w-5xl gap-4 px-4 py-8">
+        <Skeleton className="h-10 w-64" />
+        {Array.from({ length: 6 }).map((_, index) => (
+          <Skeleton key={index} className="h-24 w-full" />
+        ))}
+      </div>
     );
+  }
 
-  if (!data)
+  if (!homeData) {
     return (
-      <ConditionalReturnContainer>
-        <p>Add Home page data</p>
-      </ConditionalReturnContainer>
+      <div className="mx-auto w-full max-w-5xl px-4 py-8">
+        <Card>
+          <CardContent className="p-6 text-sm text-zinc-500">
+            Home page data was not found.
+          </CardContent>
+        </Card>
+      </div>
     );
-  const homePageData = data?.data || {};
+  }
 
   return (
-    <div className="w-full overflow-x-hidden">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={`w-full mt-[100px] sm:mt-[130px] md:mt-[150px] lg:mt-[180px] 2xl:mt-[200px]`}
-      >
-        <Container className="">
-          <div className="w-full flex-col sm:flex-row flex items-start sm:gap-5 md:gap-8 lg:gap-14 justify-center">
-            <span className="mb-5 sm:mb-0 inline-block heading !text-[18px] lg:!text-[20px] leading-[100%] whitespace-nowrap">
-              <input
-                id="greeting.top"
-                className="page-input pl-1"
-                {...register("greeting.top", { required: true })}
-                placeholder="Hello"
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Home Page Blocks</h1>
+          <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+            Reorder sections, hide blocks, and edit the content that powers the live homepage.
+          </p>
+        </div>
+        <Button type="button" onClick={handleSave} disabled={isSaving}>
+          {isSaving ? "Saving..." : "Save All Changes"}
+        </Button>
+      </div>
+
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
+          <div className="grid gap-3">
+            {sections.map((section) => (
+              <SortableBlock
+                key={section.id}
+                section={section}
+                expanded={expandedId === section.id}
+                onToggleExpanded={() =>
+                  setExpandedId((current) => (current === section.id ? null : section.id))
+                }
+                onToggleVisible={() =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    visible: !current.visible,
+                  }))
+                }
+                onFieldChange={(name, value) =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    data: setByPath(current.data || {}, name, value),
+                  }))
+                }
+                onArrayChange={(name, value) =>
+                  updateSection(section.id, (current) => ({
+                    ...current,
+                    data: {
+                      ...(current.data || {}),
+                      [name]: value,
+                    },
+                  }))
+                }
               />
-              <br />
-              <input
-                id="greeting.bottom"
-                className="page-input mt-1 pl-1"
-                {...register("greeting.bottom", { required: true })}
-                placeholder="People! We’re"
-              />
-            </span>
-            <input
-              id="bannerText.top"
-              className={`text-center max-w-[50vw] !rounded-[10px] sm:w-auto sm:text-left wt_fs-giant banner-large-text heading page-input px-4 ${galleryModern.className}`}
-              {...register("bannerText.top", { required: true })}
-              placeholder="Creative"
-            />
-            <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
-              <BannerSpinningIcon data={homePageData} setValue={setValue} />
-            </div>
+            ))}
           </div>
-          <h1
-            className={`flex-col sm:flex-row gap-4 ${galleryModern.className} mt-6 md:mt-8 lg:mt-10 2xl:mt-14 wt_fs-giant banner-large-text flex w-full items-center justify-center heading`}
-          >
-            <input
-              id="bannerText.left"
-              className={`max-w-[555px] w-full page-input ${galleryModern.className}`}
-              {...register("bannerText.left", { required: true })}
-              placeholder="Digital"
-            />
-            <span className="tp-hero-title-img">
-              <BannerRoundVideo data={homePageData} setValue={setValue} />
-            </span>
-            <input
-              id="bannerText.right"
-              className={`max-w-[575px] w-full page-input ${galleryModern.className}`}
-              {...register("bannerText.right", { required: true })}
-              placeholder="Studio"
-            />
-          </h1>
-
-          <div className="w-full mt-5 sm:mt-10 lg:mt-14 2xl:mt-20 max-w-[600px] mx-auto">
-            <span className="hidden lg:inline-block float-left w-[95px] h-0.5 "></span>
-            <p className="text-center lg:text-left !leading-[140%]">
-              <textarea
-                id="bannerDescription"
-                className={`min-h-[100px] w-full page-input p-2 ${galleryModern.className}`}
-                {...register("bannerDescription", { required: true })}
-                placeholder={bannerDescription}
-              ></textarea>
-              <Link
-                href="/contact"
-                className="btn-line-effect !bg-transparent dark:!text-white !inline-flex gap-1.5 items-center"
-              >
-                <span className="">Let’s talk</span>
-                <ArrowUpRightIcon />
-              </Link>
-            </p>
-          </div>
-        </Container>
-
-        {/* ======= banner section ends ======== */}
-
-        <IntroVideo data={homePageData} setValue={setValue} />
-
-        {/* ======= clients section starts ======== */}
-        <section className="w-full py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <Container>
-            <div className="w-full max-w-[70vw] flex-col  md:flex-row flex md:items-center gap-5 lg:gap-10 overflow-hidden">
-              <p className="uppercase whitespace-nowrap shrink-0">
-                <input
-                  id="clientSectionSubtitle"
-                  className={`w-full min-w-[260px] page-input px-1 py-2 wt_fs-md`}
-                  {...register("clientSectionSubtitle", { required: true })}
-                  placeholder="Clients we've worked with"
-                />
-              </p>
-              <ClientsBanner
-                setValue={setValue}
-                clientsBanners={homePageData?.clientsBanners || []}
-              />
-            </div>
-          </Container>
-        </section>
-
-        {/* ======= services section starts ======== */}
-        <TestimonialsContainer
-          setValue={setValue}
-          data={homePageData}
-          testimonials={testimonials}
-        />
-
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <Container>
-            <div className="w-full flex-col md:flex-row gap-10 sm:gap-16 md:gap-10 flex justify-between">
-              <div className="w-full">
-                <h2 className="heading inline !leading-[100%]">
-                  <input
-                    id="serviceSectionTitle.large"
-                    className={`max-w-[575px] w-full page-input`}
-                    {...register("serviceSectionTitle.large", {
-                      required: true,
-                    })}
-                    placeholder="Thoughtful"
-                  />
-                </h2>
-                <div className="w-full flex flex-wrap lg:flex-nowrap items-end gap-2">
-                  <h3
-                    className={`heading wt_fs-7xl !leading-[100%] ${galleryModern.className}`}
-                  >
-                    <input
-                      id="serviceSectionTitle.medium"
-                      className={`max-w-[400px] w-full page-input`}
-                      {...register("serviceSectionTitle.medium", {
-                        required: true,
-                      })}
-                      placeholder="Process"
-                    />
-                  </h3>
-                  <h4 className="mb-2 md:mb-4 heading wt_fs-md">
-                    <input
-                      id="serviceSectionTitle.small"
-                      className={`max-w-[375px] px-1 w-full page-input`}
-                      {...register("serviceSectionTitle.small", {
-                        required: true,
-                      })}
-                      placeholder="We Think a lot"
-                    />
-                  </h4>
-                </div>
-                <div className="w-full relative mt-5">
-                  <input
-                    id="allServiceBtnText"
-                    className={`max-w-[200px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
-                    {...register("allServiceBtnText", { required: true })}
-                    placeholder="See All Service"
-                  />
-                </div>
-              </div>
-
-              {/* services info */}
-              <div
-                title="Click to update service"
-                className="w-full flex flex-col gap-8 lg:gap-10 2xl:gap-12"
-              >
-                {serviceData?.slice(0, 1).map((service) => (
-                  <ServiceCard key={service._id} service={service} />
-                ))}
-              </div>
-            </div>
-          </Container>
-        </section>
-
-        {/* <LargeMarquee /> */}
-
-        <section className="w-full px-5">
-          <div className="px-5 flex items-center justify-center min-h-[300px] border border-slate-400 rounded-[10px] ">
-            <h4>Update porfolios from the left panel</h4>
-          </div>
-        </section>
-
-        <section className="w-full px-5 mt-5">
-          <div className="px-5 flex items-center justify-center min-h-[300px] border border-slate-400 rounded-[10px] ">
-            <h5 className="text-center">
-              For slider portfolios udpate porfolios 6 number to 12 number
-              portfolios from the left panel
-            </h5>
-          </div>
-        </section>
-        <section className="w-full relative mt-5 px-5">
-          <input
-            id="allProjectBtnText"
-            className={`max-w-[210px] wt_fs-md px-7 py-2.5 !rounded-full w-full page-input`}
-            {...register("allProjectBtnText", { required: true })}
-            placeholder="View All Projects"
-          />
-        </section>
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-            <h3 className="text-center middle-border">
-              <input
-                id="leadersSectionTitle"
-                className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
-                {...register("leadersSectionTitle", { required: true })}
-                placeholder="Our Leaders"
-              />
-            </h3>
-          </div>
-          <div className="mx-5 px-5 flex items-center justify-center min-h-[100px] border border-slate-400 rounded-[10px]">
-            <h4>Update team members from left panel</h4>
-          </div>
-        </section>
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-            <h3 className="text-center middle-border">
-              <input
-                id="teamSectionTitle"
-                className={`max-w-[450px] px-2 text-center py-2.5 w-full page-input`}
-                {...register("teamSectionTitle", { required: true })}
-                placeholder="Our People"
-              />
-            </h3>
-          </div>
-          <div className="mx-5 px-5 flex items-center justify-center min-h-[100px] border border-slate-400 rounded-[10px]">
-            <h4>Update team members from left panel</h4>
-          </div>
-        </section>
-
-        <section className="py-8 px-5 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <div className="w-full text-center mb-14 md:mb-16 lg:mb-20">
-            <h3 className="w-full text-center middle-border">
-              <input
-                id="technologoySectionTitle"
-                className={`px-2 text-center py-2.5 w-full page-input`}
-                {...register("technologoySectionTitle", { required: true })}
-                placeholder="Technologies that we are experts in"
-              />
-            </h3>
-          </div>
-          <Technologies
-            control={control}
-            register={register}
-            setValue={setValue}
-            watch={watch}
-          />
-        </section>
-
-        <section className="py-8 md:py-10 lg:py-14 xl:py-16 2xl:py-18">
-          <Container>
-            <h2 className="heading inline !leading-[100%]">
-              <input
-                id="blogSectionTitle.large"
-                className={`max-w-[575px] w-full page-input`}
-                {...register("blogSectionTitle.large", { required: true })}
-                placeholder="Updates,"
-              />
-            </h2>
-            <div className="mt-1 w-full flex flex-wrap md:flex-nowrap items-end gap-2">
-              <h2
-                className={`heading !leading-[100%] ${galleryModern.className}`}
-              >
-                <input
-                  id="blogSectionTitle.medium"
-                  className={`max-w-[400px] w-full page-input`}
-                  {...register("blogSectionTitle.medium", { required: true })}
-                  placeholder="Insights"
-                />
-              </h2>
-              <h6 className="mb-2 2xl:mb-4 heading">
-                <input
-                  id="blogSectionTitle.small"
-                  className={`max-w-[375px] px-1 w-full page-input`}
-                  {...register("blogSectionTitle.small", { required: true })}
-                  placeholder="Our Newest Articles"
-                />
-              </h6>
-            </div>
-            <div className=" section-inner-speacing w-full grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8 gap-y-14 md:gap-8 md:gap-y-14 lg:gap-10 lg:gap-y-14">
-              {posts?.map((blog) => (
-                <BlogCardWrapper
-                  key={blog._id}
-                  createdAt={new Date(blog.createdAt).toString()}
-                  description={blog.description}
-                  slug={blog.slug}
-                  thumnail={blog.thumnail.url}
-                  title={blog.title}
-                  excerpt={blog.excerp}
-                >
-                  <Button label="Read More" className="!text-sm !py-2.5" />
-                </BlogCardWrapper>
-              ))}
-            </div>
-          </Container>
-        </section>
-        <BottomSlider data={homePageData} setValue={setValue} />
-
-        <Container className="min-h-20 mt-20">
-          {loading ? (
-            <LoadingSpinner />
-          ) : (
-            <Button type="submit" className="!py-3" label="Update home page" />
-          )}
-        </Container>
-      </form>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 }
