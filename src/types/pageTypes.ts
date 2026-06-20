@@ -1,3 +1,25 @@
+export type HomeBlockType =
+  | "hero"
+  | "mediaIntro"
+  | "logoMarquee"
+  | "testimonialSlider"
+  | "technologyGrid"
+  | "collectionPreview"
+  | "marquee"
+  | "portfolioShowcase"
+  | "portfolioSlider"
+  | "leaderGrid"
+  | "teamSlider"
+  | "imageFeed";
+
+export type HomePageBlock = {
+  id: string;
+  type: HomeBlockType;
+  order: number;
+  visible: boolean;
+  data: Record<string, any>;
+};
+
 export interface IHomePage {
   // banner section
   greeting: {
@@ -54,6 +76,7 @@ export interface IHomePage {
   };
 
   bottomSlider: string[];
+  sections?: HomePageBlock[];
 }
 
 export interface IAboutPage {

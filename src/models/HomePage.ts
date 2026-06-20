@@ -2,6 +2,31 @@
 import { IHomePage } from '@/types/pageTypes';
 import { Schema, model, models } from 'mongoose';
 
+const homeBlockTypes = [
+    'hero',
+    'mediaIntro',
+    'logoMarquee',
+    'testimonialSlider',
+    'technologyGrid',
+    'collectionPreview',
+    'marquee',
+    'portfolioShowcase',
+    'portfolioSlider',
+    'leaderGrid',
+    'teamSlider',
+    'imageFeed',
+] as const;
+
+const homeBlockSchema = new Schema(
+    {
+        id: { type: String, required: true },
+        type: { type: String, enum: homeBlockTypes, required: true },
+        order: { type: Number, required: true },
+        visible: { type: Boolean, default: true },
+        data: { type: Schema.Types.Mixed, default: {} },
+    },
+    { _id: false }
+);
 
 
 const technologySchema = new Schema({
@@ -54,7 +79,8 @@ const homePageSchema = new Schema<IHomePage>(
             medium: { type: String, required: true },
             small: { type: String, required: true },
         },
-        bottomSlider: { type: [String], required: true, }
+        bottomSlider: { type: [String], required: true, },
+        sections: { type: [homeBlockSchema], default: [] },
     },
     {
         timestamps: false,
