@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, CardContent } from "@/dashboard/ui";
+import { Card, CardContent } from "@/dashboard/ui";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -105,9 +105,12 @@ export default function EditServicePage() {
             Update service content, media, tags, and SEO metadata.
           </p>
         </div>
-        <Button asChild variant="secondary">
-          <Link href="/settings/services">Back</Link>
-        </Button>
+        <Link
+          href="/settings/services"
+          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
+        >
+          Back
+        </Link>
       </div>
 
       {loading ? (

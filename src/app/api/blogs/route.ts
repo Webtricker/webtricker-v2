@@ -106,6 +106,7 @@ export const GET = async (req: NextRequest) => {
         .sort({ updatedAt: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit)
+        .select("-content")
         .populate("category")
         .populate("tags")
         .lean(),
