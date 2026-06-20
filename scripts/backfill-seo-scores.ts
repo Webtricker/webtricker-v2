@@ -198,12 +198,14 @@ async function main() {
   const rows: Row[] = [];
 
   const scoreItem = (type: string, item: any): Row => {
+    // Mirror the form's useEffect: auto-populate canonical URL from slug when empty
+    const canonicalUrl = (item.canonicalUrl || "").trim() || (item.slug ? `/${item.slug}` : "");
     const result = scoreSeo(
       {
         seoTitle:       item.seoTitle,
         seoDescription: item.seoDescription,
         focusKeyword:   item.focusKeyword,
-        canonicalUrl:   item.canonicalUrl,
+        canonicalUrl,
         ogImage:        item.ogImage,
         content:        item.content,
         author:         item.author,

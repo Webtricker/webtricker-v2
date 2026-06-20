@@ -117,9 +117,15 @@ export default function PortfolioForm({
     ...initialValues,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isDirty, setIsDirty] = useState(false);
 
   const updateValue = (name: string, value: any) => {
     setValues((current) => ({ ...current, [name]: value }));
+  };
+
+  const handleFieldChange = (name: string, value: any) => {
+    setIsDirty(true);
+    updateValue(name, value);
   };
 
   // Auto-populate canonical URL from slug when it's empty
@@ -173,14 +179,14 @@ export default function PortfolioForm({
           <FormBuilder
             fields={portfolioFields}
             values={values}
-            onChange={updateValue}
+            onChange={handleFieldChange}
             errors={errors}
           />
           <SEOScorePanel
             mode="full"
             values={values}
             updatedAt={updatedAt}
-            onScoreComputed={(score) => updateValue("seoScore", score)}
+            onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
           />
           <div className="flex justify-end">
             <Button type="submit" disabled={submitting}>
