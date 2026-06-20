@@ -93,6 +93,9 @@ export default function PrivacyPolicyForm() {
           </p>
         </CardHeader>
         <CardContent>
+          <div className="mb-4 rounded-md border border-zinc-200 bg-zinc-50 px-4 py-3 text-sm text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-400">
+            SEO scoring is not applied to legal pages. Ensure content is accurate and up to date.
+          </div>
           <form className="grid gap-5" onSubmit={handleSubmit}>
             <FormBuilder
               fields={fields}

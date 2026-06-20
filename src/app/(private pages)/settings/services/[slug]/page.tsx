@@ -31,12 +31,14 @@ const normalizeServiceValues = (service: any): ServiceFormValues => ({
   canonicalUrl: service?.canonicalUrl || "",
   ogImage: service?.ogImage || "",
   ogImageAlt: service?.ogImageAlt || "",
+  seoScore: service?.seoScore ?? undefined,
 });
 
 export default function EditServicePage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const [values, setValues] = useState<ServiceFormValues | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -54,7 +56,10 @@ export default function EditServicePage() {
           throw new Error(data.message || "Failed to load service");
         }
 
-        if (mounted) setValues(normalizeServiceValues(data.service));
+        if (mounted) {
+          setValues(normalizeServiceValues(data.service));
+          setUpdatedAt(data.service.updatedAt || null);
+        }
       } catch (error: any) {
         toast.error(error?.message || "Failed to load service");
       } finally {
@@ -125,6 +130,7 @@ export default function EditServicePage() {
           description="Write the service content and metadata."
           initialValues={values}
           submitting={submitting}
+          updatedAt={updatedAt}
           onSubmit={handleSubmit}
         />
       ) : (

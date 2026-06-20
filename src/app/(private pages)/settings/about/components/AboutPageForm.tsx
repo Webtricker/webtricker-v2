@@ -17,6 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import SEOScorePanel from "@/dashboard/seo/SEOScorePanel";
 import { Badge, Button, Card, CardContent, Skeleton } from "@/dashboard/ui";
 import {
   useGetAboutPageDataQuery,
@@ -409,7 +410,7 @@ export default function AboutPageForm(_: Props) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8">
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold">About Page Blocks</h1>
@@ -422,43 +423,51 @@ export default function AboutPageForm(_: Props) {
         </Button>
       </div>
 
-      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
-          <div className="grid gap-3">
-            {sections.map((section) => (
-              <SortableBlock
-                key={section.id}
-                section={section}
-                expanded={expandedId === section.id}
-                onToggleExpanded={() =>
-                  setExpandedId((current) => (current === section.id ? null : section.id))
-                }
-                onToggleVisible={() =>
-                  updateSection(section.id, (current) => ({
-                    ...current,
-                    visible: !current.visible,
-                  }))
-                }
-                onFieldChange={(name, value) =>
-                  updateSection(section.id, (current) => ({
-                    ...current,
-                    data: setByPath(current.data || {}, name, value),
-                  }))
-                }
-                onArrayChange={(name, value) =>
-                  updateSection(section.id, (current) => ({
-                    ...current,
-                    data: {
-                      ...(current.data || {}),
-                      [name]: value,
-                    },
-                  }))
-                }
-              />
-            ))}
-          </div>
-        </SortableContext>
-      </DndContext>
+      <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={sectionIds} strategy={verticalListSortingStrategy}>
+            <div className="grid gap-3">
+              {sections.map((section) => (
+                <SortableBlock
+                  key={section.id}
+                  section={section}
+                  expanded={expandedId === section.id}
+                  onToggleExpanded={() =>
+                    setExpandedId((current) => (current === section.id ? null : section.id))
+                  }
+                  onToggleVisible={() =>
+                    updateSection(section.id, (current) => ({
+                      ...current,
+                      visible: !current.visible,
+                    }))
+                  }
+                  onFieldChange={(name, value) =>
+                    updateSection(section.id, (current) => ({
+                      ...current,
+                      data: setByPath(current.data || {}, name, value),
+                    }))
+                  }
+                  onArrayChange={(name, value) =>
+                    updateSection(section.id, (current) => ({
+                      ...current,
+                      data: {
+                        ...(current.data || {}),
+                        [name]: value,
+                      },
+                    }))
+                  }
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
+        <div className="lg:sticky lg:top-4 lg:self-start">
+          <SEOScorePanel
+            mode="metadata-only"
+            sectionCount={sections.filter((s) => s.visible !== false).length}
+          />
+        </div>
+      </div>
     </div>
   );
 }

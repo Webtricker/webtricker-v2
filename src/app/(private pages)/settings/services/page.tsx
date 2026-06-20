@@ -17,6 +17,7 @@ type ServiceRecord = {
   icon?: string;
   category?: string;
   tags: TagOption[];
+  seoScore?: number;
   updatedAt?: string;
   createdAt?: string;
 };
@@ -139,7 +140,25 @@ export default function ServicesPage() {
           );
         },
       },
-      { key: "id" as const, label: "SEO Score", render: () => "-" },
+      {
+        key: "id" as const,
+        label: "SEO Score",
+        render: (service: ServiceRecord) => {
+          const s = service.seoScore;
+          if (s == null) return <span className="text-zinc-400">—</span>;
+          const color =
+            s >= 80
+              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+              : s >= 51
+              ? "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400"
+              : "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400";
+          return (
+            <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${color}`}>
+              {s}
+            </span>
+          );
+        },
+      },
       {
         key: "updatedAt" as const,
         label: "Last Updated",

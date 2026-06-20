@@ -1,6 +1,7 @@
 "use client";
 
 import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import SEOScorePanel from "@/dashboard/seo/SEOScorePanel";
 import { Button, Card, CardContent, CardHeader } from "@/dashboard/ui";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -249,7 +250,7 @@ export default function ContactPageForm() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full max-w-6xl">
       <form className="grid gap-5" onSubmit={handleSubmit}>
         <div className="flex items-start justify-between gap-3">
           <div>
@@ -265,18 +266,25 @@ export default function ContactPageForm() {
             {submitting ? "Saving..." : "Save Changes"}
           </Button>
         </div>
-        <FormBuilder
-          fields={contactFields}
-          values={values}
-          onChange={(name, value) =>
-            setValues((prev) => ({ ...prev, [name]: value }))
-          }
-          errors={errors}
-        />
-        <div className="flex justify-end">
-          <Button type="submit" disabled={submitting}>
-            {submitting ? "Saving..." : "Save Changes"}
-          </Button>
+        <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+          <div className="grid gap-5">
+            <FormBuilder
+              fields={contactFields}
+              values={values}
+              onChange={(name, value) =>
+                setValues((prev) => ({ ...prev, [name]: value }))
+              }
+              errors={errors}
+            />
+            <div className="flex justify-end">
+              <Button type="submit" disabled={submitting}>
+                {submitting ? "Saving..." : "Save Changes"}
+              </Button>
+            </div>
+          </div>
+          <div className="lg:sticky lg:top-4 lg:self-start">
+            <SEOScorePanel mode="metadata-only" values={values} />
+          </div>
         </div>
       </form>
     </div>

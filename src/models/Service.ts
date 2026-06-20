@@ -23,6 +23,7 @@ interface IService {
   thumbnailAlt?: string;
   thumbnailTitle?: string;
   author?: string;
+  seoScore?: number;
   featured: boolean;
   published: boolean;
 }
@@ -59,6 +60,7 @@ const ServiceSchema = new mongoose.Schema<IService>(
     thumbnailAlt: { type: String },
     thumbnailTitle: { type: String },
     author: { type: String, trim: true },
+    seoScore: { type: Number },
     featured: { type: Boolean, default: false },
     published: { type: Boolean, default: false },
   },

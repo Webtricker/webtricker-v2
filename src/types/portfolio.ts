@@ -27,6 +27,7 @@ export interface IPortfolio {
   thumbnailTitle?: string;
   coverImageAlt?: string;
   author?: string;
+  seoScore?: number;
   featured?: boolean;
 }
 

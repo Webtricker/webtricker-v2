@@ -1,8 +1,9 @@
 "use client";
 
 import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
+import SEOScorePanel, { SeoScoreBadge } from "@/dashboard/seo/SEOScorePanel";
 import { Button, Card, CardContent, CardHeader } from "@/dashboard/ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export type ServiceFormValues = {
   title: string;
@@ -23,6 +24,7 @@ export type ServiceFormValues = {
   canonicalUrl?: string;
   ogImage?: string;
   ogImageAlt?: string;
+  seoScore?: number;
 };
 
 const serviceFields: FieldConfig[] = [
@@ -60,7 +62,7 @@ const serviceFields: FieldConfig[] = [
     group: "SEO",
   },
   { name: "focusKeyword", type: "text", label: "Focus Keyword", group: "SEO", optional: true },
-  { name: "canonicalUrl", type: "url", label: "Canonical URL", group: "SEO", optional: true },
+  { name: "canonicalUrl", type: "canonical-url", source: "slug", label: "Canonical URL", group: "SEO", optional: true },
   { name: "ogImage", type: "image", label: "OG Image (1200x630)", group: "SEO", optional: true },
 ];
 
@@ -83,6 +85,7 @@ export const emptyServiceValues: ServiceFormValues = {
   canonicalUrl: "",
   ogImage: "",
   ogImageAlt: "",
+  seoScore: undefined,
 };
 
 export default function ServiceForm({
@@ -90,12 +93,14 @@ export default function ServiceForm({
   description,
   initialValues = emptyServiceValues,
   submitting,
+  updatedAt,
   onSubmit,
 }: {
   title: string;
   description: string;
   initialValues?: ServiceFormValues;
   submitting: boolean;
+  updatedAt?: string | null;
   onSubmit: (values: ServiceFormValues) => Promise<void>;
 }) {
   const [values, setValues] = useState<ServiceFormValues>({
@@ -107,6 +112,14 @@ export default function ServiceForm({
   const updateValue = (name: string, value: any) => {
     setValues((current) => ({ ...current, [name]: value }));
   };
+
+  // Auto-populate canonical URL from slug when it's empty
+  useEffect(() => {
+    if (values.slug && !values.canonicalUrl) {
+      updateValue("canonicalUrl", `/${values.slug}`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values.slug]);
 
   const validate = () => {
     const nextErrors: Record<string, string> = {};
@@ -123,12 +136,19 @@ export default function ServiceForm({
   return (
     <Card>
       <CardHeader>
-        <h1 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">
-          {title}
-        </h1>
-        <p className="text-sm text-zinc-500 dark:text-zinc-400">
-          {description}
-        </p>
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h1 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">
+              {title}
+            </h1>
+            <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              {description}
+            </p>
+          </div>
+          {values.seoScore != null && (
+            <SeoScoreBadge score={values.seoScore} />
+          )}
+        </div>
       </CardHeader>
       <CardContent>
         <form
@@ -144,6 +164,12 @@ export default function ServiceForm({
             values={values}
             onChange={updateValue}
             errors={errors}
+          />
+          <SEOScorePanel
+            mode="full"
+            values={values}
+            updatedAt={updatedAt}
+            onScoreComputed={(score) => updateValue("seoScore", score)}
           />
           <div className="flex justify-end">
             <Button type="submit" disabled={submitting}>

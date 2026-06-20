@@ -29,12 +29,14 @@ const normalizeBlogValues = (post: any): BlogFormValues => ({
   canonicalUrl: post?.canonicalUrl || "",
   ogImage: post?.ogImage || "",
   ogImageAlt: post?.ogImageAlt || "",
+  seoScore: post?.seoScore ?? undefined,
 });
 
 export default function EditBlogPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const [values, setValues] = useState<BlogFormValues | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -52,7 +54,10 @@ export default function EditBlogPage() {
           throw new Error(data.message || "Failed to load post");
         }
 
-        if (mounted) setValues(normalizeBlogValues(data.post));
+        if (mounted) {
+          setValues(normalizeBlogValues(data.post));
+          setUpdatedAt(data.post.updatedAt || null);
+        }
       } catch (error: any) {
         toast.error(error?.message || "Failed to load post");
       } finally {
@@ -123,6 +128,7 @@ export default function EditBlogPage() {
           description="Write the core post content and metadata."
           initialValues={values}
           submitting={submitting}
+          updatedAt={updatedAt}
           onSubmit={handleSubmit}
         />
       ) : (

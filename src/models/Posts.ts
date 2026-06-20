@@ -24,6 +24,7 @@ interface IPost {
   thumbnailTitle?: string;
   author?: string;
   readingTime?: number;
+  seoScore?: number;
   featured: boolean;
   published: boolean;
 }
@@ -58,6 +59,7 @@ const PostSchema = new mongoose.Schema<IPost>({
   thumbnailTitle: { type: String, trim: true },
   author: { type: String, trim: true },
   readingTime: { type: Number },
+  seoScore: { type: Number },
   featured: { type: Boolean, default: false },
   published: { type: Boolean, default: false },
 }, {

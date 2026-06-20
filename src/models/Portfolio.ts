@@ -38,6 +38,7 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
   thumbnailTitle: { type: String },
   coverImageAlt: { type: String },
   author: { type: String, trim: true },
+  seoScore: { type: Number },
   featured: { type: Boolean, default: false },
 }, {
   timestamps: true,

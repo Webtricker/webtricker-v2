@@ -34,12 +34,14 @@ const normalizePortfolioValues = (portfolio: any): PortfolioFormValues => ({
   canonicalUrl: portfolio?.canonicalUrl || "",
   ogImage: portfolio?.ogImage || "",
   ogImageAlt: portfolio?.ogImageAlt || "",
+  seoScore: portfolio?.seoScore ?? undefined,
 });
 
 export default function EditPortfolioPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const [values, setValues] = useState<PortfolioFormValues | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
@@ -57,7 +59,10 @@ export default function EditPortfolioPage() {
           throw new Error(data.message || "Failed to load portfolio");
         }
 
-        if (mounted) setValues(normalizePortfolioValues(data.portfolio));
+        if (mounted) {
+          setValues(normalizePortfolioValues(data.portfolio));
+          setUpdatedAt(data.portfolio.updatedAt || null);
+        }
       } catch (error: any) {
         toast.error(error?.message || "Failed to load portfolio");
       } finally {
@@ -128,6 +133,7 @@ export default function EditPortfolioPage() {
           description="Write the case study content and metadata."
           initialValues={values}
           submitting={submitting}
+          updatedAt={updatedAt}
           onSubmit={handleSubmit}
         />
       ) : (

@@ -18,7 +18,8 @@ export type FieldType =
   | "relation"
   | "tags"
   | "url"
-  | "date";
+  | "date"
+  | "canonical-url";
 
 export interface FieldConfig {
   name: string;
@@ -310,6 +311,18 @@ export default function FormBuilder({
             </Button>
           </div>
         </div>
+      );
+    } else if (field.type === "canonical-url") {
+      const sourceSlug = String(values[field.source || "slug"] || "");
+      control = (
+        <input
+          type="text"
+          value={value}
+          maxLength={field.maxLength}
+          onChange={(event) => onChange(field.name, event.target.value)}
+          placeholder={sourceSlug ? `/${sourceSlug}` : "/page-slug"}
+          className={inputClass}
+        />
       );
     } else {
       control = (
