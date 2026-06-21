@@ -15,6 +15,7 @@ export const navLinks: TLink[] = [
 
 export const settingsLinks: TLink[] = [
   { label: "Header", href: "/settings/header" },
+  { label: "Site Config", href: "/settings/site-config" },
   { label: "Sidebar", href: "/settings/sidebar" },
   { label: "Home", href: "/settings/home" },
   { label: "About", href: "/settings/about" },
