@@ -98,22 +98,32 @@ export default function EditBlogPage() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6">
-      <div className="flex items-center justify-between gap-3">
+    <div className="flex w-full flex-col gap-6">
+      <div className="sticky top-16 z-[25] -mx-4 flex items-center justify-between gap-3 border-b border-zinc-200 bg-zinc-50/95 px-4 py-3 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/95 md:-mx-6 md:px-6 lg:-mx-8 lg:px-8">
         <div>
           <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
             Edit Blog Post
           </h1>
-          <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">
             Update content, media, tags, and SEO metadata.
           </p>
         </div>
-        <a
-          href="/settings/blogs"
-          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
-        >
-          Back
-        </a>
+        <div className="flex shrink-0 items-center gap-3">
+          <button
+            type="submit"
+            form="blog-edit-form"
+            disabled={submitting || loading}
+            className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+          >
+            {submitting ? "Saving…" : "Save Post"}
+          </button>
+          <a
+            href="/settings/blogs"
+            className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-900 transition hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950 dark:text-zinc-100 dark:hover:bg-zinc-900"
+          >
+            Back
+          </a>
+        </div>
       </div>
 
       {loading ? (

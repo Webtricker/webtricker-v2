@@ -104,13 +104,14 @@ export default function BlogForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isDirty, setIsDirty] = useState(false);
   const [pendingHref, setPendingHref] = useState<string | null>(null);
+  const initializingRef = useRef(true);
 
   const updateValue = useCallback((name: string, value: any) => {
     setValues((current) => ({ ...current, [name]: value }));
   }, []);
 
   const handleFieldChange = useCallback((name: string, value: any) => {
-    setIsDirty(true);
+    if (!initializingRef.current) setIsDirty(true);
     updateValue(name, value);
   }, [updateValue]);
 
@@ -132,6 +133,9 @@ export default function BlogForm({
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
   }, [isDirty]);
+
+  // Mark form as ready for dirty tracking after all mount effects complete
+  useEffect(() => { initializingRef.current = false; }, []);
 
   // Intercept sidebar link clicks when dirty
   useEffect(() => {
@@ -184,14 +188,6 @@ export default function BlogForm({
 
   return (
     <div ref={containerRef}>
-      <button
-        type="submit"
-        form="blog-edit-form"
-        disabled={submitting}
-        className="fixed right-4 top-[72px] z-[60] inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white shadow-lg transition hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
-      >
-        {submitting ? "Saving…" : "Save Post"}
-      </button>
       <Card>
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
