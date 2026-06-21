@@ -282,7 +282,7 @@ export default function ContactPageForm() {
               </Button>
             </div>
           </div>
-          <div className="lg:sticky lg:top-4 lg:self-start">
+          <div className="lg:sticky lg:top-16 lg:self-start lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">
             <SEOScorePanel mode="metadata-only" values={values} />
           </div>
         </div>

@@ -72,6 +72,9 @@ const portfolioFields: FieldConfig[] = [
   { name: "ogImage", type: "image", label: "OG Image (1200x630)", group: "SEO", optional: true },
 ];
 
+const portfolioNonSeoFields = portfolioFields.filter((f) => f.group !== "SEO");
+const portfolioSeoFields = portfolioFields.filter((f) => f.group === "SEO");
+
 export const emptyPortfolioValues: PortfolioFormValues = {
   title: "",
   slug: "",
@@ -177,16 +180,24 @@ export default function PortfolioForm({
           }}
         >
           <FormBuilder
-            fields={portfolioFields}
+            fields={portfolioNonSeoFields}
             values={values}
             onChange={handleFieldChange}
             errors={errors}
           />
-          <SEOScorePanel
-            mode="full"
+          <div className="sticky top-16 z-20 rounded-lg shadow-md shadow-zinc-200 dark:shadow-black/20">
+            <SEOScorePanel
+              mode="full"
+              values={values}
+              updatedAt={updatedAt}
+              onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
+            />
+          </div>
+          <FormBuilder
+            fields={portfolioSeoFields}
             values={values}
-            updatedAt={updatedAt}
-            onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
+            onChange={handleFieldChange}
+            errors={errors}
           />
           <div className="flex justify-end">
             <Button type="submit" disabled={submitting}>

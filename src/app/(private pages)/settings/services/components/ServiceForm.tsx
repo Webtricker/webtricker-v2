@@ -66,6 +66,9 @@ const serviceFields: FieldConfig[] = [
   { name: "ogImage", type: "image", label: "OG Image (1200x630)", group: "SEO", optional: true },
 ];
 
+const serviceNonSeoFields = serviceFields.filter((f) => f.group !== "SEO");
+const serviceSeoFields = serviceFields.filter((f) => f.group === "SEO");
+
 export const emptyServiceValues: ServiceFormValues = {
   title: "",
   slug: "",
@@ -166,16 +169,24 @@ export default function ServiceForm({
           }}
         >
           <FormBuilder
-            fields={serviceFields}
+            fields={serviceNonSeoFields}
             values={values}
             onChange={handleFieldChange}
             errors={errors}
           />
-          <SEOScorePanel
-            mode="full"
+          <div className="sticky top-16 z-20 rounded-lg shadow-md shadow-zinc-200 dark:shadow-black/20">
+            <SEOScorePanel
+              mode="full"
+              values={values}
+              updatedAt={updatedAt}
+              onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
+            />
+          </div>
+          <FormBuilder
+            fields={serviceSeoFields}
             values={values}
-            updatedAt={updatedAt}
-            onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
+            onChange={handleFieldChange}
+            errors={errors}
           />
           <div className="flex justify-end">
             <Button type="submit" disabled={submitting}>
