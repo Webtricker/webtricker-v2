@@ -92,6 +92,17 @@ export default async function Footer() {
         <Container className="grid  grid-cols-2 md:grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-14 md:gap-20">
           {/* ====== footer logo links ==== */}
           <div className="w-full col-span-2 md:col-span-1">
+            {footerData?.logo?.white && (
+              <div className="mb-5">
+                <Image
+                  src={footerData.logo.white}
+                  alt="Webtricker"
+                  width={200}
+                  height={60}
+                  className="h-auto w-[160px] md:w-[180px] object-contain"
+                />
+              </div>
+            )}
             <div className="flex items-center gap-1 bold">
               <h6 className="footer-heading">Why Us ?</h6>
             </div>
