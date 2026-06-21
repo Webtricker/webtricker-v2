@@ -183,6 +183,7 @@ export default function ServiceForm({
     setPendingHref(null);
     try {
       await onSubmit(values);
+      setIsDirty(false);
       router.push(destination);
     } catch {
       setPendingHref(destination);
@@ -236,6 +237,8 @@ export default function ServiceForm({
                 event.preventDefault();
                 if (!validate()) return;
                 await onSubmit(values);
+                setIsDirty(false);
+                router.push("/settings/services");
               }}
             >
               <FormBuilder

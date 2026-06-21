@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import PortfolioForm, {
@@ -9,7 +8,6 @@ import PortfolioForm, {
 } from "../components/PortfolioForm";
 
 export default function AddPortfolioPage() {
-  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (values: PortfolioFormValues) => {
@@ -29,7 +27,6 @@ export default function AddPortfolioPage() {
       }
 
       toast.success("Portfolio created");
-      router.push("/settings/portfolios");
     } catch (error: any) {
       toast.error(error?.message || "Failed to create portfolio");
     } finally {

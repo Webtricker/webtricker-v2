@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import ServiceForm, {
@@ -9,7 +8,6 @@ import ServiceForm, {
 } from "../components/ServiceForm";
 
 export default function AddServicePage() {
-  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (values: ServiceFormValues) => {
@@ -29,7 +27,6 @@ export default function AddServicePage() {
       }
 
       toast.success("Service created");
-      router.push("/settings/services");
     } catch (error: any) {
       toast.error(error?.message || "Failed to create service");
     } finally {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/dashboard/ui";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import BlogForm, { BlogFormValues, emptyBlogValues } from "../components/BlogForm";
@@ -34,7 +34,6 @@ const normalizeBlogValues = (post: any): BlogFormValues => ({
 
 export default function EditBlogPage() {
   const params = useParams<{ slug: string }>();
-  const router = useRouter();
   const [values, setValues] = useState<BlogFormValues | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -89,7 +88,6 @@ export default function EditBlogPage() {
       }
 
       toast.success("Post updated");
-      router.push("/settings/blogs");
     } catch (error: any) {
       toast.error(error?.message || "Failed to update post");
     } finally {

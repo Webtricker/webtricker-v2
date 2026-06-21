@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/dashboard/ui";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import PortfolioForm, {
@@ -39,7 +39,6 @@ const normalizePortfolioValues = (portfolio: any): PortfolioFormValues => ({
 
 export default function EditPortfolioPage() {
   const params = useParams<{ slug: string }>();
-  const router = useRouter();
   const [values, setValues] = useState<PortfolioFormValues | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -94,7 +93,6 @@ export default function EditPortfolioPage() {
       }
 
       toast.success("Portfolio updated");
-      router.push("/settings/portfolios");
     } catch (error: any) {
       toast.error(error?.message || "Failed to update portfolio");
     } finally {

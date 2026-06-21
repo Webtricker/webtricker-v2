@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/dashboard/ui";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ServiceForm, {
@@ -36,7 +36,6 @@ const normalizeServiceValues = (service: any): ServiceFormValues => ({
 
 export default function EditServicePage() {
   const params = useParams<{ slug: string }>();
-  const router = useRouter();
   const [values, setValues] = useState<ServiceFormValues | null>(null);
   const [updatedAt, setUpdatedAt] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -91,7 +90,6 @@ export default function EditServicePage() {
       }
 
       toast.success("Service updated");
-      router.push("/settings/services");
     } catch (error: any) {
       toast.error(error?.message || "Failed to update service");
     } finally {

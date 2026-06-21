@@ -1,12 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import BlogForm, { BlogFormValues, emptyBlogValues } from "../components/BlogForm";
 
 export default function AddBlogPage() {
-  const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (values: BlogFormValues) => {
@@ -26,7 +24,6 @@ export default function AddBlogPage() {
       }
 
       toast.success("Post created");
-      router.push("/settings/blogs");
     } catch (error: any) {
       toast.error(error?.message || "Failed to create post");
     } finally {

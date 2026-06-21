@@ -194,6 +194,7 @@ export default function PortfolioForm({
     setPendingHref(null);
     try {
       await onSubmit(values);
+      setIsDirty(false);
       router.push(destination);
     } catch {
       setPendingHref(destination);
@@ -247,6 +248,8 @@ export default function PortfolioForm({
                 event.preventDefault();
                 if (!validate()) return;
                 await onSubmit(values);
+                setIsDirty(false);
+                router.push("/settings/portfolios");
               }}
             >
               <FormBuilder

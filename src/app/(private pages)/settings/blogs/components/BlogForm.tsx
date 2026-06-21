@@ -174,6 +174,7 @@ export default function BlogForm({
     setPendingHref(null);
     try {
       await onSubmit(values);
+      setIsDirty(false);
       router.push(destination);
     } catch {
       setPendingHref(destination);
@@ -227,6 +228,8 @@ export default function BlogForm({
                 event.preventDefault();
                 if (!validate()) return;
                 await onSubmit(values);
+                setIsDirty(false);
+                router.push("/settings/blogs");
               }}
             >
               <FormBuilder
