@@ -184,6 +184,14 @@ export default function BlogForm({
 
   return (
     <div ref={containerRef}>
+      <button
+        type="submit"
+        form="blog-edit-form"
+        disabled={submitting}
+        className="fixed right-4 top-3.5 z-[60] inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white shadow-lg transition hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+      >
+        {submitting ? "Saving…" : "Save Post"}
+      </button>
       <Card>
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
