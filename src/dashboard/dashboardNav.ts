@@ -84,6 +84,7 @@ export const dashboardNav: NavGroup[] = [
   {
     label: "Site Settings",
     items: [
+      { label: "Site Config", href: "/settings/site-config", icon: SettingsIcon },
       { label: "Header", href: "/settings/header", icon: MonitorIcon },
       { label: "Footer", href: "/settings/footer", icon: MonitorIcon },
       { label: "Sidebar", href: "/settings/sidebar", icon: SettingsIcon },
