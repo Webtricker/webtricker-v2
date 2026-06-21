@@ -76,7 +76,7 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
   return (
     <div className="grid gap-2">
       {/* Editor container with sticky toolbar */}
-      <div className="overflow-hidden rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      <div className="rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
         {/* Sticky toolbar */}
         <div className="sticky top-40 z-10 flex flex-wrap gap-1.5 border-b border-zinc-200 bg-white/95 p-2 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/95">
           <button type="button" title="Paragraph" className={toolbarClass} onClick={() => editor.chain().focus().setParagraph().run()}>

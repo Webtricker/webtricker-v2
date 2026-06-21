@@ -179,11 +179,13 @@ export default function ServiceForm({
   const handleSaveAndLeave = async () => {
     if (!pendingHref) return;
     if (!validate()) { setPendingHref(null); return; }
+    const destination = pendingHref;
+    setPendingHref(null);
     try {
       await onSubmit(values);
-      router.push(pendingHref);
+      router.push(destination);
     } catch {
-      setPendingHref(null);
+      setPendingHref(destination);
     }
   };
 
@@ -250,7 +252,7 @@ export default function ServiceForm({
             </form>
 
             {/* Right: sticky SEO score panel */}
-            <div className="lg:sticky lg:top-16 lg:self-start lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">
+            <div className="lg:sticky lg:top-40 lg:self-start lg:max-h-[calc(100vh-10rem)] lg:overflow-y-auto">
               <SEOScorePanel
                 mode="full"
                 values={values}
