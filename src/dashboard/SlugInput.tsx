@@ -1,7 +1,7 @@
 "use client";
 
 import { makeSlug } from "@/utils/blog";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { PencilIcon } from "./icons";
 
 type SlugInputProps = {
@@ -18,10 +18,13 @@ export default function SlugInput({
   existingSlugs = [],
 }: SlugInputProps) {
   const [manual, setManual] = useState(false);
+  const onChangeRef = useRef(onChange);
+  useEffect(() => { onChangeRef.current = onChange; });
 
   useEffect(() => {
-    if (!manual) onChange(makeSlug(sourceValue));
-  }, [manual, onChange, sourceValue]);
+    if (!manual) onChangeRef.current(makeSlug(sourceValue));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [manual, sourceValue]);
 
   const duplicate = useMemo(
     () => Boolean(value && existingSlugs.includes(value)),

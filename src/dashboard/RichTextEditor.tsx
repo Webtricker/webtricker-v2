@@ -75,42 +75,62 @@ export default function RichTextEditor({ value, onChange }: RichTextEditorProps)
 
   return (
     <div className="grid gap-2">
-      <div className="flex flex-wrap gap-2">
-        <button type="button" title="Bold" className={toolbarClass} onClick={() => editor.chain().focus().toggleBold().run()}>
-          B
-        </button>
-        <button type="button" title="Italic" className={toolbarClass} onClick={() => editor.chain().focus().toggleItalic().run()}>
-          I
-        </button>
-        <button type="button" title="Strikethrough" className={toolbarClass} onClick={() => editor.chain().focus().toggleStrike().run()}>
-          S
-        </button>
-        <button type="button" title="Heading 2" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
-          H2
-        </button>
-        <button type="button" title="Heading 3" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
-          H3
-        </button>
-        <button type="button" title="Bullet list" className={toolbarClass} onClick={() => editor.chain().focus().toggleBulletList().run()}>
-          UL
-        </button>
-        <button type="button" title="Numbered list" className={toolbarClass} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
-          OL
-        </button>
-        <button type="button" title="Link" className={toolbarClass} onClick={setLink}>
-          #
-        </button>
-        <button type="button" title="Image" className={toolbarClass} onClick={() => setImageDialogOpen(true)}>
-          Img
-        </button>
-        <button type="button" title="Undo" className={toolbarClass} onClick={() => editor.chain().focus().undo().run()}>
-          U
-        </button>
-        <button type="button" title="Redo" className={toolbarClass} onClick={() => editor.chain().focus().redo().run()}>
-          R
-        </button>
-      </div>
-      <div className="rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+      {/* Editor container with sticky toolbar */}
+      <div className="overflow-hidden rounded-md border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
+        {/* Sticky toolbar */}
+        <div className="sticky top-16 z-10 flex flex-wrap gap-1.5 border-b border-zinc-200 bg-white/95 p-2 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-950/95">
+          <button type="button" title="Paragraph" className={toolbarClass} onClick={() => editor.chain().focus().setParagraph().run()}>
+            P
+          </button>
+          <button type="button" title="Heading 2" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}>
+            H2
+          </button>
+          <button type="button" title="Heading 3" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}>
+            H3
+          </button>
+          <button type="button" title="Heading 4" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}>
+            H4
+          </button>
+          <button type="button" title="Heading 5" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}>
+            H5
+          </button>
+          <button type="button" title="Heading 6" className={toolbarClass} onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}>
+            H6
+          </button>
+          <span className="mx-0.5 h-9 w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
+          <button type="button" title="Bold" className={toolbarClass} onClick={() => editor.chain().focus().toggleBold().run()}>
+            B
+          </button>
+          <button type="button" title="Italic" className={toolbarClass} onClick={() => editor.chain().focus().toggleItalic().run()}>
+            I
+          </button>
+          <button type="button" title="Strikethrough" className={toolbarClass} onClick={() => editor.chain().focus().toggleStrike().run()}>
+            S
+          </button>
+          <span className="mx-0.5 h-9 w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
+          <button type="button" title="Bullet list" className={toolbarClass} onClick={() => editor.chain().focus().toggleBulletList().run()}>
+            UL
+          </button>
+          <button type="button" title="Numbered list" className={toolbarClass} onClick={() => editor.chain().focus().toggleOrderedList().run()}>
+            OL
+          </button>
+          <span className="mx-0.5 h-9 w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
+          <button type="button" title="Link" className={toolbarClass} onClick={setLink}>
+            #
+          </button>
+          <button type="button" title="Image" className={toolbarClass} onClick={() => setImageDialogOpen(true)}>
+            Img
+          </button>
+          <span className="mx-0.5 h-9 w-px self-stretch bg-zinc-200 dark:bg-zinc-800" />
+          <button type="button" title="Undo" className={toolbarClass} onClick={() => editor.chain().focus().undo().run()}>
+            ↩
+          </button>
+          <button type="button" title="Redo" className={toolbarClass} onClick={() => editor.chain().focus().redo().run()}>
+            ↪
+          </button>
+        </div>
+
+        {/* Editor content */}
         <EditorContent editor={editor} />
       </div>
 

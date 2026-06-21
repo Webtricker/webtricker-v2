@@ -3,7 +3,8 @@
 import FormBuilder, { FieldConfig } from "@/dashboard/FormBuilder";
 import SEOScorePanel, { SeoScoreBadge } from "@/dashboard/seo/SEOScorePanel";
 import { Button, Card, CardContent, CardHeader } from "@/dashboard/ui";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export type PortfolioFormValues = {
   title: string;
@@ -72,9 +73,6 @@ const portfolioFields: FieldConfig[] = [
   { name: "ogImage", type: "image", label: "OG Image (1200x630)", group: "SEO", optional: true },
 ];
 
-const portfolioNonSeoFields = portfolioFields.filter((f) => f.group !== "SEO");
-const portfolioSeoFields = portfolioFields.filter((f) => f.group === "SEO");
-
 export const emptyPortfolioValues: PortfolioFormValues = {
   title: "",
   slug: "",
@@ -115,21 +113,24 @@ export default function PortfolioForm({
   updatedAt?: string | null;
   onSubmit: (values: PortfolioFormValues) => Promise<void>;
 }) {
+  const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
   const [values, setValues] = useState<PortfolioFormValues>({
     ...emptyPortfolioValues,
     ...initialValues,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isDirty, setIsDirty] = useState(false);
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
 
-  const updateValue = (name: string, value: any) => {
+  const updateValue = useCallback((name: string, value: any) => {
     setValues((current) => ({ ...current, [name]: value }));
-  };
+  }, []);
 
-  const handleFieldChange = (name: string, value: any) => {
+  const handleFieldChange = useCallback((name: string, value: any) => {
     setIsDirty(true);
     updateValue(name, value);
-  };
+  }, [updateValue]);
 
   // Auto-populate canonical URL from slug when it's empty
   useEffect(() => {
@@ -138,6 +139,35 @@ export default function PortfolioForm({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values.slug]);
+
+  // Warn on browser close/reload when dirty
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      return (e.returnValue = "");
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [isDirty]);
+
+  // Intercept sidebar link clicks when dirty
+  useEffect(() => {
+    if (!isDirty) return;
+    const handler = (e: MouseEvent) => {
+      const anchor = (e.target as Element)?.closest("a[href]") as HTMLAnchorElement | null;
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href || !href.startsWith("/")) return;
+      if (href === window.location.pathname) return;
+      if (containerRef.current?.contains(anchor)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      setPendingHref(href);
+    };
+    document.addEventListener("click", handler, true);
+    return () => document.removeEventListener("click", handler, true);
+  }, [isDirty]);
 
   const validate = () => {
     const nextErrors: Record<string, string> = {};
@@ -153,59 +183,116 @@ export default function PortfolioForm({
     return Object.keys(nextErrors).length === 0;
   };
 
+  const handleSaveAndLeave = async () => {
+    if (!pendingHref) return;
+    if (!validate()) { setPendingHref(null); return; }
+    try {
+      await onSubmit(values);
+      router.push(pendingHref);
+    } catch {
+      setPendingHref(null);
+    }
+  };
+
+  const handleLeaveWithoutSaving = () => {
+    if (!pendingHref) return;
+    const href = pendingHref;
+    setIsDirty(false);
+    setPendingHref(null);
+    router.push(href);
+  };
+
   return (
-    <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">
-              {title}
-            </h1>
-            <p className="text-sm text-zinc-500 dark:text-zinc-400">
-              {description}
+    <div ref={containerRef}>
+      <Card>
+        <CardHeader>
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <h1 className="text-xl font-semibold text-zinc-950 dark:text-zinc-50">
+                {title}
+              </h1>
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                {description}
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-3">
+              {values.seoScore != null && (
+                <SeoScoreBadge score={values.seoScore} />
+              )}
+              <button
+                type="submit"
+                form="portfolio-edit-form"
+                disabled={submitting}
+                className="inline-flex min-h-9 items-center justify-center gap-2 rounded-md bg-zinc-950 px-4 py-2 text-sm font-medium text-white transition hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-950 dark:hover:bg-zinc-200"
+              >
+                {submitting ? "Saving…" : "Save Portfolio"}
+              </button>
+            </div>
+          </div>
+        </CardHeader>
+
+        <CardContent>
+          <div className="grid gap-6 lg:grid-cols-[1fr_280px]">
+            {/* Left: all form fields */}
+            <form
+              id="portfolio-edit-form"
+              className="grid gap-5"
+              onSubmit={async (event) => {
+                event.preventDefault();
+                if (!validate()) return;
+                await onSubmit(values);
+              }}
+            >
+              <FormBuilder
+                fields={portfolioFields}
+                values={values}
+                onChange={handleFieldChange}
+                errors={errors}
+              />
+              <div className="flex justify-end">
+                <Button type="submit" disabled={submitting}>
+                  {submitting ? "Saving…" : "Save Portfolio"}
+                </Button>
+              </div>
+            </form>
+
+            {/* Right: sticky SEO score panel */}
+            <div className="lg:sticky lg:top-16 lg:self-start lg:max-h-[calc(100vh-4rem)] lg:overflow-y-auto">
+              <SEOScorePanel
+                mode="full"
+                values={values}
+                updatedAt={updatedAt}
+                onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
+              />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Unsaved-changes confirmation dialog */}
+      {pendingHref && (
+        <div className="fixed inset-0 z-[100] grid place-items-center bg-black/50 px-4">
+          <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-5 shadow-xl dark:border-zinc-800 dark:bg-zinc-950">
+            <h2 className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
+              Unsaved Changes
+            </h2>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              You have unsaved changes. What would you like to do?
             </p>
+            <div className="mt-4 flex flex-col gap-2">
+              <Button onClick={handleSaveAndLeave} disabled={submitting}>
+                {submitting ? "Saving…" : "Save & Leave"}
+              </Button>
+              <Button variant="secondary" onClick={handleLeaveWithoutSaving}>
+                Leave Without Saving
+              </Button>
+              <Button variant="secondary" onClick={() => setPendingHref(null)}>
+                Stay on Page
+              </Button>
+            </div>
           </div>
-          {values.seoScore != null && (
-            <SeoScoreBadge score={values.seoScore} />
-          )}
         </div>
-      </CardHeader>
-      <CardContent>
-        <form
-          className="grid gap-5"
-          onSubmit={async (event) => {
-            event.preventDefault();
-            if (!validate()) return;
-            await onSubmit(values);
-          }}
-        >
-          <FormBuilder
-            fields={portfolioNonSeoFields}
-            values={values}
-            onChange={handleFieldChange}
-            errors={errors}
-          />
-          <div className="sticky top-16 z-20 rounded-lg shadow-md shadow-zinc-200 dark:shadow-black/20">
-            <SEOScorePanel
-              mode="full"
-              values={values}
-              updatedAt={updatedAt}
-              onScoreComputed={isDirty ? (score) => updateValue("seoScore", score) : undefined}
-            />
-          </div>
-          <FormBuilder
-            fields={portfolioSeoFields}
-            values={values}
-            onChange={handleFieldChange}
-            errors={errors}
-          />
-          <div className="flex justify-end">
-            <Button type="submit" disabled={submitting}>
-              {submitting ? "Saving..." : "Save Portfolio"}
-            </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 }
