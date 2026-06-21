@@ -19,10 +19,14 @@ export default function SlugInput({
 }: SlugInputProps) {
   const [manual, setManual] = useState(false);
   const onChangeRef = useRef(onChange);
-  useEffect(() => { onChangeRef.current = onChange; });
+  const valueRef = useRef(value);
+  useEffect(() => { onChangeRef.current = onChange; valueRef.current = value; });
 
   useEffect(() => {
-    if (!manual) onChangeRef.current(makeSlug(sourceValue));
+    if (!manual) {
+      const next = makeSlug(sourceValue);
+      if (next !== valueRef.current) onChangeRef.current(next);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manual, sourceValue]);
 
