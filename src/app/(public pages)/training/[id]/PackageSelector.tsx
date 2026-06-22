@@ -22,7 +22,10 @@ type CoursePackage = {
   rating?: number;
   isPopular?: boolean;
   isJobReady?: boolean;
-  modules: { title: string; duration?: string }[];
+  outcomeStatement?: string;
+  deliverables?: string[];
+  idealForThisPackage?: string;
+  modules: { title: string; duration?: string; project?: string; description?: string }[];
 };
 
 export default function PackageSelector({
@@ -78,6 +81,14 @@ export default function PackageSelector({
         </div>
       )}
 
+      {/* Outcome statement */}
+      {pkg.outcomeStatement && (
+        <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 px-5 py-4">
+          <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">After this course</p>
+          <p className="text-base font-medium text-black">{pkg.outcomeStatement}</p>
+        </div>
+      )}
+
       {/* Course Header card */}
       <div className="bg-white border border-gray-200 rounded-lg p-8 mb-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -97,6 +108,10 @@ export default function PackageSelector({
                   ))}
                 </div>
               </div>
+            )}
+
+            {pkg.idealForThisPackage && (
+              <p className="mb-6 text-sm text-gray-600 italic">{pkg.idealForThisPackage}</p>
             )}
 
             <div className="flex flex-wrap gap-4 text-sm">
@@ -179,6 +194,22 @@ export default function PackageSelector({
               </div>
             )}
 
+            {pkg.deliverables && pkg.deliverables.length > 0 && (
+              <div className="border-t border-gray-200 pt-3 mb-4">
+                <p className="text-xs font-semibold text-gray-500 mb-2">What you{"'"}ll get</p>
+                <ul className="space-y-1.5">
+                  {pkg.deliverables.map((d, i) => (
+                    <li key={i} className="flex items-start gap-2 text-xs text-gray-700">
+                      <svg className="h-3.5 w-3.5 shrink-0 mt-0.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {d}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             <Link href="/contact" className="block">
               <Button label="Enroll Now" className="w-full !rounded-md !px-4 !py-3 !bg-black !text-white" />
             </Link>
@@ -194,14 +225,21 @@ export default function PackageSelector({
         ) : (
           <ul className="space-y-3">
             {pkg.modules.map((mod, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <div className="bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mt-0.5">
-                  {i + 1}
+              <li key={i} className="space-y-1">
+                <div className="flex items-start gap-3">
+                  <div className="bg-black text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-medium mt-0.5 shrink-0">
+                    {i + 1}
+                  </div>
+                  <span className="text-gray-700">
+                    {mod.title}
+                    {mod.duration && <span className="ml-2 text-xs text-gray-400">({mod.duration})</span>}
+                  </span>
                 </div>
-                <span className="text-gray-700">
-                  {mod.title}
-                  {mod.duration && <span className="ml-2 text-xs text-gray-400">({mod.duration})</span>}
-                </span>
+                {mod.project && (
+                  <p className="ml-9 text-xs text-gray-500">
+                    🛠️ <span className="font-medium">Project:</span> {mod.project}
+                  </p>
+                )}
               </li>
             ))}
           </ul>

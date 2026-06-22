@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 
 const PackageModuleSchema = new mongoose.Schema(
-  { title: { type: String, required: true }, duration: { type: String } },
+  {
+    title: { type: String, required: true },
+    duration: { type: String },
+    project: { type: String },
+    description: { type: String },
+  },
   { _id: false }
 );
 
@@ -23,6 +28,9 @@ const PackageSchema = new mongoose.Schema({
   rating: { type: Number, default: 0 },
   isPopular: { type: Boolean, default: false },
   isJobReady: { type: Boolean, default: false },
+  outcomeStatement: { type: String },
+  deliverables: { type: [String], default: [] },
+  idealForThisPackage: { type: String },
 });
 
 const InstructorSchema = new mongoose.Schema(

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-export type PackageModule = { title: string; duration?: string };
+export type PackageModule = { title: string; duration?: string; project?: string; description?: string };
 
 export type PackageFormValues = {
   _id?: string;
@@ -28,6 +28,9 @@ export type PackageFormValues = {
   rating: number | string;
   isPopular: boolean;
   isJobReady: boolean;
+  outcomeStatement: string;
+  deliverables: string[];
+  idealForThisPackage: string;
   modules: PackageModule[];
 };
 
@@ -83,7 +86,10 @@ export const emptyPackage = (): PackageFormValues => ({
   rating: 0,
   isPopular: false,
   isJobReady: false,
-  modules: [{ title: "", duration: "" }],
+  outcomeStatement: "",
+  deliverables: [],
+  idealForThisPackage: "",
+  modules: [{ title: "", duration: "", project: "", description: "" }],
 });
 
 export const emptyTrainingValues: TrainingFormValues = {
@@ -163,10 +169,21 @@ function PackageCard({
   };
 
   const addModule = () =>
-    onUpdate(index, { ...pkg, modules: [...pkg.modules, { title: "", duration: "" }] });
+    onUpdate(index, { ...pkg, modules: [...pkg.modules, { title: "", duration: "", project: "", description: "" }] });
 
   const removeModule = (mi: number) =>
     onUpdate(index, { ...pkg, modules: pkg.modules.filter((_, i) => i !== mi) });
+
+  const setDeliverable = (di: number, value: string) => {
+    const deliverables = pkg.deliverables.map((d, i) => (i === di ? value : d));
+    onUpdate(index, { ...pkg, deliverables });
+  };
+
+  const addDeliverable = () =>
+    onUpdate(index, { ...pkg, deliverables: [...pkg.deliverables, ""] });
+
+  const removeDeliverable = (di: number) =>
+    onUpdate(index, { ...pkg, deliverables: pkg.deliverables.filter((_, i) => i !== di) });
 
   return (
     <Card>
@@ -285,6 +302,52 @@ function PackageCard({
               </div>
             </div>
 
+            {/* Package Outcome */}
+            <div className="rounded-md border border-zinc-200 p-4 dark:border-zinc-800 grid gap-4">
+              <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">Package Outcome</p>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Outcome Statement</label>
+                <textarea
+                  className={`${inputCls} min-h-16 py-2`}
+                  value={pkg.outcomeStatement}
+                  onChange={(e) => set("outcomeStatement", e.target.value)}
+                  placeholder="After completing this package, you'll be able to…"
+                />
+              </div>
+              <div className="grid gap-2">
+                <label className="text-sm font-medium">Ideal For (this package)</label>
+                <input
+                  className={inputCls}
+                  value={pkg.idealForThisPackage}
+                  onChange={(e) => set("idealForThisPackage", e.target.value)}
+                  placeholder="e.g. Beginners who want to start freelancing within 6 months"
+                />
+              </div>
+              <div className="grid gap-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-sm font-medium">Deliverables</label>
+                  <Button type="button" variant="secondary" onClick={addDeliverable}>+ Add</Button>
+                </div>
+                {pkg.deliverables.map((d, di) => (
+                  <div key={di} className="flex gap-2">
+                    <input
+                      className={inputCls}
+                      value={d}
+                      onChange={(e) => setDeliverable(di, e.target.value)}
+                      placeholder={`Deliverable ${di + 1} (e.g. 3 portfolio websites)`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeDeliverable(di)}
+                      className="shrink-0 rounded-md border border-zinc-200 px-3 text-sm text-zinc-500 hover:text-red-600 dark:border-zinc-800"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Modules */}
             <div className="grid gap-3">
               <div className="flex items-center justify-between">
@@ -292,29 +355,37 @@ function PackageCard({
                 <Button type="button" variant="secondary" onClick={addModule}>+ Add Module</Button>
               </div>
               {pkg.modules.map((mod, mi) => (
-                <div key={mi} className="flex gap-2">
+                <div key={mi} className="grid gap-1.5 rounded-md border border-zinc-100 p-2 dark:border-zinc-800">
+                  <div className="flex gap-2">
+                    <input
+                      className={inputCls}
+                      value={mod.title}
+                      required
+                      onChange={(e) => setModule(mi, "title", e.target.value)}
+                      placeholder={`Module ${mi + 1} title`}
+                    />
+                    <input
+                      className="min-h-10 w-28 shrink-0 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
+                      value={mod.duration ?? ""}
+                      onChange={(e) => setModule(mi, "duration", e.target.value)}
+                      placeholder="2 hrs"
+                    />
+                    {pkg.modules.length > 1 && (
+                      <button
+                        type="button"
+                        onClick={() => removeModule(mi)}
+                        className="shrink-0 rounded-md border border-zinc-200 px-3 text-sm text-zinc-500 hover:text-red-600 dark:border-zinc-800"
+                      >
+                        ✕
+                      </button>
+                    )}
+                  </div>
                   <input
-                    className={inputCls}
-                    value={mod.title}
-                    required
-                    onChange={(e) => setModule(mi, "title", e.target.value)}
-                    placeholder={`Module ${mi + 1} title`}
+                    className="min-h-8 w-full rounded-md border border-zinc-100 bg-zinc-50 px-3 text-xs outline-none focus:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900"
+                    value={mod.project ?? ""}
+                    onChange={(e) => setModule(mi, "project", e.target.value)}
+                    placeholder="🛠 Project (optional)"
                   />
-                  <input
-                    className="min-h-10 w-28 shrink-0 rounded-md border border-zinc-200 bg-white px-3 text-sm outline-none focus:border-zinc-500 dark:border-zinc-800 dark:bg-zinc-950"
-                    value={mod.duration ?? ""}
-                    onChange={(e) => setModule(mi, "duration", e.target.value)}
-                    placeholder="2 hrs"
-                  />
-                  {pkg.modules.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeModule(mi)}
-                      className="shrink-0 rounded-md border border-zinc-200 px-3 text-sm text-zinc-500 hover:text-red-600 dark:border-zinc-800"
-                    >
-                      ✕
-                    </button>
-                  )}
                 </div>
               ))}
             </div>

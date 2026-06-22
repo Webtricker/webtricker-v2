@@ -46,6 +46,9 @@ const toPayload = (v: TrainingFormValues) => ({
     rating: Number(p.rating) || 0,
     isPopular: Boolean(p.isPopular),
     isJobReady: Boolean(p.isJobReady),
+    outcomeStatement: p.outcomeStatement || undefined,
+    deliverables: p.deliverables.filter((d) => d.trim()),
+    idealForThisPackage: p.idealForThisPackage || undefined,
   })),
   seoTitle: v.seoTitle || undefined,
   seoDescription: v.seoDescription || undefined,
@@ -97,9 +100,12 @@ const normalizeValues = (course: any): TrainingFormValues => ({
         rating: p.rating ?? 0,
         isPopular: Boolean(p.isPopular),
         isJobReady: Boolean(p.isJobReady),
+        outcomeStatement: p.outcomeStatement || "",
+        deliverables: Array.isArray(p.deliverables) ? p.deliverables : [],
+        idealForThisPackage: p.idealForThisPackage || "",
         modules: Array.isArray(p.modules) && p.modules.length > 0
-          ? p.modules.map((m: any) => ({ title: m.title || "", duration: m.duration || "" }))
-          : [{ title: "", duration: "" }],
+          ? p.modules.map((m: any) => ({ title: m.title || "", duration: m.duration || "", project: m.project || "", description: m.description || "" }))
+          : [{ title: "", duration: "", project: "", description: "" }],
       }))
     : emptyTrainingValues.packages,
   seoTitle: course.seoTitle || "",
