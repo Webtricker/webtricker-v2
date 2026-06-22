@@ -107,5 +107,5 @@ Keep your responses extremely concise and professional. Use short paragraphs.`,
     }
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }

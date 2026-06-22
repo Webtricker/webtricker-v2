@@ -6,6 +6,7 @@ allowBuilds:
   unrs-resolver: true
 minimumReleaseAgeExclude:
   - nodemailer@9.0.1
+  - swr@2.4.2
 onlyBuiltDependencies:
   - '@parcel/watcher'
   - '@tailwindcss/oxide'
