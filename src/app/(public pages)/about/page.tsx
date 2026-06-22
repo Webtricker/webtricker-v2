@@ -157,10 +157,10 @@ function AboutBlockRenderer({
                     style={{
                         backgroundImage: `url(${data?.bannerBackgroundImage})`,
                     }}
-                    className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative`}
+                    className={`flex w-full h-screen min-h-[600px] bg-cover bg-center bg-no-repeat z-0 relative`}
                 >
-                    <div className="w-full h-full flex-col flex grow bg-black/40">
-                        <Container className="flex max-w-[1000px] pb-1 flex-col justify-center min-h-[700px]  max-h-[900px] h-[95vh] pt-[100px]">
+                    <div className="w-full h-full flex-col flex bg-black/40 pt-24 pb-8">
+                        <Container className="flex max-w-[1000px] flex-col justify-center flex-1">
                             <div className="w-full text-white pl-3 lg:pl-4 border-l-2 border-white">
                                 <h6>{data?.bannerIntroText?.top || ""}</h6>
                                 <h6>{data?.bannerIntroText?.bottom || ""}</h6>
@@ -172,10 +172,10 @@ function AboutBlockRenderer({
                                 {data?.bannerDescription || ""}
                             </p>
                         </Container>
-                        <div className="w-full">
+                        <div className="w-full py-4">
                             <ScrollToExploreBtn text={data?.scrollDwonText} />
                         </div>
-                        <Container className="flex justify-end grow items-center">
+                        <Container className="flex justify-end items-end">
                             <div className="w-full text-white max-w-[600px]">
                                 <h4>{data?.bannerBottomText || ""}</h4>
                                 <LinkButton
