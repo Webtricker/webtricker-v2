@@ -1,4 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
+import Portfolio from "@/models/Portfolio";
 import Technology from "@/models/Technology";
 import { verifyAdmin } from "@/utils/validator";
 import { NextRequest, NextResponse } from "next/server"
@@ -7,10 +8,14 @@ export const GET = async () => {
     try {
         await dbConnect();
         const technologies = await Technology.find().select('name').lean();
+        const portfolioCounts = await Portfolio.aggregate([{ $group: { _id: '$technology', count: { $sum: 1 } } }]);
+        const countMap: Record<string, number> = {};
+        portfolioCounts.forEach((c: any) => { if (c._id) countMap[c._id.toString()] = c.count; });
+        const result = technologies.map((tech: any) => ({ ...tech, portfolioCount: countMap[tech._id.toString()] ?? 0 }));
 
         return NextResponse.json({
             success: true,
-            technologies,
+            technologies: result,
         }, { status: 200 })
     } catch (error) {
         console.log(error, ' error occured during fetching technologies')
