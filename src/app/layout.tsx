@@ -11,6 +11,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 240)
 export const revalidate = 0;
@@ -173,6 +174,7 @@ export default function RootLayout({
           </ReduxProvider>
         </ThemeProvider>
         <ReactToastifyMessage />
+        <SpeedInsights />
       </body>
     </html>
   );
