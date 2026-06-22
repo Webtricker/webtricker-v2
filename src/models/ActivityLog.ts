@@ -2,7 +2,7 @@ import { Schema, model, models } from 'mongoose';
 
 export interface IActivityLog {
   userEmail: string;
-  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'OTHER';
+  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'ERROR' | 'WARNING' | 'OTHER';
   resource: string;
   details: string;
   createdAt: Date;

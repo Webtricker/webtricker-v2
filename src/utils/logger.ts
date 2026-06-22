@@ -5,7 +5,7 @@ import connectToDatabase from "@/lib/dbConnect";
 
 export const logActivity = async (
   req: NextRequest,
-  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'OTHER',
+  action: 'CREATE' | 'UPDATE' | 'DELETE' | 'LOGIN' | 'ERROR' | 'WARNING' | 'OTHER',
   resource: string,
   details: string
 ) => {

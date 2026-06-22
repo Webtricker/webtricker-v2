@@ -283,21 +283,38 @@ export default function SettingsPage() {
           </p>
         ) : (
           <div className="mt-4 flex flex-col gap-3 max-h-[1050px] overflow-y-auto custom-scrollbar pr-2">
-            {logs.map((log: any) => (
-              <div key={log._id} className="flex items-start gap-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900/50">
-                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] text-lg">
-                  {log.action === 'CREATE' ? '+' : log.action === 'UPDATE' ? '✎' : log.action === 'DELETE' ? '×' : '•'}
+            {logs.map((log: any) => {
+              const getActionColor = (action: string) => {
+                if (action === 'ERROR' || action === 'DELETE') return 'bg-red-500/10 text-red-600 dark:text-red-400';
+                if (action === 'WARNING') return 'bg-orange-500/10 text-orange-600 dark:text-orange-400';
+                if (action === 'CREATE') return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400';
+                return 'bg-[#4F46E5]/10 text-[#4F46E5]';
+              };
+
+              const getActionIcon = (action: string) => {
+                if (action === 'ERROR' || action === 'WARNING') return '!';
+                if (action === 'CREATE') return '+';
+                if (action === 'UPDATE') return '✎';
+                if (action === 'DELETE') return '×';
+                return '•';
+              };
+
+              return (
+                <div key={log._id} className="flex items-start gap-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900/50">
+                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-lg ${getActionColor(log.action)}`}>
+                    {getActionIcon(log.action)}
+                  </div>
+                  <div className="flex flex-col">
+                    <p className={`text-sm font-medium ${log.action === 'ERROR' || log.action === 'WARNING' || log.action === 'DELETE' ? 'text-red-600 dark:text-red-400' : 'text-zinc-950 dark:text-zinc-50'}`}>
+                      <span className="font-semibold">{log.userEmail}</span> {log.action.toLowerCase()} {log.resource}
+                    </p>
+                    <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                      {log.details} • {new Date(log.createdAt).toLocaleString()}
+                    </p>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <p className="text-sm font-medium text-zinc-950 dark:text-zinc-50">
-                    <span className="font-semibold">{log.userEmail}</span> {log.action.toLowerCase()} {log.resource}
-                  </p>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                    {log.details} • {new Date(log.createdAt).toLocaleString()}
-                  </p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
