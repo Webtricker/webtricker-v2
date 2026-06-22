@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
 
         const logs = await ActivityLog.find()
             .sort({ createdAt: -1 })
-            .limit(20)
+            .limit(50)
             .lean();
 
         return NextResponse.json(

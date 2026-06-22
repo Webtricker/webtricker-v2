@@ -282,7 +282,7 @@ export default function SettingsPage() {
             No recent activity found.
           </p>
         ) : (
-          <div className="mt-4 flex flex-col gap-3">
+          <div className="mt-4 flex flex-col gap-3 max-h-[1050px] overflow-y-auto custom-scrollbar pr-2">
             {logs.map((log: any) => (
               <div key={log._id} className="flex items-start gap-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900/50">
                 <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] text-lg">

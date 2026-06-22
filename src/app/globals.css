@@ -847,3 +847,19 @@ p.bouncing-text {
 .footer-link {
   font-size: var(--fs-base);
 }
+
+/* Custom Thin Scrollbar for Activity Logs */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d4d4d8; /* zinc-300 */
+  border-radius: 10px;
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3f3f46; /* zinc-700 */
+}
+
