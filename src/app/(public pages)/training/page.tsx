@@ -1,6 +1,6 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
-import bannerBg from "@/assets/images/training/training.webp";
+import bannerBg from "@/assets/images/training/training.png";
 import Link from "next/link";
 import Button from "@/sharedComponets/ui/buttons/Button";
 import { Metadata } from "next";
