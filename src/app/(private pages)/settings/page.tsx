@@ -186,8 +186,10 @@ export default function SettingsPage() {
           const data = await response.json();
           if (!cancelled) setLogs(data.logs || []);
         }
-      } catch (err) {
-        console.error("Failed to load logs", err);
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          console.error("Failed to load logs", err);
+        }
       } finally {
         if (!cancelled) setLoadingLogs(false);
       }

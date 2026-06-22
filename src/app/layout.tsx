@@ -12,6 +12,8 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import ChatWidget from "@/components/ui/ChatWidget";
+import Script from "next/script";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 240)
 export const revalidate = 0;
@@ -101,8 +103,9 @@ export default function RootLayout({
     <html lang="en">
 
       <head>
-        <script
-          type="text/javascript"
+        <Script
+          id="clarity-script"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function(c,l,a,r,i,t,y){
@@ -116,8 +119,10 @@ export default function RootLayout({
 
         <BusinessSchema />
 
-        <script
+        <Script
+          id="schema-script"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               {
@@ -159,6 +164,9 @@ export default function RootLayout({
             {/* <Suspense fallback={null}>
               <LiveChat></LiveChat>
             </Suspense> */}
+
+            {/* Live AI Chatbot */}
+            <ChatWidget />
 
             {/* WhatsApp chat */}
             <WhatsAppChat />

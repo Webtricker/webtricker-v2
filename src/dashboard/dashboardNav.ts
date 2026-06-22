@@ -108,6 +108,12 @@ export const dashboardNav: NavGroup[] = [
     ],
   },
   {
+    label: "Support",
+    items: [
+      { label: "Live Chat", href: "/settings/live-chat", icon: MessageSquareIcon },
+    ],
+  },
+  {
     label: "Users & Roles",
     // TODO Phase 2: hide this entire group unless role === "superAdmin"
     items: [
