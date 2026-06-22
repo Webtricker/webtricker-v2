@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
-import { useChat } from 'ai/react';
+import { useChat } from '@ai-sdk/react';
 import { v4 as uuidv4 } from 'uuid';
 import { pusherClient } from '@/utils/pusher-client';
 import { IoChatbubblesOutline, IoCloseOutline } from 'react-icons/io5';
