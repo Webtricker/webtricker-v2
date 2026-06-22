@@ -93,6 +93,12 @@ export const POST = async (req: NextRequest) => {
         { status: 409 }
       );
     }
+    if (error.name === "ValidationError") {
+      return NextResponse.json(
+        { success: false, message: error.message },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { success: false, message: "Internal Server Error" },
       { status: 500 }
