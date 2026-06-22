@@ -172,10 +172,7 @@ function AboutBlockRenderer({
                                 {data?.bannerDescription || ""}
                             </p>
                         </Container>
-                        <div className="w-full py-4">
-                            <ScrollToExploreBtn text={data?.scrollDwonText} />
-                        </div>
-                        <Container className="flex justify-end items-end">
+                        <Container className="flex justify-end items-end pb-8">
                             <div className="w-full text-white max-w-[600px]">
                                 <h4>{data?.bannerBottomText || ""}</h4>
                                 <LinkButton
@@ -185,6 +182,9 @@ function AboutBlockRenderer({
                                 />
                             </div>
                         </Container>
+                        <div className="absolute bottom-[20px] right-0 w-full z-10">
+                            <ScrollToExploreBtn text={data?.scrollDwonText} />
+                        </div>
                     </div>
                 </section>
             );
