@@ -157,7 +157,7 @@ function AboutBlockRenderer({
                     style={{
                         backgroundImage: `url(${data?.bannerBackgroundImage})`,
                     }}
-                    className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative bg-[url(https://liko.foxthemes.me/wp-content/uploads/2024/06/hero-1.jpg)]`}
+                    className={`flex w-full  h-[140vh]  max-h-[1500px] min-h-[1100px] bg-cover bg-center bg-no-repeat z-0 relative`}
                 >
                     <div className="w-full h-full flex-col flex grow bg-black/40">
                         <Container className="flex max-w-[1000px] pb-1 flex-col justify-center min-h-[700px]  max-h-[900px] h-[95vh] pt-[100px]">
