@@ -5,10 +5,10 @@ import careerBg from "@/assets/images/career/careerBg.jpg";
 import CareerCard from "./components/CareerCard";
 import { Metadata } from "next";
 
-export type Vacancy = {
-  id: number;
+export type CareerListing = {
+  slug: string;
   title: string;
-  vacancy: number;
+  vacancyCount: number;
 };
 
 export type CompanyInfo = {
@@ -16,7 +16,7 @@ export type CompanyInfo = {
   description: string;
 };
 
-// TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
@@ -53,70 +53,28 @@ export const metadata: Metadata = {
   },
 };
 
-function careerPage() {
-  const vacancies: Vacancy[] = [
-    {
-      id: 1,
-      title: "Experienced WordPress Developer",
-      vacancy: 1,
-    },
-    {
-      id: 2,
-      title: "Frontend Developer",
-      vacancy: 1,
-    },
-    {
-      id: 3,
-      title: "Excellent UI/UX Designer",
-      vacancy: 1,
-    },
-    {
-      id: 4,
-      title: "Experienced Marketing Executive",
-      vacancy: 1,
-    },
-    {
-      id: 5,
-      title: "Experienced Shopify Developer",
-      vacancy: 1,
-    },
-    {
-      id: 6,
-      title: "Experienced Webflow Developer",
-      vacancy: 1,
-    },
-    {
-      id: 7,
-      title: "Python Developer",
-      vacancy: 0,
-    },
-    {
-      id: 8,
-      title: "Java Developer",
-      vacancy: 0,
-    },
-    {
-      id: 9,
-      title: "Flutter Developer",
-      vacancy: 0,
-    },
-    {
-      id: 10,
-      title: "Content Writer",
-      vacancy: 0,
-    },
-    {
-      id: 11,
-      title: "SEO Expert for Webtricker",
-      vacancy: 0,
-    },
-    {
-      id: 12,
-      title: "MERN Stack Developer",
-      vacancy: 0,
-    },
-  ];
+async function getCareers(): Promise<CareerListing[]> {
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
+    const res = await fetch(`${baseUrl}/api/career?published=true&limit=100`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.careers ?? []).map((career: any) => ({
+      slug: career.slug,
+      title: career.title,
+      vacancyCount: Number(career.vacancyCount) || 0,
+    }));
+  } catch {
+    return [];
+  }
+}
 
+async function careerPage() {
+  const vacancies = await getCareers();
   const companyInfo: CompanyInfo[] = [
     {
       id: 1,
@@ -205,9 +163,15 @@ function careerPage() {
           </p>
         </div>
         <Container className="flex flex-wrap gap-6 justify-center items-center mt-12">
-          {vacancies?.map((vacancy) => (
-            <CareerCard key={vacancy?.id} vacancy={vacancy} />
-          ))}
+          {vacancies.length > 0 ? (
+            vacancies.map((vacancy) => (
+              <CareerCard key={vacancy.slug} vacancy={vacancy} />
+            ))
+          ) : (
+            <p className="text-center text-lg font-medium">
+              No open positions are available at the moment.
+            </p>
+          )}
         </Container>
       </section>
       <section>

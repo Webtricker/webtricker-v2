@@ -6,6 +6,8 @@ import {
   getAllBlogSlugs,
 } from "@/utils/pageData";
 
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://webtricker.com";
 
@@ -72,6 +74,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       })
     );
 
+    // ==== Dynamic: Career listings ====
+    const careerRes = await fetch(`${baseUrl}/api/career?published=true&limit=100`, {
+      cache: "no-store",
+    });
+    const careerData = careerRes.ok ? await careerRes.json() : { careers: [] };
+    const careerPages: MetadataRoute.Sitemap = (careerData.careers || []).map(
+      (career: { slug: string; updatedAt?: string }) => ({
+        url: `${baseUrl}/career/${encodeURIComponent(career.slug)}`,
+        lastModified: career.updatedAt ? new Date(career.updatedAt) : new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.7,
+      })
+    );
+
     return [
       ...staticPages,
       ...trainingPages,
@@ -79,6 +95,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       ...portfolioPages,
       ...categoryPages,
       ...blogPages,
+      ...careerPages,
     ];
   } catch (err) {
     console.error("Error generating sitemap:", err);
