@@ -80,6 +80,7 @@ export interface ITestimonials {
   name: string;
   role: string;
   review: string;
+  tags?: any[];
 }
 
 export interface ITestimonialsInfo extends ITestimonials {

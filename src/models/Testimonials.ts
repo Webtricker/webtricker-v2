@@ -1,5 +1,5 @@
 import { ITestimonials } from '@/types/data';
-import { Schema, model, models } from 'mongoose';
+import mongoose, { Schema, model, models } from 'mongoose';
 
 
 const testimonialsfoSchema = new Schema<ITestimonials>(
@@ -8,6 +8,7 @@ const testimonialsfoSchema = new Schema<ITestimonials>(
         role: { type: String, required: true },
         profile: { type: String, required: true, unique: true },
         review: { type: String, required: true },
+        tags: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag', default: [] }],
     },
     {
         timestamps: false,
