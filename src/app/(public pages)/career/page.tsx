@@ -147,7 +147,7 @@ async function careerPage() {
               We want every person here to feel respected, supported, and valued as a real team member.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="max-w-[1412px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 shadow-sm">
               <h5 className="font-semibold mb-6">Benefits & Perks</h5>
               <div className="grid gap-5">
