@@ -123,6 +123,9 @@ export const DELETE = async (
             );
         }
 
+        const { logActivity } = await import("@/utils/logger");
+        await logActivity(req, 'DELETE', 'Blog Post', deletedPost.title || blogID);
+
         return NextResponse.json(
             {
                 success: true,
@@ -177,6 +180,9 @@ export const PUT = async (
                 { status: 404 }
             );
         }
+
+        const { logActivity } = await import("@/utils/logger");
+        await logActivity(req, 'UPDATE', 'Blog Post', updatedPost.title || slug);
 
         return NextResponse.json(
             {

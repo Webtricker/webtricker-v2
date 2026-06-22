@@ -154,6 +154,10 @@ export const POST = async (req: NextRequest) => {
 
     const newPost = await Post.create(normalizePostPayload(data));
 
+    // Log the activity
+    const { logActivity } = await import("@/utils/logger");
+    await logActivity(req, 'CREATE', 'Blog Post', data.title || 'New Blog Post');
+
     return NextResponse.json(
       { success: true, message: "Post added", post: newPost },
       { status: 201 }

@@ -127,6 +127,9 @@ export default function SettingsPage() {
   const [statState, setStatState] = useState<Record<string, StatValue>>(
     createInitialStatState
   );
+  const [logs, setLogs] = useState<any[]>([]);
+  const [loadingLogs, setLoadingLogs] = useState(true);
+
   const greeting = useMemo(() => getGreeting(), []);
   const { user: currentUser, loading: userLoading } = useCurrentDashboardUser();
   const userName = userLoading ? "..." : currentUser?.name || "Admin";
@@ -173,7 +176,25 @@ export default function SettingsPage() {
       }
     };
 
+    const fetchLogs = async () => {
+      try {
+        const response = await fetch('/api/activity-logs', { 
+          credentials: "include", 
+          signal: controller.signal 
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (!cancelled) setLogs(data.logs || []);
+        }
+      } catch (err) {
+        console.error("Failed to load logs", err);
+      } finally {
+        if (!cancelled) setLoadingLogs(false);
+      }
+    };
+
     loadStats();
+    fetchLogs();
 
     return () => {
       cancelled = true;
@@ -182,7 +203,7 @@ export default function SettingsPage() {
   }, []);
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 pb-10">
       <section className="!bg-transparent pb-5">
         <h1 className="!text-2xl font-semibold !leading-tight text-zinc-950 dark:text-zinc-50">
           {greeting}, {userName}
@@ -249,9 +270,36 @@ export default function SettingsPage() {
           Recent Activity
         </h2>
         <div className="mt-3 h-px w-full bg-zinc-200 dark:bg-zinc-800" />
-        <p className="mt-4 !text-sm text-zinc-500 dark:text-zinc-400">
-          Activity log will appear here in Phase 2.
-        </p>
+        
+        {loadingLogs ? (
+          <div className="mt-4 space-y-3">
+             <Skeleton className="h-16 w-full rounded-lg" />
+             <Skeleton className="h-16 w-full rounded-lg" />
+             <Skeleton className="h-16 w-full rounded-lg" />
+          </div>
+        ) : logs.length === 0 ? (
+          <p className="mt-4 !text-sm text-zinc-500 dark:text-zinc-400">
+            No recent activity found.
+          </p>
+        ) : (
+          <div className="mt-4 flex flex-col gap-3">
+            {logs.map((log: any) => (
+              <div key={log._id} className="flex items-start gap-4 rounded-lg bg-zinc-50 p-4 dark:bg-zinc-900/50">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#4F46E5]/10 text-[#4F46E5] text-lg">
+                  {log.action === 'CREATE' ? '+' : log.action === 'UPDATE' ? '✎' : log.action === 'DELETE' ? '×' : '•'}
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-sm font-medium text-zinc-950 dark:text-zinc-50">
+                    <span className="font-semibold">{log.userEmail}</span> {log.action.toLowerCase()} {log.resource}
+                  </p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    {log.details} • {new Date(log.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );
