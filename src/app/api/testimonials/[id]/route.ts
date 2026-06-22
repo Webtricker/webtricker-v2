@@ -14,7 +14,7 @@ export const GET = async (
 
         const testimonialData = await Testimonial.findOne({ _id });
         return NextResponse.json(
-            { error: true, testimonialData },
+            { success: true, testimonialData },
             { status: 200 }
         );
     }

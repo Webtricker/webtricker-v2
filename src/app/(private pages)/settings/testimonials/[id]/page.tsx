@@ -1,48 +1,96 @@
-import PrivatePageWrapper from "@/app/(private pages)/components/PrivatePageWrapper";
-import NoBlogFoundMsg from "@/app/(public pages)/blog/[slug]/components/NoBlogFoundMsg";
-import { ITeamInfo } from "@/types/data";
-import PageTitle from "@/app/(private pages)/components/PageTitle";
-import Link from "next/link";
-import Button from "@/sharedComponets/ui/buttons/Button";
-import Container from "@/sharedComponets/ui/wrapper/Container";
-import TestimonialUpdateForm from "./components/TestimonialUpdateForm";
+"use client";
 
-const getTestimonialData = async (slug: string) => {
-  // You can fetch data here on the server f
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/testimonials/${slug}`
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import TestimonialForm, { TestimonialFormValues } from "../components/TestimonialForm";
+import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
+
+export default function EditTestimonialPage() {
+  const router = useRouter();
+  const params = useParams();
+  const id = params?.id as string;
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [initialData, setInitialData] = useState<TestimonialFormValues | null>(null);
+
+  useEffect(() => {
+    if (!id) return;
+    const loadTestimonial = async () => {
+      try {
+        // Looking up the endpoint for fetching a single testimonial.
+        // Wait, the API `GET /api/testimonials/[id]` is what I should use.
+        // But the previous implementation used `/api/testimonials/${slug}` in `getTestimonialData`.
+        const response = await fetch(`/api/testimonials/${id}`);
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error("Failed to load testimonial");
+        }
+        
+        // Let's assume the API returns { testimonialData: { ... } } or similar
+        const t = data.testimonialData || data.data || data;
+        setInitialData({
+          name: t.name || "",
+          role: t.role || "",
+          profile: t.profile || "",
+          review: t.review || "",
+        });
+      } catch (error: any) {
+        toast.error("Testimonial not found or error loading");
+        router.push("/settings/testimonials");
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTestimonial();
+  }, [id, router]);
+
+  const handleSubmit = async (values: TestimonialFormValues) => {
+    setSubmitting(true);
+    try {
+      const response = await fetch(`/api/testimonials/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Failed to update testimonial");
+      }
+
+      toast.success("Testimonial updated successfully");
+      router.push("/settings/testimonials");
+      router.refresh();
+    } catch (error: any) {
+      toast.error(error.message || "Something went wrong");
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex h-[50vh] items-center justify-center">
+        <LoadingSpinner />
+      </div>
     );
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.log(error, " Error fetching data");
   }
-  return null;
-};
 
-export default async function SingleTestimonialPage({ params }) {
-  const { id } = await params;
+  if (!initialData) return null;
 
-  const data = await getTestimonialData(id);
-  if (!data?.testimonialData)
-    return <NoBlogFoundMsg msg="No testimonial found" key="TESTIMONIAL_MSG" />;
-  const testimonialData = data.testimonialData || ({} as ITeamInfo);
   return (
-    <PrivatePageWrapper className="!p-0">
-      <main className="w-full z-0">
-        <section className=" w-full py-3 px-4 md:px-5 lg:px-10 left-0 flex items-center justify-between lg:bg-slate-100">
-          <PageTitle key="UPDATE_TESTIMONIAL" title="UPDATE TESTIMONIAL" />
-          <Link href="/settings/testimonials/add">
-            <Button className="!py-2.5 whitespace-nowrap" label="Add Testimonial" />
-          </Link>
-        </section>
-        <section className="section-speacing  grow">
-        <Container className="w-full justify-center flex items-center">
-            <TestimonialUpdateForm testimonial={testimonialData} />
-        </Container>
-        </section>
-        </main>
-    </PrivatePageWrapper>
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-4 md:p-6 lg:p-8">
+      <TestimonialForm
+        title="Edit Testimonial"
+        description="Update the client testimonial information."
+        initialValues={initialData}
+        submitting={submitting}
+        onSubmit={handleSubmit}
+      />
+    </div>
   );
 }
