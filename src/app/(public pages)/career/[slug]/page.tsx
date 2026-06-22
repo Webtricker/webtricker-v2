@@ -1,7 +1,6 @@
 import Button from "@/sharedComponets/ui/buttons/Button";
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import Container from "@/sharedComponets/ui/wrapper/Container";
-import careerBg from "@/assets/images/career/careerBg.jpg";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -185,6 +184,7 @@ export default async function CareerDetailsPage({
   const deadline = formatDate(career.applicationDeadline);
   const applyHref = getApplyHref(career.howToApply);
   const applyIsExternal = /^https?:\/\//i.test(applyHref);
+  const heroImage = career.ogImage || "/images/career/career-hero-team.png";
 
   const metaItems = [
     { label: "Department", value: career.department },
@@ -212,9 +212,9 @@ export default async function CareerDetailsPage({
           title={career.title}
           width={1800}
           height={900}
-          src={careerBg.src}
+          src={heroImage}
           className=" absolute top-0 left-0 w-full h-full object-cover -z-10"
-          alt="Career Banner Image"
+          alt={career.ogImageAlt || career.title}
           priority
         />
       </section>

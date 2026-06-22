@@ -1,7 +1,6 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import Image from "next/image";
 import React from "react";
-import careerBg from "@/assets/images/career/careerBg.jpg";
 import CareerCard from "./components/CareerCard";
 import { Metadata } from "next";
 
@@ -9,10 +8,12 @@ export type CareerListing = {
   slug: string;
   title: string;
   vacancyCount: number;
+  ogImage?: string;
+  ogImageAlt?: string;
 };
 
-export type CompanyInfo = {
-  id: number;
+type CultureItem = {
+  title: string;
   description: string;
 };
 
@@ -32,10 +33,10 @@ export const metadata: Metadata = {
       "Join our team: Explore career opportunities with our responsive web design agency.",
     images: [
       {
-        url: "/opengraph-image.png",
+        url: "/images/career/career-hero-team.png",
         width: 1200,
         height: 630,
-        alt: "Webtricker - Career Opportunities",
+        alt: "Webtricker career opportunities",
       },
     ],
     locale: "en_US",
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     title: "Build Your Career with Webtricker",
     description:
       "Join our team: Explore career opportunities with our responsive web design agency.",
-    images: ["/opengraph-image.png"],
+    images: ["/images/career/career-hero-team.png"],
   },
   alternates: {
     canonical: "https://webtricker.com/career",
@@ -67,6 +68,8 @@ async function getCareers(): Promise<CareerListing[]> {
       slug: career.slug,
       title: career.title,
       vacancyCount: Number(career.vacancyCount) || 0,
+      ogImage: career.ogImage,
+      ogImageAlt: career.ogImageAlt,
     }));
   } catch {
     return [];
@@ -75,47 +78,21 @@ async function getCareers(): Promise<CareerListing[]> {
 
 async function careerPage() {
   const vacancies = await getCareers();
-  const companyInfo: CompanyInfo[] = [
-    {
-      id: 1,
-      description:
-        "Webtricker believes in people’s freedom and choices. We respect everyone’s thoughts and hear everyone’s concepts to bring a greater outcome. Together we are a team. Anyone’s pain is our pain, and we always try to grow as one family in a friendly atmosphere.",
-    },
-    {
-      id: 2,
-      description:
-        "We provide 2 bonuses per year along with special bonuses for exceptional achievements and performances. Additionally, we offer affiliate options to help you enlarge your income outside of your salary.",
-    },
-    {
-      id: 3,
-      description:
-        "Special gratuity and pension packages are available after 5, 10, 15, 20, and 25 years of service. Pension follows a government-like system (conditions apply).",
-    },
-    {
-      id: 4,
-      description:
-        "We arrange professional training sessions and skill development programs to help employees grow and achieve their career goals.",
-    },
-    {
-      id: 5,
-      description:
-        "Employee salaries are revised 2 to 3 times per year depending on progress, skills, and performance.",
-    },
-    {
-      id: 6,
-      description:
-        "Employees enjoy 1-time snacks during office hours for a refreshing break.",
-    },
-    {
-      id: 7,
-      description:
-        "Dedicated employees get the opportunity to become shareholders of Webtricker under specific conditions.",
-    },
-    {
-      id: 8,
-      description:
-        "We continuously strive to add more facilities and benefits to create a better and friendlier workplace.",
-    },
+  const benefits: CultureItem[] = [
+    { title: "Performance Bonuses", description: "Two yearly bonuses plus special recognition for exceptional achievements and measurable impact." },
+    { title: "Career Development", description: "Professional training, skill development sessions, mentoring, and room to grow into stronger responsibilities." },
+    { title: "Salary Reviews", description: "Salary revision opportunities 2 to 3 times per year based on progress, skill growth, and performance." },
+    { title: "Long-Term Security", description: "Special gratuity and pension-style packages after long-term service milestones, subject to company policy." },
+    { title: "Affiliate Earning", description: "Affiliate opportunities to help team members expand income beyond their regular salary." },
+    { title: "Daily Workplace Care", description: "Refreshment support during office hours and a friendly environment built for sustainable work." },
+  ];
+  const teamValues: CultureItem[] = [
+    { title: "Freedom and Ownership", description: "We respect ideas, choices, and thoughtful initiative so team members can contribute beyond a job description." },
+    { title: "One-Team Culture", description: "Anyone's challenge is treated as a shared challenge. We grow together through support, feedback, and trust." },
+    { title: "Voice in Decisions", description: "We listen to practical suggestions from every role and value people who help improve the company." },
+    { title: "Path to Partnership", description: "Dedicated long-term contributors may get opportunities to become shareholders under specific conditions." },
+    { title: "Human Respect", description: "People are not treated as ordinary job holders; they are collaborators with goals, families, and futures." },
+    { title: "Recognition for Impact", description: "Strong contribution, leadership, loyalty, and problem-solving are noticed and rewarded over time." },
   ];
 
   return (
@@ -130,27 +107,15 @@ async function careerPage() {
             </h1>
           </div>
         </Container>
-        {/* {pageDate?.bannerBG?.type === "image" ? ( */}
         <Image
-          title="Click to change background"
+          title="Career at Webtricker"
           width={1800}
           height={900}
-          src={careerBg.src}
+          src="/images/career/career-hero-team.png"
           className=" absolute top-0 left-0 w-full h-full object-cover -z-10"
-          alt="Service Banner Image"
+          alt="Webtricker career team collaboration"
+          priority
         />
-        {/* ) : (
-          <video
-            title="Click to change background"
-            autoPlay
-            loop
-            muted
-            className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-            src={pageDate?.bannerBG?.src || ""}
-          >
-            <source src={pageDate?.bannerBG?.src || ""} type="video/mp4" />
-          </video>
-        )} */}
       </section>
       <section>
         <div className="max-w-[1000px] mx-auto px-4 text-center">
@@ -162,7 +127,7 @@ async function careerPage() {
             team!
           </p>
         </div>
-        <Container className="flex flex-wrap gap-6 justify-center items-center mt-12">
+        <Container className="flex flex-wrap gap-6 justify-center items-stretch mt-12">
           {vacancies.length > 0 ? (
             vacancies.map((vacancy) => (
               <CareerCard key={vacancy.slug} vacancy={vacancy} />
@@ -175,20 +140,44 @@ async function careerPage() {
         </Container>
       </section>
       <section>
-        <div className="max-w-[1000px] mx-auto px-4 mt-16">
-          <h5 className="font-semibold">What you expect from us:</h5>
-          <ul className="mt-6">
-            {companyInfo?.map((info, idx) => (
-              <li
-                key={info?.id}
-                className="mb-4 text-lg flex items-start gap-2 font-medium"
-              >
-                <span className="text-[#aa013f]">{idx + 1}. </span>
-                {info?.description}
-              </li>
-            ))}
-          </ul>
-        </div>
+        <Container className="mt-16 pb-16">
+          <div className="max-w-[1000px] mx-auto text-center mb-10">
+            <h3>What you can expect from us</h3>
+            <p className="mt-2 text-lg text-gray-600">
+              We want every person here to feel respected, supported, and valued as a real team member.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 shadow-sm">
+              <h5 className="font-semibold mb-6">Benefits & Perks</h5>
+              <div className="grid gap-5">
+                {benefits.map((item, idx) => (
+                  <div key={item.title} className="flex gap-4">
+                    <span className="text-[#aa013f] font-semibold">{String(idx + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h6 className="!text-lg font-semibold">{item.title}</h6>
+                      <p className="mt-1 text-gray-600">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 shadow-sm">
+              <h5 className="font-semibold mb-6">How We Value Our Team</h5>
+              <div className="grid gap-5">
+                {teamValues.map((item, idx) => (
+                  <div key={item.title} className="flex gap-4">
+                    <span className="text-[#aa013f] font-semibold">{String(idx + 1).padStart(2, "0")}</span>
+                    <div>
+                      <h6 className="!text-lg font-semibold">{item.title}</h6>
+                      <p className="mt-1 text-gray-600">{item.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Container>
       </section>
     </main>
   );
