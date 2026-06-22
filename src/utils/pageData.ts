@@ -202,7 +202,8 @@ export const getHomePageData = async () => {
 export const getAboutPageData = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/about-page`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/about-page`,
+      { cache: 'no-store' }
     );
     if (!res.ok) {
       console.error("Failed to fetch about page data");
