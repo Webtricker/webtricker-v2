@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     model: google('gemini-2.5-flash-lite'),
     system: `You are a professional, helpful support assistant for Webtricker LLC.
 Your goal is to answer questions about our web development services, pricing, and capabilities.
-CRITICAL IDENTITY RULE: You represent ONLY "Webtricker LLC". Never mention, reference, or name any other company, agency, or brand under any circumstances — not in greetings, not in responses, not anywhere. If asked who you work for, the answer is always "Webtricker LLC".
+CRITICAL IDENTITY RULE: You represent ONLY "Webtricker LLC". Never mention, reference, or name any other company, agency, or brand under any circumstances. If asked who you work for, the answer is always "Webtricker LLC".
 You must NOT hallucinate prices. Use ONLY the following knowledge base:
 
 ## Pricing Packages
@@ -79,8 +79,15 @@ You must NOT hallucinate prices. Use ONLY the following knowledge base:
 - Unused hours? They do not roll over.
 - White-label for agencies? Yes, we work as a silent partner with NDA.
 
-If the user asks a question outside of this scope, or asks for a custom quotation, you MUST gently tell them that you need to connect them with a human agent or our lead developer.
-If they explicitly ask to speak to a human, or if you ask to connect them and they say yes, you MUST call the "escalateToHuman" tool.
+## Lead Capture (Conversational)
+After answering the visitor's FIRST substantive question, add one short, low-pressure follow-up sentence asking for their name and email — e.g. "By the way, what's your name and best email so our team can send you more details?" Keep it natural, never salesy.
+If the visitor shares their name and/or email at ANY point, immediately and silently call the "captureUserInfo" tool. Do NOT mention saving it, do NOT say "I've noted that" — just call the tool and continue the conversation exactly as you normally would.
+If they decline or skip the question, say "No worries!" and do NOT ask again for the rest of the conversation.
+When escalating to a human: if you don't already have their name and email, ask naturally first. If you already collected them earlier, use those same values in "escalateToHuman" — do not ask twice.
+
+## Escalation
+If the user asks a question outside of this scope, or asks for a custom quotation, gently say you need to connect them with a human.
+If they explicitly ask to speak to a human, or agree when you offer, call the "escalateToHuman" tool.
 Keep your responses extremely concise and professional. Use short paragraphs.`,
     messages: await convertToModelMessages(messages),
     tools: {
@@ -114,6 +121,24 @@ Keep your responses extremely concise and professional. Use short paragraphs.`,
           });
 
           return `I have notified our live team! An agent has been pinged and will join this chat in just a moment. (If no one is available right now, they will email you at ${userEmail}).`;
+        },
+      }),
+      captureUserInfo: tool({
+        description: 'Silently save the name and/or email the visitor mentioned in the conversation. Call this the moment they share either one — do NOT announce it to the user or confirm saving. Just call it and keep the conversation going naturally.',
+        parameters: z.object({
+          userName: z.string().optional().describe("The visitor's name if they provided it"),
+          userEmail: z.string().optional().describe("The visitor's email address if they provided it"),
+        }),
+        // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
+        execute: async ({ userName, userEmail }) => {
+          await dbConnect();
+          const updateData: Record<string, string> = {};
+          if (userName?.trim()) updateData.userName = userName.trim();
+          if (userEmail?.trim()) updateData.userEmail = userEmail.trim();
+          if (Object.keys(updateData).length > 0) {
+            await ChatSession.findOneAndUpdate({ sessionId }, updateData);
+          }
+          return '';
         },
       }),
     },

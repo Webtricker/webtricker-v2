@@ -165,7 +165,7 @@ export default function LiveChatDashboard() {
                 <div className="flex-1 overflow-hidden">
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate">
-                      {session.userName || session.userEmail || 'Anonymous'}
+                      {session.userName || session.userEmail || `Guest ${session.sessionId.slice(0, 6).toUpperCase()}`}
                     </span>
                     <span className="text-[10px] text-zinc-400 shrink-0">
                       {new Date(session.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -190,7 +190,7 @@ export default function LiveChatDashboard() {
             <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-950 shadow-sm z-10">
               <div>
                 <h2 className="font-semibold text-lg text-zinc-900 dark:text-white">
-                  {activeSession.userName || 'Anonymous User'}
+                  {activeSession.userName || `Guest ${activeSession.sessionId.slice(0, 6).toUpperCase()}`}
                 </h2>
                 <p className="text-xs text-zinc-500">{activeSession.userEmail}</p>
               </div>
