@@ -11,6 +11,8 @@ export interface IChatSession extends Document {
   userEmail?: string;
   userName?: string;
   status: 'AI_MODE' | 'ESCALATED' | 'RESOLVED';
+  satisfactionRating?: 'not_happy' | 'satisfactory' | 'very_happy';
+  wasResolved?: boolean;
   messages: IChatMessage[];
   createdAt: Date;
   updatedAt: Date;
@@ -31,6 +33,8 @@ const ChatSessionSchema = new Schema<IChatSession>(
     userEmail: { type: String },
     userName: { type: String },
     status: { type: String, enum: ['AI_MODE', 'ESCALATED', 'RESOLVED'], default: 'AI_MODE' },
+    satisfactionRating: { type: String, enum: ['not_happy', 'satisfactory', 'very_happy'] },
+    wasResolved: { type: Boolean },
     messages: { type: [ChatMessageSchema], default: [] },
   },
   { timestamps: true }

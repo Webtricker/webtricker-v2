@@ -21,7 +21,7 @@ const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 function renderMessageContent(text: string) {
   if (!text) return null;
   const parts = text.split(URL_REGEX);
-  if (parts.length === 1) return text;
+  if (parts.length === 1) return <>{text}</>;
   return (
     <>
       {parts.map((part, i) =>
@@ -37,6 +37,12 @@ function renderMessageContent(text: string) {
   );
 }
 
+const SATISFACTION_OPTIONS: [string, string][] = [
+  ['not_happy', 'Not Happy'],
+  ['satisfactory', 'OK'],
+  ['very_happy', 'Very Happy'],
+];
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId, setSessionId] = useState('');
@@ -50,6 +56,13 @@ export default function ChatWidget() {
 
   // AI input state — managed manually in v6
   const [aiInput, setAiInput] = useState('');
+
+  // End-chat + review state
+  const [isResolved, setIsResolved] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
+  const [satisfactionRating, setSatisfactionRating] = useState<string | null>(null);
+  const [wasResolved, setWasResolved] = useState<boolean | null>(null);
 
   // Transport created once; body reads sessionId from ref so it stays current
   const transport = useMemo(
@@ -81,6 +94,9 @@ export default function ChatWidget() {
         if (data.session?.status === 'ESCALATED') {
           setMode('ESCALATED');
           setHumanMessages(data.session.messages);
+        } else if (data.session?.status === 'RESOLVED') {
+          setIsResolved(true);
+          setReviewSubmitted(true);
         }
       });
   }, []);
@@ -131,6 +147,26 @@ export default function ChatWidget() {
     });
   };
 
+  const handleEndChat = async () => {
+    setIsResolved(true);
+    setShowReview(true);
+    await fetch('/api/chat/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId }),
+    });
+  };
+
+  const handleSubmitReview = async () => {
+    await fetch('/api/chat/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, satisfactionRating, wasResolved }),
+    });
+    setShowReview(false);
+    setReviewSubmitted(true);
+  };
+
   const currentMessages = mode === 'AI_MODE' ? aiMessages : humanMessages;
 
   return (
@@ -157,23 +193,33 @@ export default function ChatWidget() {
                 {mode === 'AI_MODE' ? 'Online - We reply instantly' : 'You are speaking with a human.'}
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-white dark:text-zinc-900 hover:opacity-70">
-              <IoCloseOutline size={24} />
-            </button>
+            <div className="flex items-center gap-3">
+              {!isResolved && (
+                <button
+                  onClick={handleEndChat}
+                  className="text-xs text-zinc-400 hover:text-red-300 dark:text-zinc-500 dark:hover:text-red-500 transition-colors"
+                >
+                  End Chat
+                </button>
+              )}
+              <button onClick={() => setIsOpen(false)} className="text-white dark:text-zinc-900 hover:opacity-70">
+                <IoCloseOutline size={24} />
+              </button>
+            </div>
           </div>
 
           {/* Chat Messages */}
           <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-4 space-y-4 custom-scrollbar bg-zinc-50 dark:bg-[var(--clr-bg-body-dark)]">
-            {currentMessages.length === 0 && (
+            {currentMessages.length === 0 && !isResolved && (
               <div className="text-center text-zinc-500 mt-10 text-sm px-2 leading-relaxed">
-                👋 Hi! Let us know your requirements or any pain points you&apos;re facing. We&apos;re here to solve them!
+                Hi! Let us know your requirements or any pain points you&apos;re facing. We&apos;re here to solve them!
               </div>
             )}
 
             {currentMessages.map((m: any, index: number) => (
               <div key={m.id || index} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div
-                  className={`max-w-[85%] p-3 rounded-2xl text-sm ${
+                  className={`max-w-[85%] p-3 rounded-2xl text-sm whitespace-pre-line ${
                     m.role === 'user'
                       ? 'bg-[#FFC107] text-black rounded-br-none'
                       : 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-bl-none shadow-sm border border-zinc-100 dark:border-zinc-800'
@@ -183,7 +229,7 @@ export default function ChatWidget() {
                 </div>
               </div>
             ))}
-            {aiError && mode === 'AI_MODE' && (
+            {aiError && mode === 'AI_MODE' && !isResolved && (
               <div className="flex justify-start">
                 <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-bl-none border border-red-200 dark:border-red-800">
                   Something went wrong. Please try again.
@@ -193,9 +239,60 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Input Area */}
+          {/* Input / Review Area */}
           <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 shrink-0 bg-white dark:bg-[var(--clr-bg-body-dark)]">
-            {mode === 'AI_MODE' ? (
+            {isResolved ? (
+              showReview ? (
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide">Rate your experience</p>
+                  <div className="flex gap-1.5">
+                    {SATISFACTION_OPTIONS.map(([val, label]) => (
+                      <button
+                        key={val}
+                        onClick={() => setSatisfactionRating(val)}
+                        className={`flex-1 text-xs py-1.5 rounded-lg border transition-colors ${
+                          satisfactionRating === val
+                            ? 'bg-[#FFC107] border-[#FFC107] text-black font-semibold'
+                            : 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-[#FFC107]'
+                        }`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wide mb-1.5">Issue resolved?</p>
+                    <div className="flex gap-1.5">
+                      {([true, false] as const).map((val) => (
+                        <button
+                          key={String(val)}
+                          onClick={() => setWasResolved(val)}
+                          className={`flex-1 text-xs py-1.5 rounded-lg border transition-colors ${
+                            wasResolved === val
+                              ? 'bg-[#FFC107] border-[#FFC107] text-black font-semibold'
+                              : 'border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-[#FFC107]'
+                          }`}
+                        >
+                          {val ? 'Yes' : 'No'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSubmitReview}
+                    disabled={!satisfactionRating || wasResolved === null}
+                    className="w-full bg-[#FFC107] text-black py-2 rounded-full text-sm font-semibold hover:opacity-90 disabled:opacity-40 transition-opacity"
+                  >
+                    Submit Feedback
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center py-2">
+                  <div className="font-medium text-sm text-zinc-700 dark:text-zinc-300">Thanks for chatting with us!</div>
+                  <div className="text-xs text-zinc-500 mt-0.5">This session has ended.</div>
+                </div>
+              )
+            ) : mode === 'AI_MODE' ? (
               <form onSubmit={handleAiSubmit} className="flex gap-2">
                 <input
                   className="flex-1 bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#FFC107]"

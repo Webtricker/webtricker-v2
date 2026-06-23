@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { pusherClient } from '@/utils/pusher-client';
 import { IoCheckmarkDoneOutline, IoSend, IoPersonCircleOutline } from 'react-icons/io5';
+import { getCodename } from '@/utils/codename';
 
 const URL_REGEX = /(https?:\/\/[^\s]+)/g;
 
@@ -165,7 +166,7 @@ export default function LiveChatDashboard() {
                 <div className="flex-1 overflow-hidden">
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate">
-                      {session.userName || session.userEmail || `Guest ${session.sessionId.slice(0, 6).toUpperCase()}`}
+                      {session.userName || session.userEmail || getCodename(session.sessionId)}
                     </span>
                     <span className="text-[10px] text-zinc-400 shrink-0">
                       {new Date(session.updatedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -175,6 +176,27 @@ export default function LiveChatDashboard() {
                     <span className="w-2 h-2 bg-emerald-500 rounded-full shrink-0"></span>
                     <span className="truncate">{session.status}</span>
                   </div>
+                  {(session.satisfactionRating || session.wasResolved !== undefined && session.wasResolved !== null) && (
+                    <div className="flex items-center gap-1 mt-1">
+                      {session.satisfactionRating && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                          session.satisfactionRating === 'very_happy' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' :
+                          session.satisfactionRating === 'satisfactory' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' :
+                          'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                        }`}>
+                          {session.satisfactionRating === 'very_happy' ? 'Very Happy' :
+                           session.satisfactionRating === 'satisfactory' ? 'Satisfactory' : 'Not Happy'}
+                        </span>
+                      )}
+                      {session.wasResolved !== undefined && session.wasResolved !== null && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                          session.wasResolved ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                        }`}>
+                          {session.wasResolved ? 'Resolved' : 'Unresolved'}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </button>
             ))
@@ -190,9 +212,30 @@ export default function LiveChatDashboard() {
             <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center bg-white dark:bg-zinc-950 shadow-sm z-10">
               <div>
                 <h2 className="font-semibold text-lg text-zinc-900 dark:text-white">
-                  {activeSession.userName || `Guest ${activeSession.sessionId.slice(0, 6).toUpperCase()}`}
+                  {activeSession.userName || getCodename(activeSession.sessionId)}
                 </h2>
-                <p className="text-xs text-zinc-500">{activeSession.userEmail}</p>
+                <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                  {activeSession.userEmail && (
+                    <p className="text-xs text-zinc-500">{activeSession.userEmail}</p>
+                  )}
+                  {activeSession.satisfactionRating && (
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                      activeSession.satisfactionRating === 'very_happy' ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' :
+                      activeSession.satisfactionRating === 'satisfactory' ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400' :
+                      'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                    }`}>
+                      {activeSession.satisfactionRating === 'very_happy' ? 'Very Happy' :
+                       activeSession.satisfactionRating === 'satisfactory' ? 'Satisfactory' : 'Not Happy'}
+                    </span>
+                  )}
+                  {activeSession.wasResolved !== undefined && activeSession.wasResolved !== null && (
+                    <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${
+                      activeSession.wasResolved ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-400' : 'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-400'
+                    }`}>
+                      {activeSession.wasResolved ? 'Resolved' : 'Unresolved'}
+                    </span>
+                  )}
+                </div>
               </div>
               <button 
                 onClick={handleResolve}
@@ -206,13 +249,13 @@ export default function LiveChatDashboard() {
             <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-6 space-y-4 custom-scrollbar">
               {activeSession.messages?.map((m: any, idx: number) => (
                 <div key={idx} className={`flex ${m.role === 'user' ? 'justify-start' : 'justify-end'}`}>
-                  <div 
-                    className={`max-w-[70%] p-3 rounded-2xl text-sm
-                      ${m.role === 'user' 
-                        ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-none shadow-sm' 
+                  <div
+                    className={`max-w-[70%] p-3 rounded-2xl text-sm whitespace-pre-line
+                      ${m.role === 'user'
+                        ? 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-tl-none shadow-sm'
                         : m.role === 'agent'
                           ? 'bg-[#4F46E5] text-white rounded-tr-none shadow-sm'
-                          : 'bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 rounded-tr-none text-xs border border-zinc-200 dark:border-zinc-800' // AI messages
+                          : 'bg-zinc-50 dark:bg-zinc-900/50 text-zinc-500 dark:text-zinc-400 rounded-tr-none text-xs border border-zinc-200 dark:border-zinc-800'
                       }
                     `}
                   >
