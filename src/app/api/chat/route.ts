@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText, tool } from 'ai';
+import { streamText, tool, convertToModelMessages } from 'ai';
 import { z } from 'zod';
 import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
@@ -7,6 +7,23 @@ import ChatSession from '@/models/ChatSession';
 import { pusherServer } from '@/utils/pusher-server';
 
 export const maxDuration = 30;
+
+// AI SDK v6 sends UIMessage format where text lives in parts[], not content.
+// This extracts all text parts and joins them. Falls back to plain .content for
+// any code path that sends CoreMessage format.
+function extractMessageText(message: any): string | null {
+  if (Array.isArray(message.parts)) {
+    const text = message.parts
+      .filter((p: any) => p.type === 'text')
+      .map((p: any) => p.text as string)
+      .join('');
+    return text || null;
+  }
+  if (typeof message.content === 'string' && message.content) {
+    return message.content;
+  }
+  return null;
+}
 
 export async function POST(req: NextRequest) {
   const { messages, sessionId } = await req.json();
@@ -30,9 +47,16 @@ export async function POST(req: NextRequest) {
 
   // Save the user's latest message to the DB
   const latestMessage = messages[messages.length - 1];
+  const userText = extractMessageText(latestMessage);
+
+  if (!userText) {
+    console.error('[chat/route] Empty or malformed message:', JSON.stringify(latestMessage));
+    return new Response('Message content is required.', { status: 400 });
+  }
+
   session.messages.push({
     role: 'user',
-    content: latestMessage.content,
+    content: userText,
     createdAt: new Date(),
   });
   await session.save();
@@ -57,7 +81,7 @@ You must NOT hallucinate prices. Use ONLY the following knowledge base:
 If the user asks a question outside of this scope, or asks for a custom quotation, you MUST gently tell them that you need to connect them with a human agent or our lead developer. 
 If they explicitly ask to speak to a human, or if you ask to connect them and they say yes, you MUST call the "escalateToHuman" tool.
 Keep your responses extremely concise and professional. Use short paragraphs.`,
-    messages,
+    messages: await convertToModelMessages(messages),
     tools: {
       escalateToHuman: tool({
         description: 'Call this tool when the user explicitly asks to speak to a human, live agent, or when they want a custom quote that you cannot provide.',

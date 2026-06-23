@@ -41,7 +41,7 @@ export default function ChatWidget() {
     []
   );
 
-  const { messages: aiMessages, sendMessage, status } = useChat({ transport });
+  const { messages: aiMessages, sendMessage, status, error: aiError } = useChat({ transport });
 
   const isAiBusy = status === 'submitted' || status === 'streaming';
 
@@ -162,6 +162,13 @@ export default function ChatWidget() {
                 </div>
               </div>
             ))}
+            {aiError && mode === 'AI_MODE' && (
+              <div className="flex justify-start">
+                <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-bl-none border border-red-200 dark:border-red-800">
+                  Something went wrong. Please try again.
+                </div>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 
