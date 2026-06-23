@@ -142,7 +142,7 @@ export default function ChatWidget() {
           </div>
 
           {/* Chat Messages */}
-          <div className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-4 space-y-4 custom-scrollbar bg-zinc-50 dark:bg-[var(--clr-bg-body-dark)]">
+          <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-4 space-y-4 custom-scrollbar bg-zinc-50 dark:bg-[var(--clr-bg-body-dark)]">
             {currentMessages.length === 0 && (
               <div className="text-center text-zinc-500 mt-10 text-sm px-2 leading-relaxed">
                 👋 Hi! Let us know your requirements or any pain points you&apos;re facing. We&apos;re here to solve them!
