@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
   await session.save();
 
   const result = streamText({
-    model: google('models/gemini-1.5-flash-latest'),
+    model: google('gemini-2.5-flash'),
     system: `You are a professional, helpful support assistant for Webtricker LLC and MarkupMarvel Agency. 
 Your goal is to answer questions about our web development services, pricing, and capabilities. 
 You must NOT hallucinate prices. Use ONLY the following knowledge base:
