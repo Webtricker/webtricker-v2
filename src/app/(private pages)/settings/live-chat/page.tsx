@@ -4,6 +4,27 @@ import { useState, useEffect, useRef } from 'react';
 import { pusherClient } from '@/utils/pusher-client';
 import { IoCheckmarkDoneOutline, IoSend, IoPersonCircleOutline } from 'react-icons/io5';
 
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+function renderMessageContent(text: string) {
+  if (!text) return null;
+  const parts = text.split(URL_REGEX);
+  if (parts.length === 1) return text;
+  return (
+    <>
+      {parts.map((part, i) =>
+        /^https?:\/\//.test(part) ? (
+          <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="underline break-all opacity-90 hover:opacity-100">
+            {part}
+          </a>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 export default function LiveChatDashboard() {
   const [sessions, setSessions] = useState<any[]>([]);
   const [activeSession, setActiveSession] = useState<any | null>(null);
@@ -124,7 +145,7 @@ export default function LiveChatDashboard() {
           <p className="text-xs text-zinc-500">Live escalating users</p>
         </div>
         
-        <div className="flex-1 overflow-y-auto custom-scrollbar">
+        <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain custom-scrollbar">
           {sessions.length === 0 ? (
             <div className="p-8 text-center text-sm text-zinc-500">No active chats.</div>
           ) : (
@@ -182,7 +203,7 @@ export default function LiveChatDashboard() {
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
+            <div data-lenis-prevent className="flex-1 min-h-0 overflow-y-auto overscroll-y-contain p-6 space-y-4 custom-scrollbar">
               {activeSession.messages?.map((m: any, idx: number) => (
                 <div key={idx} className={`flex ${m.role === 'user' ? 'justify-start' : 'justify-end'}`}>
                   <div 
@@ -197,7 +218,7 @@ export default function LiveChatDashboard() {
                   >
                     {m.role === 'assistant' && <div className="text-[10px] uppercase font-bold text-zinc-400 mb-1">AI Agent</div>}
                     {m.role === 'agent' && <div className="text-[10px] uppercase font-bold text-indigo-200 mb-1">You</div>}
-                    {m.content}
+                    {renderMessageContent(m.content)}
                   </div>
                 </div>
               ))}

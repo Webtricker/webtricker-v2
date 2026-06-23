@@ -16,6 +16,27 @@ function getMessageText(m: any): string {
   return m.content || '';
 }
 
+const URL_REGEX = /(https?:\/\/[^\s]+)/g;
+
+function renderMessageContent(text: string) {
+  if (!text) return null;
+  const parts = text.split(URL_REGEX);
+  if (parts.length === 1) return text;
+  return (
+    <>
+      {parts.map((part, i) =>
+        /^https?:\/\//.test(part) ? (
+          <a key={i} href={part} target="_blank" rel="noopener noreferrer" className="underline break-all opacity-90 hover:opacity-100">
+            {part}
+          </a>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId, setSessionId] = useState('');
@@ -158,7 +179,7 @@ export default function ChatWidget() {
                       : 'bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-bl-none shadow-sm border border-zinc-100 dark:border-zinc-800'
                   }`}
                 >
-                  {getMessageText(m)}
+                  {renderMessageContent(getMessageText(m))}
                 </div>
               </div>
             ))}
