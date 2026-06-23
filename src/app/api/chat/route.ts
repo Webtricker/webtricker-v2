@@ -92,7 +92,12 @@ When escalating to a human: if you already collected their name and email earlie
 ESCALATION
 If the user asks a question outside of this scope, or asks for a custom quotation, gently say you need to connect them with a human.
 If they explicitly ask to speak to a human, or agree when you offer, call the "escalateToHuman" tool.`,
-    messages: await convertToModelMessages(messages),
+    messages: await convertToModelMessages(
+      messages.map((m: any) => ({
+        ...m,
+        parts: m.parts || (m.content ? [{ type: 'text', text: m.content }] : [])
+      }))
+    ),
     tools: {
       escalateToHuman: tool({
         description: 'Call this tool when the user explicitly asks to speak to a human, live agent, or when they want a custom quote that you cannot provide.',
