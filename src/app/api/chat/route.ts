@@ -1,7 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { streamText, tool, convertToModelMessages, stepCountIs } from 'ai';
 import { z } from 'zod';
-import { NextRequest } from 'next/server';
+import { NextRequest, after } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ChatSession from '@/models/ChatSession';
 import { pusherServer } from '@/utils/pusher-server';
@@ -207,8 +207,11 @@ For off-topic questions, general questions, or anything outside web development 
           cause: error instanceof Error ? (error as any).cause : undefined,
         });
 
-        // Fire-and-forget: escalate session, push fallback message to widget, alert admin
-        void (async () => {
+        // after() guarantees this runs to completion even after the response stream
+        // closes. The old void-IIFE was dropped by Vercel before Pusher could fire,
+        // leaving the session ESCALATED in DB while the widget stayed in AI_MODE —
+        // causing every subsequent request to get a 403 and appear broken.
+        after(async () => {
           try {
             await dbConnect();
             const errorSession = await ChatSession.findOne({ sessionId });
@@ -254,7 +257,7 @@ For off-topic questions, general questions, or anything outside web development 
           } catch (bgErr) {
             console.error('[chat/route] Error fallback handler failed:', bgErr);
           }
-        })();
+        });
       },
       async onFinish({ text }) {
         await dbConnect();
