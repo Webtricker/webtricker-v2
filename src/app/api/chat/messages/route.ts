@@ -14,9 +14,19 @@ export async function GET(req: NextRequest) {
 
   await dbConnect();
   const session = await ChatSession.findOne({ sessionId });
-  
+
   if (!session) {
     return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+  }
+
+  // Auto-resolve sessions inactive for more than 10 minutes
+  const TEN_MINUTES = 10 * 60 * 1000;
+  if (['AI_MODE', 'ESCALATED'].includes(session.status)) {
+    const lastActivity = new Date(session.updatedAt).getTime();
+    if (Date.now() - lastActivity > TEN_MINUTES) {
+      session.status = 'RESOLVED';
+      await session.save();
+    }
   }
 
   return NextResponse.json({ session });

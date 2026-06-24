@@ -37,6 +37,15 @@ function renderMessageContent(text: string) {
   );
 }
 
+function formatRelativeTime(date: Date | string): string {
+  const d = typeof date === 'string' ? new Date(date) : date;
+  const diff = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+  return `${Math.floor(diff / 86400)}d ago`;
+}
+
 const SATISFACTION_OPTIONS: [string, string][] = [
   ['not_happy', 'Not Happy'],
   ['satisfactory', 'OK'],
@@ -59,6 +68,7 @@ export default function ChatWidget() {
 
   // End-chat + review state
   const [isResolved, setIsResolved] = useState(false);
+  const [isConfirmingEnd, setIsConfirmingEnd] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const [reviewSubmitted, setReviewSubmitted] = useState(false);
   const [satisfactionRating, setSatisfactionRating] = useState<string | null>(null);
@@ -78,6 +88,8 @@ export default function ChatWidget() {
   const { messages: aiMessages, setMessages, sendMessage, status, error: aiError } = useChat({ transport });
 
   const isAiBusy = status === 'submitted' || status === 'streaming';
+  // Only show typing indicator before the first token arrives (not while streaming)
+  const isAiThinking = status === 'submitted';
 
   useEffect(() => {
     let sid = localStorage.getItem('chat_session_id');
@@ -112,6 +124,13 @@ export default function ChatWidget() {
         if (exists) return prev;
         return [...prev, data];
       });
+    });
+
+    // Admin or server resolved the session — transition to ended state
+    channel.bind('session-resolved', () => {
+      setIsConfirmingEnd(false);
+      setIsResolved(true);
+      setShowReview(true);
     });
 
     return () => {
@@ -155,6 +174,7 @@ export default function ChatWidget() {
     setSessionId(newSid);
     setMode('AI_MODE');
     setIsResolved(false);
+    setIsConfirmingEnd(false);
     setShowReview(false);
     setReviewSubmitted(false);
     setSatisfactionRating(null);
@@ -163,7 +183,16 @@ export default function ChatWidget() {
     setMessages([]);
   };
 
-  const handleEndChat = async () => {
+  // Phase 3: clicking End Chat triggers AI wrap-up + shows inline confirm buttons
+  const handleEndChat = () => {
+    setIsConfirmingEnd(true);
+    if (mode === 'AI_MODE' && !isAiBusy) {
+      sendMessage({ text: "I'm all set for now, thanks!" });
+    }
+  };
+
+  const confirmEndChat = async () => {
+    setIsConfirmingEnd(false);
     setIsResolved(true);
     setShowReview(true);
     await fetch('/api/chat/resolve', {
@@ -210,7 +239,7 @@ export default function ChatWidget() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              {!isResolved && (
+              {!isResolved && !isConfirmingEnd && (
                 <button
                   onClick={handleEndChat}
                   className="text-xs text-zinc-400 hover:text-red-300 dark:text-zinc-500 dark:hover:text-red-500 transition-colors"
@@ -233,7 +262,7 @@ export default function ChatWidget() {
             )}
 
             {currentMessages.map((m: any, index: number) => (
-              <div key={m.id || index} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+              <div key={m.id || index} className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'} group`}>
                 <div
                   className={`max-w-[85%] p-3 rounded-2xl text-sm whitespace-pre-line ${
                     m.role === 'user'
@@ -242,9 +271,24 @@ export default function ChatWidget() {
                   }`}
                 >
                   {renderMessageContent(getMessageText(m))}
+                  {m.createdAt && (
+                    <div className="text-[10px] text-zinc-400 dark:text-zinc-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      {formatRelativeTime(m.createdAt)}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
+
+            {/* Phase 5: typing indicator — shown while request is submitted but streaming hasn't started */}
+            {isAiThinking && mode === 'AI_MODE' && !isResolved && (
+              <div className="flex justify-start">
+                <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-white dark:bg-zinc-800 text-zinc-400 dark:text-zinc-500 rounded-bl-none shadow-sm border border-zinc-100 dark:border-zinc-800 italic">
+                  Webtricker is typing...
+                </div>
+              </div>
+            )}
+
             {aiError && mode === 'AI_MODE' && !isResolved && (
               <div className="flex justify-start">
                 <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-bl-none border border-red-200 dark:border-red-800">
@@ -314,6 +358,25 @@ export default function ChatWidget() {
                   </button>
                 </div>
               )
+            ) : isConfirmingEnd ? (
+              // Phase 3: inline end-chat confirmation
+              <div className="space-y-2">
+                <p className="text-xs text-center text-zinc-500 dark:text-zinc-400">End this conversation?</p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => setIsConfirmingEnd(false)}
+                    className="flex-1 py-2 rounded-full text-sm font-semibold border border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400 hover:opacity-80 transition-opacity"
+                  >
+                    No, continue
+                  </button>
+                  <button
+                    onClick={confirmEndChat}
+                    className="flex-1 bg-[#FFC107] text-black py-2 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Yes, end chat
+                  </button>
+                </div>
+              </div>
             ) : mode === 'AI_MODE' ? (
               <form onSubmit={handleAiSubmit} className="flex gap-2">
                 <input

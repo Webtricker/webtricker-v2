@@ -1,5 +1,5 @@
 import { google } from '@ai-sdk/google';
-import { streamText, tool, convertToModelMessages } from 'ai';
+import { streamText, tool, convertToModelMessages, stepCountIs } from 'ai';
 import { z } from 'zod';
 import { NextRequest } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
@@ -26,52 +26,53 @@ function extractMessageText(message: any): string | null {
 }
 
 export async function POST(req: NextRequest) {
-  const { messages, sessionId } = await req.json();
+  try {
+    const { messages, sessionId } = await req.json();
 
-  if (!sessionId) {
-    return new Response('Session ID is required', { status: 400 });
-  }
+    if (!sessionId) {
+      return new Response('Session ID is required', { status: 400 });
+    }
 
-  // Ensure ChatSession exists in DB
-  await dbConnect();
-  let session = await ChatSession.findOne({ sessionId });
-  if (!session) {
-    session = await ChatSession.create({ sessionId, status: 'AI_MODE', messages: [] });
-  }
+    // Ensure ChatSession exists in DB
+    await dbConnect();
+    let session = await ChatSession.findOne({ sessionId });
+    if (!session) {
+      session = await ChatSession.create({ sessionId, status: 'AI_MODE', messages: [] });
+    }
 
-  // If the session is already escalated or resolved, the AI should not respond.
-  // The frontend shouldn't hit this endpoint if it's escalated, but just in case:
-  if (session.status !== 'AI_MODE') {
-    return new Response('Chat is no longer in AI mode.', { status: 403 });
-  }
+    // If the session is already escalated or resolved, the AI should not respond.
+    if (session.status !== 'AI_MODE') {
+      return new Response('Chat is no longer in AI mode.', { status: 403 });
+    }
 
-  // Save the user's latest message to the DB
-  const latestMessage = messages[messages.length - 1];
-  const userText = extractMessageText(latestMessage);
+    // Save the user's latest message to the DB
+    const latestMessage = messages[messages.length - 1];
+    const userText = extractMessageText(latestMessage);
 
-  if (!userText) {
-    console.error('[chat/route] Empty or malformed message:', JSON.stringify(latestMessage));
-    return new Response('Message content is required.', { status: 400 });
-  }
+    if (!userText) {
+      console.error('[chat/route] Empty or malformed message:', JSON.stringify(latestMessage));
+      return new Response('Message content is required.', { status: 400 });
+    }
 
-  session.messages.push({
-    role: 'user',
-    content: userText,
-    createdAt: new Date(),
-  });
-  await session.save();
+    session.messages.push({
+      role: 'user',
+      content: userText,
+      createdAt: new Date(),
+    });
+    await session.save();
 
-  const result = streamText({
-    model: google('gemini-2.5-flash-lite'),
-    maxSteps: 2,
-    system: `You are a professional, helpful support assistant for Webtricker LLC.
-Your goal is to answer questions about our web development services, pricing, and capabilities.
+    const result = streamText({
+      model: google('gemini-2.5-flash-lite'),
+      stopWhen: stepCountIs(2),
+      system: `You are a professional, helpful support assistant for Webtricker LLC — a web development and digital agency. You can answer questions on any topic naturally and helpfully. When topics relate to Webtricker's services, pricing, or capabilities, use the knowledge base below as your authoritative source.
 
-CRITICAL IDENTITY RULE: You represent ONLY "Webtricker LLC". Never mention, reference, or name any other company, agency, or brand under any circumstances. If asked who you work for, the answer is always "Webtricker LLC".
+CRITICAL IDENTITY RULE: You represent ONLY "Webtricker LLC". Never mention, reference, or name any other company, agency, or brand. If asked who you work for, the answer is always "Webtricker LLC".
 
-FORMATTING RULE: Write in short, natural paragraphs. Separate paragraphs with a blank line. Do NOT use markdown headers, bullet points, dashes, or numbered lists in your replies — plain conversational text only. Keep each response brief.
+LANGUAGE RULE: Always reply in the same language the visitor writes in. If they write in Bengali, reply in Bengali. If they write in Hindi, reply in Hindi. Follow their language naturally. Default to English only if the language is unclear.
 
-You must NOT hallucinate prices. Use ONLY the following knowledge base:
+FORMATTING RULE: Write in short, natural paragraphs. Separate paragraphs with a blank line. Do NOT use markdown headers, bullet points, dashes, or numbered lists — plain conversational text only. Keep responses brief.
+
+PRICING RULE: Never hallucinate prices or invent package details. If asked about pricing details not listed below, say you'd be happy to get them a custom quote from the team. Use ONLY the following knowledge base for pricing:
 
 PRICING PACKAGES
 Essential: Technical SEO, WordPress/Shopify Maintenance & Security, up to 25 Hours of Dev Tasks/month, Basic Content Updates, Monthly Report, Email Support.
@@ -85,86 +86,98 @@ Do unused hours roll over? No, they do not.
 White-label for agencies? Yes, we work as a silent partner with NDA.
 
 LEAD CAPTURE (Conversational)
-On your VERY FIRST response in this conversation — regardless of the topic — after your answer, always append one short low-pressure sentence asking for their name and email. Example: "By the way, what's your name and best email so our team can follow up with you?" Keep it natural, never salesy.
-If the visitor shares their name and/or email at ANY point, immediately and silently call the "captureUserInfo" tool. Do NOT mention saving it, do NOT say "I've noted that" — just call the tool and continue the conversation exactly as you normally would.
-If they decline or skip the question, say "No worries!" and do NOT ask again for the rest of the conversation.
-When escalating to a human: if you already collected their name and email earlier, use those same values in "escalateToHuman" — do not ask twice.
+On your VERY FIRST response — regardless of topic — after your answer, append one short low-pressure sentence asking for their name and email. Example: "By the way, what's your name and best email so our team can follow up?" Keep it natural, never salesy.
+If the visitor shares their name and/or email at ANY point, immediately call "captureUserInfo" silently. Do NOT confirm saving it — just call the tool and continue the conversation naturally.
+If they decline or skip, say "No worries!" and do NOT ask again.
+When escalating: if you already have their name and email, use those in "escalateToHuman" — do not ask twice.
 
-ESCALATION
-If the user asks a question outside of this scope, or asks for a custom quotation, gently say you need to connect them with a human.
-If they explicitly ask to speak to a human, or agree when you offer, call the "escalateToHuman" tool.`,
-    messages: await convertToModelMessages(
-      messages.map((m: any) => ({
-        ...m,
-        parts: m.parts || (m.content ? [{ type: 'text', text: m.content }] : [])
-      }))
-    ),
-    tools: {
-      escalateToHuman: tool({
-        description: 'Call this tool when the user explicitly asks to speak to a human, live agent, or when they want a custom quote that you cannot provide.',
-        parameters: z.object({
-          userName: z.string().describe("The user's name. Ask for it if they haven't provided it."),
-          userEmail: z.string().email().describe("The user's email address. Ask for it if they haven't provided it."),
-          reason: z.string().describe("A brief summary of why they are being escalated to a human."),
-        }),
-        // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
-        execute: async ({ userName, userEmail, reason }) => {
-          // Update the session status
-          await dbConnect();
-          const currentSession = await ChatSession.findOneAndUpdate(
-            { sessionId },
-            { 
-              status: 'ESCALATED',
+ESCALATION — only call escalateToHuman when:
+- The user explicitly asks to speak to a human or live agent
+- The user agrees when you offer to connect them with a human
+- The request genuinely requires a human (custom enterprise scope, contract negotiations, or something you truly cannot help with)
+- The user wants a custom price quote beyond the listed packages
+
+For off-topic questions, general questions, or anything outside web development — answer helpfully from your general knowledge. Do not escalate just because a question is off-topic.`,
+      messages: await convertToModelMessages(
+        messages.map((m: any) => ({
+          ...m,
+          parts: m.parts || (m.content ? [{ type: 'text', text: m.content }] : [])
+        }))
+      ),
+      tools: {
+        escalateToHuman: tool({
+          description: 'Call this tool when the user explicitly asks to speak to a human, live agent, or when they want a custom quote that you cannot provide.',
+          parameters: z.object({
+            userName: z.string().describe("The user's name. Ask for it if they haven't provided it."),
+            userEmail: z.string().email().describe("The user's email address. Ask for it if they haven't provided it."),
+            reason: z.string().describe("A brief summary of why they are being escalated to a human."),
+          }),
+          // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
+          execute: async ({ userName, userEmail, reason }) => {
+            await dbConnect();
+            await ChatSession.findOneAndUpdate(
+              { sessionId },
+              { status: 'ESCALATED', userName, userEmail },
+              { new: true }
+            );
+
+            await pusherServer.trigger('admin-chat', 'chat-escalated', {
+              sessionId,
               userName,
-              userEmail
-            },
-            { new: true }
-          );
+              userEmail,
+              reason
+            });
 
-          // Trigger a pusher event to the admin dashboard
-          await pusherServer.trigger('admin-chat', 'chat-escalated', {
-            sessionId,
-            userName,
-            userEmail,
-            reason
-          });
-
-          return `I have notified our live team! An agent has been pinged and will join this chat in just a moment. (If no one is available right now, they will email you at ${userEmail}).`;
-        },
-      }),
-      captureUserInfo: tool({
-        description: 'Silently save the name and/or email the visitor mentioned in the conversation. Call this the moment they share either one — do NOT announce it to the user or confirm saving. Just call it and keep the conversation going naturally.',
-        parameters: z.object({
-          userName: z.string().optional().describe("The visitor's name if they provided it"),
-          userEmail: z.string().optional().describe("The visitor's email address if they provided it"),
+            return `I have notified our live team! An agent has been pinged and will join this chat in just a moment. (If no one is available right now, they will email you at ${userEmail}).`;
+          },
         }),
-        // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
-        execute: async ({ userName, userEmail }) => {
-          await dbConnect();
-          const updateData: Record<string, string> = {};
-          if (userName?.trim()) updateData.userName = userName.trim();
-          if (userEmail?.trim()) updateData.userEmail = userEmail.trim();
-          if (Object.keys(updateData).length > 0) {
-            await ChatSession.findOneAndUpdate({ sessionId }, updateData);
-          }
-          return 'Info saved. Continue the conversation naturally.';
-        },
-      }),
-    },
-    async onFinish({ text, toolCalls, toolResults }) {
-      // Save the AI's response to the DB once the stream finishes
-      await dbConnect();
-      const currentSession = await ChatSession.findOne({ sessionId });
-      if (currentSession) {
-        currentSession.messages.push({
-          role: 'assistant',
-          content: text || 'Tool execution result.',
-          createdAt: new Date()
+        captureUserInfo: tool({
+          description: 'Silently save the name and/or email the visitor mentioned in the conversation. Call this the moment they share either one — do NOT announce it to the user or confirm saving. Just call it and keep the conversation going naturally.',
+          parameters: z.object({
+            userName: z.string().optional().describe("The visitor's name if they provided it"),
+            userEmail: z.string().optional().describe("The visitor's email address if they provided it"),
+          }),
+          // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
+          execute: async ({ userName, userEmail }) => {
+            await dbConnect();
+            const updateData: Record<string, string> = {};
+            if (userName?.trim()) updateData.userName = userName.trim();
+            if (userEmail?.trim()) updateData.userEmail = userEmail.trim();
+            if (Object.keys(updateData).length > 0) {
+              await ChatSession.findOneAndUpdate({ sessionId }, updateData);
+            }
+            return 'Info saved. Continue the conversation naturally.';
+          },
+        }),
+      },
+      onError: ({ error }) => {
+        console.error('[chat/route] streamText error:', {
+          message: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          cause: error instanceof Error ? (error as any).cause : undefined,
         });
-        await currentSession.save();
+      },
+      async onFinish({ text }) {
+        await dbConnect();
+        const currentSession = await ChatSession.findOne({ sessionId });
+        if (currentSession) {
+          currentSession.messages.push({
+            role: 'assistant',
+            content: text || 'Tool execution result.',
+            createdAt: new Date()
+          });
+          await currentSession.save();
+        }
       }
-    }
-  });
+    });
 
-  return result.toUIMessageStreamResponse();
+    return result.toUIMessageStreamResponse();
+  } catch (error: unknown) {
+    console.error('[chat/route] POST handler error:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      cause: error instanceof Error ? (error as any).cause : undefined,
+    });
+    return new Response('Internal server error', { status: 500 });
+  }
 }

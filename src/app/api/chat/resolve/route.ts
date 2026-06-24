@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ChatSession from '@/models/ChatSession';
+import { pusherServer } from '@/utils/pusher-server';
 
 export async function POST(req: NextRequest) {
   const { sessionId, satisfactionRating, wasResolved } = await req.json();
@@ -16,5 +17,9 @@ export async function POST(req: NextRequest) {
   }
 
   await ChatSession.findOneAndUpdate({ sessionId }, updateData);
+
+  // Notify the widget so it transitions to ended state in real time
+  await pusherServer.trigger(`chat-${sessionId}`, 'session-resolved', {});
+
   return NextResponse.json({ success: true });
 }

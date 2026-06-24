@@ -131,9 +131,17 @@ export default function LiveChatDashboard() {
 
   const handleResolve = async () => {
     if (!activeSession) return;
-    // In a full app, we would have an endpoint to update status to RESOLVED
-    // For now, just visually clear it.
-    alert('Chat marked as resolved.');
+    await fetch('/api/chat/resolve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: activeSession.sessionId }),
+    });
+    setSessions(prev =>
+      prev.map(s =>
+        s.sessionId === activeSession.sessionId ? { ...s, status: 'RESOLVED' } : s
+      )
+    );
+    setActiveSession((prev: any) => prev ? { ...prev, status: 'RESOLVED' } : prev);
   };
 
   return (
