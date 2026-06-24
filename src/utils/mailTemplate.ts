@@ -88,6 +88,32 @@ export const getAdminMailTemplate = () => {
   return rootTemplate(template);
 }
 
+export const getChatErrorAlertTemplate = ({
+  sessionId,
+  lastMessage,
+  timestamp,
+  errorMessage,
+}: {
+  sessionId: string;
+  lastMessage: string;
+  timestamp: string;
+  errorMessage: string;
+}) => {
+  const template = `
+    <tr>
+      <td>
+        <h3 style="margin:0 0 16px; font-size:18px; color:#b91c1c;">⚠️ Chat Widget Error — Session Needs Review</h3>
+        <p style="margin:0 0 8px; font-size:14px; color:#555555;"><strong>Session ID:</strong> ${sessionId}</p>
+        <p style="margin:0 0 8px; font-size:14px; color:#555555;"><strong>Timestamp:</strong> ${timestamp}</p>
+        <p style="margin:0 0 8px; font-size:14px; color:#555555;"><strong>Last user message:</strong> ${lastMessage}</p>
+        <p style="margin:0 0 8px; font-size:14px; color:#555555;"><strong>Error:</strong> ${errorMessage}</p>
+        <p style="margin:16px 0 0; font-size:14px; color:#888888;">The session has been automatically escalated to human support.</p>
+      </td>
+    </tr>
+  `;
+  return rootTemplate(template);
+};
+
 export const getSubscribeOTPMailTemplate = (otp: string) => {
   const template = `
     <!-- OTP Notification Message -->

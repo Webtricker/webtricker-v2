@@ -291,8 +291,8 @@ export default function ChatWidget() {
 
             {aiError && mode === 'AI_MODE' && !isResolved && (
               <div className="flex justify-start">
-                <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 rounded-bl-none border border-red-200 dark:border-red-800">
-                  Something went wrong. Please try again.
+                <div className="max-w-[85%] p-3 rounded-2xl text-sm bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 rounded-bl-none shadow-sm border border-zinc-100 dark:border-zinc-800">
+                  I&apos;m having a little trouble right now — let me get one of our team members to help you instead.
                 </div>
               </div>
             )}

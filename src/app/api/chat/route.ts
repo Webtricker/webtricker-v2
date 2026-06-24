@@ -159,34 +159,44 @@ For off-topic questions, general questions, or anything outside web development 
           }),
           // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
           execute: async () => {
-            await dbConnect();
-            const Training = (await import('@/models/Training')).default;
-            const courses = await Training.find({ published: true })
-              .select('title description packages')
-              .lean();
+            try {
+              await dbConnect();
+              const Training = (await import('@/models/Training')).default;
+              const courses = await Training.find({ published: true })
+                .select('title description packages')
+                .lean();
 
-            if (!courses.length) {
-              return "No training course data is currently available — let the user know you'll need to check with the team for exact details.";
-            }
+              if (!courses.length) {
+                return "No training course data is currently available — let the user know you'll need to check with the team for exact details.";
+              }
 
-            const formatted = (courses as any[]).map((course) => {
-              const pkgLines = (course.packages ?? []).map((pkg: any) => {
-                const lines = [
-                  `  • ${pkg.name} (${pkg.tier}) — ${pkg.duration}`,
-                  `    Online: ৳${pkg.totalFee.toLocaleString('en-BD')} = ৳${pkg.registrationFee.toLocaleString('en-BD')} registration + ৳${pkg.installmentAmount.toLocaleString('en-BD')}×${pkg.installmentCount} installments`,
-                ];
-                if (pkg.offlineTotalFee) {
-                  lines.push(`    Offline: ৳${pkg.offlineTotalFee.toLocaleString('en-BD')}`);
-                }
-                return lines.join('\n');
+              // Safe formatter — .lean() strips Mongoose defaults, so numeric fields may be
+              // undefined on old documents; calling .toLocaleString() on undefined throws.
+              const fmt = (n: unknown): string =>
+                typeof n === 'number' ? n.toLocaleString() : '?';
+
+              const formatted = (courses as any[]).map((course) => {
+                const pkgLines = (course.packages ?? []).map((pkg: any) => {
+                  const lines = [
+                    `  • ${pkg.name ?? 'Package'} (${pkg.tier ?? ''}) — ${pkg.duration ?? ''}`,
+                    `    Online: ৳${fmt(pkg.totalFee)} = ৳${fmt(pkg.registrationFee)} registration + ৳${fmt(pkg.installmentAmount)}×${pkg.installmentCount ?? '?'} installments`,
+                  ];
+                  if (pkg.offlineTotalFee) {
+                    lines.push(`    Offline: ৳${fmt(pkg.offlineTotalFee)}`);
+                  }
+                  return lines.join('\n');
+                });
+
+                const pkgSection = pkgLines.length ? pkgLines.join('\n\n') : '  No packages listed.';
+                return `== ${course.title ?? 'Course'} ==\n${course.description ?? ''}\n\nPackages:\n${pkgSection}`;
               });
 
-              const pkgSection = pkgLines.length ? pkgLines.join('\n\n') : '  No packages listed.';
-              return `== ${course.title} ==\n${course.description}\n\nPackages:\n${pkgSection}`;
-            });
-
-            const header = 'NOTE: Webtricker training is rolling enrollment — students can join anytime, with personal, guided, one-on-one mentorship and day-to-day hands-on practice from day one. This is not a fixed-batch or fixed-schedule program.\n\n';
-            return header + formatted.join('\n\n---\n\n');
+              const header = 'NOTE: Webtricker training is rolling enrollment — students can join anytime, with personal, guided, one-on-one mentorship and day-to-day hands-on practice from day one. This is not a fixed-batch or fixed-schedule program.\n\n';
+              return header + formatted.join('\n\n---\n\n');
+            } catch (err) {
+              console.error('[chat/route] getTrainingInfo tool error:', err);
+              return "I'm having trouble fetching course details right now. Let me connect you with our team who can share the latest course information directly.";
+            }
           },
         }),
       },
@@ -196,6 +206,55 @@ For off-topic questions, general questions, or anything outside web development 
           stack: error instanceof Error ? error.stack : undefined,
           cause: error instanceof Error ? (error as any).cause : undefined,
         });
+
+        // Fire-and-forget: escalate session, push fallback message to widget, alert admin
+        void (async () => {
+          try {
+            await dbConnect();
+            const errorSession = await ChatSession.findOne({ sessionId });
+            if (!errorSession || errorSession.status !== 'AI_MODE') return;
+
+            const fallbackMsg = {
+              role: 'assistant' as const,
+              content: "I'm having a little trouble right now — let me get one of our team members to help you instead.",
+              createdAt: new Date(),
+            };
+            errorSession.status = 'ESCALATED';
+            errorSession.messages.push(fallbackMsg);
+            await errorSession.save();
+
+            await pusherServer.trigger('admin-chat', 'chat-escalated', {
+              sessionId,
+              userName: errorSession.userName ?? null,
+              userEmail: errorSession.userEmail ?? null,
+              reason: 'AI error — automatic escalation',
+            });
+            await pusherServer.trigger(`chat-${sessionId}`, 'new-message', fallbackMsg);
+
+            // Admin alert email — isolated so a send failure never affects the above
+            try {
+              const { getChatErrorAlertTemplate } = await import('@/utils/mailTemplate');
+              const { default: transporter } = await import('@/services/mail');
+              const lastMsg = messages[messages.length - 1];
+              const lastText = extractMessageText(lastMsg) ?? '(unavailable)';
+              await transporter.sendMail({
+                from: `"Webtricker Chat" <${process.env.EMAIL_USER}>`,
+                to: process.env.EMAIL_TO,
+                subject: '⚠️ Chat Widget Error — Session Needs Review',
+                html: getChatErrorAlertTemplate({
+                  sessionId,
+                  lastMessage: lastText,
+                  timestamp: new Date().toISOString(),
+                  errorMessage: error instanceof Error ? error.message : String(error),
+                }),
+              });
+            } catch (emailErr) {
+              console.error('[chat/route] Admin alert email failed:', emailErr);
+            }
+          } catch (bgErr) {
+            console.error('[chat/route] Error fallback handler failed:', bgErr);
+          }
+        })();
       },
       async onFinish({ text }) {
         await dbConnect();
