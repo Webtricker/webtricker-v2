@@ -645,6 +645,40 @@ p.bouncing-text {
   padding-left: 0;
 }
 
+/* ===== .wt_parser_content typography (blog / service / portfolio single pages) ===== */
+.wt_parser_content h1,
+.wt_parser_content h2,
+.wt_parser_content h3,
+.wt_parser_content h4,
+.wt_parser_content h5,
+.wt_parser_content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  line-height: 130%;
+}
+
+/* Remove top gap when a heading is the very first element in the content area */
+.wt_parser_content h1:first-child,
+.wt_parser_content h2:first-child,
+.wt_parser_content h3:first-child,
+.wt_parser_content h4:first-child,
+.wt_parser_content h5:first-child,
+.wt_parser_content h6:first-child {
+  margin-top: 0;
+}
+
+.wt_parser_content h1 { font-size: var(--fs-4xl); }
+.wt_parser_content h2 { font-size: var(--fs-3xl); }
+.wt_parser_content h3 { font-size: var(--fs-2xl); }
+.wt_parser_content h4 { font-size: var(--fs-xl); }
+.wt_parser_content h5 { font-size: var(--fs-lg); }
+.wt_parser_content h6 { font-size: var(--fs-md); }
+
+.wt_parser_content p {
+  margin-bottom: 1em;
+  line-height: 150%;
+}
+
 /* lets add 5 px default bottom margin for each heading in post details page  */
 .post-details-container h2,
 .post-details-container h3,
