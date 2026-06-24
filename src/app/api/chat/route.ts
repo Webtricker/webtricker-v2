@@ -86,7 +86,7 @@ Do unused hours roll over? No, they do not.
 White-label for agencies? Yes, we work as a silent partner with NDA.
 
 TRAINING COURSES
-For any question about training, courses, learning programs, or internships — call "getTrainingInfo" to get live, accurate data. Do not answer training questions from memory or guess prices and packages.
+For any question about training, courses, learning programs, or internships — call "getTrainingInfo" to get live, accurate data. Our training is rolling enrollment (join anytime) with personal, guided mentorship — never imply fixed batches, cohorts, or enrollment deadlines.
 
 LEAD CAPTURE (Conversational)
 On your VERY FIRST response — regardless of topic — after your answer, append one short low-pressure sentence asking for their name and email. Example: "By the way, what's your name and best email so our team can follow up?" Keep it natural, never salesy.
@@ -178,11 +178,6 @@ For off-topic questions, general questions, or anything outside web development 
                 if (pkg.offlineTotalFee) {
                   lines.push(`    Offline: ৳${pkg.offlineTotalFee.toLocaleString('en-BD')}`);
                 }
-                if (pkg.classDays) lines.push(`    Class days: ${pkg.classDays}`);
-                if (pkg.nextCohortDate) {
-                  const d = new Date(pkg.nextCohortDate);
-                  lines.push(`    Next cohort: ${d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}`);
-                }
                 return lines.join('\n');
               });
 
@@ -190,7 +185,8 @@ For off-topic questions, general questions, or anything outside web development 
               return `== ${course.title} ==\n${course.description}\n\nPackages:\n${pkgSection}`;
             });
 
-            return formatted.join('\n\n---\n\n');
+            const header = 'NOTE: Webtricker training is rolling enrollment — students can join anytime, with personal, guided, one-on-one mentorship and day-to-day hands-on practice from day one. This is not a fixed-batch or fixed-schedule program.\n\n';
+            return header + formatted.join('\n\n---\n\n');
           },
         }),
       },
