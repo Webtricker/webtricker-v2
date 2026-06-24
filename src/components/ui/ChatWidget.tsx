@@ -75,7 +75,7 @@ export default function ChatWidget() {
     []
   );
 
-  const { messages: aiMessages, sendMessage, status, error: aiError } = useChat({ transport });
+  const { messages: aiMessages, setMessages, sendMessage, status, error: aiError } = useChat({ transport });
 
   const isAiBusy = status === 'submitted' || status === 'streaming';
 
@@ -145,6 +145,22 @@ export default function ChatWidget() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId, role: 'user', content: messageContent }),
     });
+  };
+
+  const handleStartNewChat = () => {
+    localStorage.removeItem('chat_session_id');
+    const newSid = uuidv4();
+    localStorage.setItem('chat_session_id', newSid);
+    sessionIdRef.current = newSid;
+    setSessionId(newSid);
+    setMode('AI_MODE');
+    setIsResolved(false);
+    setShowReview(false);
+    setReviewSubmitted(false);
+    setSatisfactionRating(null);
+    setWasResolved(null);
+    setHumanMessages([]);
+    setMessages([]);
   };
 
   const handleEndChat = async () => {
@@ -290,6 +306,12 @@ export default function ChatWidget() {
                 <div className="text-center py-2">
                   <div className="font-medium text-sm text-zinc-700 dark:text-zinc-300">Thanks for chatting with us!</div>
                   <div className="text-xs text-zinc-500 mt-0.5">This session has ended.</div>
+                  <button
+                    onClick={handleStartNewChat}
+                    className="mt-3 bg-[#FFC107] text-black px-5 py-1.5 rounded-full text-sm font-semibold hover:opacity-90 transition-opacity"
+                  >
+                    Start New Chat
+                  </button>
                 </div>
               )
             ) : mode === 'AI_MODE' ? (
