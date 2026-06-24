@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
 
   const result = streamText({
     model: google('gemini-2.5-flash-lite'),
+    maxSteps: 2,
     system: `You are a professional, helpful support assistant for Webtricker LLC.
 Your goal is to answer questions about our web development services, pricing, and capabilities.
 
