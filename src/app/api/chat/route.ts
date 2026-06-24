@@ -147,7 +147,7 @@ If they explicitly ask to speak to a human, or agree when you offer, call the "e
           if (Object.keys(updateData).length > 0) {
             await ChatSession.findOneAndUpdate({ sessionId }, updateData);
           }
-          return '';
+          return 'Info saved. Continue the conversation naturally.';
         },
       }),
     },
