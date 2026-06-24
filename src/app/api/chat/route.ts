@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
 
     const result = streamText({
       model: google('gemini-2.5-flash-lite'),
-      stopWhen: stepCountIs(2),
+      stopWhen: stepCountIs(3),
       system: `You are a professional, helpful support assistant for Webtricker LLC — a web development and digital agency. You can answer questions on any topic naturally and helpfully. When topics relate to Webtricker's services, pricing, or capabilities, use the knowledge base below as your authoritative source.
 
 CRITICAL IDENTITY RULE: You represent ONLY "Webtricker LLC". Never mention, reference, or name any other company, agency, or brand. If asked who you work for, the answer is always "Webtricker LLC".
@@ -84,6 +84,9 @@ Can I cancel? Yes, with 30 days notice.
 Can I pause? Yes, once per quarter for up to 30 days.
 Do unused hours roll over? No, they do not.
 White-label for agencies? Yes, we work as a silent partner with NDA.
+
+TRAINING COURSES
+For any question about training, courses, learning programs, or internships — call "getTrainingInfo" to get live, accurate data. Do not answer training questions from memory or guess prices and packages.
 
 LEAD CAPTURE (Conversational)
 On your VERY FIRST response — regardless of topic — after your answer, append one short low-pressure sentence asking for their name and email. Example: "By the way, what's your name and best email so our team can follow up?" Keep it natural, never salesy.
@@ -147,6 +150,47 @@ For off-topic questions, general questions, or anything outside web development 
               await ChatSession.findOneAndUpdate({ sessionId }, updateData);
             }
             return 'Info saved. Continue the conversation naturally.';
+          },
+        }),
+        getTrainingInfo: tool({
+          description: 'Fetch live information about Webtricker Training courses — names, descriptions, packages, and pricing. Call this whenever the user asks about training, courses, learning programs, internships, or anything education/skills-related. Do NOT answer training questions from memory — always call this tool first.',
+          parameters: z.object({
+            courseQuery: z.string().optional().describe("Optional: a specific course name or topic the user is asking about. Leave empty to fetch all courses."),
+          }),
+          // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
+          execute: async () => {
+            await dbConnect();
+            const Training = (await import('@/models/Training')).default;
+            const courses = await Training.find({ published: true })
+              .select('title description packages')
+              .lean();
+
+            if (!courses.length) {
+              return "No training course data is currently available — let the user know you'll need to check with the team for exact details.";
+            }
+
+            const formatted = (courses as any[]).map((course) => {
+              const pkgLines = (course.packages ?? []).map((pkg: any) => {
+                const lines = [
+                  `  • ${pkg.name} (${pkg.tier}) — ${pkg.duration}`,
+                  `    Online: ৳${pkg.totalFee.toLocaleString('en-BD')} = ৳${pkg.registrationFee.toLocaleString('en-BD')} registration + ৳${pkg.installmentAmount.toLocaleString('en-BD')}×${pkg.installmentCount} installments`,
+                ];
+                if (pkg.offlineTotalFee) {
+                  lines.push(`    Offline: ৳${pkg.offlineTotalFee.toLocaleString('en-BD')}`);
+                }
+                if (pkg.classDays) lines.push(`    Class days: ${pkg.classDays}`);
+                if (pkg.nextCohortDate) {
+                  const d = new Date(pkg.nextCohortDate);
+                  lines.push(`    Next cohort: ${d.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}`);
+                }
+                return lines.join('\n');
+              });
+
+              const pkgSection = pkgLines.length ? pkgLines.join('\n\n') : '  No packages listed.';
+              return `== ${course.title} ==\n${course.description}\n\nPackages:\n${pkgSection}`;
+            });
+
+            return formatted.join('\n\n---\n\n');
           },
         }),
       },
