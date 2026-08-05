@@ -10,6 +10,7 @@ export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
   const triggerEl = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
     if (!targetEl?.current || !triggerEl?.current || !pinContainer?.current)
       return;
 

@@ -7,6 +7,7 @@ export default function RightAnimation({ word }: { word?: string }) {
   const lettersRef = useRef<HTMLSpanElement[]>([]);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
     const letters = lettersRef.current;
     if (!letters.length) return;
 
