@@ -14,7 +14,7 @@ export default function IntroResponsiveVideo({ src, type }: { src: string, type:
   if (type !== "video") return null;
 
   if (!mounted || !isDesktop) {
-    return <div className="hidden md:block h-screen max-h-screen w-full" />;
+    return <video preload="none" className="hidden md:block h-screen max-h-screen w-full"></video>;
   }
 
   return (

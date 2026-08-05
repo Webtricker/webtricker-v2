@@ -14,7 +14,7 @@ export default function BannerVideo({ src, type }: { src: string, type: string }
   if (type !== "video") return null;
 
   if (!mounted || !isDesktop) {
-    return <div className="hidden md:block sm:w-[120px] rounded-full sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]" />;
+    return <video preload="none" className="hidden md:block sm:w-[120px] rounded-full sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]"></video>;
   }
 
   return (

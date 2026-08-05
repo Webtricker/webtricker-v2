@@ -11,7 +11,7 @@ import { Metadata } from "next";
 
 // above-the-fold components (load instantly)
 import Banner from "./components/Banner";
-import IntroVideo from "./components/IntroVideo";
+import DesktopIntroVideo from "./components/DesktopIntroVideo";
 
 // lazy-load wrapper
 import LazyLoadSection, { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyLoadSection";
@@ -237,7 +237,7 @@ function HomeBlockRenderer({
     case "mediaIntro":
       return (
         <>
-          <IntroVideo homeData={blockHomeData} />
+          <DesktopIntroVideo homeData={blockHomeData} />
           <Container>
             <div className="my-8 md:my-10 w-full border-b border-slate-200 dark:border-slate-800"></div>
           </Container>
