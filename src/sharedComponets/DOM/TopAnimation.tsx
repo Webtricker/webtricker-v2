@@ -22,8 +22,14 @@ export default function TopAnimation({ word }: { word?: string }) {
     const tl = gsap.timeline();
 
     letters.forEach((letter, index) => {
-      tl.to(
+      tl.fromTo(
         letter,
+        {
+          opacity: 0,
+          y: -300,
+          rotation: -15,
+          scale: 0.3,
+        },
         {
           opacity: 1,
           y: 0,
@@ -60,7 +66,7 @@ export default function TopAnimation({ word }: { word?: string }) {
           ref={(el) => {
             if (el) lettersRef.current[index] = el;
           }}
-          className="inline-block mx-1 drop-shadow-2xl opacity-0 -translate-y-[300px] -rotate-[15deg] scale-[0.3] will-change-transform"
+          className="inline-block mx-1 drop-shadow-2xl will-change-transform"
         >
           {letter}
         </span>

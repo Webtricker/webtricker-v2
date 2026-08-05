@@ -21,8 +21,14 @@ export default function LeftAnimation({ word }: { word?: string }) {
     const tl = gsap.timeline();
 
     letters.forEach((letter, index) => {
-      tl.to(
+      tl.fromTo(
         letter,
+        {
+          opacity: 0,
+          x: -400,
+          rotation: 25,
+          scale: 0.4,
+        },
         {
           opacity: 1,
           x: 0,
@@ -57,7 +63,7 @@ export default function LeftAnimation({ word }: { word?: string }) {
           ref={(el) => {
             if (el) lettersRef.current[index] = el;
           }}
-          className="inline-block mx-1 drop-shadow-2xl opacity-0 -translate-x-[400px] rotate-[25deg] scale-[0.4] will-change-transform"
+          className="inline-block mx-1 drop-shadow-2xl will-change-transform"
         >
           {letter}
         </span>

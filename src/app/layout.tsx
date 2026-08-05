@@ -9,9 +9,7 @@ import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimation
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
-import dynamic from "next/dynamic";
-const WhatsAppChat = dynamic(() => import("@/sharedComponets/DOM/WhatsAppChat"));
-const ChatWidget = dynamic(() => import("@/components/ui/ChatWidget"));
+import DelayedWidgets from "@/sharedComponets/DOM/DelayedWidgets";
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Script from "next/script";
@@ -166,11 +164,8 @@ export default function RootLayout({
               <LiveChat></LiveChat>
             </Suspense> */}
 
-            {/* Live AI Chatbot */}
-            <ChatWidget />
-
-            {/* WhatsApp chat */}
-            <WhatsAppChat />
+            {/* Deferred Chat Widgets */}
+            <DelayedWidgets />
 
             {/* Demo dark theme toggler to check dark / light theem */}
             {/* <DemoThemeToggler /> */}
