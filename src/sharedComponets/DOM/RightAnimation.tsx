@@ -2,11 +2,11 @@
 
 export default function RightAnimation({ word }: { word?: string }) {
   return (
-    <span className="inline-block relative">
+    <span>
       {word?.split("").map((letter, index) => (
         <span
           key={index}
-          className="inline-block relative animate-right-word"
+          className="inline-block mx-1 drop-shadow-2xl animate-right-word will-change-transform"
           style={{ animationDelay: `${index * 0.08}s` }}
         >
           {letter}

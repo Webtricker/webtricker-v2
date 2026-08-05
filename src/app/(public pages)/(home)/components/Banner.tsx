@@ -8,6 +8,7 @@ import { IHomePage } from "@/types/pageTypes";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import BannerVideo from "./BannerVideo";
 
 export default function Banner({ homeData }: { homeData: IHomePage }) {
   return (
@@ -62,14 +63,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
               src={homeData?.bannerVideo?.src || ""}
               alt="Webtricker Short Logo"
             />
-            <video
-              muted
-              autoPlay
-              className={`hidden ${
-                homeData?.bannerVideo?.type === "video" && "md:block"
-              } sm:w-[120px] rounded-full sm:h-[80px] md:w-[160px] md:h-[100px] lg:w-[220px] lg:h-[120px] 2xl:w-[270px] 2xl:h-[160px]`}
-              src={homeData?.bannerVideo?.src || ""}
-            ></video>
+            <BannerVideo type={homeData?.bannerVideo?.type || ""} src={homeData?.bannerVideo?.src || ""} />
           </span>
           <RightAnimation word={homeData?.bannerText?.right || "Creative"} />
         </h2>
