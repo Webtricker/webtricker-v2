@@ -52,18 +52,20 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
         >
           <LeftAnimation word={homeData?.bannerText?.left || "Digital"} />
           <span className="tp-hero-title-img">
-            <Image
-              priority
-              width={160}
-              height={140}
-              decoding="async"
-              className={`hidden ${
-                homeData?.bannerVideo?.type === "image" && "md:block"
-              } animate-pulse`}
-              src={homeData?.bannerVideo?.src || ""}
-              alt="Webtricker Short Logo"
-            />
-            <BannerVideo type={homeData?.bannerVideo?.type || ""} src={homeData?.bannerVideo?.src || ""} />
+            {homeData?.bannerVideo?.type === "image" && (
+              <Image
+                priority
+                width={160}
+                height={140}
+                decoding="async"
+                className="hidden md:block animate-pulse"
+                src={homeData?.bannerVideo?.src || ""}
+                alt="Webtricker Short Logo"
+              />
+            )}
+            {homeData?.bannerVideo?.type === "video" && (
+              <BannerVideo type="video" src={homeData?.bannerVideo?.src || ""} />
+            )}
           </span>
           <RightAnimation word={homeData?.bannerText?.right || "Creative"} />
         </h2>

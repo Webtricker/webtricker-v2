@@ -41,15 +41,19 @@ export default function IntroVideo({ homeData }: { homeData: IHomePage }) {
           ref={targetEl}
           className="w-full rounded-t-[16px] z-0 max-w-[35vw] overflow-hidden mx-auto"
         >
-          <Image
-            width={270}
-            height={160}
-            decoding="async"
-            className={`${homeData?.introVideo?.type === "image" ? "block " : 'hidden '} h-screen max-h-screen w-full object-cover`}
-            src={homeData?.introVideo?.src || ""}
-            alt="Intro image"
-          />
-          <IntroResponsiveVideo type={homeData?.introVideo?.type || ""} src={homeData?.introVideo?.src || ""} />
+          {homeData?.introVideo?.type === "image" && (
+            <Image
+              width={270}
+              height={160}
+              decoding="async"
+              className="block h-screen max-h-screen w-full object-cover"
+              src={homeData?.introVideo?.src || ""}
+              alt="Intro image"
+            />
+          )}
+          {homeData?.introVideo?.type === "video" && (
+            <IntroResponsiveVideo type="video" src={homeData?.introVideo?.src || ""} />
+          )}
         </div>
       </div>
       <div className="w-full h-screen"></div>
