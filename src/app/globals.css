@@ -897,3 +897,51 @@ p.bouncing-text {
   background-color: #3f3f46; /* zinc-700 */
 }
 
+/* Hero Animations for Desktop */
+@media (min-width: 768px) {
+  .animate-left-word {
+    animation: leftAnimate 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+  }
+  .animate-right-word {
+    animation: rightAnimate 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+  }
+  .animate-top-word {
+    animation: topAnimate 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+  }
+}
+
+@keyframes leftAnimate {
+  0% {
+    opacity: 0;
+    transform: translateX(-400px) rotate(25deg) scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes rightAnimate {
+  0% {
+    opacity: 0;
+    transform: translateX(400px) rotate(-25deg) scale(0.4);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg) scale(1);
+  }
+}
+
+@keyframes topAnimate {
+  0% {
+    opacity: 0;
+    transform: translateY(-300px) rotate(-15deg) scale(0.3);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}

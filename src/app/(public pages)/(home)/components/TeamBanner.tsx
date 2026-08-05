@@ -39,6 +39,7 @@ export default function TeamBanner() {
   const endTrigger = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (window.innerWidth < 768) return;
     if (!bannerRef.current || !endTrigger.current) return;
 
     const ctx = gsap.context(() => {
