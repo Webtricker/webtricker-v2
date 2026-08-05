@@ -9,14 +9,15 @@ import InitializeAnimationPlugin from "@/sharedComponets/DOM/InitializeAnimation
 import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
-import WhatsAppChat from "@/sharedComponets/DOM/WhatsAppChat";
+import dynamic from "next/dynamic";
+const WhatsAppChat = dynamic(() => import("@/sharedComponets/DOM/WhatsAppChat"));
+const ChatWidget = dynamic(() => import("@/components/ui/ChatWidget"));
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import ChatWidget from "@/components/ui/ChatWidget";
 import Script from "next/script";
 
-// TEMP: revalidate=0 for active dev — RESET before launch (was: 240)
-export const revalidate = 0;
+// Active dev mode disabled for performance
+export const revalidate = 86400;
 
 const lato = Lato({
   subsets: ["latin"],
@@ -105,7 +106,7 @@ export default function RootLayout({
       <head>
         <Script
           id="clarity-script"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               (function(c,l,a,r,i,t,y){

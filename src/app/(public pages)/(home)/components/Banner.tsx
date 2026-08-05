@@ -23,6 +23,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
           <TopAnimation word={homeData?.bannerText?.top || "Creative"} />
           <div className="hidden z-0 sm:inline mt-2 md:mt-4 2xl:mt-10">
             <Image
+              priority
               className="inline dark:hidden banner-spinning-star w-5 md:w-6 lg:w-8 2xl:!w-10"
               width={40}
               height={40}
@@ -33,6 +34,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
               alt="Star"
             />
             <Image
+              priority
               className="hidden dark:inline banner-spinning-star w-5 md:w-6 lg:w-8 2xl:!w-10"
               width={40}
               height={40}
@@ -50,6 +52,7 @@ export default function Banner({ homeData }: { homeData: IHomePage }) {
           <LeftAnimation word={homeData?.bannerText?.left || "Digital"} />
           <span className="tp-hero-title-img">
             <Image
+              priority
               width={160}
               height={140}
               decoding="async"

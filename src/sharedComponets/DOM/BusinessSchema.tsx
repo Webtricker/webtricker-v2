@@ -34,8 +34,8 @@ async function fetchSiteConfig(): Promise<SiteConfig | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/site-config`,
-      // TEMP: revalidate=0 for active dev - RESET before launch (was: 86400)
-      { next: { revalidate: 0 } }
+      // Active dev mode disabled for performance
+      { next: { revalidate: 86400 } }
     );
     if (!res.ok) return null;
     const json = await res.json();

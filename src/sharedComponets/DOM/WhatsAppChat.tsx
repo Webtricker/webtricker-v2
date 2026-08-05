@@ -13,7 +13,6 @@ function WhatsAppChat() {
           aria-label="whatsapp redirect link"
         >
           <Image
-            priority
             width={50}
             height={50}
             src={whatsAppImg.src}
