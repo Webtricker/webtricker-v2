@@ -1,4 +1,4 @@
-import dynamic from "next/dynamic";
+import nextDynamic from "next/dynamic";
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import {
   getHomePageData,
@@ -18,48 +18,48 @@ import LazyLoadSection, { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyL
 import { HomePageBlock, IHomePage } from "@/types/pageTypes";
 
 // sections
-const Clients = dynamic(() => import("./components/Clients"), {
+const Clients = nextDynamic(() => import("./components/Clients"), {
   loading: () => <LoadingPlaceholder />,
 });
 
 
-const Services = dynamic(() => import("./components/Services"), {
+const Services = nextDynamic(() => import("./components/Services"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const LargeMarquee = dynamic(() => import("./components/LargeMarquee"), {
+const LargeMarquee = nextDynamic(() => import("./components/LargeMarquee"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const Portfolios = dynamic(() => import("./components/Portfolios"), {
+const Portfolios = nextDynamic(() => import("./components/Portfolios"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const Testimonials = dynamic(() => import("./components/Testimonials"), {
+const Testimonials = nextDynamic(() => import("./components/Testimonials"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const TeamInfo = dynamic(() => import("./components/TeamInfo"), {
+const TeamInfo = nextDynamic(() => import("./components/TeamInfo"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const LatestBlogs = dynamic(() => import("./components/LatestBlogs"), {
+const LatestBlogs = nextDynamic(() => import("./components/LatestBlogs"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const PortfolioSlider = dynamic(() => import("./components/PortfolioSlider"), {
+const PortfolioSlider = nextDynamic(() => import("./components/PortfolioSlider"), {
   loading: () => <div className="h-48 bg-gray-200 animate-pulse rounded-lg" />,
 });
 
-const OurLeader = dynamic(() => import("./components/OurLeader"), {
+const OurLeader = nextDynamic(() => import("./components/OurLeader"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const InstragramFeed = dynamic(() => import("./components/InstragramFeed"), {
+const InstragramFeed = nextDynamic(() => import("./components/InstragramFeed"), {
   loading: () => <LoadingPlaceholder />,
 });
 
-const Technologies = dynamic(() => import("./components/Technologies"), {
+const Technologies = nextDynamic(() => import("./components/Technologies"), {
   loading: () => <LoadingPlaceholder />,
 });
 
@@ -398,6 +398,8 @@ export const metadata: Metadata = {
   category: "technology",
   metadataBase: new URL("https://webtricker.com"),
 };
+
+export const dynamic = "force-static";
 
 export default async function Home() {
   const [teamData, leaderData, testimonialsData, portfoliosData, homeData] =

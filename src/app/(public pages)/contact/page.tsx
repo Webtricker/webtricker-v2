@@ -10,7 +10,7 @@ import { getContactPageData } from "@/utils/pageData";
 import { IContactPage } from "@/types/pageTypes";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
-export const revalidate = 0;
+export const revalidate = 86400;
 
 type SiteConfig = {
   contact?: {
@@ -46,7 +46,7 @@ async function fetchSiteConfig(): Promise<SiteConfig | null> {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/site-config`,
-      { next: { revalidate: 0 } }
+      { next: { revalidate: 86400 } }
     );
     if (!res.ok) return null;
     const json = await res.json();

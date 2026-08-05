@@ -8,7 +8,7 @@ import Image from "next/image";
 import React from "react";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 60 * 60)
-const REVALIDATE_SECONDS = 0;
+const REVALIDATE_SECONDS = 86400;
 
 // ===== Helper: fetch a single portfolio by slug =====
 const getPortfolioData = async (slug: string) => {

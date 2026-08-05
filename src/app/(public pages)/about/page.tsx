@@ -343,7 +343,7 @@ export const metadata: Metadata = {
 };
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export default async function AboutPage() {
     const teamData = await getTeamData();

@@ -11,7 +11,7 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 
 // const REVALIDATE_SECONDS = 60 * 60; // 3600 seconds = 1 hour
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
-const REVALIDATE_SECONDS = 0;
+const REVALIDATE_SECONDS = 86400;
 
 const getBlogData = async (slug: string) => {
   try {

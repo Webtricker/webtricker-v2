@@ -8,7 +8,7 @@ const getCategories = async (): Promise<TCategory[]> => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`,
       {
         // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
-        next: { revalidate: 0 },
+        next: { revalidate: 86400 },
       },
     );
 

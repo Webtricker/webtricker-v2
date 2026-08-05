@@ -10,7 +10,7 @@ import bannerImg from "@/assets/images/policy-terms/terms-and-contions.webp";
 import Image from "next/image";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
-export const revalidate = 0;
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Terms and Conditions",

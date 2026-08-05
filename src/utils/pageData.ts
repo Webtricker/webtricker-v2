@@ -203,7 +203,7 @@ export const getAboutPageData = async () => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/about-page`,
-      { cache: 'no-store' }
+      { next: { revalidate: 86400 } }
     );
     if (!res.ok) {
       console.error("Failed to fetch about page data");
@@ -288,7 +288,7 @@ export const getTobBarInfo = async () => {
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/top-header`,
       {
         // TEMP: revalidate=0 for active dev — RESET before launch (was: 3600)
-        next: { revalidate: 0 },
+        next: { revalidate: 86400 },
       }
     );
 
