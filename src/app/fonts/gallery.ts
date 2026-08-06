@@ -18,7 +18,6 @@ const galleryModern = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-gallery',
   display: 'swap',
 })
 
