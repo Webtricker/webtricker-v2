@@ -40,7 +40,7 @@ export default function BlogCardWrapper({
         />
       </div>
       <div className="w-full  p-4 flex flex-col grow">
-        <h6>{trimText(title, 52)}</h6>
+        <h6 className="font-bold">{trimText(title, 52)}</h6>
         <p className="mt-2">{trimText(excerpt ? excerpt : description, 133)}</p>
         <div className="w-full flex items-end grow">
           <div className="w-full flex items-center justify-between">
