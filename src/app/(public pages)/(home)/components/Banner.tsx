@@ -13,7 +13,7 @@ import BannerVideo from "./BannerVideo";
 export default function Banner({ homeData }: { homeData: IHomePage }) {
   return (
     <div
-      className={`w-full mt-[100px] sm:mt-[130px] md:mt-[150px] lg:mt-[180px] 2xl:mt-[200px]`}
+      className={`w-full mt-[120px] sm:mt-[150px] md:mt-[170px] lg:mt-[210px] 2xl:mt-[240px]`}
     >
       <Container className="">
         <div className="w-full flex-col sm:flex-row flex items-start sm:gap-5 md:gap-8 lg:gap-14 justify-center">
