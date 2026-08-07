@@ -32,6 +32,7 @@ export default function Testimonials({
           src={sectionBg || testimonialsBanner}
           width={1000}
           height={400}
+          sizes="(max-width: 768px) 100vw, 1000px"
           alt="Testimonals Banner"
         />
 

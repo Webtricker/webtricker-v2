@@ -5,12 +5,13 @@ let lenisInstance: Lenis | null = null
 
 export const initSmoothScroll = () => {
   if (typeof window === 'undefined') return null // SSR-safe
+  if (window.innerWidth < 768) return null // Disable on mobile to save CPU/reflows
 
   if (!lenisInstance) {
     lenisInstance = new Lenis({
-      duration: 1 ,
+      duration: 1,
       smoothWheel: true,
-   easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
     })
 
     const raf = (time: number) => {

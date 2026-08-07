@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { getLenisInstance } from "@/utils/lenis";
 
 type Props = {
@@ -8,11 +8,9 @@ type Props = {
 };
 
 export default function Navbar({ navStyle = "", children = <></> }: Props) {
-  // variables
   const THRESHOLD = 150;
-
-  // hooks
-  const [scrollY, setScrollY] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
+  const scrollYRef = useRef(0);
   const prevScrollRef = useRef(0);
 
   useEffect(() => {
@@ -22,26 +20,38 @@ export default function Navbar({ navStyle = "", children = <></> }: Props) {
     const handleScroll = () => {
       const currentScroll = lenis.scroll;
       const prevScroll = prevScrollRef.current;
+      const header = headerRef.current;
+      if (!header) return;
 
       const isScrollingDown = currentScroll > prevScroll;
       const isScrollingUp = currentScroll < prevScroll;
+      let newScrollY = scrollYRef.current;
 
-      // Scrolling down — hide header
+      // Scrolling down — hide header (or adjust based on threshold)
       if (isScrollingDown) {
         if (currentScroll < THRESHOLD) {
-          setScrollY(currentScroll);
+          newScrollY = currentScroll;
         }
 
-        if (currentScroll > THRESHOLD && scrollY !== 0) {
-          setScrollY(0);
+        if (currentScroll > THRESHOLD && newScrollY !== 0) {
+          newScrollY = 0;
         }
       }
 
       // Scrolling up and scrollY is greater than 0, reduce scrollY gradually
-      if (isScrollingUp && currentScroll < THRESHOLD && scrollY > 0) {
+      if (isScrollingUp && currentScroll < THRESHOLD && newScrollY > 0) {
         const distanceToTop = Math.max(currentScroll, 0);
-        const newScrollY = Math.max(0, Math.min(THRESHOLD, distanceToTop));
-        setScrollY(newScrollY);
+        newScrollY = Math.max(0, Math.min(THRESHOLD, distanceToTop));
+      }
+
+      if (scrollYRef.current !== newScrollY) {
+        scrollYRef.current = newScrollY;
+        header.style.transform = `translateY(-${newScrollY}px)`;
+        if (newScrollY === 0) {
+          header.classList.add("duration-1000");
+        } else {
+          header.classList.remove("duration-1000");
+        }
       }
 
       prevScrollRef.current = currentScroll;
@@ -51,12 +61,12 @@ export default function Navbar({ navStyle = "", children = <></> }: Props) {
     return () => {
       lenis.off("scroll", handleScroll);
     };
-  }, [scrollY]);
+  }, []);
+
   return (
     <header
-      style={{ transform: `translateY(-${scrollY}px)` }}
-      className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto shadow dark:shadow-slate-700 border-b border-gray-200 dark:border-gray-800 ${navStyle} ${scrollY === 0 ? "duration-1000" : ""
-        }`}
+      ref={headerRef}
+      className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto shadow dark:shadow-slate-700 border-b border-gray-200 dark:border-gray-800 duration-1000 ${navStyle}`}
     >
       {children}
     </header>
