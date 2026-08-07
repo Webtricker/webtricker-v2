@@ -66,7 +66,7 @@ export default function Navbar({ navStyle = "", children = <></> }: Props) {
   return (
     <header
       ref={headerRef}
-      className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto shadow dark:shadow-slate-700 border-b border-gray-200 dark:border-gray-800 duration-1000 ${navStyle}`}
+      className={`z-[999] wt_header fixed top-0 left-0 py-1 md:py-2 lg:py-4 w-full h-auto shadow dark:shadow-slate-700 border-b border-gray-200 dark:border-gray-800 transition-transform ${navStyle}`}
     >
       {children}
     </header>
