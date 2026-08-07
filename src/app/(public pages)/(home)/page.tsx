@@ -14,7 +14,7 @@ import Banner from "./components/Banner";
 import DesktopIntroVideo from "./components/DesktopIntroVideo";
 
 // lazy-load wrapper
-import LazyLoadSection, { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyLoadSection";
+import { LoadingPlaceholder } from "@/sharedComponets/DOM/LazyLoadSection";
 import { HomePageBlock, IHomePage } from "@/types/pageTypes";
 
 // sections
@@ -245,55 +245,41 @@ function HomeBlockRenderer({
       );
     case "logoMarquee":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <Clients title={data.title} clientsBanners={data.clientsBanners} />
-        </LazyLoadSection>
+        <Clients title={data.title} clientsBanners={data.clientsBanners} />
       );
     case "testimonialSlider":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <Testimonials
-            sectionBg={data.sectionBg}
-            testimonials={testimonialsData}
-          />
-        </LazyLoadSection>
+        <Testimonials
+          sectionBg={data.sectionBg}
+          testimonials={testimonialsData}
+        />
       );
     case "technologyGrid":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <Technologies technologies={data.technologies} />
-        </LazyLoadSection>
+        <Technologies technologies={data.technologies} />
       );
     case "collectionPreview":
       if (data.variant === "latestBlogs") {
         return (
-          <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-            <LatestBlogs blogSectionTitle={data.blogSectionTitle} />
-          </LazyLoadSection>
+          <LatestBlogs blogSectionTitle={data.blogSectionTitle} />
         );
       }
 
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <Services
-            allServiceTxt={data.allServiceBtnText}
-            serviceSectionTitle={data.serviceSectionTitle}
-          />
-        </LazyLoadSection>
+        <Services
+          allServiceTxt={data.allServiceBtnText}
+          serviceSectionTitle={data.serviceSectionTitle}
+        />
       );
     case "marquee":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <LargeMarquee />
-        </LazyLoadSection>
+        <LargeMarquee />
       );
     case "portfolioShowcase":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <Portfolios
-            portfolios={portfoliosData?.slice(portfolioStart, portfolioEnd)}
-          />
-        </LazyLoadSection>
+        <Portfolios
+          portfolios={portfoliosData?.slice(portfolioStart, portfolioEnd)}
+        />
       );
     case "portfolioSlider": {
       const portfolios = portfoliosData?.slice(portfolioStart, portfolioEnd);
@@ -304,28 +290,20 @@ function HomeBlockRenderer({
       if (!shouldShow) return null;
 
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <PortfolioSlider linkText={data.linkText} portfolios={portfolios} />
-        </LazyLoadSection>
+        <PortfolioSlider linkText={data.linkText} portfolios={portfolios} />
       );
     }
     case "leaderGrid":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <OurLeader leaderData={leaderData} title={data.title} />
-        </LazyLoadSection>
+        <OurLeader leaderData={leaderData} title={data.title} />
       );
     case "teamSlider":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <TeamInfo title={data.title} teamData={teamData} />
-        </LazyLoadSection>
+        <TeamInfo title={data.title} teamData={teamData} />
       );
     case "imageFeed":
       return (
-        <LazyLoadSection placeholderStyle={lazyPlaceholderStyle}>
-          <InstragramFeed images={data.images} />
-        </LazyLoadSection>
+        <InstragramFeed images={data.images} />
       );
     default:
       return null;
