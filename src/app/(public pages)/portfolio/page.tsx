@@ -79,9 +79,9 @@ export default async function PortfolioPage() {
             <span>{pageData?.projectIntroduction?.companyName || ""}</span>
             <span className="w-10 h-[1px] mt-1.5 bg-black dark:bg-white"></span>
           </p>
-          <h2 className="heading xl:font-semibold !leading-[100%]">
+          <h1 className="heading xl:font-semibold !leading-[100%]">
             {pageData?.projectIntroduction?.title || ""}
-          </h2>
+          </h1>
           <p className="mx-auto max-w-[700px] mt-5 text-justify">
             {pageData?.projectIntroduction?.description || ""}
           </p>

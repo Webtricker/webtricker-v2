@@ -130,8 +130,43 @@ export default async function SingleBlogPage({
   const nextPost = data.nextPost;
   const prevPost = data.prevPost;
   const post = data.post as IBlog;
+  const siteUrl = "https://webtricker.com";
+  const postUrl = `${siteUrl}/blog/${slug}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${postUrl}#article`,
+        mainEntityOfPage: postUrl,
+        headline: post.title,
+        description: post.description,
+        image: post.thumnail?.url ? [post.thumnail.url] : undefined,
+        datePublished: new Date(post.createdAt).toISOString(),
+        dateModified: new Date((post as IBlog & { updatedAt?: Date }).updatedAt ?? post.createdAt).toISOString(),
+        articleSection: post.category?.name,
+        inLanguage: "en-US",
+        author: { "@type": "Organization", name: "Webtricker", url: siteUrl },
+        publisher: { "@id": `${siteUrl}/#organization` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+          { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/blog` },
+          { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+        ],
+      },
+    ],
+  };
   return (
     <main className="w-full z-0 section-speacing mt-7 post-details-container">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
+        }}
+      />
       <BlogPageContainer className="section-speacing">
         <p className="text-center">
           Published {formatDateToShortString(post.createdAt)}

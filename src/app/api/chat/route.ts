@@ -5,6 +5,9 @@ import { NextRequest, after } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ChatSession from '@/models/ChatSession';
 import { pusherServer } from '@/utils/pusher-server';
+import { isSameOrigin } from '@/lib/security/guard';
+import { getClientIp, rateLimit } from '@/lib/security/rateLimit';
+import { cleanEmail, cleanLine, isUuid } from '@/lib/security/sanitize';
 
 export const maxDuration = 30;
 
@@ -27,10 +30,26 @@ function extractMessageText(message: any): string | null {
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages, sessionId } = await req.json();
+    if (!isSameOrigin(req)) return new Response('Request rejected', { status: 403 });
 
-    if (!sessionId) {
-      return new Response('Session ID is required', { status: 400 });
+    // Each call costs Gemini quota, so cap the request size and the call rate.
+    const raw = await req.text();
+    if (raw.length > 60_000) return new Response('Request too large', { status: 413 });
+    const { messages, sessionId } = JSON.parse(raw);
+
+    if (!isUuid(sessionId)) {
+      return new Response('A valid session ID is required', { status: 400 });
+    }
+    if (!Array.isArray(messages) || messages.length === 0 || messages.length > 60) {
+      return new Response('Invalid messages', { status: 400 });
+    }
+
+    const [perIp, perSession] = await Promise.all([
+      rateLimit('ai-chat-ip', getClientIp(req), 40, 600),
+      rateLimit('ai-chat-session', sessionId, 30, 600),
+    ]);
+    if (!perIp.allowed || !perSession.allowed) {
+      return new Response('Too many messages. Please wait a few minutes.', { status: 429 });
     }
 
     // Ensure ChatSession exists in DB
@@ -48,6 +67,10 @@ export async function POST(req: NextRequest) {
     // Save the user's latest message to the DB
     const latestMessage = messages[messages.length - 1];
     const userText = extractMessageText(latestMessage);
+
+    if (userText && userText.length > 2000) {
+      return new Response('Message is too long.', { status: 413 });
+    }
 
     if (!userText) {
       console.error('[chat/route] Empty or malformed message:', JSON.stringify(latestMessage));
@@ -116,7 +139,10 @@ For off-topic questions, general questions, or anything outside web development 
             reason: z.string().describe("A brief summary of why they are being escalated to a human."),
           }),
           // @ts-ignore - Bypass strict typecheck for AI SDK v6 tool execute overload
-          execute: async ({ userName, userEmail, reason }) => {
+          execute: async ({ userName: rawName, userEmail: rawEmail, reason: rawReason }) => {
+            const userName = cleanLine(rawName, 100);
+            const userEmail = cleanEmail(rawEmail) ?? '';
+            const reason = cleanLine(rawReason, 500);
             await dbConnect();
             await ChatSession.findOneAndUpdate(
               { sessionId },
@@ -144,8 +170,10 @@ For off-topic questions, general questions, or anything outside web development 
           execute: async ({ userName, userEmail }) => {
             await dbConnect();
             const updateData: Record<string, string> = {};
-            if (userName?.trim()) updateData.userName = userName.trim();
-            if (userEmail?.trim()) updateData.userEmail = userEmail.trim();
+            const safeName = cleanLine(userName, 100);
+            const safeEmail = cleanEmail(userEmail);
+            if (safeName) updateData.userName = safeName;
+            if (safeEmail) updateData.userEmail = safeEmail;
             if (Object.keys(updateData).length > 0) {
               await ChatSession.findOneAndUpdate({ sessionId }, updateData);
             }

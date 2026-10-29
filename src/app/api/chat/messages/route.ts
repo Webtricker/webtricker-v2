@@ -2,14 +2,18 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import ChatSession from '@/models/ChatSession';
 import { pusherServer } from '@/utils/pusher-server';
+import { verifyAdmin } from '@/utils/validator';
+import { isSameOrigin, readJsonBody } from '@/lib/security/guard';
+import { getClientIp, rateLimit } from '@/lib/security/rateLimit';
+import { cleanText, isUuid } from '@/lib/security/sanitize';
 
 // Fetch chat history for a session
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const sessionId = url.searchParams.get('sessionId');
 
-  if (!sessionId) {
-    return NextResponse.json({ error: 'sessionId is required' }, { status: 400 });
+  if (!isUuid(sessionId)) {
+    return NextResponse.json({ error: 'A valid sessionId is required' }, { status: 400 });
   }
 
   await dbConnect();
@@ -34,13 +38,37 @@ export async function GET(req: NextRequest) {
 
 // Send a message (User or Agent)
 export async function POST(req: NextRequest) {
-  const { sessionId, role, content } = await req.json();
-
-  if (!sessionId || !role || !content) {
-    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+  if (!isSameOrigin(req)) {
+    return NextResponse.json({ error: 'Request rejected' }, { status: 403 });
   }
 
-  // Allow all for now
+  const body = await readJsonBody(req, 10_000);
+  if (!body) return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+
+  const sessionId = body.sessionId;
+  const role = body.role;
+  const content = cleanText(body.content, 2000);
+
+  if (!isUuid(sessionId) || !content || (role !== 'user' && role !== 'agent')) {
+    return NextResponse.json({ error: 'Missing or invalid fields' }, { status: 400 });
+  }
+
+  // Only signed-in staff may speak as the agent; visitors can only post as themselves.
+  if (role === 'agent') {
+    try {
+      await verifyAdmin(req);
+    } catch {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+  } else {
+    const [perIp, perSession] = await Promise.all([
+      rateLimit('chat-msg-ip', getClientIp(req), 40, 600),
+      rateLimit('chat-msg-session', sessionId, 30, 600),
+    ]);
+    if (!perIp.allowed || !perSession.allowed) {
+      return NextResponse.json({ error: 'Too many messages. Please slow down.' }, { status: 429 });
+    }
+  }
 
   await dbConnect();
   const session = await ChatSession.findOne({ sessionId });
@@ -50,7 +78,7 @@ export async function POST(req: NextRequest) {
   }
 
   const newMessage = {
-    role,
+    role: role as 'user' | 'agent',
     content,
     createdAt: new Date()
   };

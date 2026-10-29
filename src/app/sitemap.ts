@@ -14,22 +14,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     // ==== Static Pages ====
     const staticPages: MetadataRoute.Sitemap = [
-      { url: `${baseUrl}/`, lastModified: new Date() },
-      { url: `${baseUrl}/about`, lastModified: new Date() },
-      { url: `${baseUrl}/blog`, lastModified: new Date() },
-      { url: `${baseUrl}/contact`, lastModified: new Date() },
-      { url: `${baseUrl}/services`, lastModified: new Date() },
-      { url: `${baseUrl}/portfolio`, lastModified: new Date() },
-      { url: `${baseUrl}/career`, lastModified: new Date() },
-      { url: `${baseUrl}/training`, lastModified: new Date() },
-      { url: `${baseUrl}/privacy-policy`, lastModified: new Date() },
-      { url: `${baseUrl}/terms-and-conditions`, lastModified: new Date() },
+      { url: `${baseUrl}/` },
+      { url: `${baseUrl}/about` },
+      { url: `${baseUrl}/blog` },
+      { url: `${baseUrl}/contact` },
+      { url: `${baseUrl}/free-consultation`, priority: 0.9 },
+      { url: `${baseUrl}/services` },
+      { url: `${baseUrl}/portfolio` },
+      { url: `${baseUrl}/career` },
+      { url: `${baseUrl}/training` },
+      { url: `${baseUrl}/privacy-policy` },
+      { url: `${baseUrl}/terms-and-conditions` },
     ];
 
-    // ==== Static: Training detail pages (hardcoded IDs 1-9) ====
-    const trainingPages: MetadataRoute.Sitemap = Array.from(
-      { length: 9 },
-      (_, i) => ({ url: `${baseUrl}/training/${i + 1}`, lastModified: new Date() })
+    // ==== Dynamic: Training courses (published slugs only) ====
+    const trainingRes = await fetch(
+      `${baseUrl}/api/training?published=true&limit=100`,
+      { cache: "no-store" }
+    );
+    const trainingData = trainingRes.ok ? await trainingRes.json() : { courses: [] };
+    const trainingPages: MetadataRoute.Sitemap = (trainingData.courses || []).map(
+      (course: { slug: string; updatedAt?: string }) => ({
+        url: `${baseUrl}/training/${encodeURIComponent(course.slug)}`,
+        ...(course.updatedAt && { lastModified: new Date(course.updatedAt) }),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      })
     );
 
     // ==== Dynamic: Services ====
@@ -37,7 +47,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const servicePages: MetadataRoute.Sitemap = servicesData.map(
       (service: { slug: string }) => ({
         url: `${baseUrl}/services/${encodeURIComponent(service.slug)}`,
-        lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
@@ -48,7 +57,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const portfolioPages: MetadataRoute.Sitemap = portfolioData.map(
       (portfolio: { slug: string }) => ({
         url: `${baseUrl}/portfolio/${encodeURIComponent(portfolio.slug)}`,
-        lastModified: new Date(),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
@@ -58,7 +66,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const categories = (await getCategories()) || [];
     const categoryPages: MetadataRoute.Sitemap = categories.map((category) => ({
       url: `${baseUrl}/category/${category._id}`,
-      lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }));
@@ -68,7 +75,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogPages: MetadataRoute.Sitemap = blogs.map(
       (blog: { slug: string }) => ({
         url: `${baseUrl}/blog/${encodeURIComponent(blog.slug)}`,
-        lastModified: new Date(),
         changeFrequency: "weekly" as const,
         priority: 0.8,
       })
@@ -82,7 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const careerPages: MetadataRoute.Sitemap = (careerData.careers || []).map(
       (career: { slug: string; updatedAt?: string }) => ({
         url: `${baseUrl}/career/${encodeURIComponent(career.slug)}`,
-        lastModified: career.updatedAt ? new Date(career.updatedAt) : new Date(),
+        ...(career.updatedAt && { lastModified: new Date(career.updatedAt) }),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
@@ -99,6 +105,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
   } catch (err) {
     console.error("Error generating sitemap:", err);
-    return [{ url: baseUrl, lastModified: new Date() }];
+    return [{ url: baseUrl }];
   }
 }

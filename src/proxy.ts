@@ -53,7 +53,6 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
 
   const accessToken = request.cookies.get("accessToken")?.value;
-  console.log(accessToken, " accessToken from proxy");
 
   const loginURL = request.nextUrl.clone();
   loginURL.pathname = "/login";
