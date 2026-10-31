@@ -80,7 +80,7 @@ export default async function PublicLayout({
   children: ReactNode;
 }) {
   return (
-    <>
+    <div className="studio">
       {/* <PageTransition> */}
       <Navbar>
         <NavbarInner />
@@ -89,6 +89,6 @@ export default async function PublicLayout({
       <CursorDot />
       <Footer />
       {/* </PageTransition> */}
-    </>
+    </div>
   );
 }

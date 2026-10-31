@@ -11,12 +11,10 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState("light");
 
   useEffect(() => {
-    // Get saved theme from localStorage
-    const storedTheme = localStorage.getItem("theme");
-    if (storedTheme) {
-      setTheme(storedTheme);
-      document.documentElement.classList.add(storedTheme);
-    }
+    // The pre-paint script in layout.tsx already put the saved (or default dark) class on <html>
+    const isDark = document.documentElement.classList.contains("dark");
+    const isLight = document.documentElement.classList.contains("light");
+    if (isDark || isLight) setTheme(isDark ? "dark" : "light");
   }, []);
 
   const toggleTheme = async () => {

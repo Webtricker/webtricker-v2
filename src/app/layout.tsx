@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Lato } from "next/font/google";
+import {
+  Lato,
+  Inter_Tight,
+  Newsreader,
+  IBM_Plex_Mono,
+} from "next/font/google";
 import "./globals.css";
 import ReduxProvider from "@/provider/reduxProvider";
 import BodyEventListeners from "@/sharedComponets/DOM/BodyEventListeners";
@@ -23,6 +28,30 @@ const lato = Lato({
   variable: "--font-lato",
   display: "swap",
 });
+
+// Studio theme fonts, applied only inside the public site (.studio in globals.css)
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter-tight",
+  display: "swap",
+});
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  style: ["italic"],
+  weight: ["400"],
+  variable: "--font-newsreader",
+  display: "swap",
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
+  display: "swap",
+});
+
+// Public pages default to the dark Studio theme; admin and login keep their own look.
+const THEME_INIT = `(function(){try{var p=location.pathname;if(p.indexOf('/settings')===0||p.indexOf('/login')===0)return;var t=localStorage.getItem('theme')||'dark';document.documentElement.classList.add(t)}catch(e){document.documentElement.classList.add('dark')}})()`;
 
 export const metadata: Metadata = {
   title: {
@@ -99,9 +128,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
 
       <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT }} />
         <Script
           id="clarity-script"
           strategy="lazyOnload"
@@ -156,7 +186,7 @@ export default function RootLayout({
       </head>
 
       <body
-        className={`z-0 wt_fs-base ${lato.className} ${lato.variable} antialiased`}
+        className={`z-0 wt_fs-base ${lato.className} ${lato.variable} ${interTight.variable} ${newsreader.variable} ${plexMono.variable} antialiased`}
       >
         <ThemeProvider>
           <ReduxProvider>

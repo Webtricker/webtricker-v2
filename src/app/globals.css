@@ -945,3 +945,76 @@ p.bouncing-text {
     transform: translateY(0) rotate(0deg) scale(1);
   }
 }
+
+/* =====================================================
+   STUDIO THEME (public site only, wrapped in .studio)
+   Light = warm paper, dark = near-black. Toggle lives in the header.
+===================================================== */
+.studio {
+  --st-bg: #f2f0eb;
+  --st-bg-2: #e7e4dc;
+  --st-ink: #111111;
+  --st-mute: #6c6a64;
+  --st-line: rgba(17, 17, 17, 0.12);
+  --st-accent: #0475ad;
+  --clr-darkGold: #0475ad;
+  --clr-bg-body: #f2f0eb;
+  --clr-bg-body-semi-transparent: rgba(242, 240, 235, 0.72);
+  --clr-text-body: #6c6a64;
+  --clr-text-heading: #111111;
+  --font-studio: var(--font-inter-tight), "Helvetica Neue", Arial, sans-serif;
+  --font-studio-serif: var(--font-newsreader), Georgia, serif;
+  --font-studio-mono: var(--font-plex-mono), ui-monospace, Menlo, monospace;
+  font-family: var(--font-studio);
+  background: var(--st-bg);
+  color: var(--st-ink);
+  min-height: 100vh;
+}
+.dark .studio {
+  --st-bg: #0b0b0c;
+  --st-bg-2: #151517;
+  --st-ink: #f2f0eb;
+  --st-mute: #9a978f;
+  --st-line: rgba(242, 240, 235, 0.12);
+  --st-accent: #5cbbe8;
+  --clr-darkGold: #5cbbe8;
+  --clr-bg-body-dark: #0b0b0c;
+  --clr-bg-body-dark-semi-transparent: rgba(21, 21, 23, 0.72);
+  --clr-text-body-dark: #9a978f;
+  --clr-text-heading-dark: #f2f0eb;
+}
+.studio h1,
+.studio h2,
+.studio h3,
+.studio h4 {
+  font-family: var(--font-studio);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.studio ::selection {
+  background: var(--st-ink);
+  color: var(--st-bg);
+}
+.studio .wt_header {
+  background: var(--clr-bg-body-semi-transparent);
+  border-color: var(--st-line);
+  box-shadow: none;
+}
+.dark .studio .wt_header {
+  background: var(--clr-bg-body-dark-semi-transparent);
+  border-color: var(--st-line);
+}
+.studio .wt_btn_cta {
+  border-color: var(--st-line);
+  font-weight: 600;
+}
+.studio .wt_btn_cta-ripple {
+  background-color: var(--st-accent);
+}
+.studio .wt_btn_cta-title span:after {
+  color: var(--st-bg);
+}
+.studio .wt_btn_cta:hover {
+  transform: none;
+  border-color: var(--st-accent);
+}
