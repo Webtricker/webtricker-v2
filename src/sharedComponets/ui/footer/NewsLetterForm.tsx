@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useAddSubscriberMutation } from "@/redux/features/subscriber/subscribeApiSlice";
 import LoadingSpinner from "../loading/LoadingSpinner";
 import NewsLetterVerifyForm from "./NewsLetterVerifyForm";
+import { useBotCheck } from "../security/useBotCheck";
 
 export default function NewsLetterForm({
   placeholder,
@@ -20,6 +21,15 @@ export default function NewsLetterForm({
   const [isFocused, setIsFocused] = useState(false);
   const [mail, setMail] = useState("");
   const [addSubscriber, { isLoading }] = useAddSubscriberMutation();
+  // loaded lazily so the footer doesn't hit the API on every page view
+  const bot = useBotCheck({ autoLoad: false });
+  const [botLoaded, setBotLoaded] = useState(false);
+
+  const loadBotCheck = () => {
+    if (botLoaded) return;
+    setBotLoaded(true);
+    void bot.refresh();
+  };
 
   // handlers
   const handleSubmit = async () => {
@@ -30,9 +40,15 @@ export default function NewsLetterForm({
       return;
     }
 
+    if (!bot.isAnswered) {
+      loadBotCheck();
+      toast.error("Please answer the security question.");
+      return;
+    }
+
     // save the mail to the database
     try {
-      const res = await addSubscriber({ email: mail }).unwrap();
+      const res = await addSubscriber({ email: mail, ...bot.getPayload() }).unwrap();
       if (!res.success) {
         toast.error(res?.message || "Something went wrong");
         setMail("");
@@ -41,8 +57,9 @@ export default function NewsLetterForm({
         dispatch(toggleModal(ACTIVE_KEY));
       }
     } catch (error: any) {
-      console.log(`Error: ${error?.message} `);
-      toast.error(error?.message || "Couldn't subscribe, try again");
+      toast.error(error?.data?.message || "Couldn't subscribe, try again");
+    } finally {
+      void bot.refresh();
     }
   };
   return (
@@ -55,7 +72,10 @@ export default function NewsLetterForm({
         }`}
       >
         <input
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => {
+            setIsFocused(true);
+            loadBotCheck();
+          }}
           onBlur={() => setIsFocused(false)}
           type="email"
           className="py-2 px-2.5  2xl:px-3.5 outline-none focus:outline-none border-none grow pe-0"
@@ -85,6 +105,7 @@ export default function NewsLetterForm({
           )}
         </button>
       </div>
+      {botLoaded ? <div className="mt-2 text-sm">{bot.element}</div> : null}
 
       <NewsLetterVerifyForm setMail={setMail} mail={mail} />
     </>

@@ -10,6 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         "/admin/",
         "/api/",
         "/settings/",
+        "/free-consultation/manage",
       ],
     },
     sitemap: `${process.env.NEXT_PUBLIC_BASE_URL}/sitemap.xml`,

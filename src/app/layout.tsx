@@ -118,19 +118,19 @@ export default function RootLayout({
 
         <BusinessSchema />
 
-        <Script
-          id="schema-script"
+        {/* Server-rendered so search and AI crawlers that skip JavaScript still see it.
+            The logo is intentionally omitted until Site Config holds a valid logo URL. */}
+        <script
           type="application/ld+json"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify([
               {
                 "@context": "https://schema.org",
                 "@type": "Organization",
+                "@id": "https://webtricker.com/#organization",
                 name: "Webtricker",
                 legalName: "Webtricker LLC",
                 url: "https://webtricker.com",
-                logo: "https://webtricker.com/logo.png",
                 description:
                   "Webtricker is a web design and development agency offering professional websites, apps, and digital solutions.",
                 sameAs: [
@@ -144,8 +144,11 @@ export default function RootLayout({
               {
                 "@context": "https://schema.org",
                 "@type": "WebSite",
+                "@id": "https://webtricker.com/#website",
                 name: "Webtricker",
                 url: "https://webtricker.com",
+                publisher: { "@id": "https://webtricker.com/#organization" },
+                inLanguage: "en-US",
               },
             ]),
           }}

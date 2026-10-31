@@ -135,6 +135,16 @@ export default async function ContactPage() {
             <h1 className="heading xl:font-semibold !leading-[100%]">
               {contactPageData?.title}
             </h1>
+            <p className="mt-4">
+              Prefer a live conversation?{" "}
+              <Link
+                href="/free-consultation"
+                className="bold animate-underline"
+              >
+                Book a free 30-minute consultation
+              </Link>
+              .
+            </p>
             <div className="w-full flex flex-col gap-5 sm:flex-row pt-8 md:pt-10">
               <div className="w-full">
                 <h6 className="bold">{contactPageData?.greetings?.topTxt}</h6>

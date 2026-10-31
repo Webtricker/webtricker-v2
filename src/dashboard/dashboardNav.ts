@@ -111,6 +111,7 @@ export const dashboardNav: NavGroup[] = [
     label: "Support",
     items: [
       { label: "Live Chat", href: "/settings/live-chat", icon: MessageSquareIcon },
+      { label: "Consultations", href: "/settings/consultations", icon: MailIcon },
     ],
   },
   {

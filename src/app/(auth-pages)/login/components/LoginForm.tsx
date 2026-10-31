@@ -3,7 +3,7 @@ import { useSubmitLoginFormMutation } from "@/redux/features/auth/LoginApiSlice"
 import SiteLogo from "@/sharedComponets/ui/header/SiteLogo";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import React, { useState } from "react";
-// import { GoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useBotCheck } from "@/sharedComponets/ui/security/useBotCheck";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { EyeCloseIcon, EyeOpenIcon } from "./Icons";
@@ -34,6 +34,7 @@ export default function LoginForm({children}:Props) {
   const router = useRouter();
   const [showPass, setShowPass] = useState(false);
   const [submitForm, { isLoading }] = useSubmitLoginFormMutation();
+  const bot = useBotCheck();
   const {
     register,
     reset,
@@ -44,9 +45,15 @@ export default function LoginForm({children}:Props) {
 
   //   handlers
   const onSubmit = handleSubmit(async (data) => {
+    if (!bot.isAnswered) {
+      setError("password", {
+        type: "manual",
+        message: "Please answer the security question.",
+      });
+      return;
+    }
     try {
-      const res = await submitForm(data).unwrap();
-      console.log(res)
+      const res = await submitForm({ ...data, ...bot.getPayload() }).unwrap();
       if (!res?.success) {
         throw {
           status: 400,
@@ -59,11 +66,12 @@ export default function LoginForm({children}:Props) {
       // Redirect to admin dashboard
       router.push("/settings");
     } catch (error: any) {
-      console.log(error);
       setError("password", {
         type: "manual",
         message: error?.data?.message || "Login failed",
       });
+      // every challenge is single-use
+      void bot.refresh();
     }
   });
 
@@ -141,6 +149,7 @@ export default function LoginForm({children}:Props) {
           <></>
         )}
       </div>
+      {bot.element}
       {/* ======= submit button === */}
       <div className="w-full">
         <button

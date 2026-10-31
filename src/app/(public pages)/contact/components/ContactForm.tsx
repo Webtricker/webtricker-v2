@@ -2,7 +2,7 @@
 import { useSubmitContactFormMutation } from "@/redux/features/contact/contactApiSlice";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
 import React from "react";
-// import { GoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useBotCheck } from "@/sharedComponets/ui/security/useBotCheck";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -37,6 +37,7 @@ export default function ContactForm({
 }) {
   // hooks
   const [submitForm, { isLoading }] = useSubmitContactFormMutation();
+  const bot = useBotCheck();
   const {
     register,
     // setValue,
@@ -47,18 +48,25 @@ export default function ContactForm({
 
   //   handlers
   const onSubmit = handleSubmit(async (data) => {
+    if (!bot.isAnswered) {
+      toast.error("Please answer the security question.");
+      return;
+    }
     try {
-      const res = await submitForm(data).unwrap();
+      const res = await submitForm({ ...data, ...bot.getPayload() }).unwrap();
       if (res.success) {
         toast.success("Message sent successfully!");
+        reset();
       } else {
         toast.error("Failed to send message. Please try again later.");
       }
-    } catch (error) {
-      toast.error("Failed to send message. Please try again later.");
-      console.error(error);
+    } catch (error: any) {
+      toast.error(
+        error?.data?.message || "Failed to send message. Please try again later."
+      );
     } finally {
-      reset();
+      // every challenge is single-use
+      void bot.refresh();
     }
   });
 
@@ -124,12 +132,7 @@ export default function ContactForm({
           <></>
         )}
       </div>
-      {/* <div className="w-full">
-        <GoogleReCaptcha
-                sitekey="6LcWnpgpAAAAAAy0KdI38kGohvMEvWib_SwxzBnX"
-                onChange={onChange}
-              />
-      </div> */}
+      {bot.element}
       <div className="w-full">
         <button
           disabled={isLoading}
