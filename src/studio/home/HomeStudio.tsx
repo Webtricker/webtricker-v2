@@ -6,6 +6,7 @@ import {
   getPortfoliosData,
   getPostsData,
   getServicesData,
+  getServicesPageData,
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
@@ -31,7 +32,7 @@ const ItalLast = ({ text }: { text: string }) => {
 };
 
 export default async function HomeStudio() {
-  const [home, services, portfolios, posts, testimonials, leaders, about, site, footer] =
+  const [home, services, portfolios, posts, testimonials, leaders, about, site, footer, svcPage] =
     await Promise.all([
       getHomePageData(),
       getServicesData(10),
@@ -42,6 +43,7 @@ export default async function HomeStudio() {
       getAboutPageData(),
       getSiteConfig(),
       getFooter(),
+      getServicesPageData(),
     ]);
 
   const h: any = home || {};
@@ -49,7 +51,9 @@ export default async function HomeStudio() {
   const bt = h.bannerText || {};
   const kickerFull = `${kicker} a ${[bt.top, bt.left, bt.right].filter(Boolean).join(" ")}`.trim();
   const offices: any[] = site?.offices ?? [];
-  const media = h.bannerVideo;
+  /* hero background: the Services page banner video, falling back to the home banner media */
+  const sb = (svcPage as any)?.bannerBG;
+  const media = sb?.src && sb.type === "video" ? sb : h.bannerVideo;
 
   /* manifesto: the "we are here to assist" sentence from the footer copy + the closing lines of the banner copy */
   const assist = (footer?.description || "").match(/We are here to assist you with .*?SEO/)?.[0];
@@ -96,24 +100,21 @@ export default async function HomeStudio() {
         ) : null}
         <div className="wrap">
           <div className="hero__kicker mono">{kickerFull}</div>
-          <h1 className="v5h1" aria-label={[bt.top, bt.left, bt.right].filter(Boolean).join(" ")}>
-            {bt.top ? (
-              <span className="hl" aria-hidden="true">
-                <Chars text={bt.top} />
-              </span>
-            ) : null}
-            {bt.left ? (
-              <span className="hl" aria-hidden="true">
-                <em className="ital">
-                  <Chars text={bt.left} />
-                </em>
-              </span>
-            ) : null}
-            {bt.right ? (
-              <span className="hl" aria-hidden="true">
-                <Chars text={bt.right} />
-              </span>
-            ) : null}
+          <h1 className="v5h1" aria-label="We design, develop & deliver pixel-perfect websites.">
+            <span className="hl" aria-hidden="true">
+              <Chars text="We design, develop" />
+            </span>
+            <span className="hl" aria-hidden="true">
+              <Chars text="& deliver" />
+            </span>
+            <span className="hl" aria-hidden="true">
+              <em className="ital">
+                <Chars text="pixel-perfect" />
+              </em>
+            </span>
+            <span className="hl" aria-hidden="true">
+              <Chars text="websites." />
+            </span>
           </h1>
           <div className="hero__foot">
             <p className="lead">{h.bannerDescription}</p>
