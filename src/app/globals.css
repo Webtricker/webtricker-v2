@@ -1018,3 +1018,39 @@ p.bouncing-text {
   transform: none;
   border-color: var(--st-accent);
 }
+
+/* ---- Studio polish: shared section/card/footer treatment ---- */
+.studio .heading {
+  font-family: var(--font-studio);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+.studio em,
+.studio .heading em {
+  font-family: var(--font-studio-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.studio a:not([class*="wt_btn"]):hover {
+  color: var(--st-accent);
+}
+.studio hr,
+.studio .border-b,
+.studio .border-t {
+  border-color: var(--st-line);
+}
+.studio footer {
+  background: var(--st-bg-2);
+  border-top: 1px solid var(--st-line);
+  font-family: var(--font-studio);
+}
+.studio input,
+.studio textarea {
+  border-color: var(--st-line);
+}
+.studio input:focus,
+.studio textarea:focus {
+  border-color: var(--st-accent);
+  outline: none;
+}

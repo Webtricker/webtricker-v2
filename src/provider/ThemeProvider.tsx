@@ -3,12 +3,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const THEME_CONTEXT = createContext({
-  theme: "light",
+  theme: "dark",
   toggleTheme: () => {},
 });
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
     // The pre-paint script in layout.tsx already put the saved (or default dark) class on <html>
