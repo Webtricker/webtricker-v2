@@ -599,6 +599,9 @@ export default function StudioRuntime() {
       if (reduce || !loader) { if (loader) loader.style.display = "none"; }
       else {
         loader.style.animation = "none";
+        // failsafe: never let the loader outlive the animation if frames are throttled (background tab)
+        const failsafe = setTimeout(() => { loader.style.display = "none"; }, 4500);
+        cleanups.push(() => clearTimeout(failsafe));
         const count = { v: 0 };
         const cEl = loader.querySelector<HTMLElement>(".loader__count");
         const lb = loader.querySelector<HTMLElement>(".loader__bar i");

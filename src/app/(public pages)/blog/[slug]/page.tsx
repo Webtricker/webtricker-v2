@@ -1,3 +1,5 @@
+import DetailStudio from "@/studio/pages/DetailStudio";
+import { fmtDate as studioFmtDate } from "@/studio/ui";
 // app/blog/[slug]/page.tsx
 import React from "react";
 import NoBlogFoundMsg from "./components/NoBlogFoundMsg"; // Ensure this path is correct
@@ -160,67 +162,19 @@ export default async function SingleBlogPage({
     ],
   };
   return (
-    <main className="w-full z-0 section-speacing mt-7 post-details-container">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
-        }}
-      />
-      <BlogPageContainer className="section-speacing">
-        <p className="text-center">
-          Published {formatDateToShortString(post.createdAt)}
-        </p>
-        <h1 className="wt_fs-5xl text-center my-3">{post.title}</h1>
-        <Image
-          src={post.thumnail.url}
-          width={post.thumnail.width || 912}
-          height={post.thumnail.height || 400}
-          alt={post.title}
-          className="w-full h-auto my-10"
-          priority
-        />
-        <p>{post.description}</p>
-      </BlogPageContainer>
-      <section className="w-full wt_parser_content">
-        <BlogPageContainer>
-          <HtmlContentParser htmlContent={post?.content} />
-        </BlogPageContainer>
-        <BlogPageContainer className="mt-10">
-          <div className="w-full flex">
-            {prevPost && (
-              <Link href={`/blog/${prevPost.slug}`} className="w-full relative">
-                <Image
-                  className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-e-none"
-                  src={prevPost?.thumnail?.url || ""} // Fallback for image src
-                  width={prevPost?.thumnail?.width || 456}
-                  height={400}
-                  title="Prev post"
-                  alt={prevPost.title}
-                />
-                <div className="hidden md:block bg-white/10 text-white backdrop-blur-md rounded-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-semibold text-lg ">
-                  <Button className="!py-2.5 !px-5" label="Previous Blog" />
-                </div>
-              </Link>
-            )}
-            {nextPost && (
-              <Link href={`/blog/${nextPost.slug}`} className="w-full relative">
-                <Image
-                  className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-s-none"
-                  src={nextPost?.thumnail?.url || ""} // Fallback for image src
-                  width={nextPost?.thumnail?.width || 456}
-                  height={400}
-                  title="Next post"
-                  alt={nextPost.title}
-                />
-                <div className="hidden md:block bg-white/10 text-white backdrop-blur-md rounded-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-semibold text-lg ">
-                  <Button className="!py-2.5 !px-5" label="Next Blog" />
-                </div>
-              </Link>
-            )}
-          </div>
-        </BlogPageContainer>
-      </section>
-    </main>
+    <DetailStudio
+      kind="Blog"
+      listHref="/blog"
+      title={post.title}
+      meta={`${post.category?.name || "Article"} · Published ${studioFmtDate(post.createdAt)}`}
+      category={post.category?.name}
+      tags={(post as any).readingTime ? [`${(post as any).readingTime} min read`] : []}
+      cover={post.thumnail?.url}
+      description={post.description}
+      html={post.content}
+      prev={prevPost ? { href: `/blog/${prevPost.slug}`, title: prevPost.title } : null}
+      next={nextPost ? { href: `/blog/${nextPost.slug}`, title: nextPost.title } : null}
+      schema={schema}
+    />
   );
 }

@@ -1,3 +1,4 @@
+import AboutStudio from "@/studio/pages/AboutStudio";
 import ParallaxImage from "@/sharedComponets/ui/parallaxImage/ParallaxImage";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
 import Container from "@/sharedComponets/ui/wrapper/Container";
@@ -345,26 +346,6 @@ export const metadata: Metadata = {
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
 export const revalidate = 86400;
 
-export default async function AboutPage() {
-    const teamData = await getTeamData();
-    const testimonialsData = await getTestimonialsData();
-    const pageData = (await getAboutPageData()) as IAboutPage;
-    const sections = getOrderedVisibleSections(pageData);
-
-    return (
-        <main className="w-full z-0">
-            {sections.map((section) => (
-                <AboutBlockRenderer
-                    key={section.id}
-                    section={section}
-                    context={{
-                        pageData,
-                        teamData,
-                        testimonialsData,
-                    }}
-                />
-            ))}
-        </main>
-        // <></>
-    );
+export default function Page() {
+  return <AboutStudio />;
 }

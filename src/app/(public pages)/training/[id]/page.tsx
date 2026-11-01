@@ -116,7 +116,7 @@ export default async function CourseDetailsPage({
     (course.instructor.name || course.instructor.bio || course.instructor.photo);
 
   return (
-    <div className="min-h-screen bg-white mt-[120px]">
+    <div className="page legacy min-h-screen bg-white">
       {/* Hero */}
       <div className="relative bg-gray-50 border-b border-gray-200">
         <div className="absolute inset-0 overflow-hidden">

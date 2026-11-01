@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function ManageBookingPage() {
   return (
-    <main className="w-full z-0">
+    <main className="page legacy w-full z-0">
       <div className="w-full mt-[130px] md:mt-[150px] lg:mt-[180px] mb-16">
         <Container>
           <div className="w-full max-w-[640px] mx-auto">

@@ -78,7 +78,7 @@ export default async function CategoryPage({
       </Container>
     );
   return (
-    <main className="w-full z-0">
+    <main className="page legacy w-full z-0">
       <section
         className={`w-full min-h-screen z-0 flex relative mb-8 md:mb-10 lg:mb-14 xl:mb-16 2xl:mb-18`}
       >

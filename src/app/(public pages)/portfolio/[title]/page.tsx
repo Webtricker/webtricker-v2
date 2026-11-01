@@ -1,3 +1,5 @@
+import CaseStudio from "@/studio/pages/CaseStudio";
+import { getPortfoliosData as studioPortfolios } from "@/utils/pageData";
 // import { TPortfolio } from '@/types/portfolio';
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import { ArrowUpRightIcon } from "@/sharedComponets/ui/icons/Icons";
@@ -134,35 +136,15 @@ export default async function PortfolioDetailsPage({
 
   const portfolio = result.portfolio as TPortfolio;
 
+  const all = ((await studioPortfolios(999)) as any[]) || [];
+  const idx = all.findIndex((x) => x.slug === portfolio.slug);
+  const nx = idx >= 0 ? all[(idx + 1) % all.length] : null;
+  const pv = idx >= 0 ? all[(idx - 1 + all.length) % all.length] : null;
   return (
-    <main className="w-full z-0 section-speacing mt-10 post-details-container">
-      <BlogPageContainer className="section-speacing">
-        <p className="text-center font-medium flex items-center justify-center gap-1">
-          Live Link:
-          <a
-            href={portfolio?.liveLink}
-            target="_blank"
-            className="text-[var(--clr-darkGold)] font-normal flex items-center gap-1 animate-underline"
-          >
-            {portfolio?.liveLink} <ArrowUpRightIcon />
-          </a>
-        </p>
-        <h1 className="wt_fs-5xl text-center my-3">{portfolio.title}</h1>
-        <Image
-          src={portfolio?.thumnail?.url || ""}
-          width={portfolio?.thumnail?.width || 912}
-          height={portfolio?.thumnail?.height || 400}
-          alt={portfolio?.title}
-          className="w-full h-auto my-10"
-          priority
-        />
-        <p>{portfolio?.description}</p>
-      </BlogPageContainer>
-      <section className="w-full wt_parser_content">
-        <BlogPageContainer>
-          <HtmlContentParser htmlContent={portfolio?.content} />
-        </BlogPageContainer>
-      </section>
-    </main>
+    <CaseStudio
+      p={portfolio}
+      next={nx && nx.slug !== portfolio.slug ? { href: `/portfolio/${nx.slug}`, title: nx.title } : null}
+      prev={pv && pv.slug !== portfolio.slug ? { href: `/portfolio/${pv.slug}`, title: pv.title } : null}
+    />
   );
 }
