@@ -18,7 +18,7 @@ export default async function ServicesStudio() {
       <PageHead
         crumb="Services list"
         title={pg.banner?.title || "Our Services"}
-        lead={[(pg.banner?.description || "").replace(/s*Services lists*$/i, "").replace(/.?s*$/, "."), pg.servicesShotcut?.title].filter((x) => x && x !== ".").join(" ")}
+        lead={[(pg.banner?.description || "").replace(/\s*Services list\s*$/i, "").replace(/\.?\s*$/, "."), pg.servicesShotcut?.title].filter((x) => x && x !== ".").join(" ")}
       />
       <Bleed src={pg.bannerBG?.src} type={pg.bannerBG?.type} alt={pg.banner?.title} />
       <section className="chapter">
