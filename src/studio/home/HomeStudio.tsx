@@ -190,7 +190,7 @@ export default async function HomeStudio() {
           </div>
           <div className="v5stack" id="reelTrack">
             {svc.map((s, i) => {
-              const tags = [...(s.tags || []).map(nameOf), ...(s.subServices || [])].filter(Boolean).slice(0, 4);
+              const tags = [...(s.tags || []).map(nameOf), ...(s.subServices || []), ...(s.category ? [s.category] : [])].filter(Boolean).slice(0, 4);
               return (
                 <Link className="panel glass" href={`/services/${s.slug}`} key={s._id || s.slug} style={{ ["--c" as any]: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>
                   <div className="media">
@@ -407,7 +407,7 @@ export default async function HomeStudio() {
                   <div className="person" key={p._id || p.name}>
                     <div className="person__card tilt">
                       {p.profile ? <img src={p.profile} alt={p.name} loading="lazy" /> : null}
-                      <b>{initials(p.name)}</b>
+                      {!p.profile ? <b>{initials(p.name)}</b> : null}
                     </div>
                     <h3>{p.name}</h3>
                     <span className="mono mute">{p.role}</span>

@@ -76,7 +76,7 @@ export function Person({ p }: { p: { name: string; role?: string; profile?: stri
     <div className="person">
       <div className="person__card tilt">
         {p.profile ? <img src={p.profile} alt={p.name} loading="lazy" /> : null}
-        <b>{initials(p.name)}</b>
+        {!p.profile ? <b>{initials(p.name)}</b> : null}
       </div>
       <h3>{p.name}</h3>
       <span className="mono mute">{p.role}</span>
