@@ -6,7 +6,6 @@ import {
   getPortfoliosData,
   getPostsData,
   getServicesData,
-  getServicesPageData,
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
@@ -32,7 +31,7 @@ const ItalLast = ({ text }: { text: string }) => {
 };
 
 export default async function HomeStudio() {
-  const [home, services, portfolios, posts, testimonials, leaders, about, site, footer, svcPage] =
+  const [home, services, portfolios, posts, testimonials, leaders, about, site, footer] =
     await Promise.all([
       getHomePageData(),
       getServicesData(10),
@@ -43,7 +42,6 @@ export default async function HomeStudio() {
       getAboutPageData(),
       getSiteConfig(),
       getFooter(),
-      getServicesPageData(),
     ]);
 
   const h: any = home || {};
@@ -51,9 +49,8 @@ export default async function HomeStudio() {
   const bt = h.bannerText || {};
   const kickerFull = `${kicker} a ${[bt.top, bt.left, bt.right].filter(Boolean).join(" ")}`.trim();
   const offices: any[] = site?.offices ?? [];
-  /* hero background: the Services page banner video, falling back to the home banner media */
-  const sb = (svcPage as any)?.bannerBG;
-  const media = sb?.src && sb.type === "video" ? sb : h.bannerVideo;
+  /* hero background: the supplied design hero video (public/videos/hero.mp4) */
+  const media = { src: "/videos/hero.mp4", type: "video" };
 
   /* manifesto: the "we are here to assist" sentence from the footer copy + the closing lines of the banner copy */
   const assist = (footer?.description || "").match(/We are here to assist you with .*?SEO/)?.[0];
@@ -86,7 +83,7 @@ export default async function HomeStudio() {
       <section className="hero v5hero v5hero--video">
         <div className="hero__video" aria-hidden="true">
           {media?.type === "video" ? (
-            <video id="heroVid" src={media.src} muted loop playsInline autoPlay preload="auto" />
+            <video id="heroVid" src={media.src} poster="/videos/hero-poster.webp" muted loop playsInline autoPlay preload="auto" />
           ) : media?.src ? (
             <img src={media.src} alt="" />
           ) : null}
