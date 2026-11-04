@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getServicesData, getServicesPageData } from "@/utils/pageData";
 import { ArrowUp, pad, stripHtml } from "../ui";
 import { Arrow } from "../ui";
-import { Bleed, PageHead, nameOf } from "../parts";
+import { PageHead, nameOf } from "../parts";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -20,7 +20,6 @@ export default async function ServicesStudio() {
         title={pg.banner?.title || "Our Services"}
         lead={[(pg.banner?.description || "").replace(/\s*Services list\s*$/i, "").replace(/\.?\s*$/, "."), pg.servicesShotcut?.title].filter((x) => x && x !== ".").join(" ")}
       />
-      <Bleed src={pg.bannerBG?.src} type={pg.bannerBG?.type} alt={pg.banner?.title} />
       <section className="chapter">
         <div className="wrap">
           <div className="tags" style={{ marginBottom: 40 }}>
