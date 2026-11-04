@@ -86,10 +86,15 @@ export default async function AboutStudio() {
             <span>{p.teamInfoTitle || "Our Team"}</span>
             <span>{(team as any[]).length} people</span>
           </div>
-          <div className="team">
-            {(team as any[]).map((m) => (
-              <Person key={m._id || m.name} p={m} />
-            ))}
+          <div className="swiper v5team" id="teamSwiper" data-cursor="Drag" data-people={(team as any[]).length}>
+            <div className="swiper-wrapper">
+              {/* listed twice so the slider can loop seamlessly with few people; the second set is hidden from assistive tech */}
+              {[...(team as any[]), ...(team as any[])].map((m, i) => (
+                <div className="swiper-slide" key={`${m._id || m.name}-${i}`} aria-hidden={i >= (team as any[]).length ? "true" : undefined}>
+                  <Person p={m} />
+                </div>
+              ))}
+            </div>
           </div>
           <div className="eyebrow mono mute" style={{ marginTop: "clamp(80px, 10vw, 140px)", marginBottom: 0 }}>
             <span>From Our Clients</span>

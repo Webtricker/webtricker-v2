@@ -7,7 +7,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import Swiper from "swiper";
-import { FreeMode, Keyboard, Mousewheel } from "swiper/modules";
+import { Autoplay, FreeMode, Keyboard, Mousewheel } from "swiper/modules";
 import "swiper/css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -272,6 +272,23 @@ export default function StudioRuntime() {
     gsap.ticker.add(mqTick);
     cleanups.push(() => gsap.ticker.remove(mqTick));
 
+    /* drag guard: a press-move-release on a link (slider drag) must never count as a click */
+    let pressAt: { x: number; y: number } | null = null;
+    on(document, "pointerdown", (e: PointerEvent) => { pressAt = { x: e.clientX, y: e.clientY }; }, true);
+    on(
+      document,
+      "click",
+      (e: MouseEvent) => {
+        if (!pressAt || e.detail === 0 || !(e.target as HTMLElement).closest?.("a[href], button")) return;
+        if (Math.hypot(e.clientX - pressAt.x, e.clientY - pressAt.y) > 6) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      },
+      true
+    );
+    on(document, "dragstart", (e: DragEvent) => { if ((e.target as HTMLElement).closest?.(".swiper")) e.preventDefault(); }, true);
+
     /* route transitions: wipe over the page, navigate, wipe away */
     on(
       document,
@@ -385,6 +402,29 @@ export default function StudioRuntime() {
         },
       },
     });
+    /* about: team slider, auto-advances right to left and pauses on hover; the failure of this optional widget must never block the page */
+    const teamEl = root.querySelector<HTMLElement>("#teamSwiper");
+    if (teamEl) {
+      try {
+        const pad = parseFloat(getComputedStyle(teamEl.closest(".wrap") || teamEl).paddingLeft) || 24;
+        const ts = new Swiper(teamEl, {
+          modules: [Autoplay, Keyboard],
+          slidesPerView: "auto",
+          spaceBetween: 20,
+          grabCursor: true,
+          slidesOffsetBefore: pad,
+          slidesOffsetAfter: pad,
+          speed: 900,
+          loop: true,
+          loopAdditionalSlides: 3,
+          keyboard: { enabled: true, onlyInViewport: true },
+          autoplay: st.reduce ? false : { delay: 2400, disableOnInteraction: false, pauseOnMouseEnter: true },
+        });
+        swipers.push(ts);
+      } catch (err) {
+        console.error("team slider failed", err);
+      }
+    }
     const bind = (id: string, fn: () => void) => {
       const b = root.querySelector<HTMLElement>(id);
       if (b) { b.addEventListener("click", fn); cleanups.push(() => b.removeEventListener("click", fn)); }
