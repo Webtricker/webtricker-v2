@@ -168,3 +168,9 @@
 .stu .crs-card--pro .crs-probadge { display: inline-block; }
 
 .stu .bleed--box .bleed{ margin-inline: 0; border-radius: 0; }
+
+/* Hero titles: ease the tight tracking and give masked lines room so the last glyph is never clipped */
+.stu .h-xl, .stu .h-xl.page-title{ letter-spacing: -.028em; }
+.stu .hero h1.v5h1{ letter-spacing: -.04em; }
+.stu .v5h1 .ital{ letter-spacing: -.025em; }
+.stu .lmask, .stu .hl{ padding-right: .12em; margin-right: -.12em; }
