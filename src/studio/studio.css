@@ -20,7 +20,7 @@ html.lenis, html.lenis body{ height: auto; }
 .lenis.lenis-stopped{ overflow: hidden; }
 .stu *{ box-sizing: border-box; }
 .stu{ background: var(--ink-0); }
-.stu{ margin: 0; background: var(--ink-0); color: var(--paper); font: 400 16px/1.6 var(--body); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+.stu{ margin: 0; background: var(--ink-0); color: var(--paper); font: 400 16px/1.6 var(--body); overflow-x: hidden; overflow-x: clip; -webkit-font-smoothing: antialiased; }
 .stu a{ color: inherit; }
 .stu img{ display: block; max-width: 100%; }
 .stu ::selection{ background: var(--amber); color: var(--ink-0); }

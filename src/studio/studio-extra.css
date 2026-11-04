@@ -174,3 +174,14 @@
 .stu .hero h1.v5h1{ letter-spacing: -.04em; }
 .stu .v5h1 .ital{ letter-spacing: -.025em; }
 .stu .lmask, .stu .hl{ padding-right: .12em; margin-right: -.12em; }
+
+/* Services: the section heading stays pinned while the cards stack over it */
+@media (min-width: 901px) {
+  .stu .v5svc .v5head{ position: sticky; top: 92px; z-index: 0; }
+  .stu .v5svc .v5stack .panel{ z-index: 1; }
+}
+@media (min-width: 901px) {
+  .stu .v5svc .v5stack .panel{ top: calc(236px + var(--i, 0) * 10px); }
+}
+
+.stu .vidbtn{ display: none !important; }
