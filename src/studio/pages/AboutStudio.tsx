@@ -1,5 +1,5 @@
 import { getAboutPageData, getTeamData, getTestimonialsData } from "@/utils/pageData";
-import { Bleed, PageHead, Person, Stats, Testimonials } from "../parts";
+import { PageHead, Person, Stats, Testimonials } from "../parts";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -25,7 +25,6 @@ export default async function AboutStudio() {
         lead={[p.bannerDescription, p.bannerBottomText].filter(Boolean).join(" ")}
         cta={p.bannerBottomBtnText ? { href: p.bannerBottomBtnLink || "/services", label: p.bannerBottomBtnText } : undefined}
       />
-      <Bleed src={p.bannerBackgroundImage} alt={p.bannerLargeText} />
 
       <section className="chapter">
         <div className="wrap">
