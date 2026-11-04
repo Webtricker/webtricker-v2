@@ -185,3 +185,7 @@
 }
 
 .stu .vidbtn{ display: none !important; }
+
+/* Tighter space between the last section and the footer */
+.stu main.page > :last-child{ padding-bottom: clamp(40px, 5vw, 72px); }
+.stu .finale{ margin-top: clamp(8px, 2vw, 32px); }
