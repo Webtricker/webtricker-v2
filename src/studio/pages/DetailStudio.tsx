@@ -59,7 +59,15 @@ export default function DetailStudio({
           </div>
         </div>
       </section>
-      <Bleed src={cover} alt={title} height="clamp(260px, 46vw, 620px)" />
+      {kind === "Service" ? (
+        <div className="wrap">
+          <div className="bleed--box">
+            <Bleed src={cover} alt={title} height="clamp(260px, 46vw, 620px)" />
+          </div>
+        </div>
+      ) : (
+        <Bleed src={cover} alt={title} height="clamp(260px, 46vw, 620px)" />
+      )}
       <section className="chapter">
         <div className="wrap article__body">
           <aside className="toc">

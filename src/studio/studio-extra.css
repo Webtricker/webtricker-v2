@@ -166,3 +166,5 @@
 .stu .crs-card { transition: border-color .4s, box-shadow .4s; }
 .stu .crs-card--pro { border-color: #6ee7a0 !important; box-shadow: 0 0 0 1px #6ee7a0, 0 30px 80px -40px rgba(110, 231, 160, .5); }
 .stu .crs-card--pro .crs-probadge { display: inline-block; }
+
+.stu .bleed--box .bleed{ margin-inline: 0; border-radius: 0; }
