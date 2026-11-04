@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getServicesData, getServicesPageData } from "@/utils/pageData";
-import { ArrowUp, pad, stripHtml } from "../ui";
+import { ArrowUp, orderServices, pad, stripHtml } from "../ui";
 import { Arrow } from "../ui";
 import { PageHead, nameOf } from "../parts";
 
@@ -10,7 +10,7 @@ const COLORS = ["--crimson", "--amber", "--green", "--blue", "--sky"];
 
 export default async function ServicesStudio() {
   const [services, page] = await Promise.all([getServicesData(), getServicesPageData()]);
-  const list = (services as any[]) || [];
+  const list = orderServices((services as any[]) || []);
   const pg: any = page || {};
 
   return (

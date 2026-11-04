@@ -9,7 +9,7 @@ import {
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
-import { ArrowUp, Chars, FadeWords, Roll, fmtDate, pad, stripHtml } from "../ui";
+import { ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -57,7 +57,7 @@ export default async function HomeStudio() {
   const tail = (h.bannerDescription || "").split(/(?<=\.)\s+/).slice(1).join(" ");
   const manifesto = assist ? `${assist}. ${tail}`.trim() : h.bannerDescription || "";
 
-  const svc = (services as any[]) || [];
+  const svc = orderServices((services as any[]) || []);
   const work = (portfolios as any[]) || [];
   const blog = (posts as any[]) || [];
   const techs: any[] = h.technologies || [];

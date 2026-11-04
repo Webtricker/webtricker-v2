@@ -99,3 +99,30 @@ export const fmtDate = (d?: string | Date) => {
     year: "numeric",
   });
 };
+
+const SERVICE_ORDER: [string, string][] = [
+  ["web-development", "Web Development"],
+  ["wordpress-development", "WordPress Development"],
+  ["shopify-development", "Shopify Development"],
+  ["other-cms-development", "Other CMS Development"],
+  ["mern-stack-development", "MERN Stack Development"],
+  ["api-development", "API Development"],
+  ["web-app-development", "Web App Development"],
+  ["seo-development", "SEO Development"],
+  ["digital-marketing", "Digital Marketing"],
+  ["training", "Training"],
+];
+
+/** Fixed service order and display names; unknown services keep their place at the end. */
+export function orderServices(list: any[]): any[] {
+  const rank = (s: any) => {
+    const i = SERVICE_ORDER.findIndex(([slug]) => slug === s.slug);
+    return i < 0 ? 999 : i;
+  };
+  return [...list]
+    .sort((a, b) => rank(a) - rank(b))
+    .map((s) => {
+      const m = SERVICE_ORDER.find(([slug]) => slug === s.slug);
+      return m ? { ...s, title: m[1] } : s;
+    });
+}
