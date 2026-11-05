@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { MaskWords, Roll } from "./ui";
+import { PAGE_VIDEOS } from "./pageVideos";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -15,15 +16,33 @@ export function PageHead({
   lead,
   cta,
   size,
+  video,
 }: {
   crumb: React.ReactNode;
   title: string;
   lead?: string;
   cta?: { href: string; label: string };
   size?: string;
+  /** Slug of the page's hero video (public/videos/pages/<slug>.mp4); registered in pageVideos.ts. */
+  video?: string;
 }) {
+  const hasVideo = !!video && PAGE_VIDEOS.includes(video);
   return (
-    <section className="pagehead">
+    <section className={hasVideo ? "pagehead pagehead--video" : "pagehead"}>
+      {hasVideo ? (
+        <div className="hero__video" aria-hidden="true">
+          <video
+            src={`/videos/pages/${video}.mp4`}
+            poster={`/videos/pages/${video}.webp`}
+            muted
+            loop
+            playsInline
+            autoPlay
+            preload="auto"
+          />
+          <div className="hero__shade" />
+        </div>
+      ) : null}
       <div className="wrap">
         <div className="pagehead__crumb mono mute">{crumb}</div>
         <div className={lead ? "pagehead__grid" : undefined}>

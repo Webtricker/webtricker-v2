@@ -38,7 +38,7 @@ export default async function TrainingStudio() {
   const courses = await getCourses();
   return (
     <main className="page" data-page="training">
-      <PageHead
+      <PageHead video="training"
         crumb="Online School · Training"
         title="Professional Training Courses"
         size="clamp(42px, 8vw, 120px)"

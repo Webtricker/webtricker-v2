@@ -19,7 +19,7 @@ export default async function AboutStudio() {
 
   return (
     <main className="page" data-page="about">
-      <PageHead
+      <PageHead video="about"
         crumb={`About · ${[p.bannerIntroText?.top, p.bannerIntroText?.bottom].filter(Boolean).join(" ")}`}
         title={p.bannerLargeText}
         lead={[p.bannerDescription, p.bannerBottomText].filter(Boolean).join(" ")}

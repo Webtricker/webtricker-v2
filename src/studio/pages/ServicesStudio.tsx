@@ -15,7 +15,7 @@ export default async function ServicesStudio() {
 
   return (
     <main className="page" data-page="services">
-      <PageHead
+      <PageHead video="services"
         crumb="Services list"
         title={pg.banner?.title || "Our Services"}
         lead={[(pg.banner?.description || "").replace(/\s*Services list\s*$/i, "").replace(/\.?\s*$/, "."), pg.servicesShotcut?.title].filter((x) => x && x !== ".").join(" ")}

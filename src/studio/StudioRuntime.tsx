@@ -341,7 +341,8 @@ export default function StudioRuntime() {
       if (on) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
-    root.classList.toggle("on-dark", isHome);
+    const videoHead = !isHome && !!root.querySelector(".pagehead--video");
+    root.classList.toggle("on-dark", isHome || videoHead);
     const bar = root.querySelector<HTMLElement>(".progress");
     if (bar) bar.style.transform = "scaleX(0)";
     if (st.lenis) st.lenis.scrollTo(0, { immediate: true, force: true });
@@ -595,6 +596,9 @@ export default function StudioRuntime() {
         const end = Number(n.dataset.count), o = { v: 0 };
         ScrollTrigger.create({ trigger: n, start: "top 88%", once: true, onEnter: () => gsap.fromTo(o, { v: 0 }, { v: end, duration: 2, ease: "power3.out", onUpdate: () => { n.textContent = String(Math.round(o.v)); }, onComplete: () => { n.textContent = String(end); } }) });
       });
+      if (!isHome && root.querySelector(".pagehead--video")) {
+        ScrollTrigger.create({ trigger: ".stu .pagehead--video", start: "top top", end: "bottom 80px", toggleClass: { targets: root, className: "on-dark" } });
+      }
       if (isHome) {
         gsap.to(".stu .hero h1", { yPercent: -16, scale: 0.95, transformOrigin: "left bottom", ease: "none", scrollTrigger: { trigger: ".stu .hero", start: "top top", end: "bottom top", scrub: true } });
         gsap.to(".stu .manifesto .w", { opacity: 1, stagger: 0.05, ease: "none", scrollTrigger: { trigger: ".stu .manifesto p", start: "top 80%", end: "bottom 50%", scrub: true } });

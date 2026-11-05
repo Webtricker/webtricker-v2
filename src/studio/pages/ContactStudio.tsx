@@ -23,7 +23,7 @@ export default async function ContactStudio() {
 
   return (
     <main className="page" data-page="contact">
-      <PageHead crumb={`${pg.branding || "Webtricker"} · ${pg.greetings?.topTxt || "Say hello to us"}`} title={pg.title || "Get in touch"} />
+      <PageHead video="contact" crumb={`${pg.branding || "Webtricker"} · ${pg.greetings?.topTxt || "Say hello to us"}`} title={pg.title || "Get in touch"} />
       <section className="chapter" style={{ paddingTop: 0 }}>
         <div className="wrap contact">
           <div className="contact__col">

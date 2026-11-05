@@ -14,7 +14,7 @@ export default async function PortfolioStudio() {
 
   return (
     <main className="page" data-page="work">
-      <PageHead crumb={`${intro.companyName || "Webtricker"} · Portfolio`} title={intro.title || "Our Latest"} lead={intro.description} />
+      <PageHead video="portfolio" crumb={`${intro.companyName || "Webtricker"} · Portfolio`} title={intro.title || "Our Latest"} lead={intro.description} />
       <section className="chapter" style={{ paddingTop: 0 }}>
         <div className="wrap">
           <FilterBar

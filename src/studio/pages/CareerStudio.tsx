@@ -48,7 +48,7 @@ export default async function CareerStudio() {
   const jobs = await getJobs();
   return (
     <main className="page" data-page="career">
-      <PageHead
+      <PageHead video="career"
         crumb="Career · Join the team"
         title="Do you have the courage?"
         lead="To be a part of challenging people. If you are a self motivated, confident but not over confident, hardworking, energetic, creative, team player and eager to achieve something extraordinary then you are surely welcome to a dynamic team!"

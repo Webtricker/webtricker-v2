@@ -19,7 +19,7 @@ export default async function BlogStudio() {
 
   return (
     <main className="page" data-page="journal">
-      <PageHead crumb="Updates · Insights" title={pg.title || "Our Blog"} lead={pg.description} />
+      <PageHead video="blog" crumb="Updates · Insights" title={pg.title || "Our Blog"} lead={pg.description} />
       {feature ? (
         <section className="wrap">
           <Link className="feature" href={`/blog/${feature.slug}`}>
