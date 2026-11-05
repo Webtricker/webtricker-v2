@@ -195,3 +195,9 @@
 .stu .pagehead--video .hero__video{ position: absolute; inset: 0; z-index: -1; }
 .stu .pagehead--video .hero__video video{ position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .stu .pagehead--video .wrap{ width: 100%; }
+
+/* About: real team photos */
+.stu .officegrid{ display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 24px); }
+.stu .officegrid .media{ aspect-ratio: 3 / 4; border-radius: 0; }
+.stu .officegrid .media img{ width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 700px){ .stu .officegrid{ grid-template-columns: 1fr; } .stu .officegrid .media{ aspect-ratio: 4 / 3; } }

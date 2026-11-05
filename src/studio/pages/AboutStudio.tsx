@@ -95,6 +95,17 @@ export default async function AboutStudio() {
               ))}
             </div>
           </div>
+          <div className="eyebrow mono mute" style={{ marginTop: "clamp(80px, 10vw, 140px)" }}>
+            <span>Life at Webtricker</span>
+            <span>Our team at work</span>
+          </div>
+          <div className="officegrid">
+            {[1, 2, 3].map((n) => (
+              <div className="media" key={n}>
+                <img src={`/images/team/office-${n}.webp`} alt="The Webtricker team working together in our office" loading="lazy" width={960} height={1280} />
+              </div>
+            ))}
+          </div>
           <div className="eyebrow mono mute" style={{ marginTop: "clamp(80px, 10vw, 140px)", marginBottom: 0 }}>
             <span>From Our Clients</span>
             <span>Testimonials</span>
