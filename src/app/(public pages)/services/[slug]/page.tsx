@@ -1,3 +1,5 @@
+import DetailStudio from "@/studio/pages/DetailStudio";
+import { fmtDate as studioFmtDate } from "@/studio/ui";
 import React from "react";
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import { formatDateToShortString } from "@/utils/date";
@@ -149,71 +151,17 @@ export default async function SingleServicePage({
   const service = data.service as IService;
 
   return (
-    <main className="w-full z-0 section-speacing mt-7 post-details-container">
-      <BlogPageContainer className="section-speacing">
-        <p className="">
-          Published {formatDateToShortString(service.createdAt)}
-        </p>
-        <h1 className="page-title my-3">{service.title}</h1>
-        <p className="max-w-[400px] mx-auto">{service.description}</p>
-        <p className="max-w-[400px] mx-auto mt-5">
-          Explore our achievements and let yourself beconvinced!
-        </p>
-        <ParallaxBanner src={service.thumnail.url} />
-        {/* <Image
-          src={service.thumnail.url}
-          width={service.thumnail.width || 912}
-          height={service.thumnail.height || 400}
-          alt={service.title}
-          className="w-full h-auto my-10"
-        /> */}
-        <p>{service.description}</p>
-      </BlogPageContainer>
-      <section className="w-full wt_parser_content">
-        <BlogPageContainer>
-          <HtmlContentParser htmlContent={service?.content} />
-        </BlogPageContainer>
-        <BlogPageContainer className="mt-10">
-          <div className="w-full flex">
-            {prevService && (
-              <Link
-                href={`/services/${prevService.slug}`}
-                className="w-full relative"
-              >
-                <Image
-                  className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-e-none"
-                  src={prevService?.thumnail?.url || ""}
-                  width={prevService?.thumnail?.width || 456}
-                  height={400}
-                  title="Prev service"
-                  alt={prevService.title}
-                />
-                <div className="hidden md:block bg-white/10 text-white backdrop-blur-md rounded-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-semibold text-lg ">
-                  <Button className="!py-2.5 !px-5" label="Previous Service" />
-                </div>
-              </Link>
-            )}
-            {nextService && (
-              <Link
-                href={`/services/${nextService.slug}`}
-                className="w-full relative"
-              >
-                <Image
-                  className="object-cover h-[150px] md:h-[250px] lg:h-[300px] !rounded-s-none"
-                  src={nextService?.thumnail?.url || ""}
-                  width={nextService?.thumnail?.width || 456}
-                  height={400}
-                  title="Next service"
-                  alt={nextService.title}
-                />
-                <div className="hidden md:block bg-white/10 text-white backdrop-blur-md rounded-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] font-semibold text-lg ">
-                  <Button className="!py-2.5 !px-5" label="Next Service" />
-                </div>
-              </Link>
-            )}
-          </div>
-        </BlogPageContainer>
-      </section>
-    </main>
+    <DetailStudio
+      kind="Service"
+      listHref="/services"
+      title={service.title}
+      meta={`Published ${studioFmtDate(service.createdAt)}`}
+      category={service.category}
+      cover={service.thumnail?.url}
+      description={service.description}
+      html={service.content}
+      prev={prevService ? { href: `/services/${prevService.slug}`, title: prevService.title } : null}
+      next={nextService ? { href: `/services/${nextService.slug}`, title: nextService.title } : null}
+    />
   );
 }

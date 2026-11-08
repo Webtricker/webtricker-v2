@@ -1,0 +1,1709 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta charset="utf-8">
+<title>Webtricker Studio Dark</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one persistent WebGL stage (the five logo gems) behind ten routed pages; each page is a stack of full-bleed chapters with a shared header, colour-wipe transitions and a shared footer. */
+:root {
+  --ink-0: #0b0b0c; --ink-1: #151517; --ink-2: #202023;
+  --paper: #f2f0eb; --mute: #9a978f;
+  --line: rgba(242, 240, 235, 0.12); --line-2: rgba(242, 240, 235, 0.26);
+  --amber: #5cbbe8; --gold: #efb21f; --sky: #77c6e5; --blue: #0475ad; --green: #95ba3c; --crimson: #b11a3c;
+  --display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --brand: "Gotu", "Syne", sans-serif;
+  --gl: max(24px, env(safe-area-inset-left, 0px)); --gr: max(24px, env(safe-area-inset-right, 0px));
+  --ease: cubic-bezier(.7, 0, .2, 1);
+  color-scheme: dark;
+}
+@font-face { font-family: "Gotu"; src: url("fonts/Gotu-Regular.woff2") format("woff2"); font-display: swap; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+* { box-sizing: border-box; }
+html { background: var(--ink-0); }
+body { margin: 0; background: var(--ink-0); color: var(--paper); font: 400 16px/1.6 var(--body); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--amber); color: var(--ink-0); }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 4px; border-radius: 4px; }
+h1, h2, h3, h4 { overflow-wrap: break-word; }
+.wrap { max-width: 1440px; margin: 0 auto; padding-left: var(--gl); padding-right: var(--gr); }
+.mono { font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.mute { color: var(--mute); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+#stage { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.stage-fallback { position: fixed; inset: 0; z-index: 0; background: radial-gradient(60% 50% at 75% 40%, rgba(4,117,173,.35), transparent 70%), radial-gradient(50% 40% at 20% 80%, rgba(177,26,60,.22), transparent 70%), var(--ink-0); }
+.grain { position: fixed; inset: -50%; z-index: 70; pointer-events: none; opacity: .06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain 1.2s steps(6) infinite; }
+@keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-4%,3%)} 40%{transform:translate(3%,-2%)} 60%{transform:translate(-2%,-4%)} 80%{transform:translate(4%,2%)} 100%{transform:translate(0,0)} }
+.page, header, footer { position: relative; z-index: 2; }
+.cursor, .cursor-ring { position: fixed; left: 0; top: 0; z-index: 95; pointer-events: none; border-radius: 50%; transform: translate(-50%, -50%); }
+.cursor { width: 8px; height: 8px; background: var(--paper); mix-blend-mode: difference; }
+.cursor-ring { width: 44px; height: 44px; border: 1px solid var(--line-2); display: grid; place-items: center; transition: width .3s, height .3s, background .3s, border-color .3s; }
+.cursor-ring span { font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-0); opacity: 0; transition: opacity .2s; }
+.cursor-ring.is-link { width: 72px; height: 72px; border-color: var(--amber); }
+.cursor-ring.is-view { width: 96px; height: 96px; background: var(--amber); border-color: var(--amber); }
+.cursor-ring.is-view span { opacity: 1; }
+@media (hover: none), (pointer: coarse) { .cursor, .cursor-ring { display: none; } }
+
+.loader { position: fixed; inset: 0; z-index: 90; background: var(--ink-0); display: grid; place-items: center; animation: loaderOut .01s 3.2s forwards; }
+@keyframes loaderOut { to { visibility: hidden; opacity: 0; } }
+.loader__in { display: grid; gap: 28px; justify-items: center; }
+.gems5 { display: grid; grid-template-columns: repeat(3, 26px); gap: 0 6px; }
+.gems5 i { width: 26px; height: 40px; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
+.gems5 i:nth-child(1){background:var(--blue)} .gems5 i:nth-child(2){background:var(--green)} .gems5 i:nth-child(3){background:var(--sky)}
+.gems5 i:nth-child(4){background:var(--crimson);margin-left:16px;margin-top:-8px} .gems5 i:nth-child(5){background:var(--gold);margin-left:16px;margin-top:-8px}
+.loader__count { font: 700 clamp(64px, 14vw, 160px)/1 var(--display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.loader__bar { width: min(320px, 70vw); height: 2px; background: var(--line); overflow: hidden; }
+.loader__bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--green), var(--sky), var(--crimson), var(--amber)); }
+.wipe { position: fixed; inset: 0; z-index: 88; display: grid; grid-template-columns: repeat(5, 1fr); pointer-events: none; }
+.wipe i { transform: scaleY(0); transform-origin: bottom; }
+.wipe i:nth-child(1){background:var(--blue)} .wipe i:nth-child(2){background:var(--green)} .wipe i:nth-child(3){background:var(--sky)} .wipe i:nth-child(4){background:var(--crimson)} .wipe i:nth-child(5){background:var(--amber)}
+.wipe__label { position: fixed; inset: 0; z-index: 89; display: grid; place-items: center; pointer-events: none; font: 700 clamp(40px, 8vw, 120px)/1 var(--display); letter-spacing: -.04em; color: var(--ink-0); opacity: 0; }
+.progress { position: fixed; left: 0; right: 0; top: 0; height: 3px; z-index: 60; background: var(--amber); transform: scaleX(0); transform-origin: left; }
+
+.top { position: fixed; top: 0; left: 0; right: 0; z-index: 50; padding-top: max(18px, env(safe-area-inset-top, 0px)); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
+.brand img { height: 28px; width: auto; }
+.brand span { font: 400 24px/1 var(--brand); letter-spacing: -.01em; }
+.top nav { display: flex; gap: 2px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: rgba(15, 15, 20, .6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.top nav a { position: relative; text-decoration: none; padding: 10px 14px; border-radius: 999px; font: 500 14px/1 var(--body); color: var(--mute); transition: color .2s, background .2s; }
+.top nav a:hover { color: var(--paper); background: var(--line); }
+.top nav a[aria-current="page"] { color: var(--ink-0); background: var(--paper); }
+.top__right { display: flex; gap: 10px; align-items: center; flex: none; }
+.pill { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: 12px; height: 50px; padding: 0 22px; border-radius: 999px; border: 1px solid var(--line-2); background: transparent; color: var(--paper); font: 600 14px/1 var(--body); text-decoration: none; cursor: pointer; overflow: hidden; isolation: isolate; white-space: nowrap; }
+.pill::before { content: ""; position: absolute; inset: 0; background: var(--amber); transform: translateY(101%); border-radius: inherit; transition: transform .45s var(--ease); z-index: -1; }
+.pill:hover { color: var(--ink-0); border-color: var(--amber); }
+.pill:hover::before { transform: translateY(0); }
+.pill--solid { background: var(--amber); color: var(--ink-0); border-color: var(--amber); }
+.pill--solid::before { background: var(--paper); }
+.pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(149, 186, 60, .2); }
+.burger { width: 50px; height: 50px; border-radius: 50%; border: 1px solid var(--line-2); background: rgba(15, 15, 20, .6); backdrop-filter: blur(16px); color: var(--paper); display: grid; place-content: center; gap: 6px; cursor: pointer; }
+.burger span { display: block; width: 18px; height: 1.5px; background: currentColor; transition: transform .3s; }
+.burger[aria-expanded="true"] span:first-child { transform: translateY(3.75px) rotate(45deg); }
+.burger[aria-expanded="true"] span:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+.menu { position: fixed; inset: 0; z-index: 45; background: var(--ink-1); display: grid; align-content: center; padding-top: 90px; clip-path: inset(0 0 100% 0); visibility: hidden; transition: clip-path .7s var(--ease), visibility 0s .7s; overflow-y: auto; }
+.menu.is-open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .7s var(--ease); }
+.menu ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; }
+.menu li { overflow: hidden; border-bottom: 1px solid var(--line); }
+.menu a { display: flex; align-items: baseline; gap: 20px; padding: 10px 0; font: 700 clamp(34px, 5.4vw, 76px)/1.05 var(--display); letter-spacing: -.035em; text-decoration: none; transition: color .2s, padding .3s; }
+.menu a small { font: 500 12px/1 var(--mono); color: var(--mute); letter-spacing: .1em; }
+.menu a:hover, .menu a[aria-current="page"] { color: var(--amber); padding-left: 12px; }
+.menu__foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 40px; }
+
+.chapter { padding-block: clamp(96px, 12vw, 180px); }
+.eyebrow { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 20px; margin-bottom: clamp(40px, 5vw, 64px); border-bottom: 1px solid var(--line); }
+.h-xl { margin: 0; font: 700 clamp(46px, 10vw, 150px)/.92 var(--display); letter-spacing: -.045em; text-wrap: balance; }
+.h-lg { margin: 0; font: 700 clamp(40px, 6.4vw, 96px)/.95 var(--display); letter-spacing: -.04em; text-wrap: balance; }
+.lead { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.6; color: var(--mute); margin: 0; max-width: 38em; }
+.ch { display: inline-block; will-change: transform; }
+.lmask { display: block; overflow: hidden; padding-bottom: .06em; }
+.media { position: relative; overflow: hidden; border-radius: 24px; background: var(--ink-1); }
+.media img { width: 100%; height: 100%; object-fit: cover; }
+.media--par img { height: 118%; margin-top: -9%; }
+.media__tag { position: absolute; left: 16px; bottom: 14px; z-index: 1; font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 7px 9px; border-radius: 999px; background: rgba(7,7,10,.65); color: var(--paper); }
+.tag { display: inline-flex; align-items: center; gap: 8px; font: 500 11px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 9px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--paper); background: transparent; text-decoration: none; }
+button.tag { cursor: pointer; }
+.tag[aria-pressed="true"] { background: var(--paper); color: var(--ink-0); border-color: var(--paper); }
+.tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.gem { display: inline-block; width: 10px; height: 15px; background: var(--c, var(--amber)); clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); flex: none; }
+.arrow { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); display: grid; place-items: center; flex: none; transition: background .3s, color .3s, transform .4s var(--ease), border-color .3s; }
+.arrow svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+a:hover .arrow { background: var(--amber); color: var(--ink-0); border-color: var(--amber); transform: rotate(-45deg); }
+.glass { background: linear-gradient(160deg, rgba(23,23,30,.86), rgba(15,15,20,.72)); border: 1px solid var(--line); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-radius: 28px; }
+
+.pagehead { padding-block: clamp(150px, 18vw, 230px) clamp(56px, 7vw, 96px); }
+.pagehead__crumb { display: flex; gap: 10px; align-items: center; margin-bottom: 28px; }
+.pagehead__crumb::before { content: ""; width: 44px; height: 1px; background: var(--amber); }
+.pagehead__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: end; }
+.bleed { margin-inline: var(--gl) var(--gr); height: clamp(320px, 58vw, 760px); border-radius: 28px; }
+
+.hero { min-height: 100svh; display: grid; align-content: end; padding-block: 140px 48px; }
+.hero__kicker { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+.hero__kicker::before { content: ""; width: 44px; height: 1px; background: var(--amber); }
+.hero h1 { margin: 0; font: 700 clamp(52px, 14.5vw, 232px)/.86 var(--display); letter-spacing: -.045em; text-transform: uppercase; }
+.hl { display: block; overflow: hidden; padding-bottom: .05em; white-space: nowrap; }
+.hl--out { color: transparent; -webkit-text-stroke: 1.5px var(--paper); }
+.hl--indent { padding-left: 12vw; }
+.hero__foot { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line); align-items: start; }
+.hero__foot > * { min-width: 0; }
+.hero__foot .lead { grid-column: span 2; color: var(--paper); }
+.clock { font: 500 13px/1.6 var(--mono); color: var(--mute); font-variant-numeric: tabular-nums; }
+.clock b { color: var(--paper); font-weight: 500; }
+.scrollcue { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.scrollcue i { width: 1px; height: 40px; background: var(--line-2); position: relative; overflow: hidden; }
+.scrollcue i::after { content: ""; position: absolute; left: 0; top: -40%; width: 1px; height: 40%; background: var(--amber); animation: cue 1.8s cubic-bezier(.6,0,.3,1) infinite; }
+@keyframes cue { to { top: 100%; } }
+.clients { display: flex; align-items: center; gap: 40px; padding-block: 28px; border-block: 1px solid var(--line); overflow: hidden; }
+.clients__track { display: flex; gap: 64px; width: max-content; animation: slide 40s linear infinite; }
+.clients__track span { font: 600 clamp(22px, 2.4vw, 34px)/1 var(--display); letter-spacing: -.02em; color: var(--mute); white-space: nowrap; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+.manifesto p { margin: 0; font: 600 clamp(30px, 4.8vw, 76px)/1.06 var(--display); letter-spacing: -.035em; text-wrap: balance; }
+.manifesto .w { display: inline-block; opacity: .26; }
+.manifesto .w.hi { color: var(--amber); }
+.no-gsap .manifesto .w { opacity: 1; }
+.strip { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 16px; margin-top: clamp(56px, 7vw, 96px); }
+.strip .media { height: clamp(240px, 32vw, 460px); }
+.strip .media:nth-child(2) { margin-top: 12%; }
+
+.hs { position: relative; overflow: hidden; }
+.hs__track { display: flex; gap: 20px; width: max-content; padding-left: var(--gl); padding-right: 12vw; }
+.hs__intro { width: min(560px, 82vw); display: grid; align-content: space-between; gap: 40px; padding: 8px 32px 8px 0; }
+.hs__intro h2 { margin: 0; font: 700 clamp(44px, 5.4vw, 84px)/.92 var(--display); letter-spacing: -.045em; }
+.panel { position: relative; width: min(500px, 82vw); height: min(640px, 76svh); min-height: 520px; display: grid; grid-template-rows: 46% auto auto 1fr; gap: 18px; padding: 14px 14px 26px; text-decoration: none; overflow: hidden; }
+.panel .media { border-radius: 18px; height: 100%; }
+.panel .media img { transition: transform 1s var(--ease); }
+.panel:hover .media img { transform: scale(1.06); }
+.panel__top { display: flex; justify-content: space-between; align-items: center; padding-inline: 12px; }
+.panel h3 { margin: 0; padding-inline: 12px; font: 700 clamp(28px, 2.6vw, 40px)/1 var(--display); letter-spacing: -.03em; }
+.panel p { margin: 0; padding-inline: 12px; color: var(--mute); font-size: 15px; }
+.panel .tags { padding-inline: 12px; }
+
+.mq { overflow: hidden; padding-block: 36px; border-block: 1px solid var(--line); }
+.mq__track { display: flex; width: max-content; will-change: transform; }
+.mq__item { display: inline-flex; align-items: center; gap: .3em; padding-right: .35em; font: 700 clamp(72px, 12vw, 200px)/1 var(--display); letter-spacing: -.045em; text-transform: uppercase; white-space: nowrap; }
+.mq__item em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px var(--paper); }
+.mq__item i { display: inline-block; width: .32em; height: .5em; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); background: var(--amber); }
+.work { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.work a { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto auto; gap: 24px; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; isolation: isolate; }
+.work a::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--gl)); background: var(--ink-1); transform: scaleY(0); transform-origin: bottom; transition: transform .45s var(--ease); z-index: -1; }
+.work a:hover::before { transform: scaleY(1); }
+.work__name { font: 700 clamp(32px, 5.4vw, 84px)/1 var(--display); letter-spacing: -.04em; transition: transform .45s var(--ease), color .3s; min-width: 0; }
+.work a:hover .work__name { transform: translateX(20px); color: var(--amber); }
+.preview { position: fixed; left: 0; top: 0; z-index: 40; width: 380px; aspect-ratio: 4 / 3; border-radius: 18px; pointer-events: none; overflow: hidden; opacity: 0; transform: translate(-50%, -50%) scale(.7); transition: opacity .3s; background: var(--ink-1); }
+.preview.is-on { opacity: 1; }
+.preview img { width: 100%; height: 100%; object-fit: cover; }
+.preview span { position: absolute; left: 14px; bottom: 12px; font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; padding: 7px 9px; border-radius: 999px; background: rgba(7,7,10,.7); }
+@media (hover: none) { .preview { display: none; } }
+
+.ring { position: relative; height: clamp(420px, 56vw, 680px); perspective: 1400px; display: grid; place-items: center; overflow: hidden; }
+.ring__spin { position: relative; width: 1px; height: 1px; transform-style: preserve-3d; }
+.ring__item { position: absolute; left: 0; top: 0; transform-style: preserve-3d; white-space: nowrap; font: 600 clamp(20px, 2.6vw, 38px)/1 var(--display); letter-spacing: -.02em; backface-visibility: hidden; display: flex; align-items: center; gap: 12px; translate: -50% -50%; }
+.ring__core { position: absolute; text-align: center; display: grid; gap: 10px; }
+.ring__core b { font: 700 clamp(56px, 8vw, 128px)/1 var(--display); letter-spacing: -.045em; }
+
+/* numbers: sized from measured glyph widths ("5000+" is 3.45em in Syne 700) so four columns never collide */
+.nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.num { padding: 32px 24px 0 0; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.num + .num { padding-left: 24px; border-left: 1px solid var(--line); }
+.num b { display: block; white-space: nowrap; font: 700 clamp(44px, 5.4vw, 84px)/1 var(--display); letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.num b sup { font-size: .42em; color: var(--amber); vertical-align: .9em; margin-left: .04em; }
+
+.q { margin: 0; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; padding-block: 40px; border-top: 1px solid var(--line); }
+.q blockquote { margin: 0; font: 600 clamp(26px, 3.2vw, 50px)/1.12 var(--display); letter-spacing: -.03em; text-wrap: balance; }
+.q blockquote::before { content: "\201C"; color: var(--amber); }
+.q blockquote::after { content: "\201D"; color: var(--amber); }
+.q figcaption { display: grid; gap: 4px; align-content: start; }
+.q figcaption b { font: 600 16px/1.3 var(--body); }
+.avatar { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--ink-2); border: 1px solid var(--line-2); font: 500 14px/1 var(--mono); margin-bottom: 12px; }
+.team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.person { display: grid; gap: 12px; }
+.person__card { aspect-ratio: 4 / 5; border-radius: 24px; border: 1px solid var(--line); overflow: hidden; position: relative; transition: transform .25s; display: grid; place-items: center; }
+.person__card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .55; filter: saturate(1.2); }
+.person__card b { position: relative; font: 700 clamp(56px, 7vw, 112px)/1 var(--display); letter-spacing: -.04em; }
+.person__card small { position: absolute; left: 16px; bottom: 14px; z-index: 1; }
+.person h3 { margin: 0; font: 700 24px/1.1 var(--display); letter-spacing: -.02em; }
+.posts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.post { display: grid; gap: 12px; text-decoration: none; align-content: start; min-width: 0; }
+.post .media { aspect-ratio: 4 / 5; border-radius: 20px; }
+.post .media img { transition: transform 1s var(--ease); }
+.post:hover .media img { transform: scale(1.06); }
+.post h3 { margin: 0; font: 600 21px/1.2 var(--display); letter-spacing: -.02em; transition: color .2s; }
+.post p { margin: 0; color: var(--mute); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.post:hover h3 { color: var(--amber); }
+.post__meta { display: flex; justify-content: space-between; gap: 12px; }
+
+.statement { margin: 0; font: 600 clamp(28px, 4.2vw, 64px)/1.1 var(--display); letter-spacing: -.035em; text-wrap: balance; }
+.statement em { font-style: normal; color: var(--amber); }
+.collage { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.collage .media:nth-child(1) { grid-column: 1 / span 5; aspect-ratio: 4 / 5; }
+.collage .media:nth-child(2) { grid-column: 7 / span 6; aspect-ratio: 16 / 11; margin-top: 18%; }
+.collage .media:nth-child(3) { grid-column: 4 / span 4; aspect-ratio: 1; margin-top: -10%; }
+.sticky2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: start; }
+.sticky2__side { position: sticky; top: 110px; display: grid; gap: 28px; }
+.sticky2__side .media { aspect-ratio: 4 / 3; }
+.rows { border-top: 1px solid var(--line); }
+.rows > div { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 8px 16px; padding-block: 28px; border-bottom: 1px solid var(--line); }
+.rows > div > span { grid-row: span 2; font: 500 13px/1.6 var(--mono); color: var(--amber); }
+.rows h3 { margin: 0; font: 700 clamp(26px, 2.6vw, 38px)/1.05 var(--display); letter-spacing: -.025em; }
+.rows p { margin: 0; color: var(--mute); }
+
+.svc { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 96px); align-items: center; padding-block: clamp(64px, 8vw, 120px); border-top: 1px solid var(--line); }
+.svc:nth-child(even) .svc__media { order: 2; }
+.svc__media { aspect-ratio: 5 / 4; }
+.svc__body { display: grid; gap: 22px; align-content: start; min-width: 0; }
+.svc__num { display: flex; align-items: center; gap: 14px; }
+.svc__num::after { content: ""; width: 48px; height: 1px; background: var(--line-2); }
+.svc__body p { margin: 0; color: var(--mute); font-size: 17px; }
+.bullets { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.bullets li { display: flex; gap: 14px; align-items: baseline; }
+.bullets li::before { content: ""; width: 16px; height: 1px; background: var(--amber); flex: none; transform: translateY(-4px); }
+.bullets--2 { grid-template-columns: 1fr 1fr; column-gap: 32px; }
+.textlink { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; font: 600 15px/1.3 var(--body); }
+.textlink .arrow { width: 44px; height: 44px; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 48px; }
+.cases { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 80px 24px; }
+.case { display: grid; gap: 18px; text-decoration: none; align-content: start; }
+.case:nth-child(even) { margin-top: 140px; }
+.case .media { aspect-ratio: 4 / 3; border-radius: 28px; }
+.case .media img { transition: transform 1.1s var(--ease); }
+.case:hover .media img { transform: scale(1.06); }
+.case__row { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.case h3 { margin: 0; font: 700 clamp(30px, 3.6vw, 54px)/1 var(--display); letter-spacing: -.035em; transition: color .3s; }
+.case:hover h3 { color: var(--amber); }
+.case[hidden] { display: none; }
+.cases.is-filtered .case:nth-child(even) { margin-top: 0; }
+
+.feature { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; text-decoration: none; }
+.feature .media { aspect-ratio: 16 / 11; border-radius: 28px; }
+.feature h2 { margin: 18px 0; font: 700 clamp(32px, 4vw, 60px)/1 var(--display); letter-spacing: -.035em; transition: color .3s; }
+.feature:hover h2 { color: var(--amber); }
+.article__head { max-width: 1100px; }
+.article__body { display: grid; grid-template-columns: 260px minmax(0, 720px); gap: clamp(40px, 7vw, 110px); justify-content: center; }
+.toc { position: sticky; top: 110px; align-self: start; display: grid; gap: 24px; }
+.toc nav { display: grid; }
+.toc nav a { display: flex; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line); text-decoration: none; color: var(--mute); font-size: 14px; line-height: 1.4; }
+.toc nav a span { font: 500 11px/1.6 var(--mono); color: var(--amber); }
+.toc nav a:hover { color: var(--paper); }
+.prose { font-size: 19px; line-height: 1.75; min-width: 0; }
+.prose > * { margin: 0 0 26px; }
+.prose h2 { font: 700 clamp(28px, 3vw, 42px)/1.1 var(--display); letter-spacing: -.03em; margin: 72px 0 22px; }
+.prose ul { list-style: none; padding: 0; display: grid; gap: 16px; }
+.prose ul li { padding-left: 28px; position: relative; }
+.prose ul li::before { content: ""; position: absolute; left: 0; top: .8em; width: 14px; height: 1px; background: var(--amber); }
+.prose .media { aspect-ratio: 16 / 9; margin-block: 44px; }
+.prose .big { font: 600 clamp(24px, 2.4vw, 32px)/1.3 var(--display); letter-spacing: -.02em; }
+.answer { padding: 30px 32px; position: relative; overflow: hidden; }
+.answer b { display: block; font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--amber); margin-bottom: 12px; }
+.todo { padding: 18px 22px; border: 1px dashed var(--line-2); border-radius: 14px; font: 400 13px/1.6 var(--mono); color: var(--mute); }
+.pn { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.pn a { display: grid; gap: 14px; padding: 28px; text-decoration: none; }
+.pn strong { font: 700 clamp(22px, 2vw, 30px)/1.1 var(--display); letter-spacing: -.02em; }
+
+.courses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.course { display: flex; flex-direction: column; gap: 16px; padding: 30px; transition: transform .4s var(--ease), border-color .3s; min-width: 0; }
+.course:hover { transform: translateY(-6px); border-color: var(--line-2); }
+.course h3 { margin: 0; font: 700 clamp(26px, 2.2vw, 32px)/1.05 var(--display); letter-spacing: -.025em; }
+.course p { margin: 0; color: var(--mute); font-size: 15px; }
+.price { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 16px; border-top: 1px solid var(--line); margin-top: auto; }
+.price b { font: 700 30px/1 var(--display); letter-spacing: -.03em; white-space: nowrap; }
+.price span { font: 500 11px/1.5 var(--mono); color: var(--mute); text-align: right; }
+.meta4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line); margin-top: 48px; }
+.meta4 > div { padding: 20px 20px 0 0; display: grid; gap: 8px; min-width: 0; }
+.meta4 > div + div { padding-left: 20px; border-left: 1px solid var(--line); }
+.meta4 b { font: 600 19px/1.3 var(--display); }
+.gallery { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; }
+.gallery .media { aspect-ratio: 4 / 3; }
+.gallery .media:first-child { grid-row: span 2; aspect-ratio: auto; }
+.legal { display: grid; grid-template-columns: 260px minmax(0, 760px); gap: clamp(40px, 7vw, 110px); justify-content: center; }
+.legal section { padding-top: 28px; border-top: 1px solid var(--line); margin-bottom: 44px; }
+.legal h2 { margin: 0 0 14px; display: flex; gap: 16px; align-items: baseline; font: 700 clamp(24px, 2.4vw, 34px)/1.1 var(--display); letter-spacing: -.02em; }
+.legal h2 span { font: 500 13px/1 var(--mono); color: var(--amber); }
+.legal p { margin: 0; color: var(--mute); font-size: 17px; }
+.notice { margin: 0 0 44px !important; padding: 16px 20px; border-left: 2px solid var(--amber); background: var(--ink-1); border-radius: 0 12px 12px 0; font-size: 14px !important; }
+@media (max-width: 1100px) { .legal { grid-template-columns: 1fr; } .legal .toc { position: static; } }
+@media (max-width: 600px) { .meta4 { grid-template-columns: 1fr 1fr; } .meta4 > div:nth-child(3) { padding-left: 0; border-left: 0; } .gallery { grid-template-columns: 1fr; } .gallery .media:first-child { aspect-ratio: 4 / 3; } }
+.tslider { position: relative; }
+.tslider__stage { display: grid; }
+.tslider .q { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .6s, visibility .6s; }
+.tslider .q.is-on { opacity: 1; visibility: visible; }
+.tslider__nav { display: flex; align-items: center; gap: 16px; padding-top: 8px; }
+.tsb { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-2); background: transparent; color: var(--paper); cursor: pointer; font-size: 18px; transition: border-color .3s, color .3s; }
+.tsb:hover { border-color: var(--amber); color: var(--amber); }
+.tslider__dots { display: flex; gap: 8px; }
+.tslider__dots i { width: 28px; height: 2px; background: var(--line-2); transition: background .3s; }
+.tslider__dots i.is-on { background: var(--amber); }
+.tslider__count { margin-left: auto; }
+.course-group { grid-column: 1 / -1; display: flex; align-items: center; gap: 14px; padding-top: 32px; }
+.course-group:first-child { padding-top: 0; }
+.course-group::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.price--tbc b { color: var(--mute); font-size: 22px; }
+.course__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.course__actions .pill { height: 46px; padding: 0 14px; }
+.why { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.why > div { padding: 30px 22px 0 0; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.why > div + div { padding-left: 22px; border-left: 1px solid var(--line); }
+.why strong { font: 700 22px/1.1 var(--display); letter-spacing: -.02em; }
+.why span { color: var(--mute); font-size: 14px; }
+
+.jobs { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.jobs a { display: grid; grid-template-columns: 56px minmax(0, 1fr) 160px auto auto; gap: 24px; align-items: center; padding: 26px 0; border-bottom: 1px solid var(--line); text-decoration: none; position: relative; isolation: isolate; }
+.jobs a::before { content: ""; position: absolute; inset: 0 calc(-1 * var(--gl)); background: var(--ink-1); transform: scaleY(0); transform-origin: bottom; transition: transform .45s var(--ease); z-index: -1; }
+.jobs a:hover::before { transform: scaleY(1); }
+.jobs h3 { margin: 0; font: 700 clamp(24px, 3vw, 44px)/1.05 var(--display); letter-spacing: -.03em; transition: color .3s, transform .45s var(--ease); min-width: 0; }
+.jobs a:hover h3 { color: var(--amber); transform: translateX(14px); }
+.job { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: clamp(40px, 6vw, 88px); align-items: start; }
+.job__main { display: grid; gap: 56px; min-width: 0; }
+.job__block { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; padding-top: 28px; border-top: 1px solid var(--line); }
+.job__block h2 { margin: 0; font: 700 26px/1.1 var(--display); letter-spacing: -.02em; }
+.job__block p { margin: 0 0 14px; color: var(--mute); }
+.summary { position: sticky; top: 110px; padding: 32px; display: grid; gap: 20px; }
+.summary h3 { margin: 0; font: 700 26px/1.1 var(--display); }
+.summary dl { margin: 0; display: grid; }
+.summary dl div { display: flex; justify-content: space-between; gap: 12px; padding-block: 12px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.summary dt { font: 500 11px/1.6 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.summary dd { margin: 0; font-weight: 600; }
+
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(40px, 7vw, 110px); align-items: start; }
+.contact__col { display: grid; gap: 40px; min-width: 0; }
+.big-copy { font: 600 clamp(20px, 2vw, 26px)/1.3 var(--display) !important; }
+.form { display: grid; gap: 30px; padding: clamp(28px, 4vw, 48px); }
+.field { display: grid; gap: 10px; }
+.field label { font: 500 11px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mute); }
+.field input, .field textarea { width: 100%; background: transparent; border: 0; border-bottom: 1px solid var(--line-2); padding: 10px 0; color: var(--paper); font: 600 clamp(20px, 2vw, 26px)/1.3 var(--display); letter-spacing: -.02em; border-radius: 0; }
+.field textarea { min-height: 120px; resize: vertical; font-size: 20px; }
+.field input::placeholder, .field textarea::placeholder { color: rgba(144, 151, 163, .7); }
+.field input:focus, .field textarea:focus { outline: none; border-bottom-color: var(--amber); }
+.form__msg { min-height: 22px; margin: 0; color: var(--mute); font-size: 14px; }
+.offices { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.office { padding: 28px; display: grid; gap: 12px; align-content: start; }
+.office strong { font: 700 28px/1 var(--display); letter-spacing: -.02em; }
+.office p { margin: 0; color: var(--mute); }
+
+.finale { padding-block: clamp(110px, 14vw, 220px) 0; }
+.finale__big { display: block; margin: 0; font: 700 clamp(72px, 21vw, 330px)/.84 var(--display); letter-spacing: -.05em; text-transform: uppercase; text-decoration: none; }
+.finale__big span { display: block; white-space: nowrap; }
+.finale__big span:last-child { color: transparent; -webkit-text-stroke: 1.5px var(--paper); padding-left: 16vw; transition: color .4s; }
+.finale__big:hover span:last-child { color: var(--amber); -webkit-text-stroke-color: var(--amber); }
+.contacts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; margin-top: 88px; padding-top: 32px; border-top: 1px solid var(--line); }
+.contacts > * { min-width: 0; }
+.contacts h4 { margin: 0 0 16px; }
+.contacts ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.copy { display: inline-flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; color: var(--paper); font: 500 15px/1.5 var(--body); cursor: pointer; text-align: left; user-select: text; }
+.copy small { font: 500 10px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--mute); border: 1px solid var(--line); padding: 5px 7px; border-radius: 999px; opacity: 0; transition: opacity .2s; }
+.copy:hover small, .copy:focus-visible small { opacity: 1; }
+.copy.is-done small { opacity: 1; color: var(--green); border-color: var(--green); }
+.pill.copy { justify-content: center; color: var(--ink-0); font: 600 14px/1 var(--body); }
+.pill.copy small { opacity: 1; color: var(--ink-0); border-color: rgba(7,7,10,.3); }
+.contacts p { margin: 0 0 12px; color: var(--mute); font-size: 14px; }
+.contacts p b { color: var(--paper); font-weight: 600; display: block; }
+.sub { display: flex; margin-top: 12px; border-bottom: 1px solid var(--line-2); }
+.sub input { flex: 1; min-width: 0; background: transparent; border: 0; padding: 12px 0; color: var(--paper); font: 500 15px/1 var(--body); }
+.sub input:focus { outline: none; }
+.sub button { background: none; border: 0; color: var(--amber); font: 600 14px/1 var(--body); cursor: pointer; }
+.sub__msg { min-height: 20px; margin-top: 8px; font-size: 13px; color: var(--mute); }
+.wordmark { margin: 88px 0 0; font: 400 clamp(60px, 16.5vw, 280px)/.75 var(--brand); letter-spacing: -.04em; text-align: center; color: var(--ink-2); user-select: none; overflow: hidden; white-space: nowrap; }
+.bar { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; padding-block: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--mute); }
+.spectrum { display: flex; height: 3px; }
+.spectrum i { flex: 1; } .spectrum i:nth-child(1){background:var(--blue)} .spectrum i:nth-child(2){background:var(--green)} .spectrum i:nth-child(3){background:var(--sky)} .spectrum i:nth-child(4){background:var(--crimson)} .spectrum i:nth-child(5){background:var(--amber)}
+.fab { position: fixed; z-index: 44; bottom: max(20px, env(safe-area-inset-bottom, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(15,15,20,.7); backdrop-filter: blur(14px); color: var(--paper); font: 600 13px/1 var(--body); text-decoration: none; }
+.fab i { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+
+@media (max-width: 1100px) {
+  .top nav { display: none; }
+  .hero__foot, .nums, .contacts { grid-template-columns: 1fr 1fr; }
+  .hero__foot .lead { grid-column: 1 / -1; }
+  .num:nth-child(3) { padding-left: 0; border-left: 0; }
+  .num:nth-child(n+3) { padding-top: 40px; }
+  .posts, .why { grid-template-columns: 1fr 1fr; }
+  .why > div + div { padding-left: 0; border-left: 0; }
+  .courses, .offices { grid-template-columns: 1fr 1fr; }
+  .q { grid-template-columns: 1fr; gap: 16px; }
+  .jobs a { grid-template-columns: 40px minmax(0, 1fr) auto; } .jobs .job__dept, .jobs .job__vac { display: none; }
+  .article__body, .job { grid-template-columns: 1fr; }
+  .toc, .summary { position: static; }
+}
+@media (max-width: 900px) {
+  .hs__track { flex-direction: column; width: auto; padding-right: var(--gr); }
+  .hs__intro, .panel { width: 100%; }
+  .panel { height: auto; min-height: 0; grid-template-rows: 260px auto auto auto; }
+  .pagehead__grid, .sticky2, .svc, .feature, .contact, .job__block { grid-template-columns: 1fr; }
+  .svc:nth-child(even) .svc__media { order: 0; }
+  .sticky2__side { position: static; }
+  .cases { grid-template-columns: 1fr; gap: 48px; } .case:nth-child(even) { margin-top: 0; }
+  .team { grid-template-columns: 1fr 1fr; }
+  .strip { grid-template-columns: 1fr 1fr; } .strip .media:nth-child(3) { display: none; }
+  .menu ul { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .hero__foot, .nums, .contacts, .posts, .team, .courses, .offices, .why, .pn { grid-template-columns: 1fr; }
+  .num + .num { padding-left: 0; border-left: 0; }
+  .num:nth-child(n+2) { padding-top: 32px; }
+  .hl--indent { padding-left: 0; }
+  .work a { grid-template-columns: 36px minmax(0, 1fr); } .work__meta, .work .arrow { display: none; }
+  .top .pill { display: none; }
+  .finale__big span:last-child { padding-left: 0; }
+  .bullets--2 { grid-template-columns: 1fr; }
+  .collage { grid-template-columns: 1fr 1fr; } .collage .media { grid-column: auto !important; margin-top: 0 !important; } .collage .media:nth-child(3) { display: none; }
+  .bleed { border-radius: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain, .scrollcue i::after, .clients__track { animation: none; }
+  .manifesto .w { opacity: 1; }
+  .loader { display: none; }
+}
+
+/* ===================== V5 STUDIO: light editorial layer ===================== */
+* { font-synthesis: none; }
+body { background: var(--ink-0); color: var(--paper); }
+.grain { opacity: .05; mix-blend-mode: screen; }
+::selection { background: #f2f0eb; color: #111; }
+.ital { font-family: "Newsreader", Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -.02em; }
+.mono { letter-spacing: .06em; }
+.top nav, .burger, .fab { background: rgba(21, 21, 23, .72); }
+.top nav a[aria-current="page"] { background: #f2f0eb; color: #111; }
+.pill:hover { color: #0b0b0c; }
+.pill--solid { background: #f2f0eb; border-color: #f2f0eb; color: #111; }
+.pill--solid::before { background: var(--amber); }
+.pill i { background: #6ee7a0; box-shadow: 0 0 0 4px rgba(110, 231, 160, .25); }
+.media__tag, .preview span { background: rgba(17, 17, 17, .72); color: #f2f0eb; }
+.glass { background: rgba(255, 255, 255, .035); border-color: var(--line); }
+.cursor { background: #f2f0eb; }
+.cursor-ring { border-color: rgba(242, 240, 235, .3); }
+.cursor-ring.is-link { border-color: #f2f0eb; }
+.cursor-ring.is-view { background: #f2f0eb; border-color: #f2f0eb; }
+.cursor-ring span { color: #111; }
+.wipe i { background: #f2f0eb !important; }
+.wipe__label { color: #111; font-weight: 500; }
+.loader__bar i { background: #f2f0eb; }
+.loader__count, .h-xl, .h-lg, .num b, .work__name, .finale__big, .menu a, .jobs h3, .case h3 { letter-spacing: -.05em; }
+.hl--out, .mq__item em, .finale__big span:last-child { -webkit-text-stroke-width: 1.2px; }
+.mq { border-color: var(--line); }
+.mq__item i { background: var(--amber); }
+.manifesto .w { opacity: .18; }
+.manifesto .w.hi { color: var(--amber); }
+.manifesto p { font-weight: 500; letter-spacing: -.04em; }
+.q blockquote { font-family: "Newsreader", Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -.02em; line-height: 1.15; font-size: clamp(30px, 3.8vw, 60px); }
+.person__card { border-color: var(--line); }
+.person__card img { opacity: 1; filter: grayscale(1) contrast(1.05); transition: filter .8s var(--ease), transform 1.2s var(--ease); }
+.person:hover .person__card img { filter: none; transform: scale(1.05); }
+.person__card b { color: #fff; text-shadow: 0 2px 24px rgba(0, 0, 0, .35); font-weight: 500; }
+.person__card small { color: #fff; }
+.work a::before, .jobs a::before { background: var(--ink-1); }
+.post .media, .case .media, .feature .media { border-radius: 18px; }
+.answer { background: var(--ink-1); }
+.todo { background: rgba(255, 255, 255, .03); }
+
+/* hero */
+.v5hero { min-height: 0; padding-block: clamp(150px, 15vw, 200px) clamp(48px, 6vw, 80px); align-content: start; }
+.hero h1.v5h1 { font: 500 clamp(40px, 9vw, 168px)/.94 var(--display); letter-spacing: -.055em; text-transform: none; }
+.v5h1 .ital { letter-spacing: -.035em; color: var(--amber); }
+.v5h1 .hl { padding-bottom: .08em; }
+.v5reveal { overflow: hidden; }
+.v5reveal__img { height: clamp(320px, 60vw, 860px); border-radius: 0; }
+.v5reveal__img img { height: 120%; margin-top: -10%; }
+
+/* split row + section heads */
+.v5split { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; }
+.v5head { display: grid; grid-template-columns: 200px minmax(0, 1fr) auto; gap: 32px; align-items: end; margin-bottom: clamp(40px, 5vw, 72px); padding-top: 22px; border-top: 1px solid var(--line); }
+.v5head > .mono { align-self: start; }
+.v5head .h-lg { font-size: clamp(40px, 6vw, 96px); }
+.v5head .h-lg .ital { color: var(--amber); }
+.v5nav { display: flex; gap: 8px; }
+.tsb:hover { background: #f2f0eb; color: #111; border-color: #f2f0eb; }
+
+/* stacking service cards */
+.v5stack { display: grid; }
+.v5stack .panel { position: sticky; top: calc(96px + var(--i, 0) * 12px); width: 100%; height: auto; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); grid-template-rows: auto auto 1fr; gap: 18px 48px; padding: clamp(20px, 2.4vw, 32px); margin-bottom: 28px; background: #151517; border: 1px solid var(--line); border-radius: 28px; transform-origin: 50% 0; box-shadow: 0 -20px 50px -30px rgba(0, 0, 0, .8); overflow: hidden; backdrop-filter: none; }
+.v5stack .panel .media { grid-column: 2; grid-row: 1 / span 3; height: auto; aspect-ratio: 16 / 10; border-radius: 18px; }
+.v5stack .panel h3 { font-size: clamp(32px, 3.8vw, 64px); letter-spacing: -.05em; font-weight: 500; }
+.v5stack .panel__top, .v5stack .panel h3, .v5stack .panel p, .v5stack .panel .tags { padding-inline: 0; }
+.v5stack .panel p { font-size: 17px; max-width: 30em; }
+
+/* swiper core (inline: only Google Fonts stylesheets are allowed) */
+.swiper { position: relative; overflow: hidden; touch-action: pan-y; list-style: none; }
+.swiper-wrapper { position: relative; display: flex; width: 100%; height: 100%; box-sizing: content-box; transition-property: transform; transition-timing-function: cubic-bezier(.2, .8, .2, 1); }
+.swiper-slide { position: relative; flex-shrink: 0; height: 100%; transition-property: transform; }
+.swiper-free-mode > .swiper-wrapper { transition-timing-function: cubic-bezier(.2, .8, .2, 1); }
+.no-swiper .swiper { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.no-swiper .swiper-wrapper { gap: 20px; padding-inline: 24px; width: max-content; }
+.no-swiper .swiper-slide { scroll-snap-align: start; }
+.v5work .swiper-slide { width: clamp(290px, 44vw, 720px); }
+.v5blog .swiper-slide { width: clamp(250px, 24vw, 360px); }
+.wk { display: grid; gap: 18px; text-decoration: none; }
+.wk__img { position: relative; overflow: hidden; border-radius: 22px; aspect-ratio: 16 / 11; background: var(--ink-1); }
+.wk__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.24); transition-property: transform; will-change: transform; pointer-events: none; }
+.wk__meta { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.wk__meta h3 { margin: 0; font: 500 clamp(28px, 3vw, 48px)/1 var(--display); letter-spacing: -.045em; transition: color .3s; }
+.wk:hover h3 { color: var(--amber); }
+.v5bar { height: 1px; background: var(--line); margin-top: 36px; overflow: hidden; }
+.v5bar i { display: block; height: 100%; background: #f2f0eb; transform: scaleX(.04); transform-origin: left; transition: transform .3s; }
+
+/* two-row tech marquee */
+.tmq { display: grid; gap: 14px; overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.tmq__row { display: flex; gap: 14px; width: max-content; animation: slide 55s linear infinite; }
+.tmq__row--rev { animation-direction: reverse; animation-duration: 65s; }
+.tmq__row span { display: inline-flex; align-items: center; gap: 12px; padding: 18px 26px; border: 1px solid var(--line); border-radius: 999px; font: 500 clamp(18px, 1.8vw, 26px)/1 var(--display); letter-spacing: -.02em; white-space: nowrap; background: rgba(255, 255, 255, .03); transition: background .3s, color .3s; }
+.tmq__row span:hover { background: #f2f0eb; color: #111; }
+.tmq:hover .tmq__row { animation-play-state: paused; }
+
+/* dark footer card */
+.finale { --paper: #f2f0eb; --mute: rgba(242, 240, 235, .55); --line: rgba(242, 240, 235, .14); --line-2: rgba(242, 240, 235, .28); --ink-2: #232326; background: #151517; color: var(--paper); border-top: 1px solid rgba(242, 240, 235, .1); border-radius: 36px 36px 0 0; margin-top: clamp(40px, 6vw, 96px); overflow: hidden; }
+.finale .bar a { color: var(--paper); }
+.finale__big span:first-child { font-weight: 500; }
+
+@media (max-width: 900px) {
+  .v5head, .v5split { grid-template-columns: 1fr; gap: 18px; }
+  .v5stack .panel { grid-template-columns: 1fr; top: calc(84px + var(--i, 0) * 8px); }
+  .v5stack .panel .media { grid-column: 1; grid-row: auto; order: -1; }
+}
+/* video hero */
+.v5hero--video { position: relative; min-height: 100svh; display: grid; align-content: end; padding-block: 150px 44px; overflow: hidden; isolation: isolate; color: var(--paper); --paper: #f4f2ee; --mute: rgba(244, 242, 238, .72); --line: rgba(244, 242, 238, .22); --line-2: rgba(244, 242, 238, .42); }
+.hero__video { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #0e0e0e; }
+.hero__video video { position: absolute; inset: -4% 0 0; width: 100%; height: 108%; object-fit: cover; }
+.hero__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(8, 8, 8, .6) 0%, rgba(8, 8, 8, .22) 38%, rgba(8, 8, 8, .78) 100%), radial-gradient(80% 60% at 20% 70%, rgba(4, 117, 173, .22), transparent 70%); }
+.v5hero--video .v5h1 .ital { color: #8fd3f4; }
+.v5hero--video .hero__kicker::before { background: #8fd3f4; }
+.v5hero--video .pill--solid { background: #f4f2ee; color: #111; border-color: #f4f2ee; }
+.v5hero--video .pill--solid::before { background: var(--amber); }
+.v5hero--video .pill--solid:hover { color: #fff; }
+.v5hero--video .scrollcue i::after { background: #8fd3f4; }
+.vidbtn { position: absolute; right: var(--gr); top: clamp(96px, 10vw, 120px); z-index: 2; display: inline-flex; align-items: center; gap: 10px; height: 38px; padding: 0 14px; border-radius: 999px; border: 1px solid rgba(244, 242, 238, .35); background: rgba(8, 8, 8, .35); backdrop-filter: blur(10px); color: #f4f2ee; cursor: pointer; }
+.vidbtn i { width: 8px; height: 10px; border-left: 2px solid currentColor; border-right: 2px solid currentColor; }
+.vidbtn[aria-pressed="true"] i { width: 0; height: 0; border: 5px solid transparent; border-left: 8px solid currentColor; border-right: 0; }
+.brand span { transition: color .4s; }
+html.on-dark .brand span { color: #f4f2ee; }
+.top .pill { transition: color .4s, border-color .4s; }
+html.on-dark .top .pill:not(:hover) { color: #f4f2ee; border-color: rgba(244, 242, 238, .42); }
+@media (prefers-reduced-motion: reduce) { .tmq__row { animation: none; } }
+
+/* descender-safe masks: the clipping wrappers get room below the baseline so g, p, y are never cut */
+.hl { padding-bottom: .16em; margin-bottom: -.1em; }
+.lmask { padding-bottom: .18em; margin-bottom: -.12em; }
+
+/* V5 type scale: sized by width AND height so big headings fit the window on large screens */
+.hero h1.v5h1 { font-size: clamp(40px, min(7.2vw, 13svh), 150px); line-height: 1; }
+.v5hero--video { padding-block: clamp(120px, 14svh, 170px) 40px; }
+.h-xl { font-size: clamp(42px, min(7.6vw, 14svh), 128px); line-height: 1; }
+.h-lg { font-size: clamp(34px, 5.2vw, 80px); line-height: 1.04; }
+.v5head .h-lg { font-size: clamp(34px, 4.8vw, 76px); }
+.manifesto p { font-size: clamp(28px, 3.9vw, 62px); line-height: 1.1; }
+.finale__big { font-size: clamp(64px, min(15vw, 30svh), 250px); line-height: .92; }
+.mq__item { font-size: clamp(60px, 9.5vw, 160px); }
+.wk__meta h3 { font-size: clamp(26px, 2.6vw, 42px); line-height: 1.1; }
+.v5stack .panel h3 { font-size: clamp(30px, 3.2vw, 54px); line-height: 1.05; }
+/* ===================== INTERACTION PACK (V5/V6) ===================== */
+/* text-roll buttons */
+.roll { position: relative; display: inline-block; overflow: hidden; height: 1.25em; line-height: 1.25em; vertical-align: middle; }
+.roll__a, .roll__b { display: block; transition: transform .6s var(--ease); white-space: nowrap; }
+.roll__b { position: absolute; left: 0; top: 100%; }
+.pill:hover .roll__a, .pill:hover .roll__b, .pill:focus-visible .roll__a, .pill:focus-visible .roll__b { transform: translateY(-100%); }
+/* glare sweep on images */
+.wk__img::after, .case .media::after, .post .media::after, .feature .media::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, .26) 48%, transparent 62%); transform: translateX(-130%); transition: transform 1.1s var(--ease); }
+.wk:hover .wk__img::after, .case:hover .media::after, .post:hover .media::after, .feature:hover .media::after { transform: translateX(130%); }
+.wk__img { transition: transform .35s var(--ease); transform-style: preserve-3d; }
+/* cursor spotlight on cards */
+.v5stack .panel::after, .course::after, .office::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background: radial-gradient(520px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--amber) 16%, transparent), transparent 46%); opacity: 0; transition: opacity .45s; }
+.v5stack .panel:hover::after, .course:hover::after, .office:hover::after { opacity: 1; }
+.course, .office { position: relative; }
+/* shimmering accent words */
+.v5head .ital { background: linear-gradient(100deg, var(--amber) 38%, #ffffff 50%, var(--amber) 62%) 0 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 6s linear infinite; }
+@keyframes shine { from { background-position: 130% 0; } to { background-position: -130% 0; } }
+/* image trail over the marquee */
+.mq { position: relative; overflow: hidden; }
+.trail { position: absolute; z-index: 3; width: clamp(160px, 16vw, 240px); aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px; pointer-events: none; translate: -50% -50%; box-shadow: 0 24px 60px -24px rgba(0, 0, 0, .55); }
+/* hero light that follows the pointer */
+.hero__spot { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(460px circle at var(--hx, 60%) var(--hy, 40%), rgba(255, 255, 255, .14), transparent 62%); mix-blend-mode: soft-light; transition: opacity .5s; }
+/* back-to-top progress ring */
+.totop { position: fixed; z-index: 44; left: max(20px, env(safe-area-inset-left, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); width: 52px; height: 52px; border-radius: 50%; border: 0; padding: 0; background: var(--ink-1); color: var(--paper); display: grid; place-items: center; cursor: pointer; opacity: 0; transform: translateY(16px) scale(.8); pointer-events: none; transition: opacity .4s, transform .5s var(--ease); box-shadow: 0 12px 30px -14px rgba(0, 0, 0, .45); }
+.totop.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.totop svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.totop circle { fill: none; stroke-width: 2; }
+.totop__bg { stroke: var(--line); }
+.totop__fg { stroke: var(--amber); stroke-linecap: round; }
+.totop span { position: relative; font-size: 18px; transition: transform .4s var(--ease); }
+.totop:hover span { transform: translateY(-3px); }
+@media (prefers-reduced-motion: reduce) { .v5head .ital { animation: none; } .roll__a, .roll__b, .wk__img::after { transition: none; } }
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span>View</span></div>
+<div class="preview" aria-hidden="true"><img alt="" src="img/ph/abs-1.webp"><span>Placeholder visual</span></div>
+<div class="progress" aria-hidden="true"></div>
+<div class="wipe" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="wipe__label" aria-hidden="true"></div>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__in">
+    <div class="gems5"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="loader__count">0</div>
+    <div class="loader__bar"><i></i></div>
+    <div class="mono mute">Webtricker · Studio Dark</div>
+  </div>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Webtricker home"><img src="img/mark.png" alt=""><span>Webtricker</span></a>
+    <nav aria-label="Main">
+      <a href="#about" data-nav="about">About</a><a href="#services" data-nav="services">Services</a><a href="#work" data-nav="work">Portfolio</a><a href="#journal" data-nav="journal">Blog</a><a href="#training" data-nav="training">Training</a><a href="#career" data-nav="career">Career</a>
+    </nav>
+    <div class="top__right">
+      <a class="pill magnetic" href="#contact" data-nav="contact"><i></i>Let's talk</a>
+      <button class="burger magnetic" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="wrap">
+    <ul>
+      <li><a href="#home" data-nav="home"><small>01</small>Home</a></li>
+      <li><a href="#about" data-nav="about"><small>02</small>About</a></li>
+      <li><a href="#services" data-nav="services"><small>03</small>Services</a></li>
+      <li><a href="#work" data-nav="work"><small>04</small>Portfolio</a></li>
+      <li><a href="#journal" data-nav="journal"><small>05</small>Blog</a></li>
+      <li><a href="#training" data-nav="training"><small>06</small>Training</a></li>
+      <li><a href="#career" data-nav="career"><small>07</small>Career</a></li>
+      <li><a href="#contact" data-nav="contact"><small>08</small>Contact</a></li>
+    </ul>
+    <div class="menu__foot mono mute"><span>info@webtricker.com</span><span>+1 (908) 597-4947</span><span>Branchburg NJ · Dhaka · Jamalpur</span></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<main class="page" data-page="home">
+  <section class="hero v5hero v5hero--video">
+    <div class="hero__video" aria-hidden="true"><video id="heroVid" src="img/hero.mp4" poster="img/hero-poster.webp" muted loop playsinline autoplay preload="auto"></video><div class="hero__shade"></div></div>
+    <button class="vidbtn mono" id="vidBtn" type="button" aria-pressed="false" aria-label="Pause background video"><i></i><span>Pause</span></button>
+    <div class="wrap">
+      <div class="hero__kicker mono">Hello People! We are a Creative Digital Agency</div>
+      <h1 class="v5h1" aria-label="We design, develop and deliver pixel-perfect websites.">
+        <span class="hl" data-split aria-hidden="true">We design, develop</span>
+        <span class="hl" data-split aria-hidden="true">&amp; deliver</span>
+        <span class="hl" aria-hidden="true"><em class="ital" data-split>pixel-perfect</em></span>
+        <span class="hl" data-split aria-hidden="true">websites.</span>
+      </h1>
+      <div class="hero__foot">
+        <p class="lead">Webtricker designs, develops, and delivers high-quality, responsive websites — planning, design, development, debugging, marketing and SEO under one roof.</p>
+        <div class="clock"><b>Branchburg, NJ</b><br><span data-tz="America/New_York">--:--</span><br><b>Dhaka</b><br><span data-tz="Asia/Dhaka">--:--</span></div>
+        <div style="display: grid; gap: 18px; justify-items: start;">
+          <a class="pill pill--solid magnetic" href="#contact"><i></i>Have a project in mind?</a>
+          <a class="scrollcue mono" href="#home" data-scroll="#manifesto"><i></i>Scroll to explore</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><div class="clients" aria-label="Clients we've worked with">
+    <span class="mono mute" style="flex: none;">Clients we've worked with</span>
+    <div style="overflow: hidden; flex: 1; min-width: 0;"><div class="clients__track"><span>TKWEEN</span><span>Brilliant Glass</span><span>True Africa</span><span>Neon Treehouse</span><span>airgle</span><span>Bira91</span><span>Everleaf Drinks</span><span aria-hidden="true">TKWEEN</span><span aria-hidden="true">Brilliant Glass</span><span aria-hidden="true">True Africa</span><span aria-hidden="true">Neon Treehouse</span><span aria-hidden="true">airgle</span><span aria-hidden="true">Bira91</span><span aria-hidden="true">Everleaf Drinks</span></div></div>
+  </div></div>
+
+  <section class="chapter manifesto" id="manifesto">
+    <div class="wrap v5split">
+      <span class="mono mute">(00) Why Us ?</span>
+      <p data-words>We are here to assist you with planning, designing, development, debugging, marketing and SEO. We're passionate, detail-driven, and committed to exceeding expectations. Have a project in mind?</p>
+    </div>
+  </section>
+
+  <section class="chapter v5svc" id="reel" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="v5head"><span class="mono mute">(01) Services</span><h2 class="h-lg">Thoughtful <em class="ital">process</em></h2><div style="display: grid; gap: 18px; justify-items: start;"><p class="lead" style="max-width: 22em;">We Think a lot. A one-stop solution for planning, designing, development, debugging, marketing and SEO.</p><a class="pill magnetic" href="#services">See All Service</a></div></div>
+      <div class="v5stack" id="reelTrack"></div>
+    </div>
+  </section>
+
+  <section class="mq" aria-label="Coolest Project">
+    <div class="mq__track">
+      <span class="mq__item">Coolest <em>Project</em><i></i></span><span class="mq__item">Coolest <em>Project</em><i></i></span>
+      <span class="mq__item" aria-hidden="true">Coolest <em>Project</em><i></i></span><span class="mq__item" aria-hidden="true">Coolest <em>Project</em><i></i></span>
+    </div>
+  </section>
+
+  <section class="chapter">
+    <div class="wrap v5head"><span class="mono mute">(02) Selected work</span><h2 class="h-lg">Coolest <em class="ital">projects</em></h2><div class="v5nav"><button class="tsb" type="button" id="wkPrev" aria-label="Previous project">&larr;</button><button class="tsb" type="button" id="wkNext" aria-label="Next project">&rarr;</button></div></div>
+    <div class="swiper v5work" id="wkSwiper" data-cursor="Drag"><div class="swiper-wrapper" id="wkWrap"></div></div>
+    <div class="wrap"><div class="v5bar"><i id="wkBar"></i></div></div>
+    <div class="wrap" style="margin-top: clamp(80px, 10vw, 140px);">
+      <div class="eyebrow mono mute"><span>Project index</span><span>Placeholder visuals</span></div>
+      <ul class="work" id="homeWork"></ul>
+      <div style="margin-top: 48px;"><a class="pill magnetic" href="#work">View All Projects</a></div>
+    </div>
+  </section>
+
+  <section class="chapter" style="padding-top: 0;">
+    <div class="wrap v5head"><span class="mono mute">(03) Stack</span><h2 class="h-lg">Technologies we are <em class="ital">experts</em> in</h2><span></span></div>
+    <div class="tmq"><div class="tmq__row" id="tmq1"></div><div class="tmq__row tmq__row--rev" id="tmq2"></div></div>
+  </section>
+
+  <section class="chapter" style="padding-top: 0;">
+    <div class="wrap">
+      <div class="v5head"><span class="mono mute">(04) Agency Snapshots</span><h2 class="h-lg">Fun <em class="ital">facts</em></h2><span></span></div>
+      <div class="nums">
+        <div class="num"><b><span data-count="5000">5000</span><sup>+</sup></b><span class="mono mute">Projects Completed</span></div>
+        <div class="num"><b><span data-count="17">17</span><sup>+</sup></b><span class="mono mute">Years of Experience</span></div>
+        <div class="num"><b><span data-count="58">58</span><sup>%</sup></b><span class="mono mute">Repeat Clients</span></div>
+        <div class="num"><b><span data-count="21">21</span><sup>%</sup></b><span class="mono mute">Team Growth</span></div>
+      </div>
+      <div style="margin-top: clamp(96px, 12vw, 170px);">
+        <div class="v5head"><span class="mono mute">(05) From Our Clients</span><h2 class="h-lg">Kind <em class="ital">words</em></h2><span></span></div>
+        <div class="tslider"></div>
+      </div>
+      <div style="margin-top: clamp(96px, 12vw, 170px);">
+        <div class="eyebrow mono mute"><span>Our Leaders</span><a href="#about" class="mono" style="text-decoration: none;">Meet the team &rarr;</a></div>
+        <div class="team" id="homeLeaders"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" style="padding-top: 0;">
+    <div class="wrap v5head"><span class="mono mute">(06) Updates · Insights</span><h2 class="h-lg">Our newest <em class="ital">articles</em></h2><div class="v5nav"><button class="tsb" type="button" id="blPrev" aria-label="Previous article">&larr;</button><button class="tsb" type="button" id="blNext" aria-label="Next article">&rarr;</button></div></div>
+    <div class="swiper v5blog" id="blSwiper" data-cursor="Drag"><div class="swiper-wrapper" id="homePosts"></div></div>
+    <div class="wrap" style="margin-top: 40px;"><a class="pill magnetic" href="#journal">All articles</a></div>
+  </section>
+</main>
+
+<!-- ABOUT -->
+<main class="page" data-page="about" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">About · Digital Creative Agency</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words>Building Digital Presence</h1>
+      <div style="display: grid; gap: 24px; justify-items: start;"><p class="lead">A leading responsive web design agency creating stunning, user-friendly websites. Webtricker develops, designs &amp; delivers websites &amp; creative campaigns that drive results.</p><a class="pill magnetic" href="#services">Our Services</a></div>
+    </div>
+  </div></section>
+  <div class="media media--par bleed"><img src="img/ph/office-bright.webp" alt="Bright modern open office" loading="lazy"></div>
+  <section class="chapter"><div class="wrap">
+    <p class="statement">We are a creative studio that specializes in providing <em>high-quality design and branding solutions</em> to businesses and individuals. Our team is composed of talented designers, developers, and marketers.</p>
+    <div class="collage" style="margin-top: clamp(64px, 8vw, 120px);">
+      <div class="media media--par"><img src="img/ph/topdown-work.webp" alt="Person working on a laptop, seen from above" loading="lazy"></div>
+      <div class="media media--par"><img src="img/ph/team-desks.webp" alt="Team at desks in a studio" loading="lazy"></div>
+      <div class="media media--par"><img src="img/ph/desk-laptop.webp" alt="Laptop on a wooden desk" loading="lazy"></div>
+    </div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap sticky2">
+    <div class="sticky2__side">
+      <div class="mono mute">Who we are</div>
+      <h2 class="h-lg">We help to make your website creative</h2>
+      <p class="lead">Webtricker Web Design &amp; Development Agency is a total solution of your website related requirements. From branding to web design and then web design to web development. And finally deploy to the hosting. We do everything as one stop service center.</p>
+    </div>
+    <div class="rows">
+      <div><span>01</span><h3>Our mission</h3><p>Being professional in web development, mobile application, and digital marketing companies. Our mission is to provide customer-centric, result-oriented, cost-competitive innovative &amp; functional IT Solutions to our valuable global clients</p></div>
+      <div><span>02</span><h3>Our goals</h3><p>We are focused on providing your users the BEST experience they can have on your website. We love creating UNIQUE, ELEGANT and USABLE websites built on solid web standards.</p></div>
+      <div><span>03</span><h3>Why us</h3><p>One of the first things you should know about us is that we don't do everything. But what we do, we do well. We always try to value our clients time and money. Let us prove it by involving us with you with any of the following services. We'd be happy to serve you with our maximum effort.</p></div>
+      <div><span>04</span><h3>What we do</h3><p>Web Development · CMS Development · API Development · Digital Marketing</p></div>
+    </div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Agency Snapshots</span><span>Fun Facts</span></div>
+    <div class="nums">
+      <div class="num"><b><span data-count="5000">5000</span><sup>+</sup></b><span class="mono mute">Projects Completed</span></div>
+      <div class="num"><b><span data-count="17">17</span><sup>+</sup></b><span class="mono mute">Years of Experience</span></div>
+      <div class="num"><b><span data-count="58">58</span><sup>%</sup></b><span class="mono mute">Repeat Clients</span></div>
+      <div class="num"><b><span data-count="21">21</span><sup>%</sup></b><span class="mono mute">Team Growth</span></div>
+    </div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Our Team</span><span>Photos coming</span></div>
+    <div class="team" id="aboutTeam"></div>
+    <div class="eyebrow mono mute" style="margin-top: clamp(80px, 10vw, 140px); margin-bottom: 0;"><span>From Our Clients</span><span>Testimonials</span></div>
+    <div class="tslider"></div>
+  </div></section>
+</main>
+
+<!-- SERVICES -->
+<main class="page" data-page="services" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Services list</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words>A full-service digital innovation partner</h1>
+      <p class="lead">Our rich design and technology expertise delivers top brands and digital experiences. We strongly believe that only design reinforced by strategy can provide real results.</p>
+    </div>
+  </div></section>
+  <div class="media media--par bleed"><img src="img/ph/gadgets.webp" alt="Flat lay of devices and tools" loading="lazy"></div>
+  <section class="chapter"><div class="wrap">
+    <div class="tags" id="svcIndex" style="margin-bottom: 40px;"></div>
+    <div id="svcList"></div>
+  </div></section>
+</main>
+
+<!-- PORTFOLIO -->
+<main class="page" data-page="work" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Webtricker Studio · Portfolio</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words>Our Latest</h1>
+      <p class="lead">We are Webtricker. We design, develop, and deliver our clients the highest-quality responsive website development. We promise pixel-perfect results for our client's websites. We don't just code websites; we are self-critical about our work and services to develop and serve the best of the best to our clients and partners.</p>
+    </div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="filters" role="group" aria-label="Filter projects">
+      <button class="tag" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="tag" type="button" data-filter="CMS" aria-pressed="false">CMS</button>
+      <button class="tag" type="button" data-filter="Custom Code" aria-pressed="false">Custom Code</button>
+      <button class="tag" type="button" data-filter="Shopify Development" aria-pressed="false">Shopify Development</button>
+    </div>
+    <div class="cases" id="cases"></div>
+    <div style="margin-top: 96px; display: flex; gap: 8px; justify-content: center;"><span class="tag" style="background: var(--paper); color: var(--ink-0);">1</span><span class="tag">2</span><span class="tag">3</span></div>
+  </div></section>
+</main>
+
+<!-- BLOG -->
+<main class="page" data-page="journal" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Updates · Insights</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words>Our Blog</h1>
+      <p class="lead">Experience the synergy of design and technology. As a full-service digital partner, we bring your brand to life through transformative digital solutions and captivating experiences.</p>
+    </div>
+  </div></section>
+  <section class="wrap">
+    <a class="feature" href="#article" data-post="1">
+      <div class="media"><img src="img/ph/notebook.webp" alt="Desk with notebook, phone and laptop" loading="lazy"><span class="media__tag">Featured</span></div>
+      <div><div class="post__meta"><span class="mono" style="color: var(--amber);">Affiliate</span><span class="mono mute">6 Jan 2025</span></div><h2>Amazon Affiliate Content Writer: The Key to Traffic and Increased Earnings</h2><p class="lead">Discover how a professional Amazon affiliate content writer boosts traffic and earnings. Get expert content help from Webtricker today!</p><div style="margin-top: 28px;"><span class="textlink">Read More <span class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span></span></div></div>
+    </a>
+  </section>
+  <section class="chapter"><div class="wrap">
+    <div class="filters" id="blogTabs" role="group" aria-label="Blog categories"></div>
+    <div class="posts" id="blogGrid"></div>
+  </div></section>
+</main>
+
+<!-- ARTICLE -->
+<main class="page" data-page="article" hidden>
+  <section class="pagehead" style="padding-bottom: 48px;"><div class="wrap article__head">
+    <div class="pagehead__crumb mono mute"><a href="#journal" style="text-decoration: none;">Blog</a>&nbsp;· <span id="artMeta">Affiliate · Published 6 Jan 2025</span></div>
+    <h1 class="h-lg page-title" id="artTitle">Amazon Affiliate Content Writer: The Key to Traffic and Increased Earnings</h1>
+    <div class="tags" style="margin-top: 28px;"><span class="tag" id="artCat" style="border-color: var(--amber); color: var(--amber);">Affiliate</span><span class="tag">[Author]</span><span class="tag">[X] min read</span></div>
+  </div></section>
+  <div class="media media--par bleed" style="height: clamp(260px, 46vw, 620px);"><img id="artCover" src="img/ph/notebook.webp" alt="Desk with notebook, phone and laptop" loading="lazy"><span class="media__tag">Cover placeholder</span></div>
+  <section class="chapter"><div class="wrap article__body">
+    <aside class="toc">
+      <div class="mono mute" id="artTocLbl">On this page</div>
+      <nav id="artToc">
+        <a href="#article" data-scroll="#a1"><span>01</span>What makes an Amazon affiliate content writer different?</a>
+        <a href="#article" data-scroll="#a2"><span>02</span>Why "good enough" content is costing you money</a>
+        <a href="#article" data-scroll="#a2"><span>03</span>How our writers build a winning strategy</a>
+        <a href="#article" data-scroll="#a2"><span>04</span>Essential content types that convert</a>
+        <a href="#article" data-scroll="#a2"><span>05</span>How to evaluate your current content</a>
+        <a href="#article" data-scroll="#a2"><span>06</span>The long-term value of a professional writer</a>
+        <a href="#article" data-scroll="#afaq"><span>FAQ</span>Frequently asked questions</a>
+      </nav>
+      <a class="pill pill--solid magnetic" href="#contact">Free Consultation</a>
+    </aside>
+    <div class="prose">
+      <div id="artGeneric" hidden><p class="big" id="artLead"></p><p class="todo">Full article body loads from the CMS and renders with the same Quick Answer box, headings, lists, images and FAQ styles shown on the sample post (Amazon Affiliate Content Writer).</p></div>
+      <div id="artAmazon">
+      <div class="answer glass"><div class="spectrum" style="position: absolute; left: 0; right: 0; top: 0;"><i></i><i></i><i></i><i></i><i></i></div><b>Quick Answer</b>An Amazon affiliate content writer is a specialist who creates SEO-optimized, high-converting content for affiliate marketing websites. They combine deep product research, persuasive writing, and strategic SEO to turn casual readers into buyers. With AI content flooding the internet, professional human writers are more valuable than ever for building trust, authority, and long-term affiliate income.</div>
+      <p class="big">In the competitive world of Amazon Associates, traffic is only half the battle.</p>
+      <p>You can have thousands of visitors landing on your site every day, but if your content doesn't connect with them — if it doesn't answer their questions, build their trust, and guide them toward a decision — your earnings will stay flat no matter how many people show up.</p>
+      <p>The secret weapon of the most successful affiliate marketers isn't just their domain authority or their backlink profile. It's their content — and specifically, the quality of writing behind it.</p>
+      <p>An Amazon affiliate content writer isn't just someone who puts words on a page. They're a strategist, a researcher, and a persuasive communicator all in one. This guide breaks down exactly why hiring a professional Amazon affiliate content writer is one of the smartest investments you can make for your affiliate business, and what great affiliate content actually looks like in practice.</p>
+      <h2 id="a1">1. What Makes an Amazon Affiliate Content Writer Different?</h2>
+      <p>Anyone can describe a product. Not everyone can sell it.</p>
+      <p>A professional Amazon affiliate content writer understands the delicate balance between SEO (getting people to your page) and CRO (converting those visitors into buyers). These two goals don't always point in the same direction, and knowing how to serve both at once is a skill that takes time and experience to develop.</p>
+      <ul>
+        <li><b>Understanding user intent.</b> When someone searches "best noise-canceling headphones under $100," they aren't looking for a technical specification sheet. They want a clear, confident recommendation that solves their problem.</li>
+        <li><b>The art of the product review.</b> Writing a review isn't copying bullet points from the Amazon listing. A skilled writer studies real customer reviews, both positive and critical, to surface insights that feel genuine, and builds comparison tables readers can scan at a glance.</li>
+        <li><b>Strategic placement of affiliate links.</b> A professional positions CTAs at the natural decision points in the content, not randomly scattered throughout, and not crammed in at the end once the reader has already moved on.</li>
+      </ul>
+      <div class="media media--par"><img src="img/ph/typing.webp" alt="Hands typing on a laptop" loading="lazy"><span class="media__tag">Infographic placeholder</span></div>
+      <h2 id="a2">2. Why "Good Enough" Content Is Costing You Money</h2>
+      <p class="todo">Sections 2–6 come from the CMS and render with these same heading, paragraph, list and image styles.</p>
+      <h2 id="afaq">Frequently Asked Questions</h2>
+      <p class="todo">FAQ entries from the CMS — each an h3 question plus answer, marked up with FAQPage schema.</p>
+      </div>
+      <div class="pn" style="margin-top: 64px;">
+        <a class="glass" href="#article" id="pnPrev" data-post="2"><span class="mono mute">← Previous Blog</span><strong id="pnPrevT">How to Be an Affiliate Marketer: A Step-by-Step Guide</strong></a>
+        <a class="glass" href="#article" id="pnNext" data-post="0" style="text-align: right;"><span class="mono mute">Next Blog →</span><strong id="pnNextT">Affiliate WordPress Custom Website Development Services</strong></a>
+      </div>
+    </div>
+  </div></section>
+</main>
+
+<!-- TRAINING -->
+<main class="page" data-page="training" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Online School · Training</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words style="font-size: clamp(42px, 8vw, 120px);">Professional Training Courses</h1>
+      <p class="lead">Enhance your skills with our comprehensive training programs designed for modern professionals. Pay in easy monthly installments — no large upfront payment.</p>
+    </div>
+  </div></section>
+  <div class="media media--par bleed"><img src="img/ph/team-desks.webp" alt="Learners working together at a long desk" loading="lazy"></div>
+  <section class="chapter"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Courses</span><span>9</span></div>
+    <div class="courses" id="courses"></div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Why Choose Our Training Programs?</span><span>5 reasons</span></div>
+    <div class="why">
+      <div><span class="gem" style="--c: var(--blue);"></span><strong>Expert Instructors</strong><span>Learn from industry professionals with years of experience</span></div>
+      <div><span class="gem" style="--c: var(--green);"></span><strong>Flexible Learning</strong><span>Choose between online and offline modes based on your preference</span></div>
+      <div><span class="gem" style="--c: var(--sky);"></span><strong>Easy Installments</strong><span>Pay in easy monthly installments — no large upfront payment</span></div>
+      <div><span class="gem" style="--c: var(--crimson);"></span><strong>Free Internship</strong><span>Get hands-on experience with our complimentary internship program</span></div>
+      <div><span class="gem" style="--c: var(--amber);"></span><strong>Job Placement</strong><span>Career support and job placement assistance after internship completion</span></div>
+    </div>
+  </div></section>
+</main>
+
+<!-- CAREER -->
+<main class="page" data-page="career" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Career · Join the team</div>
+    <div class="pagehead__grid">
+      <h1 class="h-xl page-title" data-split-words>Do you have the courage?</h1>
+      <p class="lead">To be a part of challenging people. If you are a self motivated, confident but not over confident, hardworking, energetic, creative, team player and eager to achieve something extraordinary then you are surely welcome to a dynamic team!</p>
+    </div>
+  </div></section>
+  <div class="media media--par bleed"><img src="img/ph/lounge.webp" alt="Bright office lounge with people working" loading="lazy"></div>
+  <section class="chapter"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Open roles</span><span>8 openings</span></div>
+    <ul class="jobs" id="jobs"></ul>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>What you can expect from us</span><span>Respected, supported, valued</span></div>
+    <div class="sticky2">
+      <div class="sticky2__side"><h2 class="h-lg">Benefits &amp; Perks</h2><div class="media media--par"><img src="img/ph/team-work.webp" alt="Team collaborating at a table" loading="lazy"></div></div>
+      <div class="rows" id="perks"></div>
+    </div>
+    <div class="sticky2" style="margin-top: clamp(80px, 10vw, 140px);">
+      <div class="sticky2__side"><h2 class="h-lg">How We Value Our Team</h2><p class="lead">We want every person here to feel respected, supported, and valued as a real team member.</p></div>
+      <div class="rows" id="values"></div>
+    </div>
+  </div></section>
+</main>
+
+<!-- JOB DETAIL -->
+<main class="page" data-page="job" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute"><a href="#career" style="text-decoration: none;">Career</a>&nbsp;· Career Opportunity</div>
+    <h1 class="h-xl page-title" id="jobTitle" style="font-size: clamp(42px, 8vw, 128px);">Intern Full Stack Web Developer</h1>
+    <div class="tags" style="margin-top: 28px;"><span class="tag" id="jobTypeTag" style="border-color: var(--amber); color: var(--amber);">Internship</span><span class="tag" id="jobDeptTag">Development</span><span class="tag">Onsite · Bangladesh</span><span class="tag">Entry</span><span class="tag">Vacancy: 1</span></div>
+  </div></section>
+  <div class="media media--par bleed" style="height: clamp(240px, 40vw, 560px);"><img id="jobCover" src="img/ph/laptop-man.webp" alt="Developer working on a laptop" loading="lazy"></div>
+  <section class="chapter"><div class="wrap job">
+    <div class="job__main">
+      <div id="jobGeneric" hidden><p class="statement" style="font-size: clamp(24px, 2.6vw, 38px);">Join Webtricker LLC — a US-registered web development company with a Bangladesh-based delivery team.</p><p class="todo" style="margin-top: 28px;">Role details for this opening come from the careers CMS and render in the same blocks as the sample role: About This Role, Responsibilities, Requirements, Nice To Have, Benefits, How to Apply.</p></div>
+      <div id="jobFull" class="job__main">
+      <p class="statement" style="font-size: clamp(24px, 2.6vw, 38px);">Webtricker LLC is hiring an Intern Full Stack Web Developer with interest in MERN Stack and Laravel. This internship is for motivated learners who want hands-on experience building modern websites, APIs, dashboards, and web applications.</p>
+      <div class="job__block"><h2>About This Role</h2><div><p>Webtricker LLC is a US-registered web development company with a Bangladesh-based delivery team and more than 17 years of senior development experience. We build websites, eCommerce platforms, dashboards, and digital products for international clients.</p><p>We are looking for an Intern Full Stack Web Developer who is eager to learn professional development workflows using MERN Stack and Laravel.</p><p>The selected intern will work with experienced developers, receive practical project exposure, and contribute to real web development tasks under guidance.</p></div></div>
+      <div class="job__block"><h2>Responsibilities</h2><ul class="bullets"><li>Assist in building websites, APIs, dashboards, and web application features</li><li>Work with React, Node.js, Express, MongoDB, PHP, Laravel, and MySQL depending on project needs</li><li>Convert UI designs into responsive frontend interfaces</li><li>Support backend API development, database operations, and admin dashboard tasks</li><li>Debug issues and improve existing website features under senior guidance</li><li>Follow coding standards, Git workflows, and project documentation practices</li><li>Learn deployment, performance, SEO-friendly development, and maintenance workflows</li></ul></div>
+      <div class="job__block"><h2>Requirements</h2><ul class="bullets"><li>Basic knowledge of HTML, CSS, JavaScript, and responsive web development</li><li>Understanding of React or willingness to learn React quickly</li><li>Basic understanding of Node.js/Express or PHP/Laravel</li><li>Familiarity with databases such as MongoDB or MySQL</li><li>Ability to learn, ask questions, and complete assigned tasks responsibly</li><li>Basic Git/GitHub knowledge</li><li>Strong interest in becoming a professional full stack web developer</li></ul></div>
+      <div class="job__block"><h2>Nice To Have</h2><ul class="bullets"><li>Personal or academic projects using React, MERN Stack, Laravel, or PHP</li><li>Basic Tailwind CSS experience</li><li>Understanding of REST APIs and authentication concepts</li><li>Interest in SEO-friendly, performance-focused web development</li></ul></div>
+      <div class="job__block"><h2>Benefits</h2><ul class="bullets"><li>Hands-on learning with an experienced development team</li><li>Real project exposure in web development and digital services</li><li>Mentorship and practical skill development</li><li>Opportunity for long-term career growth based on performance</li><li>Collaborative and learning-focused work environment</li></ul></div>
+      <div class="job__block"><h2>How to Apply</h2><div><p>Send your CV, GitHub/profile links, sample projects if available, and a short cover note to <b style="color: var(--paper);">career@webtricker.com</b>.</p><p>Subject line: <b style="color: var(--paper);">Intern Full Stack Web Developer - MERN Stack/Laravel</b></p></div></div>
+    </div></div>
+    <aside class="summary glass">
+      <h3>Job Summary</h3>
+      <dl><div><dt>Department</dt><dd id="jobDept">Development</dd></div><div><dt>Location</dt><dd>Bangladesh</dd></div><div><dt>Employment</dt><dd id="jobEmp">Internship</dd></div><div><dt>Experience</dt><dd id="jobExp">Entry</dd></div><div><dt>Work Mode</dt><dd>Onsite</dd></div><div><dt>Vacancy</dt><dd>1</dd></div><div><dt>Salary</dt><dd>Negotiable</dd></div></dl>
+      <button class="pill pill--solid copy" type="button" data-copy="career@webtricker.com" style="width: 100%;">Apply Now · career@ <small>Copy</small></button>
+    </aside>
+  </div></section>
+</main>
+
+<!-- CASE STUDY -->
+<main class="page" data-page="case" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute"><a href="#work" style="text-decoration: none;">Portfolio</a>&nbsp;· Case study</div>
+    <h1 class="h-xl page-title" id="caseTitle">TKWEEN</h1>
+    <div class="meta4">
+      <div><span class="mono mute">Client</span><b id="caseClient">TKWEEN</b></div>
+      <div><span class="mono mute">Category</span><b id="caseCat">Custom Code</b></div>
+      <div><span class="mono mute">Year</span><b>[Year]</b></div>
+      <div><span class="mono mute">Live site</span><b>[URL]</b></div>
+    </div>
+  </div></section>
+  <div class="media media--par bleed"><img id="caseCover" src="img/ph/abs-2.webp" alt="" loading="lazy"><span class="media__tag">Project screenshot placeholder</span></div>
+  <section class="chapter"><div class="wrap sticky2">
+    <div class="sticky2__side"><div class="mono mute">Overview</div><h2 class="h-lg">The brief</h2><p class="lead">[One-paragraph project summary: who the client is and what the site needed to do.]</p></div>
+    <div class="rows">
+      <div><span>01</span><h3>Challenge</h3><p>[What the client needed and what stood in the way — 2–3 sentences.]</p></div>
+      <div><span>02</span><h3>Solution</h3><p>[What Webtricker designed and built: platform, key features, integrations.]</p></div>
+      <div><span>03</span><h3>Results</h3><p>[Measurable outcome: load speed, conversions, traffic, launch date.]</p></div>
+      <div><span>04</span><h3>Services</h3><p>[e.g. UI/UX Design · WordPress Development · SEO]</p></div>
+    </div>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Screens</span><span>Placeholder visuals</span></div>
+    <div class="gallery">
+      <div class="media media--par reveal-clip"><img id="caseG1" src="img/ph/abs-4.webp" alt="" loading="lazy"></div>
+      <div class="media reveal-clip"><img id="caseG2" src="img/ph/abs-6.webp" alt="" loading="lazy"></div>
+      <div class="media reveal-clip"><img id="caseG3" src="img/ph/abs-8.webp" alt="" loading="lazy"></div>
+    </div>
+    <div class="pn" style="margin-top: clamp(80px, 10vw, 140px);">
+      <a class="glass" href="#work"><span class="mono mute">← All projects</span><strong>Portfolio</strong></a>
+      <a class="glass" href="#case" id="caseNext" data-case="1" style="text-align: right;"><span class="mono mute">Next project →</span><strong id="caseNextName">Brilliant Glass</strong></a>
+    </div>
+  </div></section>
+</main>
+
+<!-- PRIVACY -->
+<main class="page" data-page="privacy" hidden>
+  <section class="pagehead"><div class="wrap"><div class="pagehead__crumb mono mute">Legal · Last Updated: September 18, 2025</div><h1 class="h-xl page-title" data-split-words>Privacy Policy</h1></div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap legal" id="legalPrivacy"></div></section>
+</main>
+
+<!-- TERMS -->
+<main class="page" data-page="terms" hidden>
+  <section class="pagehead"><div class="wrap"><div class="pagehead__crumb mono mute">Legal · Last Updated: September 18, 2025</div><h1 class="h-xl page-title" data-split-words>Terms &amp; Conditions</h1></div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap legal" id="legalTerms"></div></section>
+</main>
+
+<!-- CONTACT -->
+<main class="page" data-page="contact" hidden>
+  <section class="pagehead"><div class="wrap">
+    <div class="pagehead__crumb mono mute">Webtricker Web &amp; Design Solutions · Say hello to us</div>
+    <h1 class="h-xl page-title" data-split-words>Get in touch</h1>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap contact">
+    <div class="contact__col">
+      <div class="media media--par" style="aspect-ratio: 4 / 3;"><img src="img/ph/phone.webp" alt="Telephone on a desk" loading="lazy"></div>
+      <div><div class="mono mute" style="margin-bottom: 14px;">Email Address</div><div style="display: grid; gap: 6px; justify-items: start;"><button class="copy big-copy" type="button" data-copy="info@webtricker.com">info@webtricker.com <small>Copy</small></button><button class="copy big-copy" type="button" data-copy="inquiry@webtricker.com">inquiry@webtricker.com <small>Copy</small></button><button class="copy big-copy" type="button" data-copy="career@webtricker.com">career@webtricker.com <small>Copy</small></button></div></div>
+      <div><div class="mono mute" style="margin-bottom: 14px;">Phone Number</div><div style="display: grid; gap: 4px; justify-items: start;">
+        <button class="copy" type="button" data-copy="+19085974947">+1 (908) 597-4947 <small>Copy</small></button><button class="copy" type="button" data-copy="+19085028252">+1 (908) 502-8252 <small>Copy</small></button><button class="copy" type="button" data-copy="+8801712377577">+8801712377577 <small>Copy</small></button><button class="copy" type="button" data-copy="+8801793544335">+8801793544335 <small>Copy</small></button><button class="copy" type="button" data-copy="+8809639237101">+8809639237101 <small>Copy</small></button><button class="copy" type="button" data-copy="+8801785696469">+8801785696469 <small>Copy</small></button><button class="copy" type="button" data-copy="+8809639237100">+8809639237100 <small>Copy</small></button>
+      </div></div>
+    </div>
+    <form class="form glass" id="contactForm" novalidate>
+      <div class="field"><label for="cName">Name</label><input id="cName" name="name" type="text" placeholder="Your Name" autocomplete="name" required></div>
+      <div class="field"><label for="cEmail">Email</label><input id="cEmail" name="email" type="email" placeholder="email@company.com" autocomplete="email" required></div>
+      <div class="field"><label for="cMsg">Your Queries</label><textarea id="cMsg" name="message" placeholder="Let us know how we can help you" required></textarea></div>
+      <button class="pill pill--solid magnetic" type="submit" style="height: 58px;">Send Message</button>
+      <p class="form__msg" id="formMsg" role="status"></p>
+    </form>
+  </div></section>
+  <section class="chapter" style="padding-top: 0;"><div class="wrap">
+    <div class="eyebrow mono mute"><span>Contact Information</span><a class="mono" href="https://maps.google.com/?q=Webtricker+Web+and+Design+Solutions+Jamalpur" target="_blank" rel="noopener" style="text-decoration: none;">Open in Google Maps ↗</a></div>
+    <div class="offices">
+      <div class="office glass"><span class="mono mute">USA</span><strong>US Office</strong><p>971 US Highway 202N, Ste N, Branchburg, New Jersey 08876, USA</p></div>
+      <div class="office glass"><span class="mono mute">Bangladesh</span><strong>Dhaka Office</strong><p>KHL Laboni's Dream, Plot-06, Afroza Begum Rd, Dhaka 1229</p></div>
+      <div class="office glass"><span class="mono mute">Bangladesh · 5.0 ★ (50)</span><strong>Jamalpur Office</strong><p>House No-46, Zia College Moar, Beside Sohid Minar, Jamalpur, Bangladesh</p></div>
+    </div>
+  </div></section>
+</main>
+
+<!-- FOOTER (shared) -->
+<footer class="finale" id="footer">
+  <div class="wrap">
+    <div class="eyebrow mono mute"><span>Have a project in mind?</span><span>Contact Us</span></div>
+    <a class="finale__big" href="#contact"><span>Let's</span><span>Talk</span></a>
+    <div class="contacts">
+      <div><h4 class="mono mute">Email Address</h4><ul><li><button class="copy" type="button" data-copy="info@webtricker.com">info@webtricker.com <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="inquiry@webtricker.com">inquiry@webtricker.com <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="career@webtricker.com">career@webtricker.com <small>Copy</small></button></li></ul></div>
+      <div><h4 class="mono mute">Phone · Hotline</h4><ul><li><button class="copy" type="button" data-copy="+19085974947">+1 (908) 597-4947 <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="+19085028252">+1 (908) 502-8252 <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="+8801712377577">+8801712377577 <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="+8801793544335">+8801793544335 <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="+8809639237101">+8809639237101 <small>Copy</small></button></li><li><button class="copy" type="button" data-copy="+8801785696469">+8801785696469 <small>Copy</small></button></li></ul></div>
+      <div><h4 class="mono mute">Address</h4><p><b>US Office</b>971 US Highway 202N, Ste N, Branchburg, New Jersey 08876, USA</p><p><b>Dhaka Office</b>KHL Laboni's Dream, Plot-06, Afroza Begum Rd, Dhaka 1229</p><p><b>Jamalpur Office</b>House No-46, Zia College Moar, Beside Sohid Minar, Jamalpur, Bangladesh</p></div>
+      <div>
+        <h4 class="mono mute">Subscribe to our newsletter</h4>
+        <form class="sub" id="subForm"><label class="sr" for="subEmail">Email</label><input id="subEmail" type="email" placeholder="Enter your email" required><button type="submit">Subscribe</button></form>
+        <div class="sub__msg" id="subMsg" role="status"></div>
+        <h4 class="mono mute" style="margin-top: 24px;">Our Pages</h4>
+        <ul style="grid-template-columns: 1fr 1fr;"><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#work">Portfolios</a></li><li><a href="#journal">Blog</a></li><li><a href="#career">Career</a></li><li><a href="#contact">Contact</a></li><li><a href="#training">Online School</a></li></ul>
+      </div>
+    </div>
+    <p class="wordmark" aria-hidden="true">Webtricker</p>
+  </div>
+  <div class="spectrum" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap"><div class="bar"><span>© 2014 - 2026 Webtricker Web Design &amp; Development Agency. / Webtricker LLC. All Rights Reserved.</span><span><a href="#privacy">Privacy &amp; Policy</a> · <a href="#terms">Terms &amp; Condition</a> · Placeholder photos: Unsplash</span></div></div>
+</footer>
+
+<a class="fab" href="#contact"><i></i>WhatsApp</a>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js"></script>
+<script>
+(function () {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var G = window.gsap, ST = window.ScrollTrigger, hasGsap = !!(G && ST);
+  if (hasGsap) G.registerPlugin(ST); else document.documentElement.classList.add('no-gsap');
+  var W = window.__wt = { scroll: 0, progress: 0, vel: 0, mx: 0, my: 0, route: 'home' };
+  var ARROW = '<span class="arrow"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>';
+  var ARROW_UP = '<span class="arrow"><svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"></path></svg></span>';
+  function el(html) { var t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function img(k) { return 'img/ph/' + k + '.webp'; }
+
+  var SERVICES = [
+    { t: 'Web Development', c: '--crimson', img: 'laptop-man', short: 'eCommerce, corporate websites and custom web apps — fast, secure, SEO-optimized, and built to scale.', long: "Webtricker's Web Development Services cover the full range — eCommerce, corporate websites, WordPress, custom web apps, API development, and CMS builds — each optimized for performance, SEO, and long-term scalability.", tags: ['eCommerce', 'Corporate', 'Custom'] },
+    { t: 'WordPress Development', c: '--amber', img: 'typing', short: 'From PSD-to-WordPress and BuddyPress to plugins and WooCommerce store setup.', long: "Webtricker's WordPress Development service covers eight areas — from PSD-to-WordPress conversion and BuddyPress integration to plugin development and WooCommerce store setup, using Divi, Elementor, Oxygen Builder, Astra, and ACF.", tags: ['WooCommerce', 'Plugins', 'ACF'] },
+    { t: 'Shopify Development', c: '--green', img: 'rainbow-laptop', short: 'Design, development, server setup and ongoing optimization, so your store keeps converting.', long: "Webtricker's Shopify Development service covers design, development, server setup, and ongoing optimization, so your Shopify store doesn't just launch, it keeps converting.", tags: ['Themes', 'Apps', 'CRO'], bullets: ['Shopify agencies can customise your website to enhance your brand reputation', 'Shopify agencies can enhance your Shopify templates to meet your specific needs', 'Shopify agencies can provide support and guidance throughout the process of setting up and running'] },
+    { t: 'Other CMS Development', c: '--blue', img: 'stationery', short: 'Laravel, Wix, Webflow and Ghost, matched to what your project actually needs.', long: "Webtricker's CMS Development Services span Laravel, Wix, Webflow, and Ghost, matched to your project's actual needs, from custom backend logic to fast, distraction-free publishing.", tags: ['Laravel', 'Wix', 'Webflow', 'Ghost'], bullets: ['Laravel', 'Wix', 'Webflow', 'Ghost'] },
+    { t: 'MERN Development', c: '--sky', img: 'light-trails', short: 'MongoDB, Express.js, React.js and Node.js in one full-stack JavaScript architecture.', long: "Webtricker's MERN Stack Development service combines MongoDB, Express.js, React.js, and Node.js into one full-stack JavaScript architecture, with Next.js, Tailwind UI, and Material UI for projects that need additional performance or design tooling.", tags: ['MongoDB', 'Express', 'React', 'Node'], bullets: ['Scalability and Performance', 'Node.js in the Enterprise'] },
+    { t: 'API Development', c: '--blue', img: 'code', short: 'Secure REST APIs with OAuth2, booking platforms like Airbnb & VRBO, job portals, payment systems, and custom integrations.', long: "Webtricker's API Development service covers custom REST API builds, OAuth2 security, third-party integrations (Airbnb, VRBO, Indeed), API documentation, and ongoing maintenance.", tags: ['REST', 'OAuth2', 'Integrations'] },
+    { t: 'Web Application Development', c: '--amber', img: 'topdown-work', short: 'SPAs, multi-page platforms and business tools in React, Next.js, Node.js, PHP, MySQL & MongoDB.', long: "Webtricker's Web App Development service covers single-page applications, multi-page platforms, and custom business tools, built in React, Next.js, Node.js, PHP, MySQL, and MongoDB, through a full design-to-deployment pipeline.", tags: ['SPA', 'Next.js', 'PHP'] },
+    { t: 'SEO, AEO, GEO, AIO', c: '--green', img: 'desk-flat', short: 'Technical, on-page & off-page SEO in four connected stages, so you rank higher and grow organic traffic.', long: "SEO Development Services improve your website's visibility on search engines through four connected stages — technical SEO, on-page SEO, off-page SEO, and continuous analysis — so you rank higher and grow organic traffic.", tags: ['SEO', 'AEO', 'GEO', 'AIO'], bullets: ['Technical SEO', 'On-page SEO', 'Off-page SEO', 'Analyze and improve'] },
+    { t: 'Digital Marketing', c: '--crimson', img: 'team-work', short: 'SEO, content, social, email, PPC & influencer marketing in one coordinated strategy.', long: "Webtricker's Digital Marketing Services bring together SEO, content marketing, social media, email, PPC, and influencer marketing into one data-driven strategy.", tags: ['SEO', 'PPC', 'Social', 'Email'] },
+    { t: 'Training & Internship', c: '--sky', img: 'team-desks', short: 'Structured, project-based learning across 11 tracks with a genuine internship.', long: "Webtricker's Training & Internship Programs combine structured, project-based learning across 11 tracks with a genuine internship, so you graduate with real skills and real experience.", tags: ['11 tracks', 'Internship'], bullets: ['Web Development Training', 'API Development Training', 'Web Application', 'MERN stack development', 'WordPress Development', 'Shopify Development', 'Digital Marketing Services'], link: 'training' }
+  ];
+  var PROJECTS = [
+    ['TKWEEN', 'Custom Code', 'abs-2'], ['Brilliant Glass', 'CMS', 'abs-9'], ['True Africa', 'CMS', 'abs-1'], ['Pizzycle', 'Shopify Development', 'abs-5'],
+    ['Taproom', 'CMS', 'abs-4'], ['Infernoco', 'Shopify Development', 'abs-8'], ['Bira91', 'CMS', 'abs-3'], ['Neon Treehouse', 'Custom Code', 'abs-6'], ['airgle', 'Shopify Development', 'abs-7']
+  ];
+  var POSTS = [
+    ['Affiliate', '24 Jan 2025', 'Affiliate WordPress Custom Website Development Services', 'Get expert affiliate WordPress development with high-converting design, fast speed, and SEO strategy. Get your free quote from Webtricker.'],
+    ['Affiliate', '6 Jan 2025', 'Amazon Affiliate Content Writer: The Key to Traffic and Increased Earnings', 'Discover how a professional Amazon affiliate content writer boosts traffic and earnings. Get expert content help from Webtricker.', 'article'],
+    ['Affiliate', '10 Jul 2024', 'How to Be an Affiliate Marketer: A Step-by-Step Guide', 'Learn how to be an affiliate marketer with this expert step-by-step guide. Start building passive income with Webtricker today!'],
+    ['Affiliate', '17 Jun 2024', 'Top 10 Affiliate Programs Ideal for Beginners', 'Discover the top 10 affiliate programs for beginners with easy setup and great earning potential.'],
+    ['Design', '24 Jul 2024', 'Responsive Web Design and UX: A Practical Guide', 'The line between "mobile users" and "desktop users" has mostly disappeared — people switch between phones, tablets, and laptops.'],
+    ['Design', '24 Jul 2024', 'Essential Elements of Effective Ecommerce Website Design', "An ecommerce website is far more than an online catalog — it's a sales engine that has to build trust and guide a purchase."],
+    ['Design', '5 Jul 2024', 'Best Modern Web Design Trends: A Comprehensive Guide', 'Web design keeps shifting as user expectations evolve, and the trends that matter right now are less about novelty.'],
+    ['Design', '3 Jun 2021', 'How to Create an Online Design Portfolio That Gets You Hired', 'Your online design portfolio is your most powerful career tool, whether you are a graphic, UX or web designer.'],
+    ['Development', '24 Jul 2024', 'Future of Artificial Intelligence: Key Trends, Opportunities', 'Ten years ago, most conversations about artificial intelligence sounded like science fiction. Today AI helps people write and build.'],
+    ['Development', '10 Jul 2024', 'Custom Web Development: Tailored Solutions for Your Business', 'Most websites on the internet look kind of the same — same layout, same button styles, same generic sections.'],
+    ['Development', '24 Jun 2024', 'Ecommerce Website Builder for Online Stores: The Complete Guide', 'The way people shop has changed completely. Customers no longer need to visit a physical store to browse, compare, and buy.'],
+    ['Development', '6 Jul 2021', 'How to Become a Full Stack Developer: The Ultimate Roadmap', 'A full stack developer is someone who can work across the entire web application, from the interface to the server.'],
+    ['Marketing', '15 Aug 2024', 'Facebook Advertising Agencies: How to Choose the Right One', 'Facebook advertising agencies are the difference between ad spend that quietly drains your budget and campaigns that generate results.'],
+    ['Marketing', '12 Jul 2024', "Introduction to Amazon Affiliate Marketing: A Beginner's Guide", 'How the Amazon Associates program works, and why most beginners struggle.'],
+    ['Marketing', '8 Jul 2024', 'Web for Marketing: Your Complete Guide to Online Excellence', 'Using a website as an active marketing tool rather than a passive company brochure is one of the most high-leverage moves.'],
+    ['Marketing', '15 Jun 2024', 'Guide to Success in Digital Marketing Careers: Skills to Build', 'Built for anyone serious about turning their skills into a sustainable, high-growth career.'],
+    ['SEO', '3 Jan 2025', 'Free SEO Optimization Checker: The Ultimate Guide to Improving Your Rankings', "Picking the right free SEO optimization checker can save you weeks of guesswork. These tools scan your site and flag what's broken."],
+    ['SEO', '2 Jan 2025', 'Yoast SEO Simplified: A Complete Guide to Higher Search Rankings', 'Search engine optimization can feel overwhelming — algorithm updates, keyword density rules, schema markup, internal linking structures.'],
+    ['SEO', '23 Jul 2024', 'What Is On-Page SEO and Why Does It Matter for Your Website?', "A great-looking website doesn't help much if nobody can find it."],
+    ['SEO', '14 Jul 2024', 'The Most Important Parts of SEO You Need to Get Right', "Understanding the important parts of SEO saves you from wasting time on tactics that don't move the needle."],
+    ['Theme', '5 Aug 2024', 'The Ultimate Guide to the Best Joomla Themes: Free and Premium', 'Discover the best Joomla themes for every need — free, premium, responsive, eCommerce, and more.'],
+    ['Theme', '4 Aug 2024', 'Top Webflow Themes: A Complete Guide to Choosing the Right One', 'Discover the top Webflow themes for businesses, portfolios, and eCommerce.'],
+    ['Theme', '17 Jul 2024', 'The Ultimate Guide to a Responsive Shopify Theme', 'Boost mobile sales, improve SEO, and deliver flawless user experiences.'],
+    ['Theme', '14 Jun 2024', 'Best WordPress Website Themes of All Time', 'Find the perfect balance of speed, design, and features for your site.'],
+    ['Web Design', '24 Jul 2024', 'What Is Web Design? Everything You Need to Know', 'Understanding what web design is, is the first step to building a successful online presence.'],
+    ['Web Design', '15 Jul 2024', 'Best Modern Web Design Trends: A Comprehensive Guide', 'Discover the top modern web design trends shaping the digital landscape.'],
+    ['Web Design', '13 Jul 2024', 'Steps to Choose the Best Web Design Company', 'Your website is your digital storefront, and the team you hire matters.'],
+    ['Web Design', '15 Jun 2024', 'Cost-Effective Web Design for Small Business', "Cost-effective web design proves you don't need a massive corporate budget to compete."]
+  ];
+  var COVERS = ['notebook', 'abs-1', 'desk-laptop', 'abs-5', 'gadgets', 'abs-3', 'pencil', 'neon-city', 'code', 'abs-7', 'typing', 'abs-9', 'stationery', 'light-trails', 'desk-flat', 'abs-2'];
+  var CAT_C = { Affiliate: '--amber', Design: '--sky', Development: '--blue', Marketing: '--crimson', SEO: '--green', Theme: '--sky', 'Web Design': '--amber' };
+  var PEOPLE = [
+    ['MH', 'Mosharaf Hossain', 'Founder & Team Leader', 'abs-1'], ['AM', 'Abd Al Muktadir', 'COO & Growth Marketing Expert', 'abs-6'], ['KH', 'Md Kamrul Hasan', 'CEO', 'abs-4'],
+    ['JS', 'Jakia Sultana', 'Full Stack Developer & CMS Expert', 'abs-9'], ['JI', 'Md. Jahidul Islam', 'Director, Business Development', 'abs-2'], ['KK', 'Kamruzzaman Khondokar', 'Sr. Backend Developer', 'abs-5']
+  ];
+  /* fee: null = pricing being revised; shown as 'Fee updating' until confirmed */
+  var WEB = { fee: '12,000 BDT', tags: ['6 months', '2 packages'], plan: 'Starting from<br>৳4,000 reg + ৳2,000 × 4' };
+  var COURSES = [
+    { g: 'Design & Development' },
+    ['Web Design', 'Learn modern web design principles, responsive layouts, and user experience fundamentals.', '--green', WEB],
+    ['Web Development', 'Master front-end and back-end development with modern frameworks and technologies.', '--blue', WEB],
+    ['MERN Stack Development', 'Full-stack development with MongoDB, Express.js, React, and Node.js.', '--sky'],
+    ['CMS Development', 'Build and customize content management systems using popular platforms.', '--blue'],
+    ['UI-UX Design', 'Design intuitive user interfaces and create exceptional user experiences.', '--crimson'],
+    ['Graphic Design', 'Create stunning visual designs using industry-standard tools and design principles.', '--sky'],
+    { g: 'Marketing' },
+    ['Digital Marketing', 'Learn digital marketing strategies, SEO, social media marketing, and analytics.', '--crimson'],
+    { g: 'Office & Productivity' },
+    ['Microsoft Office Tools Training', 'Master Microsoft Office suite for professional productivity and efficiency.', '--amber', { fee: '4,500 BDT', tags: ['4 months', '4 installments'], plan: 'Paid in month<br>0 · 1 · 2 · 3' }],
+    ['Basic Computer and AI Tools Training', 'Master essential computer skills and modern AI tools for enhanced productivity.', '--green']
+  ];
+  var JOBS = [
+    ['Marketing & Business Growth Strategist', 'Marketing', 'team-work'], ['Intern Full Stack Web Developer', 'Development', 'laptop-man', 'job'], ['Senior UI-UX Designer', 'Design', 'stationery'], ['Laravel Developer Intern', 'Development', 'code'],
+    ['Shopify Developer Intern', 'Development', 'rainbow-laptop'], ['SEO Developer Intern', 'Marketing', 'desk-flat'], ['Digital Marketer Intern', 'Marketing', 'typing'], ['Web Developer Intern', 'Development', 'topdown-work']
+  ];
+  var PERKS = [['Performance Bonuses', 'Two yearly bonuses plus special recognition for exceptional achievements and measurable impact.'], ['Career Development', 'Professional training, skill development sessions, mentoring, and room to grow into stronger responsibilities.'], ['Salary Reviews', 'Salary revision opportunities 2 to 3 times per year based on progress, skill growth, and performance.'], ['Long-Term Security', 'Special gratuity and pension-style packages after long-term service milestones, subject to company policy.'], ['Affiliate Earning', 'Affiliate opportunities to help team members expand income beyond their regular salary.'], ['Daily Workplace Care', 'Refreshment support during office hours and a friendly environment built for sustainable work.']];
+  var VALUES = [['Freedom and Ownership', 'We respect ideas, choices, and thoughtful initiative so team members can contribute beyond a job description.'], ['One-Team Culture', "Anyone's challenge is treated as a shared challenge. We grow together through support, feedback, and trust."], ['Voice in Decisions', 'We listen to practical suggestions from every role and value people who help improve the company.'], ['Path to Partnership', 'Dedicated long-term contributors may get opportunities to become shareholders under specific conditions.'], ['Human Respect', 'People are not treated as ordinary job holders; they are collaborators with goals, families, and futures.'], ['Recognition for Impact', 'Strong contribution, leadership, loyalty, and problem-solving are noticed and rewarded over time.']];
+  var TECH = [['HTML','--blue'],['CSS','--green'],['JavaScript','--amber'],['TypeScript','--sky'],['React.js','--sky'],['Next.js','--paper'],['Node.js','--green'],['Laravel','--crimson'],['MongoDB','--green'],['PostgreSQL','--blue'],['Tailwind CSS','--sky'],['SASS','--crimson'],['Bootstrap','--blue'],['jQuery','--blue'],['GSAP','--green'],['WordPress','--blue'],['Shopify','--green'],['App Development','--amber'],['Kotlin','--crimson'],['Python','--amber']];
+
+  /* render */
+  var reel = document.getElementById('reelTrack');
+  SERVICES.forEach(function (s, i) {
+    reel.appendChild(el('<a class="panel glass" href="#services" style="--c: var(' + s.c + ');"><div class="media"><img src="' + img(s.img) + '" alt="" loading="lazy"></div><div class="panel__top"><span class="mono mute">' + pad(i + 1) + ' / 10</span><span class="gem"></span></div><h3>' + esc(s.t) + '</h3><div style="display: grid; gap: 14px; align-content: end;"><p>' + esc(s.short) + '</p><div class="tags">' + s.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div></div></a>'));
+  });
+  var hw = document.getElementById('homeWork');
+  PROJECTS.slice(0, 6).forEach(function (p, i) {
+    hw.appendChild(el('<li><a href="#case" data-case="' + i + '" data-preview="' + img(p[2]) + '"><span class="mono mute">' + pad(i + 1) + '</span><span class="work__name">' + esc(p[0]) + '</span><span class="work__meta mono mute">' + esc(p[1]) + '</span>' + ARROW_UP + '</a></li>'));
+  });
+  function personHTML(p) { return '<div class="person"><div class="person__card tilt"><img src="' + img(p[3]) + '" alt="" loading="lazy"><b>' + p[0] + '</b><small class="mono">Photo placeholder</small></div><h3>' + esc(p[1]) + '</h3><span class="mono mute">' + esc(p[2]) + '</span></div>'; }
+  var hl = document.getElementById('homeLeaders'); PEOPLE.slice(0, 3).forEach(function (p) { hl.appendChild(el(personHTML(p))); });
+  var at = document.getElementById('aboutTeam'); PEOPLE.forEach(function (p) { at.appendChild(el(personHTML(p))); });
+  function postHTML(p, i) { return '<a class="post" href="#article" data-post="' + i + '"><div class="media"><img src="' + img(COVERS[i % COVERS.length]) + '" alt="" loading="lazy"><span class="media__tag">Cover placeholder</span></div><div class="post__meta"><span class="mono" style="color: var(' + (CAT_C[p[0]] || '--amber') + ');">' + esc(p[0]) + '</span><span class="mono mute">' + p[1] + '</span></div><h3>' + esc(p[2]) + '</h3><p>' + esc(p[3]) + '</p></a>'; }
+  var hp = document.getElementById('homePosts'); [0, 1, 16, 17, 4, 8, 12, 24].forEach(function (i) { hp.appendChild(el(postHTML(POSTS[i], i))); });
+
+  var svcIndex = document.getElementById('svcIndex'), svcList = document.getElementById('svcList');
+  SERVICES.forEach(function (s, i) {
+    var id = 'svc' + i;
+    svcIndex.appendChild(el('<a class="tag" href="#services" data-scroll="#' + id + '"><span class="gem" style="--c: var(' + s.c + '); width: 7px; height: 11px;"></span>' + esc(s.t) + '</a>'));
+    var bullets = s.bullets ? '<ul class="bullets' + (s.bullets.length > 4 ? ' bullets--2' : '') + '">' + s.bullets.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>' : '';
+    var href = s.link ? '#' + s.link : '#contact';
+    svcList.appendChild(el('<article class="svc" id="' + id + '"><div class="media media--par svc__media reveal-clip"><img src="' + img(s.img) + '" alt="" loading="lazy"></div><div class="svc__body"><span class="svc__num mono" style="color: var(' + s.c + ');">' + pad(i + 1) + ' · Creative Digital Studio</span><h2 class="h-lg">' + esc(s.t) + '</h2><p>' + esc(s.long) + '</p>' + bullets + '<a class="textlink" href="' + href + '">Want to know more about ' + esc(s.t) + '? ' + ARROW + '</a></div></article>'));
+  });
+
+  var cases = document.getElementById('cases');
+  PROJECTS.forEach(function (p, k) {
+    cases.appendChild(el('<a class="case" href="#case" data-case="' + k + '" data-cat="' + p[1] + '"><div class="media reveal-clip"><img src="' + img(p[2]) + '" alt="" loading="lazy"><span class="media__tag">Placeholder visual</span></div><div class="case__row"><div><span class="mono mute">' + esc(p[1]) + '</span><h3>' + esc(p[0]) + '</h3></div>' + ARROW_UP + '</div></a>'));
+  });
+  document.querySelectorAll('[data-filter]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var f = b.dataset.filter;
+      document.querySelectorAll('[data-filter]').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      cases.classList.toggle('is-filtered', f !== 'all');
+      cases.querySelectorAll('.case').forEach(function (c) { c.hidden = !(f === 'all' || c.dataset.cat === f); });
+      if (hasGsap) { if (!reduce) G.fromTo('.case:not([hidden])', { y: 40, opacity: .2 }, { y: 0, opacity: 1, duration: .8, stagger: .06, ease: 'expo.out' }); ST.refresh(); }
+    });
+  });
+
+  var tabs = document.getElementById('blogTabs'), grid = document.getElementById('blogGrid');
+  var cats = ['All', 'Affiliate', 'Design', 'Development', 'Marketing', 'SEO', 'Theme', 'Web Design'];
+  function drawPosts(cat) {
+    grid.innerHTML = '';
+    POSTS.forEach(function (p, i) { if (cat === 'All' || p[0] === cat) grid.appendChild(el(postHTML(p, i))); });
+    if (hasGsap) { if (!reduce) G.fromTo(grid.children, { y: 40, opacity: .2 }, { y: 0, opacity: 1, duration: .8, stagger: .04, ease: 'expo.out' }); ST.refresh(); }
+  }
+  cats.forEach(function (c, i) {
+    var b = el('<button class="tag" type="button" aria-pressed="' + (i === 0) + '">' + c + (c === 'All' ? '' : ' <span class="mute">' + POSTS.filter(function (p) { return p[0] === c; }).length + '</span>') + '</button>');
+    b.addEventListener('click', function () { tabs.querySelectorAll('.tag').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); drawPosts(c); });
+    tabs.appendChild(b);
+  });
+  grid.innerHTML = ''; POSTS.forEach(function (p, i) { grid.appendChild(el(postHTML(p, i))); });
+
+  var cg = document.getElementById('courses');
+  COURSES.forEach(function (c) {
+    if (c.g) { cg.appendChild(el('<div class="course-group mono mute">' + esc(c.g) + '</div>')); return; }
+    var f = c[3];
+    var tagsH = f ? f.tags.map(function (t) { return '<span class="tag">' + t + '</span>'; }).join('') : '<span class="tag">New schedule soon</span>';
+    var priceH = f ? '<div class="price"><b>' + f.fee + '</b><span>' + f.plan + '</span></div>' : '<div class="price price--tbc"><b>Fee updating</b><span>Ask us for<br>the next batch</span></div>';
+    cg.appendChild(el('<article class="course glass"><div class="tags"><span class="gem" style="--c: var(' + c[2] + ');"></span>' + tagsH + '</div><h3>' + esc(c[0]) + '</h3><p>' + esc(c[1]) + '</p>' + priceH + '<div class="course__actions"><a class="pill" href="#contact">View Details</a><a class="pill pill--solid" href="#contact">Enroll Now</a></div></article>'));
+  });
+  var jl = document.getElementById('jobs');
+  JOBS.forEach(function (j, i) {
+    jl.appendChild(el('<li><a href="#job" data-job="' + i + '" data-preview="' + img(j[2]) + '"><span class="mono mute">' + pad(i + 1) + '</span><h3>' + esc(j[0]) + '</h3><span class="mono mute job__dept">' + j[1] + '</span><span class="tag job__vac">Vacancy: 1</span>' + ARROW_UP + '</a></li>'));
+  });
+  function rows(id, data) { var r = document.getElementById(id); data.forEach(function (d, i) { r.appendChild(el('<div><span>' + pad(i + 1) + '</span><h3>' + esc(d[0]) + '</h3><p>' + esc(d[1]) + '</p></div>')); }); }
+  rows('perks', PERKS); rows('values', VALUES);
+
+  /* ===================== V5 STUDIO: stack, sliders, marquee ===================== */
+  [].forEach.call(document.querySelectorAll('#reelTrack .panel'), function (pn, i) { pn.style.setProperty('--i', i); });
+  var wkWrap = byId('wkWrap');
+  PROJECTS.forEach(function (p, i) {
+    wkWrap.appendChild(el('<div class="swiper-slide"><a class="wk" href="#case" data-case="' + i + '"><div class="wk__img"><img src="' + img(p[2]) + '" alt="" loading="lazy" draggable="false"><span class="media__tag">Placeholder visual</span></div><div class="wk__meta"><h3>' + esc(p[0]) + '</h3><span class="mono mute">' + pad(i + 1) + ' · ' + esc(p[1]) + '</span></div></a></div>'));
+  });
+  var hpEl = byId('homePosts');
+  [].slice.call(hpEl.children).forEach(function (c) { var sl = document.createElement('div'); sl.className = 'swiper-slide'; hpEl.insertBefore(sl, c); sl.appendChild(c); });
+  function techRow(id, arr) { var h = arr.map(function (t) { return '<span><i class="gem" style="--c: var(' + (t[1] === '--paper' ? '--blue' : t[1]) + ')"></i>' + t[0] + '</span>'; }).join(''); byId(id).innerHTML = h + h.replace(/<span>/g, '<span aria-hidden="true">'); }
+  var halfT = Math.ceil(TECH.length / 2); techRow('tmq1', TECH.slice(0, halfT)); techRow('tmq2', TECH.slice(halfT));
+  /* hero background video: autoplay muted loop, pause control, paused off-screen and for reduced motion */
+  var hv = byId('heroVid'), vb = byId('vidBtn');
+  if (hv && vb) {
+    var setV = function (play) {
+      if (play) { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); } else hv.pause();
+      vb.querySelector('span').textContent = play ? 'Pause' : 'Play'; vb.setAttribute('aria-pressed', String(!play)); vb.setAttribute('aria-label', play ? 'Pause background video' : 'Play background video');
+    };
+    if (reduce) { hv.removeAttribute('autoplay'); setV(false); }
+    vb.addEventListener('click', function () { setV(hv.paused); });
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (es) {
+      if (vb.getAttribute('aria-pressed') === 'true') return;
+      if (es[0].isIntersecting) { var pr = hv.play(); if (pr && pr.catch) pr.catch(function () {}); } else hv.pause();
+    }).observe(hv);
+  }
+  var SW = {};
+  (function initSwipers() {
+    if (!window.Swiper) { document.documentElement.classList.add('no-swiper'); return; }
+    var gut = function () { return Math.max(24, (innerWidth - 1440) / 2 + 24); };
+    var common = { slidesPerView: 'auto', spaceBetween: 20, grabCursor: true, slidesOffsetBefore: gut(), slidesOffsetAfter: gut(), mousewheel: { forceToAxis: true }, keyboard: { enabled: true, onlyInViewport: true } };
+    SW.work = new Swiper('#wkSwiper', Object.assign({}, common, { speed: 1000, watchSlidesProgress: true, freeMode: { enabled: true, momentumRatio: .55, momentumVelocityRatio: .7 },
+      on: {
+        progress: function (sw) {
+          sw.slides.forEach(function (sl) { var im = sl.querySelector('img'); if (im) im.style.transform = 'translate3d(' + (sl.progress * 12).toFixed(2) + '%,0,0) scale(1.24)'; });
+          var b = byId('wkBar'); if (b) b.style.transform = 'scaleX(' + Math.max(0.04, Math.min(1, sw.progress)) + ')';
+        },
+        setTransition: function (sw, d) { sw.slides.forEach(function (sl) { var im = sl.querySelector('img'); if (im) im.style.transitionDuration = d + 'ms'; }); },
+        resize: function (sw) { sw.params.slidesOffsetBefore = gut(); sw.params.slidesOffsetAfter = gut(); sw.update(); }
+      } }));
+    SW.blog = new Swiper('#blSwiper', Object.assign({}, common, { speed: 800, on: { resize: function (sw) { sw.params.slidesOffsetBefore = gut(); sw.params.slidesOffsetAfter = gut(); sw.update(); } } }));
+    byId('wkPrev').addEventListener('click', function () { SW.work.slidePrev(); }); byId('wkNext').addEventListener('click', function () { SW.work.slideNext(); });
+    byId('blPrev').addEventListener('click', function () { SW.blog.slidePrev(); }); byId('blNext').addEventListener('click', function () { SW.blog.slideNext(); });
+  })();
+  // section headings without inline markup -> word masks for scroll reveals
+  document.querySelectorAll('.h-lg, .feature h2').forEach(function (n) {
+    if (n.children.length || n.classList.contains('page-title')) return;
+    splitInto(n, n.textContent.trim()); n.classList.add('rw');
+  });
+
+  /* testimonials slider (home + about): arrows, dots, swipe, 7s autoplay */
+  var TESTI = [
+    ['JW', 'John Wong ( Larry Gong )', 'Chief Executive Officer', "Mosharaf is a great developer in WordPress. I'm very satisfied with his service. Highly recommended!!"],
+    ['SW', 'Shay Wright', 'Director of SEO Big Marketing', "Mosharaf is a pleasure to work with. He and his team do excellent work and are very knowledgeable and talented. If they bid on your project, hire them, and I can assure you won't be disappointed."]
+  ];
+  document.querySelectorAll('.tslider').forEach(function (box) {
+    box.innerHTML = '<div class="tslider__stage" aria-live="polite">' + TESTI.map(function (t, i) { return '<figure class="q' + (i === 0 ? ' is-on' : '') + '"' + (i ? ' aria-hidden="true"' : '') + '><figcaption><span class="avatar">' + t[0] + '</span><b>' + esc(t[1]) + '</b><span class="mono mute">' + esc(t[2]) + '</span></figcaption><blockquote>' + esc(t[3]) + '</blockquote></figure>'; }).join('') +
+      '</div><div class="tslider__nav"><button class="tsb" type="button" data-d="-1" aria-label="Previous testimonial">←</button><button class="tsb" type="button" data-d="1" aria-label="Next testimonial">→</button><div class="tslider__dots">' + TESTI.map(function (t, i) { return '<i' + (i ? '' : ' class="is-on"') + '></i>'; }).join('') + '</div><span class="tslider__count mono mute">01 / ' + pad(TESTI.length) + '</span></div>';
+    var cur = 0, figs = box.querySelectorAll('.q'), dots = box.querySelectorAll('.tslider__dots i'), timer = null, sx = null;
+    function to(n) {
+      var prev = cur; cur = (n + figs.length) % figs.length; if (prev === cur) return;
+      figs.forEach(function (f, i) { f.classList.toggle('is-on', i === cur); if (i === cur) f.removeAttribute('aria-hidden'); else f.setAttribute('aria-hidden', 'true'); });
+      dots.forEach(function (d, i) { d.classList.toggle('is-on', i === cur); });
+      box.querySelector('.tslider__count').textContent = pad(cur + 1) + ' / ' + pad(figs.length);
+      if (hasGsap && !reduce) {
+        var f = figs[cur];
+        G.fromTo(f.querySelector('blockquote'), { y: 40, opacity: 0, clipPath: 'inset(0% 0% 100% 0%)' }, { y: 0, opacity: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'expo.out' });
+        G.fromTo(f.querySelector('figcaption'), { x: -24, opacity: 0 }, { x: 0, opacity: 1, duration: .8, ease: 'power3.out', delay: .1 });
+      }
+    }
+    function restart() { clearInterval(timer); if (!reduce) timer = setInterval(function () { if (box.offsetParent) to(cur + 1); }, 7000); }
+    box.querySelectorAll('.tsb').forEach(function (b) { b.addEventListener('click', function () { to(cur + (+b.dataset.d)); restart(); }); });
+    box.addEventListener('pointerdown', function (e) { sx = e.clientX; });
+    box.addEventListener('pointerup', function (e) { if (sx === null) return; var dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) { to(cur + (dx < 0 ? 1 : -1)); restart(); } });
+    restart();
+  });
+
+  /* text splitting */
+  document.querySelectorAll('[data-split]').forEach(function (n) {
+    var t = n.textContent; n.textContent = '';
+    t.split('').forEach(function (c) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = c === ' ' ? ' ' : c; n.appendChild(s); });
+  });
+  document.querySelectorAll('[data-split-words]').forEach(function (n) {
+    var txt = n.textContent.trim(), words = txt.split(/\s+/); n.setAttribute('aria-label', txt); n.textContent = '';
+    words.forEach(function (w, i) { var m = document.createElement('span'); m.className = 'lmask'; m.style.display = 'inline-block'; m.setAttribute('aria-hidden', 'true'); var s = document.createElement('span'); s.className = 'ch'; s.textContent = w; m.appendChild(s); n.appendChild(m); if (i < words.length - 1) n.appendChild(document.createTextNode(' ')); });
+  });
+  document.querySelectorAll('[data-words]').forEach(function (n) {
+    var words = n.textContent.trim().split(/\s+/); n.textContent = '';
+    var hi = ['passionate,', 'detail-driven,', 'mind?'];
+    words.forEach(function (w, i) { var s = document.createElement('span'); s.className = 'w' + (hi.indexOf(w) > -1 ? ' hi' : ''); s.textContent = w; n.appendChild(s); if (i < words.length - 1) n.appendChild(document.createTextNode(' ')); });
+  });
+
+  var spin = document.getElementById('ringSpin');
+  function buildRing() {
+    if (!spin) return;
+    spin.innerHTML = '';
+    var R = Math.min(560, window.innerWidth * 0.4);
+    TECH.forEach(function (t, i) {
+      var d = document.createElement('div'); d.className = 'ring__item';
+      d.style.transform = 'rotateY(' + (360 / TECH.length) * i + 'deg) translateZ(' + R + 'px)';
+      d.style.top = ((i % 5) - 2) * 44 + 'px';
+      d.innerHTML = '<span class="gem" style="--c: var(' + t[1] + ')"></span>' + t[0];
+      spin.appendChild(d);
+    });
+  }
+  buildRing();
+
+  function tick() { document.querySelectorAll('[data-tz]').forEach(function (n) { try { n.textContent = new Intl.DateTimeFormat('en-GB', { timeZone: n.dataset.tz, hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date()); } catch (e) {} }); }
+  tick(); setInterval(tick, 1000);
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.copy'); if (!b) return;
+    var v = b.dataset.copy, label = b.querySelector('small');
+    function done(ok) { if (!label) return; label.textContent = ok ? 'Copied' : 'Select'; b.classList.toggle('is-done', ok); setTimeout(function () { label.textContent = 'Copy'; b.classList.remove('is-done'); }, 1600); }
+    try { if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(v).then(function () { done(true); }, function () { done(false); }); else done(false); } catch (err) { done(false); }
+  });
+  document.getElementById('subForm').addEventListener('submit', function (e) { e.preventDefault(); document.getElementById('subMsg').textContent = 'Thanks. This preview form is not connected to a mailing list yet.'; });
+  document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, msg = document.getElementById('formMsg');
+    var bad = Array.prototype.find.call(f.querySelectorAll('[required]'), function (x) { return !x.value.trim() || (x.type === 'email' && !/^\S+@\S+\.\S+$/.test(x.value)); });
+    if (bad) { msg.style.color = 'var(--amber)'; msg.textContent = 'Please fill in ' + bad.previousElementSibling.textContent.toLowerCase() + ' correctly.'; bad.focus(); return; }
+    msg.style.color = 'var(--green)'; msg.textContent = 'Looks good. This preview does not send messages yet — email info@webtricker.com directly.';
+  });
+
+  var burger = document.querySelector('.burger'), menu = document.getElementById('menu'), lenis = null;
+  function setMenu(open) {
+    menu.classList.toggle('is-open', open); burger.setAttribute('aria-expanded', String(open)); burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) { if (open) lenis.stop(); else lenis.start(); }
+    if (open && hasGsap && !reduce) G.fromTo('.menu li a', { yPercent: 110 }, { yPercent: 0, duration: .8, ease: 'expo.out', stagger: .05, delay: .2 });
+  }
+  burger.addEventListener('click', function () { setMenu(!menu.classList.contains('is-open')); });
+  menu.addEventListener('click', function (e) { if (e.target.closest('a')) setMenu(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && menu.classList.contains('is-open')) { setMenu(false); burger.focus(); } });
+
+  if (!reduce && window.Lenis && hasGsap) {
+    lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+    lenis.on('scroll', function (e) { W.vel = e.velocity || 0; ST.update(); });
+    G.ticker.add(function (t) { lenis.raf(t * 1000); });
+    G.ticker.lagSmoothing(0);
+  }
+  function scrollToEl(t) { if (!t) return; if (lenis) lenis.scrollTo(t, { offset: -100, duration: 1.4 }); else t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }); }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-scroll]'); if (!a) return;
+    e.preventDefault(); scrollToEl(document.querySelector(a.dataset.scroll));
+  });
+
+  var ring = document.querySelector('.cursor-ring'), dot = document.querySelector('.cursor'), preview = document.querySelector('.preview'), pImg = preview.querySelector('img');
+  if (fine && hasGsap) {
+    var dx = G.quickTo(dot, 'x', { duration: .12 }), dy = G.quickTo(dot, 'y', { duration: .12 });
+    var rx = G.quickTo(ring, 'x', { duration: .45, ease: 'power3' }), ry = G.quickTo(ring, 'y', { duration: .45, ease: 'power3' });
+    var px = G.quickTo(preview, 'x', { duration: .6, ease: 'power3' }), py = G.quickTo(preview, 'y', { duration: .6, ease: 'power3' });
+    window.addEventListener('pointermove', function (e) {
+      dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); px(e.clientX); py(e.clientY);
+      W.mx = e.clientX / innerWidth * 2 - 1; W.my = -(e.clientY / innerHeight * 2 - 1);
+    });
+    document.addEventListener('pointerover', function (e) {
+      var pv = e.target.closest('[data-preview]'), link = e.target.closest('a, button');
+      if (pv) { ring.querySelector('span').textContent = 'View'; pImg.src = pv.dataset.preview; preview.classList.add('is-on'); ring.classList.add('is-view'); ring.classList.remove('is-link'); G.to(preview, { scale: 1, rotate: G.utils.random(-5, 5), duration: .5, ease: 'power3' }); }
+      else if (e.target.closest('[data-cursor]')) { ring.querySelector('span').textContent = e.target.closest('[data-cursor]').dataset.cursor; ring.classList.add('is-view'); }
+      else if (link) { ring.classList.add('is-link'); }
+    });
+    document.addEventListener('pointerout', function (e) {
+      var pv = e.target.closest('[data-preview]'), link = e.target.closest('a, button');
+      if (pv && !pv.contains(e.relatedTarget)) { preview.classList.remove('is-on'); ring.classList.remove('is-view'); G.to(preview, { scale: .7, duration: .4 }); }
+      if (link && !link.contains(e.relatedTarget)) ring.classList.remove('is-link');
+      var dcu = e.target.closest('[data-cursor]'); if (dcu && !dcu.contains(e.relatedTarget) && !pv) ring.classList.remove('is-view');
+    });
+    document.querySelectorAll('.magnetic').forEach(function (m) {
+      var mx = G.quickTo(m, 'x', { duration: .5, ease: 'elastic.out(1,.4)' }), my = G.quickTo(m, 'y', { duration: .5, ease: 'elastic.out(1,.4)' });
+      m.addEventListener('pointermove', function (e) { var r = m.getBoundingClientRect(); mx((e.clientX - r.left - r.width / 2) * .3); my((e.clientY - r.top - r.height / 2) * .3); });
+      m.addEventListener('pointerleave', function () { mx(0); my(0); });
+    });
+    document.addEventListener('pointermove', function (e) {
+      var t = e.target.closest('.tilt'); if (!t) return;
+      var r = t.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+      t.style.transform = 'perspective(800px) rotateY(' + x * 12 + 'deg) rotateX(' + (-y * 12) + 'deg)';
+    });
+    document.addEventListener('pointerout', function (e) { var t = e.target.closest('.tilt'); if (t && !t.contains(e.relatedTarget)) t.style.transform = ''; });
+  }
+
+  /* per-page choreography: rebuilt on every route change; from() tweens only, so content is complete at rest */
+  var ctx = null, progressBar = document.querySelector('.progress');
+  function buildPage(page) {
+    if (!hasGsap) return;
+    if (ctx) ctx.revert();
+    ctx = G.context(function () {
+      ST.create({ start: 0, end: 'max', onUpdate: function (s) { W.progress = s.progress; W.scroll = s.scroll(); if (page === 'article') progressBar.style.transform = 'scaleX(' + s.progress + ')'; } });
+      if (reduce) return;
+      var root = document.querySelector('.page[data-page="' + page + '"]');
+      root.querySelectorAll('.media--par img').forEach(function (im) {
+        G.fromTo(im, { yPercent: -7 }, { yPercent: 7, ease: 'none', scrollTrigger: { trigger: im.parentNode, start: 'top bottom', end: 'bottom top', scrub: true } });
+      });
+      root.querySelectorAll('.reveal-clip').forEach(function (m) {
+        G.from(m, { clipPath: 'inset(18% 10% 18% 10% round 28px)', duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: m, start: 'top 88%' } });
+      });
+      root.querySelectorAll('.eyebrow, .v5head > .mono').forEach(function (n) { G.from(n, { y: 24, opacity: 0, duration: 1.1, ease: 'power3.out', scrollTrigger: { trigger: n, start: 'top 92%' } }); });
+      root.querySelectorAll('.rw, .v5head .h-lg').forEach(function (n) { var parts = n.querySelectorAll('.ch'); G.from(parts.length ? parts : n, { yPercent: parts.length ? 110 : 0, y: parts.length ? 0 : 40, opacity: parts.length ? 1 : 0, duration: 1.3, ease: 'expo.out', stagger: .05, scrollTrigger: { trigger: n, start: 'top 88%' } }); });
+      root.querySelectorAll('.media--par:not(.bleed):not(.reveal-clip):not(.v5reveal__img)').forEach(function (m) { G.from(m, { clipPath: 'inset(10% 10% 10% 10% round 24px)', duration: 1.8, ease: 'expo.out', scrollTrigger: { trigger: m, start: 'top 90%' } }); });
+      root.querySelectorAll('.statement').forEach(function (n) { G.from(n, { y: 50, opacity: 0, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: n, start: 'top 86%' } }); });
+      root.querySelectorAll('.lead, .svc__body > p, .rows p, .wk__meta').forEach(function (n) { if (n.closest('.pagehead, .hero')) return; G.from(n, { filter: 'blur(10px)', opacity: 0, y: 18, duration: 1.3, ease: 'power3.out', scrollTrigger: { trigger: n, start: 'top 92%' } }); });
+      G.utils.toArray(root.querySelectorAll('.tslider, .person, .post, .work li, .rows > div, .course, .office, .jobs li, .why > div, .job__block, .svc__body, .case')).forEach(function (n) {
+        G.from(n, { y: 50, opacity: .25, duration: 1.1, ease: 'expo.out', scrollTrigger: { trigger: n, start: 'top 94%' } });
+      });
+      root.querySelectorAll('[data-count]').forEach(function (n) {
+        var end = +n.dataset.count, o = { v: 0 };
+        ST.create({ trigger: n, start: 'top 88%', once: true, onEnter: function () { G.fromTo(o, { v: 0 }, { v: end, duration: 2, ease: 'power3.out', onUpdate: function () { n.textContent = Math.round(o.v); }, onComplete: function () { n.textContent = end; } }); } });
+      });
+      if (page === 'home') {
+        G.to('.hero h1', { yPercent: -16, scale: .95, transformOrigin: 'left bottom', ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+        G.to('.manifesto .w', { opacity: 1, stagger: .05, ease: 'none', scrollTrigger: { trigger: '.manifesto p', start: 'top 80%', end: 'bottom 50%', scrub: true } });
+        G.fromTo('.hero__video', { clipPath: 'inset(0% 0% 0% 0% round 0px)' }, { clipPath: 'inset(4% 2.5% 0% 2.5% round 32px)', ease: 'none', scrollTrigger: { trigger: '.v5hero', start: 'top top', end: 'bottom top', scrub: true } });
+        G.fromTo('.hero__video video', { yPercent: 0 }, { yPercent: 16, ease: 'none', scrollTrigger: { trigger: '.v5hero', start: 'top top', end: 'bottom top', scrub: true } });
+        ST.create({ trigger: '.v5hero', start: 'top top', end: 'bottom 80px', toggleClass: { targets: document.documentElement, className: 'on-dark' } });
+        var panels = G.utils.toArray('#reelTrack .panel');
+        panels.forEach(function (pn, i) { if (i === panels.length - 1) return; G.fromTo(pn, { scale: 1, filter: 'brightness(1)' }, { scale: .92, filter: 'brightness(.9)', ease: 'none', scrollTrigger: { trigger: panels[i + 1], start: 'top 75%', end: 'top 120px', scrub: true } }); });
+        G.from('#wkSwiper .swiper-slide', { x: 160, opacity: 0, duration: 1.6, ease: 'expo.out', stagger: .08, scrollTrigger: { trigger: '#wkSwiper', start: 'top 85%' } });
+        G.from('#blSwiper .swiper-slide', { x: 120, opacity: 0, duration: 1.4, ease: 'expo.out', stagger: .06, scrollTrigger: { trigger: '#blSwiper', start: 'top 88%' } });
+        G.from('.tmq', { opacity: 0, y: 40, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: '.tmq', start: 'top 90%' } });
+      }
+      G.from('#footer .finale__big span', { yPercent: 40, opacity: .2, duration: 1.4, ease: 'expo.out', stagger: .1, scrollTrigger: { trigger: '#footer', start: 'top 80%' } });
+      G.from('#footer > .wrap:first-child', { yPercent: -12, ease: 'none', scrollTrigger: { trigger: '#footer', start: 'top bottom', end: 'top 20%', scrub: true } });
+    });
+  }
+  function introPage(page) {
+    if (!hasGsap || reduce) return;
+    var root = document.querySelector('.page[data-page="' + page + '"]');
+    if (page === 'home') {
+      G.timeline()
+        .from('.hero .ch', { yPercent: 115, rotate: 6, duration: 1.2, ease: 'expo.out', stagger: .025 })
+        .from('.hero__kicker, .hero__foot > *', { y: 24, opacity: 0, duration: .9, ease: 'power3.out', stagger: .08 }, '-=.9');
+    } else {
+      var tl = G.timeline();
+      tl.from(root.querySelectorAll('.page-title .ch'), { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .05 })
+        .from(root.querySelectorAll('.pagehead__crumb, .pagehead .lead, .pagehead .pill, .pagehead .tags'), { y: 24, opacity: 0, duration: .8, ease: 'power3.out', stagger: .08 }, '-=.8');
+      var b = root.querySelectorAll('.bleed');
+      if (b.length) tl.from(b, { clipPath: 'inset(30% 8% 0% 8% round 28px)', duration: 1.4, ease: 'expo.inOut' }, '-=1');
+    }
+  }
+
+  /* single-page templates: which post / job / project is open */
+  var SEL = { post: 1, job: 1, kase: 0 };
+  function byId(id) { return document.getElementById(id); }
+  function splitInto(n, txt) {
+    n.setAttribute('aria-label', txt); n.textContent = '';
+    var ws = txt.split(/\s+/);
+    ws.forEach(function (w, i) { var m = document.createElement('span'); m.className = 'lmask'; m.style.display = 'inline-block'; m.setAttribute('aria-hidden', 'true'); var s = document.createElement('span'); s.className = 'ch'; s.textContent = w; m.appendChild(s); n.appendChild(m); if (i < ws.length - 1) n.appendChild(document.createTextNode(' ')); });
+  }
+  function fill(page) {
+    if (page === 'article') {
+      var i = SEL.post, p = POSTS[i] || POSTS[1], amz = i === 1, L = POSTS.length;
+      splitInto(byId('artTitle'), p[2]); byId('artCat').textContent = p[0]; byId('artMeta').textContent = p[0] + ' · Published ' + p[1];
+      byId('artCover').src = img(amz ? 'notebook' : COVERS[i % COVERS.length]);
+      byId('artAmazon').hidden = !amz; byId('artGeneric').hidden = amz; byId('artToc').hidden = !amz; byId('artTocLbl').hidden = !amz; byId('artLead').textContent = p[3];
+      var pi = (i + 1) % L, ni = (i - 1 + L) % L;
+      byId('pnPrev').dataset.post = pi; byId('pnPrevT').textContent = POSTS[pi][2];
+      byId('pnNext').dataset.post = ni; byId('pnNextT').textContent = POSTS[ni][2];
+    }
+    if (page === 'job') {
+      var j = JOBS[SEL.job] || JOBS[1], full = SEL.job === 1, intern = /Intern/.test(j[0]);
+      splitInto(byId('jobTitle'), j[0]);
+      byId('jobDeptTag').textContent = j[1]; byId('jobDept').textContent = j[1];
+      byId('jobTypeTag').textContent = intern ? 'Internship' : '[Employment type]';
+      byId('jobEmp').textContent = intern ? 'Internship' : '[Confirm]';
+      byId('jobExp').textContent = intern ? 'Entry' : '[Confirm]';
+      byId('jobCover').src = img(j[2]);
+      byId('jobFull').hidden = !full; byId('jobGeneric').hidden = full;
+    }
+    if (page === 'case') {
+      var k = SEL.kase, pr = PROJECTS[k] || PROJECTS[0], n = PROJECTS.length, nx = (k + 1) % n;
+      splitInto(byId('caseTitle'), pr[0]); byId('caseClient').textContent = pr[0]; byId('caseCat').textContent = pr[1];
+      byId('caseCover').src = img(pr[2]);
+      byId('caseG1').src = img(PROJECTS[(k + 3) % n][2]); byId('caseG2').src = img(PROJECTS[(k + 5) % n][2]); byId('caseG3').src = img(PROJECTS[(k + 7) % n][2]);
+      byId('caseNext').dataset.case = nx; byId('caseNextName').textContent = PROJECTS[nx][0];
+    }
+  }
+  /* legal pages: section headings + short summaries of the live webtricker.com text (full wording to be pasted in) */
+  var PRIVACY = [
+    ['Information We Collect', 'Personal details such as contact and billing information, non-personal data such as device and usage data and cookies, and project files that clients share with us.'],
+    ['How We Use Information', 'To run and improve our services, communicate about projects, process payments, send marketing with your consent, and meet legal obligations.'],
+    ['Sharing of Information', 'We do not sell or rent personal data. We may share it with service providers, when legally required, or as part of a business transfer such as a merger.'],
+    ['Cookies & Tracking', 'We use cookies and similar technologies to improve the site and analyse performance. You can disable cookies, though some features may stop working.'],
+    ['Data Security', 'We use reasonable safeguards to protect your data, but no system can be guaranteed fully secure.'],
+    ['Data Retention', 'We keep data only as long as needed or as required by law. Clients can request deletion.'],
+    ['Your Rights', 'Depending on your location, you may access, update or delete your data, request portability, opt out of marketing, restrict processing, or complain to a data protection authority.'],
+    ['Third-Party Links', 'We are not responsible for the privacy practices of external sites linked from ours.'],
+    ["Children's Privacy", 'Our services are not directed at children under 13 (or the local age of digital consent), and we do not knowingly collect their data.'],
+    ['Changes to This Policy', 'Updates are posted on this page with a revised date.'],
+    ['Contact Us', 'Questions can be sent through our contact page or to info@webtricker.com.']
+  ];
+  var TERMS = [
+    ['Definitions', '"Webtricker" (we, us), "Client" (you), "Services" and "Deliverables" as used throughout these terms.'],
+    ['Scope of Services', 'IT services including web design and development, e-commerce, UI/UX, SEO and maintenance. Details for each project are set out in its proposal.'],
+    ['Project Process', 'Work begins after a signed agreement or email confirmation and any required initial payment. Clients supply content and feedback promptly; revisions are limited to the agreed scope.'],
+    ['Payment Terms', 'Typically 50% upfront and 50% at completion, before final delivery. Late payment may pause work or delay files. Fees are generally non-refundable once work starts.'],
+    ['Intellectual Property', 'Webtricker owns the work until paid in full, then rights transfer to the Client, excluding third-party or licensed components. Webtricker may showcase completed projects.'],
+    ['Confidentiality', 'Both parties protect shared business and technical information, including after services end.'],
+    ['Third-Party Services', 'Webtricker is not liable for issues caused by third-party tools or hosting. The Client covers related licensing costs.'],
+    ['Warranties & Limitations', 'Services are delivered with reasonable care. Error-free results are not guaranteed; post-delivery support requires a separate maintenance agreement.'],
+    ['Limitation of Liability', 'No liability for indirect or consequential damages. Total liability is capped at the fees paid for the project.'],
+    ['Termination', 'Either party may terminate with written notice on breach. The Client pays for completed work; advance payments beyond that are not refunded.'],
+    ['Governing Law', 'The laws of Bangladesh apply, with exclusive jurisdiction in the courts of Dhaka.'],
+    ['Changes to Terms', 'Webtricker may update these terms at any time; updated versions are posted with the revision date.'],
+    ['Contact Information', 'Questions: info@webtricker.com, +8801712377577, or the contact page.']
+  ];
+  function legal(id, route, data, src) {
+    var toc = data.map(function (d, i) { return '<a href="#' + route + '" data-scroll="#' + id + i + '"><span>' + pad(i + 1) + '</span>' + esc(d[0]) + '</a>'; }).join('');
+    byId(id).innerHTML = '<aside class="toc"><div class="mono mute">Contents</div><nav>' + toc + '</nav><a class="pill" href="#contact">Questions? Contact us</a></aside><div class="prose"><p class="notice">Design preview: each section shows a short summary. The full wording from ' + src + ' drops in unchanged.</p>' + data.map(function (d, i) { return '<section id="' + id + i + '"><h2><span>' + pad(i + 1) + '</span>' + esc(d[0]) + '</h2><p>' + esc(d[1]) + '</p></section>'; }).join('') + '</div>';
+  }
+  legal('legalPrivacy', 'privacy', PRIVACY, 'webtricker.com/privacy-policy');
+  legal('legalTerms', 'terms', TERMS, 'webtricker.com/terms-and-conditions');
+
+  /* ===================== INTERACTION PACK ===================== */
+  // text-roll labels: each button's label slides up and a copy rolls in from below
+  document.querySelectorAll('.pill').forEach(function (b) {
+    if (b.classList.contains('copy')) return;
+    [].slice.call(b.childNodes).forEach(function (n) {
+      if (n.nodeType !== 3 || !n.textContent.trim()) return;
+      var t = n.textContent.trim(), w = document.createElement('span'); w.className = 'roll';
+      w.innerHTML = '<span class="roll__a">' + esc(t) + '</span><span class="roll__b" aria-hidden="true">' + esc(t) + '</span>';
+      b.replaceChild(w, n);
+    });
+  });
+  // 3D tilt on project slider cards (reuses the .tilt handler)
+  document.querySelectorAll('.wk__img').forEach(function (n) { n.classList.add('tilt'); });
+  // cursor spotlight on cards
+  document.addEventListener('pointermove', function (e) {
+    var c = e.target.closest && e.target.closest('.v5stack .panel, .course, .office'); if (!c) return;
+    var r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+  }, { passive: true });
+  // hero light follows the pointer
+  var hvid = document.querySelector('.hero__video');
+  if (hvid && fine) {
+    var spot = document.createElement('div'); spot.className = 'hero__spot'; hvid.appendChild(spot);
+    document.querySelector('.v5hero').addEventListener('pointermove', function (e) { var r = hvid.getBoundingClientRect(); hvid.style.setProperty('--hx', (e.clientX - r.left) + 'px'); hvid.style.setProperty('--hy', (e.clientY - r.top) + 'px'); });
+  }
+  // decode/scramble effect on small labels as they appear, and on nav hover
+  var GLY = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+=<>/';
+  function scramble(node) {
+    if (node._sc || node.children.length) return; var fin = node.textContent; if (!fin.trim()) return;
+    node._sc = true; var f = 0, total = 20;
+    (function step() {
+      var pr = f / total, out = '';
+      for (var i = 0; i < fin.length; i++) out += (fin[i] === ' ' || i < fin.length * pr) ? fin[i] : GLY[(Math.random() * GLY.length) | 0];
+      node.textContent = out;
+      if (f++ < total) requestAnimationFrame(step); else { node.textContent = fin; node._sc = false; }
+    })();
+  }
+  if (!reduce && 'IntersectionObserver' in window) {
+    var sio = new IntersectionObserver(function (es) { es.forEach(function (en) { if (en.isIntersecting) { scramble(en.target); sio.unobserve(en.target); } }); }, { threshold: .6 });
+    document.querySelectorAll('.v5head > .mono, .eyebrow > span, .hero__kicker').forEach(function (n) { if (!n.children.length) sio.observe(n); });
+    document.querySelectorAll('.top nav a, .menu a small').forEach(function (a) { a.addEventListener('pointerenter', function () { scramble(a); }); });
+  }
+  // image trail: moving over the "Coolest Project" marquee drops project images that fall away
+  var mqSec = document.querySelector('.mq');
+  if (mqSec && fine && !reduce && hasGsap) {
+    var trailSrc = PROJECTS.map(function (p) { return img(p[2]); }), tIdx = 0, tLast = { x: -999, y: -999 };
+    mqSec.setAttribute('data-cursor', 'Move');
+    mqSec.addEventListener('pointermove', function (e) {
+      var r = mqSec.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+      if (Math.hypot(x - tLast.x, y - tLast.y) < 100) return; tLast = { x: x, y: y };
+      var im = document.createElement('img'); im.className = 'trail'; im.alt = ''; im.src = trailSrc[tIdx++ % trailSrc.length];
+      im.style.left = x + 'px'; im.style.top = y + 'px'; mqSec.appendChild(im);
+      G.fromTo(im, { scale: .3, opacity: 0, rotate: G.utils.random(-14, 14) }, { scale: 1, opacity: 1, duration: .45, ease: 'power3.out' });
+      G.to(im, { scale: .25, opacity: 0, y: 70, duration: .8, ease: 'power2.in', delay: .5, onComplete: function () { im.remove(); } });
+    });
+  }
+  // back-to-top button with a scroll-progress ring
+  var toTop = el('<button class="totop" type="button" aria-label="Back to top"><svg viewBox="0 0 48 48" aria-hidden="true"><circle class="totop__bg" cx="24" cy="24" r="22"></circle><circle class="totop__fg" cx="24" cy="24" r="22"></circle></svg><span aria-hidden="true">↑</span></button>');
+  document.body.appendChild(toTop);
+  var ttFg = toTop.querySelector('.totop__fg'), ttC = 2 * Math.PI * 22; ttFg.style.strokeDasharray = ttC;
+  var ttUpd = function () { var hh = document.documentElement.scrollHeight - innerHeight, pr = hh > 0 ? Math.min(1, scrollY / hh) : 0; ttFg.style.strokeDashoffset = (ttC * (1 - pr)).toFixed(1); toTop.classList.toggle('is-on', scrollY > innerHeight * .8); };
+  window.addEventListener('scroll', ttUpd, { passive: true }); ttUpd();
+  toTop.addEventListener('click', function () { if (lenis) lenis.scrollTo(0, { duration: 1.6 }); else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); });
+
+  /* router */
+  var ROUTES = ['home', 'about', 'services', 'work', 'case', 'journal', 'article', 'training', 'career', 'job', 'contact', 'privacy', 'terms'];
+  var LABEL = { home: 'Home', about: 'About', services: 'Services', work: 'Portfolio', journal: 'Blog', article: 'Article', training: 'Training', career: 'Career', job: 'Career', contact: 'Contact', case: 'Case study', privacy: 'Privacy', terms: 'Terms' };
+  var NAVKEY = { article: 'journal', job: 'career', case: 'work' };
+  var current = null, busy = false, queued = null;
+  function routeFromHash() { var h = location.hash.slice(1); return ROUTES.indexOf(h) > -1 ? h : 'home'; }
+  function show(page) {
+    fill(page);
+    document.querySelectorAll('.page').forEach(function (p) { p.hidden = p.dataset.page !== page; });
+    if (page === 'home' && SW.work) { SW.work.update(); SW.blog.update(); }
+    document.documentElement.classList.toggle('on-dark', page === 'home');
+    var key = NAVKEY[page] || page;
+    document.querySelectorAll('[data-nav]').forEach(function (a) { if (a.dataset.nav === key) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    progressBar.style.transform = 'scaleX(0)';
+    document.title = page === 'home' ? 'Webtricker Studio Dark' : LABEL[page] + ' · Webtricker Studio Dark';
+    W.route = page;
+    if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); else window.scrollTo(0, 0);
+    buildPage(page);
+    if (hasGsap) ST.refresh();
+    current = page;
+  }
+  function go(page, first) {
+    if (page === current) return;
+    if (busy) { queued = page; return; }
+    if (first || !hasGsap || reduce) { show(page); if (!first) introPage(page); return; }
+    busy = true;
+    var label = document.querySelector('.wipe__label'); label.textContent = LABEL[page];
+    G.timeline({ onComplete: function () { busy = false; if (queued && queued !== current) { var q = queued; queued = null; go(q); } else queued = null; } })
+      .set('.wipe i', { transformOrigin: 'bottom' })
+      .to('.wipe i', { scaleY: 1, duration: .6, ease: 'expo.inOut', stagger: .06 })
+      .to(label, { opacity: 1, duration: .25 }, '-=.25')
+      .add(function () { show(page); })
+      .set('.wipe i', { transformOrigin: 'top' })
+      .to(label, { opacity: 0, duration: .2 }, '+=.15')
+      .to('.wipe i', { scaleY: 0, duration: .7, ease: 'expo.inOut', stagger: .06 }, '<')
+      .add(function () { introPage(page); }, '-=.45');
+  }
+  window.addEventListener('hashchange', function () { if (menu.classList.contains('is-open')) setMenu(false); go(routeFromHash()); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('[data-post], [data-job], [data-case]'); if (!a) return;
+    if (a.dataset.post != null) SEL.post = +a.dataset.post;
+    if (a.dataset.job != null) SEL.job = +a.dataset.job;
+    if (a.dataset.case != null) SEL.kase = +a.dataset.case;
+    var target = (a.getAttribute('href') || '').slice(1);
+    if (target && target === current) { e.preventDefault(); current = null; go(target); }
+  }, true);
+  window.addEventListener('resize', function () { buildRing(); });
+
+  var loader = document.querySelector('.loader');
+  go(routeFromHash(), true);
+  if (!hasGsap || reduce) { loader.style.display = 'none'; }
+  else {
+    loader.style.animation = 'none';
+    var count = { v: 0 }, cEl = loader.querySelector('.loader__count'), bar = loader.querySelector('.loader__bar i');
+    G.timeline()
+      .from('.loader .gems5 i', { scale: 0, rotate: 90, duration: .6, ease: 'back.out(2)', stagger: .07 })
+      .to(count, { v: 100, duration: 1.3, ease: 'power2.inOut', onUpdate: function () { cEl.textContent = Math.round(count.v); bar.style.width = count.v + '%'; } }, '<')
+      .to(loader, { clipPath: 'inset(0 0 100% 0)', duration: .9, ease: 'expo.inOut' })
+      .set(loader, { display: 'none' })
+      .add(function () { introPage(current); }, '-=.45')
+      .from('.top .wrap > *', { y: -20, opacity: 0, duration: .8, ease: 'power3.out', stagger: .08 }, '<');
+  }
+
+  var mq = document.querySelector('.mq__track'), mqx = 0, skew = 0;
+  function mqTick() {
+    if (W.route !== 'home') return;
+    var v = W.vel || 0;
+    if (!reduce) mqx -= 1.2 + Math.abs(v) * .35;
+    var half = mq.scrollWidth / 2; if (half > 0 && -mqx >= half) mqx += half;
+    skew += ((reduce ? 0 : Math.max(-12, Math.min(12, v * .6))) - skew) * .1;
+    mq.style.transform = 'translate3d(' + mqx + 'px,0,0) skewX(' + (-skew) + 'deg)';
+  }
+  if (hasGsap) G.ticker.add(mqTick);
+})();
+</script>
+
+</body></html>

@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import LoadingSpinner from "@/sharedComponets/ui/loading/LoadingSpinner";
+import { COUNTRY_CODES } from "@/studio/phoneCodes";
 import { useBotCheck } from "@/sharedComponets/ui/security/useBotCheck";
 
 type Day = { date: string; slots: string[] };
@@ -36,6 +37,7 @@ export default function BookingScheduler() {
     budget: "",
     message: "",
   });
+  const [phoneCode, setPhoneCode] = useState("+880");
   const bot = useBotCheck();
 
   const loadAvailability = async () => {
@@ -121,6 +123,7 @@ export default function BookingScheduler() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...form,
+          phone: form.phone.trim() ? `${phoneCode} ${form.phone.trim().replace(/^0+(?=\d)/, "")}` : "",
           startAt: selectedSlot,
           timezone: tz,
           ...bot.getPayload(),
@@ -317,7 +320,16 @@ export default function BookingScheduler() {
           </div>
           <div>
             <label htmlFor="bkPhone">Phone / WhatsApp</label>
-            <input id="bkPhone" type="tel" maxLength={30} className={inputClass} value={form.phone} onChange={set("phone")} autoComplete="tel" />
+            <div className="flex gap-2">
+              <select aria-label="Country code" className={`${inputClass} !w-auto`} value={phoneCode} onChange={(e) => setPhoneCode(e.target.value)}>
+                {COUNTRY_CODES.map((x) => (
+                  <option key={x.c} value={x.d}>
+                    {x.c} {x.d}
+                  </option>
+                ))}
+              </select>
+              <input id="bkPhone" type="tel" maxLength={20} className={inputClass} value={form.phone} onChange={set("phone")} autoComplete="tel-national" />
+            </div>
           </div>
           <div>
             <label htmlFor="bkCompany">Company</label>

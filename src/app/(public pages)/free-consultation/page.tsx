@@ -87,7 +87,7 @@ const schema = {
 
 export default function FreeConsultationPage() {
   return (
-    <main className="w-full z-0">
+    <main className="page legacy w-full z-0">
       <script
         type="application/ld+json"
         // "<" is escaped so no string in the data can close the script tag

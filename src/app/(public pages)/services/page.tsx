@@ -1,3 +1,4 @@
+import ServicesStudio from "@/studio/pages/ServicesStudio";
 import React from "react";
 import ServicesBanner from "./components/ServicesBanner";
 import OurServices from "./components/OurServices";
@@ -61,23 +62,6 @@ export async function generateMetadata() {
   };
 }
 
-export default async function ServicesPage() {
-  const serviceData = (await getServicesData()) ?? [];
-  const pageData = ((await getServicesPageData()) as IServicesPage) ?? {};
-
-  return (
-    <main className="w-full z-0">
-      <ServicesBanner
-        bg={pageData?.bannerBG || {}}
-        banner={pageData?.banner || {}}
-      />
-      <OurServices
-        servicesShotcut={pageData?.servicesShotcut || {}}
-        services={serviceData || []}
-      />
-      <ServicesPanelWrapper bottomText={pageData?.bottomText || {}}>
-        <ServicePanels services={serviceData} />
-      </ServicesPanelWrapper>
-    </main>
-  );
+export default function Page() {
+  return <ServicesStudio />;
 }

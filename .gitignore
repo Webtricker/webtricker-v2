@@ -43,3 +43,6 @@ vercel.env
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw hero video downloads (compressed versions live in public/videos/pages)
+/video-src/
