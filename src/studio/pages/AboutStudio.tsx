@@ -1,5 +1,6 @@
 import { getAboutPageData, getTeamData, getTestimonialsData } from "@/utils/pageData";
 import { PageHead, Person, Stats, Testimonials } from "../parts";
+import { FadeWords } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -8,7 +9,6 @@ export default async function AboutStudio() {
   const p: any = a || {};
   const intro: string = p.introText || "";
   const em = intro.match(/high-quality design and branding solutions/i)?.[0];
-  const [before, after] = em ? intro.split(em) : [intro, ""];
   const rows = [
     [p.ourMissionText, p.ourMissionDescription],
     [p.ourGoalsText, p.ourGoalsDescription],
@@ -28,11 +28,7 @@ export default async function AboutStudio() {
 
       <section className="chapter">
         <div className="wrap">
-          <p className="statement">
-            {before}
-            {em ? <em>{em}</em> : null}
-            {after}
-          </p>
+          <p className="statement"><FadeWords text={intro} highlight={em ? em.split(/\s+/) : []} /></p>
           <div className="collage" style={{ marginTop: "clamp(64px, 8vw, 120px)" }}>
             {[ii.large, ii.medium, ii.small].filter(Boolean).map((src: string, i: number) => (
               <div className="media media--par" key={i}>

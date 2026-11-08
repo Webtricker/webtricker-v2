@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { MaskWords, Roll } from "./ui";
+import { FadeWords, MaskWords, Roll } from "./ui";
 import { PAGE_VIDEOS } from "./pageVideos";
 
 /* eslint-disable @next/next/no-img-element */
@@ -51,7 +51,7 @@ export function PageHead({
           </h1>
           {lead ? (
             <div style={{ display: "grid", gap: 24, justifyItems: "start" }}>
-              <p className="lead">{lead}</p>
+              <p className="lead lead--fade"><FadeWords text={lead} /></p>
               {cta ? (
                 <Link className="pill magnetic" href={cta.href}>
                   <Roll>{cta.label}</Roll>

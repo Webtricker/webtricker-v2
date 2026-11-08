@@ -1,6 +1,6 @@
 import Link from "next/link";
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
-import { MaskWords } from "../ui";
+import { FadeWords, MaskWords } from "../ui";
 import { Bleed } from "../parts";
 
 const cap = (s = "") => s.replace(/(^|[-\s])(\w)/g, (_, a, b) => (a === "-" ? " " : a) + b.toUpperCase());
@@ -49,7 +49,7 @@ export default function JobStudio({ job }: { job: any }) {
         <div className="wrap job">
           <div className="job__main">
             <p className="statement" style={{ fontSize: "clamp(24px, 2.6vw, 38px)" }}>
-              {job.shortDescription}
+              <FadeWords text={job.shortDescription || ""} />
             </p>
             <div className="job__block">
               <h2>About This Role</h2>

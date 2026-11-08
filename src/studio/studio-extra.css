@@ -204,3 +204,8 @@
 
 /* Breathing room between a video hero and whatever follows it */
 .stu .pagehead--video + *{ margin-top: clamp(56px, 7vw, 110px); }
+
+.stu .statement .w, .stu .lead--fade .w{ display: inline-block; opacity: .2; }
+.stu .statement .w.hi{ color: var(--amber); }
+.stu.no-gsap .statement .w, .stu.no-gsap .lead--fade .w{ opacity: 1; }
+@media (prefers-reduced-motion: reduce){ .stu .statement .w, .stu .lead--fade .w{ opacity: 1; } }

@@ -584,9 +584,10 @@ export default function StudioRuntime() {
         const parts = n.querySelectorAll(".ch");
         gsap.from(parts.length ? parts : n, { yPercent: parts.length ? 110 : 0, y: parts.length ? 0 : 40, opacity: parts.length ? 1 : 0, duration: 1.3, ease: "expo.out", stagger: 0.05, scrollTrigger: { trigger: n, start: "top 88%" } });
       });
-      q(".statement").forEach((n) => gsap.from(n, { y: 50, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: n, start: "top 86%" } }));
+      q(".statement").forEach((n) => { const ws = n.querySelectorAll(".w"); if (ws.length) gsap.to(ws, { opacity: 1, stagger: 0.05, ease: "none", scrollTrigger: { trigger: n, start: "top 82%", end: "bottom 55%", scrub: true } }); else gsap.from(n, { y: 50, opacity: 0, duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: n, start: "top 86%" } }); });
+      q(".lead--fade").forEach((n) => gsap.to(n.querySelectorAll(".w"), { opacity: 1, duration: 0.9, stagger: 0.035, ease: "power2.out", delay: 0.5 }));
       q(".lead, .svc__body > p, .rows p, .wk__meta").forEach((n) => {
-        if (n.closest(".pagehead, .hero")) return;
+        if (n.closest(".pagehead, .hero") || n.classList.contains("lead--fade")) return;
         gsap.from(n, { filter: "blur(10px)", opacity: 0, y: 18, duration: 1.3, ease: "power3.out", scrollTrigger: { trigger: n, start: "top 92%" } });
       });
       q(".tslider, .person, .post, .work li, .rows > div, .course, .office, .jobs li, .why > div, .job__block, .svc__body, .case").forEach((n) =>
