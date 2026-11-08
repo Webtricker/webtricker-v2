@@ -2,6 +2,7 @@ import Link from "next/link";
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import { FadeWords, MaskWords } from "../ui";
 import { Bleed } from "../parts";
+import JobApply from "../JobApply";
 
 const cap = (s = "") => s.replace(/(^|[-\s])(\w)/g, (_, a, b) => (a === "-" ? " " : a) + b.toUpperCase());
 
@@ -90,11 +91,7 @@ export default function JobStudio({ job }: { job: any }) {
                 <div><dt>Deadline</dt><dd>{new Date(job.applicationDeadline).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}</dd></div>
               ) : null}
             </dl>
-            {isMail ? (
-              <button className="pill pill--solid copy" type="button" data-copy={apply} style={{ width: "100%" }}>
-                Apply Now · {apply.split("@")[0]}@ <small>Copy</small>
-              </button>
-            ) : null}
+            <JobApply title={job.title} />
           </aside>
         </div>
       </section>

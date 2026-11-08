@@ -180,9 +180,19 @@ export default function StudioRuntime() {
           ring.classList.remove("is-link");
           gsap.to(preview, { scale: 1, rotate: gsap.utils.random(-5, 5), duration: 0.5, ease: "power3" });
         } else if (cu) {
+          if (preview.classList.contains("is-on")) { preview.classList.remove("is-on"); gsap.to(preview, { scale: 0.7, duration: 0.2 }); }
           label.textContent = cu.dataset.cursor || "View";
           ring.classList.add("is-view");
-        } else if (link) ring.classList.add("is-link");
+        } else {
+          /* the hovered row can be removed by a page change without a pointerout, so always drop a stale preview */
+          if (preview.classList.contains("is-on")) { preview.classList.remove("is-on"); ring.classList.remove("is-view"); gsap.to(preview, { scale: 0.7, duration: 0.2 }); }
+          if (link) ring.classList.add("is-link");
+        }
+      });
+      on(document, "click", (e: MouseEvent) => {
+        if ((e.target as HTMLElement).closest("[data-preview]") && preview.classList.contains("is-on")) {
+          preview.classList.remove("is-on"); ring.classList.remove("is-view");
+        }
       });
       on(document, "pointerout", (e: PointerEvent) => {
         const t = e.target as HTMLElement;
