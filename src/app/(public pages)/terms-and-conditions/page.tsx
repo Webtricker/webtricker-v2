@@ -16,7 +16,8 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Terms and Conditions",
   description:
-    "Terms and Conditions Description page. this is the main page where will show all Terms and Conditions information",
+    "Read the terms and conditions that apply when you use the Webtricker website and hire us for web design, development and digital services.",
+  alternates: { canonical: "https://webtricker.com/terms-and-conditions" },
 };
 
 // Main component for the single blog page

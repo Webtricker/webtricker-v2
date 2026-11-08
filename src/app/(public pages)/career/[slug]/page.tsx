@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 type Career = {
   slug: string;
@@ -65,7 +65,7 @@ async function getCareer(slug: string): Promise<Career | null> {
     const baseUrl =
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
-    const res = await fetch(`${baseUrl}/api/career/${slug}`, { cache: "no-store" });
+    const res = await fetch(`${baseUrl}/api/career/${slug}`, { next: { revalidate: 300 } });
     if (!res.ok) return null;
     const data = await res.json();
     return data.career ?? null;
@@ -80,7 +80,7 @@ async function getCareerSlugs(): Promise<{ slug: string }[]> {
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     const res = await fetch(`${baseUrl}/api/career?published=true&limit=100`, {
-      cache: "no-store",
+      next: { revalidate: 300 },
     });
     if (!res.ok) return [];
     const data = await res.json();

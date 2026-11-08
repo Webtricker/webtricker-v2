@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getBlogsPageData, getCategories, getPostsData } from "@/utils/pageData";
 import FilterBar from "../FilterBar";
-import { Arrow, fmtDate, stripHtml } from "../ui";
+import { cld, Arrow, fmtDate, stripHtml } from "../ui";
 import { PageHead, nameOf } from "../parts";
 
 /* eslint-disable @next/next/no-img-element */
@@ -24,7 +24,7 @@ export default async function BlogStudio() {
         <section className="wrap">
           <Link className="feature" href={`/blog/${feature.slug}`}>
             <div className="media">
-              <img src={feature.thumnail?.url} alt={feature.title} loading="lazy" />
+              <img decoding="async" src={cld(feature.thumnail?.url, 1200)} alt={feature.title} loading="lazy" />
               <span className="media__tag">Featured</span>
             </div>
             <div>
@@ -62,7 +62,7 @@ export default async function BlogStudio() {
             {rest.map((p) => (
               <Link className="post" href={`/blog/${p.slug}`} key={p._id || p.slug} data-cat={nameOf(p.category)}>
                 <div className="media">
-                  <img src={p.thumnail?.url} alt={p.title} loading="lazy" />
+                  <img decoding="async" src={cld(p.thumnail?.url, 900)} alt={p.title} loading="lazy" />
                 </div>
                 <div className="post__meta">
                   <span className="mono" style={{ color: `var(${colorFor(nameOf(p.category))})` }}>

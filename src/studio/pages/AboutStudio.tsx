@@ -1,6 +1,6 @@
 import { getAboutPageData, getTeamData, getTestimonialsData } from "@/utils/pageData";
 import { PageHead, Person, Stats, Testimonials } from "../parts";
-import { FadeWords } from "../ui";
+import { cld, FadeWords } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -32,7 +32,7 @@ export default async function AboutStudio() {
           <div className="collage" style={{ marginTop: "clamp(64px, 8vw, 120px)" }}>
             {[ii.large, ii.medium, ii.small].filter(Boolean).map((src: string, i: number) => (
               <div className="media media--par" key={i}>
-                <img src={src} alt="" loading="lazy" />
+                <img decoding="async" src={cld(src, 1200)} alt="" loading="lazy" />
               </div>
             ))}
           </div>
@@ -47,7 +47,7 @@ export default async function AboutStudio() {
             <p className="lead">{p.aboutUsDescription}</p>
             {p.aboutUsImage ? (
               <div className="media">
-                <img src={p.aboutUsImage} alt="" loading="lazy" />
+                <img decoding="async" src={cld(p.aboutUsImage, 1000)} alt="" loading="lazy" />
               </div>
             ) : null}
           </div>

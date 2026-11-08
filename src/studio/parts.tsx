@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { FadeWords, MaskWords, Roll } from "./ui";
+import { cld, FadeWords, MaskWords, Roll } from "./ui";
 import { PAGE_VIDEOS } from "./pageVideos";
 
 /* eslint-disable @next/next/no-img-element */
@@ -84,7 +84,7 @@ export function Bleed({
       {isVideo ? (
         <video src={src} muted loop playsInline autoPlay preload="metadata" style={{ width: "100%", height: "118%", marginTop: "-9%", objectFit: "cover" }} />
       ) : (
-        <img src={src} alt={alt} loading="lazy" />
+        <img decoding="async" src={cld(src, 1800)} alt={alt} loading="lazy" />
       )}
     </div>
   );
@@ -94,7 +94,7 @@ export function Person({ p }: { p: { name: string; role?: string; profile?: stri
   return (
     <div className="person">
       <div className="person__card tilt">
-        {p.profile ? <img src={p.profile} alt={p.name} loading="lazy" /> : null}
+        {p.profile ? <img decoding="async" src={cld(p.profile, 240)} alt={p.name} loading="lazy" /> : null}
         {!p.profile ? <b>{initials(p.name)}</b> : null}
       </div>
       <h3>{p.name}</h3>
@@ -112,7 +112,7 @@ export function Testimonials({ list }: { list: any[] }) {
         {list.map((t, i) => (
           <figure className={`q${i === 0 ? " is-on" : ""}`} key={t._id || i} aria-hidden={i ? "true" : undefined}>
             <figcaption>
-              <span className="avatar">{t.profile ? <img src={t.profile} alt="" loading="lazy" /> : initials(t.name)}</span>
+              <span className="avatar">{t.profile ? <img decoding="async" src={cld(t.profile, 120)} alt="" loading="lazy" /> : initials(t.name)}</span>
               <b>{t.name}</b>
               <span className="mono mute">{t.role}</span>
             </figcaption>

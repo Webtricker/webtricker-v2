@@ -126,3 +126,10 @@ export function orderServices(list: any[]): any[] {
       return m ? { ...s, title: m[1] } : s;
     });
 }
+
+/** Cloudinary delivery: serve a right-sized, modern-format copy (f_auto = WebP/AVIF, q_auto) instead of the multi-MB original. */
+export const cld = (url?: string, w = 1000): string => {
+  if (!url || !/^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//.test(url)) return url || "";
+  if (/\/upload\/[^/]*(f_auto|q_auto|w_\d+)/.test(url)) return url;
+  return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${w},c_limit/`);
+};

@@ -9,7 +9,7 @@ import {
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
-import { ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
+import { cld, ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -150,7 +150,7 @@ export default async function HomeStudio() {
               <div className="clients__track">
                 {[...clients, ...clients].map((src, i) => (
                   <span key={i} aria-hidden={i >= clients.length ? "true" : undefined}>
-                    <img src={src} alt="" loading="lazy" />
+                    <img decoding="async" src={cld(src, 1000)} alt="" loading="lazy" />
                   </span>
                 ))}
               </div>
@@ -192,7 +192,7 @@ export default async function HomeStudio() {
               return (
                 <Link className="panel glass" href={`/services/${s.slug}`} key={s._id || s.slug} style={{ ["--c" as any]: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>
                   <div className="media">
-                    <img src={s.thumnail?.url || s.icon} alt={s.thumbnailAlt || s.title} loading="lazy" />
+                    <img decoding="async" src={cld(s.thumnail?.url || s.icon, 1000)} alt={s.thumbnailAlt || s.title} loading="lazy" />
                   </div>
                   <div className="panel__top">
                     <span className="mono mute">
@@ -254,7 +254,7 @@ export default async function HomeStudio() {
               <div className="swiper-slide" key={p._id || p.slug}>
                 <Link className="wk" href={`/portfolio/${p.slug}`}>
                   <div className="wk__img">
-                    <img src={p.coverImage?.url || p.thumnail?.url} alt={p.title} loading="lazy" draggable={false} />
+                    <img decoding="async" src={cld(p.coverImage?.url || p.thumnail?.url, 1000)} alt={p.title} loading="lazy" draggable={false} />
                   </div>
                   <div className="wk__meta">
                     <h3>{p.title}</h3>
@@ -313,7 +313,7 @@ export default async function HomeStudio() {
                 {[0, 1].map((copy) =>
                   row.map((t: any, i: number) => (
                     <span key={`${copy}-${i}`} aria-hidden={copy ? "true" : undefined}>
-                      <img src={t.icon} alt="" loading="lazy" />
+                      <img decoding="async" src={cld(t.icon, 120)} alt="" loading="lazy" />
                       {t.name}
                     </span>
                   ))
@@ -365,7 +365,7 @@ export default async function HomeStudio() {
                     <figure className={`q${i === 0 ? " is-on" : ""}`} key={t._id || i} aria-hidden={i ? "true" : undefined}>
                       <figcaption>
                         <span className="avatar">
-                          {t.profile ? <img src={t.profile} alt="" loading="lazy" /> : initials(t.name)}
+                          {t.profile ? <img decoding="async" src={cld(t.profile, 160)} alt="" loading="lazy" /> : initials(t.name)}
                         </span>
                         <b>{t.name}</b>
                         <span className="mono mute">{t.role}</span>
@@ -404,7 +404,7 @@ export default async function HomeStudio() {
                 {leadersShown.map((p: any) => (
                   <div className="person" key={p._id || p.name}>
                     <div className="person__card tilt">
-                      {p.profile ? <img src={p.profile} alt={p.name} loading="lazy" /> : null}
+                      {p.profile ? <img decoding="async" src={cld(p.profile, 240)} alt={p.name} loading="lazy" /> : null}
                       {!p.profile ? <b>{initials(p.name)}</b> : null}
                     </div>
                     <h3>{p.name}</h3>
@@ -442,7 +442,7 @@ export default async function HomeStudio() {
                 <div className="swiper-slide" key={p._id || p.slug}>
                   <Link className="post" href={`/blog/${p.slug}`}>
                     <div className="media">
-                      <img src={p.thumnail?.url} alt={p.title} loading="lazy" />
+                      <img decoding="async" src={cld(p.thumnail?.url, 1000)} alt={p.title} loading="lazy" />
                     </div>
                     <div className="post__meta">
                       <span className="mono" style={{ color: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>

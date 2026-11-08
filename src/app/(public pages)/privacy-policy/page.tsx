@@ -16,7 +16,8 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Privacy Policy Description page. this is the main page where will show all Privacy Policy information",
+    "Read how Webtricker collects, uses and protects your personal information when you use our website and services.",
+  alternates: { canonical: "https://webtricker.com/privacy-policy" },
 };
 
 // Main component for the single blog page
