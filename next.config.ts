@@ -40,6 +40,7 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  experimental: { inlineCss: true },
   /* config options here */
   poweredByHeader: false,
   async headers() {

@@ -585,6 +585,10 @@ export default function StudioRuntime() {
     /* scroll choreography */
     const ctx = gsap.context(() => {
       ScrollTrigger.create({ start: 0, end: "max", onUpdate: (s) => { if (bar && /^\/blog\/.+/.test(pathname)) bar.style.transform = `scaleX(${s.progress})`; } });
+    }, root);
+    /* The below-the-fold choreography creates ~50 ScrollTriggers, each reading layout right after the
+       previous one wrote styles (forced reflow). Build it after first paint, in idle time. */
+    const build = () => {
       if (reduce || !page) return;
       const q = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
       q(".media--par img").forEach((im) => gsap.fromTo(im, { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: im.parentElement, start: "top bottom", end: "bottom top", scrub: true } }));
@@ -628,7 +632,11 @@ export default function StudioRuntime() {
       }
       gsap.from(".stu #footer .finale__big span", { yPercent: 40, opacity: 0.2, duration: 1.4, ease: "expo.out", stagger: 0.1, scrollTrigger: { trigger: "#footer", start: "top 80%" } });
       gsap.from(".stu #footer > .wrap:first-child", { yPercent: -12, ease: "none", scrollTrigger: { trigger: "#footer", start: "top bottom", end: "top 20%", scrub: true } });
-    }, root);
+    };
+    let buildId = 0;
+    const ric = (window as any).requestIdleCallback as undefined | ((cb: () => void, o?: { timeout: number }) => number);
+    if (ric) buildId = ric(() => ctx.add(build), { timeout: 1500 });
+    else buildId = window.setTimeout(() => ctx.add(build), 400);
 
     const intro = () => {
       if (reduce) return;
@@ -685,6 +693,9 @@ export default function StudioRuntime() {
 
     return () => {
       clearTimeout(rt);
+      const cic = (window as any).cancelIdleCallback as undefined | ((id: number) => void);
+      if (cic) cic(buildId);
+      clearTimeout(buildId);
       cleanups.forEach((fn) => fn());
       swipers.forEach((s) => s.destroy(true, true));
       ctx.revert();
