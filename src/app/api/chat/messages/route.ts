@@ -20,7 +20,8 @@ export async function GET(req: NextRequest) {
   const session = await ChatSession.findOne({ sessionId });
 
   if (!session) {
-    return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    // A first-time visitor has no session yet. Answer 200 so it does not show as a console error.
+    return NextResponse.json({ session: null });
   }
 
   // Auto-resolve sessions inactive for more than 10 minutes
