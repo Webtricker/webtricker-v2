@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getPortfolioPageData, getPortfoliosData, getTechnologies } from "@/utils/pageData";
 import FilterBar from "../FilterBar";
-import { ArrowUp } from "../ui";
+import { cld, ArrowUp } from "../ui";
 import { PageHead, nameOf } from "../parts";
 
 /* eslint-disable @next/next/no-img-element */
@@ -27,7 +27,7 @@ export default async function PortfolioStudio() {
             {list.map((p) => (
               <Link className="case" href={`/portfolio/${p.slug}`} key={p._id || p.slug} data-cat={nameOf(p.technology)}>
                 <div className="media reveal-clip">
-                  <img src={p.thumnail?.url || p.coverImage?.url} alt={p.title} loading="lazy" />
+                  <img decoding="async" src={cld(p.thumnail?.url || p.coverImage?.url, 1000)} alt={p.title} loading="lazy" />
                 </div>
                 <div className="case__row">
                   <div>

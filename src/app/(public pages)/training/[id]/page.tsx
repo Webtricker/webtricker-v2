@@ -72,8 +72,8 @@ export async function generateMetadata({
   const course = await getCourse(id);
   if (!course) return { title: "Course Not Found" };
 
-  const title = course.seoTitle || `${course.title} Training | Webtricker`;
-  const description = course.seoDescription || course.detailedDescription;
+  const title = course.seoTitle || `${course.title} Training`;
+  const description = (course.seoDescription || course.detailedDescription || "").replace(/\s+/g, " ").trim().slice(0, 160);
   const ogImg = course.ogImage || "/opengraph-image.png";
   const canonical = course.canonicalUrl || `https://webtricker.com/training/${id}`;
 

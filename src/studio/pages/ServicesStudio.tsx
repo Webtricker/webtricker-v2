@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getServicesData, getServicesPageData } from "@/utils/pageData";
-import { ArrowUp, orderServices, pad, stripHtml } from "../ui";
+import { cld, ArrowUp, orderServices, pad, stripHtml } from "../ui";
 import { Arrow } from "../ui";
 import { PageHead, nameOf } from "../parts";
 
@@ -36,7 +36,7 @@ export default async function ServicesStudio() {
               return (
                 <article className="svc" id={`svc${i}`} key={s._id || s.slug}>
                   <div className="media media--par svc__media reveal-clip">
-                    <img src={s.thumnail?.url || s.icon} alt={s.thumbnailAlt || s.title} loading="lazy" />
+                    <img decoding="async" src={cld(s.thumnail?.url || s.icon, 1000)} alt={s.thumbnailAlt || s.title} loading="lazy" />
                   </div>
                   <div className="svc__body">
                     <span className="svc__num mono" style={{ color: `var(${COLORS[i % COLORS.length]})` }}>

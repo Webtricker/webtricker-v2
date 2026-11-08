@@ -83,9 +83,11 @@ export async function generateMetadata({
   const portfolio = result?.portfolio as TPortfolio;
 
   const metaTitle = `${portfolio?.title} | Portfolios`;
-  const metaDescription =
+  const rawDescription =
     portfolio?.description ||
     `Explore details about ${portfolio.title}, a project from Webtricker Studio.`;
+  const plain = String(rawDescription).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const metaDescription = plain.length > 160 ? plain.slice(0, plain.lastIndexOf(" ", 157)) + "..." : plain;
 
   const ogImage = portfolio?.thumnail?.url;
 

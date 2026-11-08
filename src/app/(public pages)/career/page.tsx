@@ -18,8 +18,7 @@ type CultureItem = {
   description: string;
 };
 
-export const dynamic = "force-dynamic";
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Build Your Career with Webtricker",
@@ -61,7 +60,7 @@ async function getCareers(): Promise<CareerListing[]> {
       process.env.NEXT_PUBLIC_BASE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     const res = await fetch(`${baseUrl}/api/career?published=true&limit=100`, {
-      cache: "no-store",
+      next: { revalidate: 300 },
     });
     if (!res.ok) return [];
     const data = await res.json();
