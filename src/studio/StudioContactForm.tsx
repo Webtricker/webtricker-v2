@@ -3,9 +3,10 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useSubmitContactFormMutation } from "@/redux/features/contact/contactApiSlice";
+import PhoneField, { joinPhone } from "./PhoneField";
 import { useBotCheck } from "@/sharedComponets/ui/security/useBotCheck";
 
-type FormData = { name: string; email: string; message: string };
+type FormData = { name: string; email: string; phoneCode: string; phone: string; message: string };
 type Cfg = {
   name?: { label?: string; placeholder?: string };
   email?: { label?: string; placeholder?: string };
@@ -17,7 +18,7 @@ type Cfg = {
 export default function StudioContactForm({ cfg }: { cfg?: Cfg }) {
   const [submitForm, { isLoading }] = useSubmitContactFormMutation();
   const bot = useBotCheck();
-  const { register, reset, handleSubmit, formState: { errors } } = useForm<FormData>();
+  const { register, reset, handleSubmit, formState: { errors } } = useForm<FormData>({ defaultValues: { phoneCode: "+880" } });
 
   const onSubmit = handleSubmit(async (data) => {
     if (!bot.isAnswered) {
@@ -25,10 +26,11 @@ export default function StudioContactForm({ cfg }: { cfg?: Cfg }) {
       return;
     }
     try {
-      const res = await submitForm({ ...data, ...bot.getPayload() }).unwrap();
+      const { phoneCode, phone, ...rest } = data;
+      const res = await submitForm({ ...rest, phone: joinPhone(phoneCode, phone), ...bot.getPayload() }).unwrap();
       if (res.success) {
         toast.success("Message sent successfully!");
-        reset();
+        reset({ phoneCode: "+880" });
       } else {
         toast.error("Failed to send message. Please try again later.");
       }
@@ -62,6 +64,7 @@ export default function StudioContactForm({ cfg }: { cfg?: Cfg }) {
         />
         {err(errors.email?.message)}
       </div>
+      <PhoneField id="cPhone" label="Phone (optional)" code={register("phoneCode")} number={register("phone", { pattern: { value: /^[\d\s\-()]{6,18}$/, message: "Enter a valid phone number" } })} error={errors.phone?.message} />
       <div className="field">
         <label htmlFor="cMsg">{cfg?.message?.label || "Your Queries"}</label>
         <textarea id="cMsg" placeholder={cfg?.message?.placeholder || "Let us know how we can help you"} {...register("message", { required: "Message is required" })} />

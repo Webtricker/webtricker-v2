@@ -3,7 +3,7 @@ import { getThankingMailTemplate } from "@/utils/mailTemplate";
 import { NextRequest, NextResponse } from "next/server";
 import { guardPublicForm, jsonError, readJsonBody } from "@/lib/security/guard";
 import { getClientIp, rateLimit } from "@/lib/security/rateLimit";
-import { cleanEmail, cleanLine, cleanText, escapeHtml, toSafeHtml } from "@/lib/security/sanitize";
+import { cleanEmail, cleanLine, cleanPhone, cleanText, escapeHtml, toSafeHtml } from "@/lib/security/sanitize";
 
 export const POST = async (req: NextRequest) => {
     const body = await readJsonBody(req);
@@ -19,6 +19,7 @@ export const POST = async (req: NextRequest) => {
     const name = cleanLine(body.name, 100);
     const email = cleanEmail(body.email);
     const message = cleanText(body.message, 5000);
+    const phone = cleanPhone(body.phone);
     if (!name || !email || !message) {
         return jsonError("Missing or invalid fields", 400);
     }
@@ -37,6 +38,7 @@ export const POST = async (req: NextRequest) => {
             subject: "New Contact Message from Webtricker",
             html: `
          <p>You have received a new message from ${escapeHtml(name)} (${escapeHtml(email)})</p>
+         ${phone ? `<p><strong>Phone:</strong> ${escapeHtml(phone)}</p>` : ""}
          <br />
         <p><strong>Message:</strong><br/>${toSafeHtml(message)}</p>
         <p style="color:#888;font-size:12px">Sender IP:${escapeHtml(getClientIp(req).slice(0, 45))}</p>
