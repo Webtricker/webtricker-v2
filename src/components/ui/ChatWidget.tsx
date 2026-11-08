@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
 import { v4 as uuidv4 } from 'uuid';
-import { pusherClient } from '@/utils/pusher-client';
 import { IoChatbubblesOutline, IoCloseOutline } from 'react-icons/io5';
 
 function getMessageText(m: any): string {
@@ -113,30 +112,53 @@ export default function ChatWidget() {
       });
   }, []);
 
+  // Real-time updates need Pusher, but only while the chat panel is open. Loading it lazily
+  // keeps the websocket (and its legacy `unload` listener) off every ordinary page view.
   useEffect(() => {
-    if (!sessionId) return;
-    const channel = pusherClient.subscribe(`chat-${sessionId}`);
+    if (!sessionId || !isOpen) return;
+    let cancelled = false;
+    let teardown = () => {};
 
-    channel.bind('new-message', (data: any) => {
-      setMode('ESCALATED');
-      setHumanMessages(prev => {
-        const exists = prev.find(m => m.content === data.content && m.role === data.role);
-        if (exists) return prev;
-        return [...prev, data];
+    // Catch up on anything an agent sent while the panel was closed.
+    fetch(`/api/chat/messages?sessionId=${sessionId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (cancelled) return;
+        if (data.session?.status === 'ESCALATED') {
+          setMode('ESCALATED');
+          setHumanMessages(data.session.messages);
+        }
+      })
+      .catch(() => {});
+
+    import('@/utils/pusher-client').then(({ pusherClient }) => {
+      if (cancelled || !pusherClient) return;
+      const channel = pusherClient.subscribe(`chat-${sessionId}`);
+
+      channel.bind('new-message', (data: any) => {
+        setMode('ESCALATED');
+        setHumanMessages(prev => {
+          const exists = prev.find(m => m.content === data.content && m.role === data.role);
+          if (exists) return prev;
+          return [...prev, data];
+        });
       });
-    });
 
-    // Admin or server resolved the session — transition to ended state
-    channel.bind('session-resolved', () => {
-      setIsConfirmingEnd(false);
-      setIsResolved(true);
-      setShowReview(true);
+      // Admin or server resolved the session — transition to ended state
+      channel.bind('session-resolved', () => {
+        setIsConfirmingEnd(false);
+        setIsResolved(true);
+        setShowReview(true);
+      });
+
+      teardown = () => pusherClient.unsubscribe(`chat-${sessionId}`);
     });
 
     return () => {
-      pusherClient.unsubscribe(`chat-${sessionId}`);
+      cancelled = true;
+      teardown();
     };
-  }, [sessionId]);
+  }, [sessionId, isOpen]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });

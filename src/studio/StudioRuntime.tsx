@@ -651,8 +651,13 @@ export default function StudioRuntime() {
     const loader = root.querySelector<HTMLElement>(".loader");
     if (st.first) {
       st.first = false;
+      const phone = window.matchMedia("(max-width: 767px)").matches;
       if (reduce || !loader) { if (loader) loader.style.display = "none"; }
-      else {
+      else if (phone) {
+        /* no loader on phones: show the page straight away and play the intro */
+        loader.style.display = "none";
+        gsap.timeline().add(intro).from(".stu .top .wrap > *", { y: -20, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "<");
+      } else {
         loader.style.animation = "none";
         // failsafe: never let the loader outlive the animation if frames are throttled (background tab)
         const failsafe = setTimeout(() => { loader.style.display = "none"; }, 4500);
