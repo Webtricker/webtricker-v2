@@ -20,7 +20,7 @@ const reportOnlyCsp = [
   "img-src 'self' data: blob: https:",
   "media-src 'self' https://res.cloudinary.com",
   "font-src 'self' data: https://fonts.gstatic.com",
-  "connect-src 'self' https://www.google-analytics.com https://*.analytics.google.com https://*.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://vitals.vercel-insights.com wss://*.pusher.com https://*.pusher.com",
+  "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://stats.g.doubleclick.net https://*.g.doubleclick.net https://*.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://vitals.vercel-insights.com wss://*.pusher.com https://*.pusher.com",
   "frame-src 'self' https://www.google.com https://www.youtube.com https://player.vimeo.com",
   "worker-src 'self' blob:",
 ].join("; ");

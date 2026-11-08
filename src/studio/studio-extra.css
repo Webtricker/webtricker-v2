@@ -224,3 +224,6 @@
   .stu .tslider__dots{ gap: 5px; flex: 1 1 auto; min-width: 0; }
   .stu .tslider__dots i{ flex: 1 1 0; min-width: 6px; max-width: 28px; }
 }
+
+/* no splash loader on phones: it only delays the first paint */
+@media (max-width: 767px){ .stu .loader{ display: none !important; animation: none; } }
