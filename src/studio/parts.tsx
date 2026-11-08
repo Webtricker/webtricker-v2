@@ -38,7 +38,7 @@ export function PageHead({
             loop
             playsInline
             autoPlay
-            preload="auto"
+            preload="metadata"
           />
           <div className="hero__shade" />
         </div>

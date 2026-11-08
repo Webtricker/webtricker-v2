@@ -219,6 +219,7 @@ export default function ChatWidget() {
       <div className="fixed bottom-6 right-6 z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
+          aria-label={isOpen ? "Close chat" : "Open chat"}
           className="bg-[#FFC107] text-black p-4 rounded-full shadow-lg hover:opacity-90 transition-all flex items-center justify-center"
         >
           {isOpen ? <IoCloseOutline size={28} /> : <IoChatbubblesOutline size={28} />}

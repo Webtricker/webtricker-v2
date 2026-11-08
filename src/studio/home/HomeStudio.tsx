@@ -83,7 +83,7 @@ export default async function HomeStudio() {
       <section className="hero v5hero v5hero--video">
         <div className="hero__video" aria-hidden="true">
           {media?.type === "video" ? (
-            <video id="heroVid" src={media.src} poster="/videos/hero-poster.webp" muted loop playsInline autoPlay preload="auto" />
+            <video id="heroVid" src={media.src} poster="/videos/hero-poster.webp" muted loop playsInline autoPlay preload="metadata" />
           ) : media?.src ? (
             <img src={media.src} alt="" />
           ) : null}
@@ -254,7 +254,7 @@ export default async function HomeStudio() {
               <div className="swiper-slide" key={p._id || p.slug}>
                 <Link className="wk" href={`/portfolio/${p.slug}`}>
                   <div className="wk__img">
-                    <img decoding="async" src={cld(p.coverImage?.url || p.thumnail?.url, 1000)} alt={p.title} loading="lazy" draggable={false} />
+                    <img decoding="async" src={cld(p.coverImage?.url || p.thumnail?.url, 700)} alt={p.title} loading="lazy" draggable={false} />
                   </div>
                   <div className="wk__meta">
                     <h3>{p.title}</h3>

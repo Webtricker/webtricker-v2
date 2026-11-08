@@ -12,7 +12,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 import DelayedWidgets from "@/sharedComponets/DOM/DelayedWidgets";
 import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import Script from "next/script";
+import DeferredAnalytics from "@/sharedComponets/DOM/DeferredAnalytics";
 
 // Active dev mode disabled for performance
 export const revalidate = 86400;
@@ -102,29 +102,6 @@ export default function RootLayout({
     <html lang="en">
 
       <head>
-        <Script
-          id="clarity-script"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(c,l,a,r,i,t,y){
-                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-              })(window, document, "clarity", "script", "sljjh41puk");
-            `,
-          }}
-        />
-
-        {/* Google Analytics 4 (G-F53LQ46RXD). Loaded after the page is interactive so it cannot slow the first paint. */}
-        <Script src="https://www.googletagmanager.com/gtag/js?id=G-F53LQ46RXD" strategy="lazyOnload" />
-        <Script
-          id="ga4-init"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-F53LQ46RXD');`,
-          }}
-        />
 
         <BusinessSchema />
 
@@ -193,6 +170,7 @@ export default function RootLayout({
         </ThemeProvider>
         <ReactToastifyMessage />
         <SpeedInsights />
+        <DeferredAnalytics />
       </body>
     </html>
   );
