@@ -116,10 +116,20 @@ export default function RootLayout({
           }}
         />
 
+        {/* Google Analytics 4 (G-F53LQ46RXD). Loaded after the page is interactive so it cannot slow the first paint. */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-F53LQ46RXD" strategy="lazyOnload" />
+        <Script
+          id="ga4-init"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-F53LQ46RXD');`,
+          }}
+        />
+
         <BusinessSchema />
 
         {/* Server-rendered so search and AI crawlers that skip JavaScript still see it.
-            The logo is intentionally omitted until Site Config holds a valid logo URL. */}
+            The logo is served from /logo.png (public folder). */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -131,6 +141,7 @@ export default function RootLayout({
                 name: "Webtricker",
                 legalName: "Webtricker LLC",
                 url: "https://webtricker.com",
+                logo: "https://webtricker.com/logo.png",
                 description:
                   "Webtricker is a web design and development agency offering professional websites, apps, and digital solutions.",
                 sameAs: [
