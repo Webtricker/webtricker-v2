@@ -1,6 +1,5 @@
 import Link from "next/link";
-import trainingBanner from "@/assets/images/training/training.png";
-import { Bleed, PageHead } from "../parts";
+import { PageHead } from "../parts";
 import { Roll } from "../ui";
 
 const COLORS = ["--green", "--blue", "--sky", "--crimson", "--amber"];
@@ -44,11 +43,6 @@ export default async function TrainingStudio() {
         size="clamp(42px, 8vw, 120px)"
         lead="Enhance your skills with our comprehensive training programs designed for modern professionals. Pay in easy monthly installments — no large upfront payment."
       />
-      <div className="wrap">
-        <div className="bleed--box">
-          <Bleed src={trainingBanner.src} alt="Training" />
-        </div>
-      </div>
       <section className="chapter">
         <div className="wrap">
           <div className="eyebrow mono mute">
