@@ -1,7 +1,12 @@
 import Container from "@/sharedComponets/ui/wrapper/Container";
 import React from "react";
-import CategoryBlogsContainer from "./component/CategoryBlogsContainer";
+import Link from "next/link";
 import shortLogo from "@/assets/images/home/webtricker-w.png";
+import { getPostsData } from "@/utils/pageData";
+import { PageHead, nameOf } from "@/studio/parts";
+import { Arrow, fmtDate, stripHtml } from "@/studio/ui";
+
+/* eslint-disable @next/next/no-img-element */
 
 // get category related posts data
 async function getCategoryPosts(id: string) {
@@ -77,32 +82,39 @@ export default async function CategoryPage({
         <h1 className="text-center">Invalid category</h1>
       </Container>
     );
+  const catName = data.category?.name;
+  const posts = ((await getPostsData(999)) as any[]).filter((p) => p?.slug && [nameOf(p.category), p.category?._id, p.category].includes(catName) || [p.category?._id, p.category].includes(id));
   return (
-    <main className="page legacy w-full z-0">
-      <section
-        className={`w-full min-h-screen z-0 flex relative mb-8 md:mb-10 lg:mb-14 xl:mb-16 2xl:mb-18`}
-      >
-        <Container className="flex items-center justify-center">
-          <div className="w-full max-w-[1000px] text-center bg-slate-800/30 rounded-[10px] p-4">
-            <h1 className="!text-white wt_text-shadow wt_fs-7xl font-medium heading !leading-[100%]">
-              {data.category?.name}
-            </h1>
-            <p className="!text-white wt_text-shadow wt_fs-xl bold mt-5">
-              Explore our blog posts about {data.category?.name}.
-            </p>
+    <main className="page" data-page="journal">
+      <PageHead video="blog" crumb="Blog · Category" title={catName} lead={`Explore our blog posts about ${catName}.`} />
+      <section className="chapter">
+        <div className="wrap">
+          {posts.length ? (
+            <div className="posts">
+              {posts.map((p) => (
+                <Link className="post" href={`/blog/${p.slug}`} key={p._id || p.slug}>
+                  <div className="media">
+                    <img src={p.thumnail?.url} alt={p.title} loading="lazy" />
+                  </div>
+                  <div className="post__meta">
+                    <span className="mono" style={{ color: "var(--amber)" }}>{catName}</span>
+                    <span className="mono mute">{fmtDate(p.createdAt)}</span>
+                  </div>
+                  <h3>{p.title}</h3>
+                  <p>{p.excerp || stripHtml(p.description)}</p>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="lead">No posts in this category yet.</p>
+          )}
+          <div style={{ marginTop: 56 }}>
+            <Link className="textlink" href="/blog">
+              All posts <Arrow />
+            </Link>
           </div>
-        </Container>
-        <video
-          autoPlay
-          loop
-          muted
-          className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-          src="/videos/blogs/blog.mp4"
-        >
-          <source src="/videos/blogs/blog.mp4" type="video/mp4" />
-        </video>
+        </div>
       </section>
-      <CategoryBlogsContainer categoryId={data.category?._id} />
     </main>
   );
 }
