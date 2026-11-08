@@ -44,7 +44,11 @@ export default async function TrainingStudio() {
         size="clamp(42px, 8vw, 120px)"
         lead="Enhance your skills with our comprehensive training programs designed for modern professionals. Pay in easy monthly installments — no large upfront payment."
       />
-      <Bleed src={trainingBanner.src} alt="Training" />
+      <div className="wrap">
+        <div className="bleed--box">
+          <Bleed src={trainingBanner.src} alt="Training" />
+        </div>
+      </div>
       <section className="chapter">
         <div className="wrap">
           <div className="eyebrow mono mute">
