@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Bleed, PageHead } from "../parts";
+import { PageHead } from "../parts";
 import { ArrowUp, pad } from "../ui";
 
 type Job = { slug: string; title: string; department?: string; vacancyCount?: number; ogImage?: string };
@@ -53,11 +53,6 @@ export default async function CareerStudio() {
         title="Do you have the courage?"
         lead="To be a part of challenging people. If you are a self motivated, confident but not over confident, hardworking, energetic, creative, team player and eager to achieve something extraordinary then you are surely welcome to a dynamic team!"
       />
-      <div className="wrap">
-        <div className="bleed--box">
-  <Bleed src="/images/career/career-hero-team.png" alt="Webtricker career team collaboration" />
-        </div>
-      </div>
       <section className="chapter">
         <div className="wrap">
           <div className="eyebrow mono mute">
