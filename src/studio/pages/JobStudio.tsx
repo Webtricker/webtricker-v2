@@ -44,7 +44,7 @@ export default function JobStudio({ job }: { job: any }) {
           </div>
         </div>
       </section>
-      <Bleed src={job.ogImage} alt={job.ogImageAlt || job.title} height="clamp(240px, 40vw, 560px)" />
+      <div className="wrap"><div className="bleed--box"><Bleed src={job.ogImage} alt={job.ogImageAlt || job.title} height="clamp(240px, 40vw, 560px)" /></div></div>
       <section className="chapter">
         <div className="wrap job">
           <div className="job__main">
