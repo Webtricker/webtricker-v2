@@ -12,10 +12,12 @@ export type StudioSiteConfig = {
 };
 
 const base = () => process.env.NEXT_PUBLIC_BASE_URL;
+/** Cache key changes with each deploy so CMS/image updates never wait on a stale data cache. */
+const BUILD = (process.env.VERCEL_GIT_COMMIT_SHA || "dev").slice(0, 7);
 
 async function getJson<T>(path: string): Promise<T | null> {
   try {
-    const res = await fetch(`${base()}${path}`, { next: { revalidate: 86400 } });
+    const res = await fetch(`${base()}${path}${path.includes("?") ? "&" : "?"}b=${BUILD}`, { next: { revalidate: 300 } });
     if (!res.ok) return null;
     const json = await res.json();
     return (json?.data ?? null) as T | null;

@@ -13,12 +13,13 @@ import Button from "@/sharedComponets/ui/buttons/Button";
 
 // const REVALIDATE_SECONDS = 60 * 60; // 3600 seconds = 1 hour
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
-const REVALIDATE_SECONDS = 86400;
+const REVALIDATE_SECONDS = 300;
+const BUILD = (process.env.VERCEL_GIT_COMMIT_SHA || "dev").slice(0, 7);
 
 const getBlogData = async (slug: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${slug}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogs/${slug}?b=${BUILD}`,
       {
         next: { revalidate: REVALIDATE_SECONDS },
       }
