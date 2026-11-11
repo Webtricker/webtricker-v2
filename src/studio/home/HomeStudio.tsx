@@ -10,7 +10,7 @@ import {
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
-import { cld, cldTop, ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
+import { agencyStats, fmtNum, cld, cldTop, ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -69,14 +69,7 @@ export default async function HomeStudio() {
   const tList = (testimonials as any[]) || [];
 
   const catOf = (p: any) => nameOf(p.technology) || "Project";
-  const stats = an
-    ? [
-        { n: an.projectsCompleted, s: "+", l: an.projectsCompletedText },
-        { n: an.yearsOfExperience, s: "+", l: an.yearsOfExperienceText },
-        { n: an.teamMembers, s: "+", l: an.teamMembersText },
-        { n: an.growingRate, s: "%", l: an.growingRateText },
-      ]
-    : [];
+  const stats = agencyStats(an);
 
   return (
     <main className="page" data-page="home">
@@ -341,7 +334,8 @@ export default async function HomeStudio() {
                 {stats.map((s) => (
                   <div className="num" key={s.l}>
                     <b>
-                      <span data-count={s.n}>{s.n}</span>
+                      {s.p}
+                      <span data-count={s.n}>{fmtNum(s.n)}</span>
                       <sup>{s.s}</sup>
                     </b>
                     <span className="mono mute">{s.l}</span>

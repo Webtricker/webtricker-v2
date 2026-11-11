@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { cld, FadeWords, MaskWords, Roll } from "./ui";
+import { agencyStats, fmtNum, cld, FadeWords, MaskWords, Roll } from "./ui";
 import { PAGE_VIDEOS } from "./pageVideos";
 
 /* eslint-disable @next/next/no-img-element */
@@ -140,18 +140,14 @@ export function Testimonials({ list }: { list: any[] }) {
 
 export function Stats({ an }: { an: any }) {
   if (!an) return null;
-  const stats = [
-    { n: an.projectsCompleted, s: "+", l: an.projectsCompletedText },
-    { n: an.yearsOfExperience, s: "+", l: an.yearsOfExperienceText },
-    { n: an.teamMembers, s: "+", l: an.teamMembersText },
-    { n: an.growingRate, s: "%", l: an.growingRateText },
-  ];
+  const stats = agencyStats(an);
   return (
     <div className="nums">
       {stats.map((s) => (
         <div className="num" key={s.l}>
           <b>
-            <span data-count={s.n}>{s.n}</span>
+            {s.p}
+            <span data-count={s.n}>{fmtNum(s.n)}</span>
             <sup>{s.s}</sup>
           </b>
           <span className="mono mute">{s.l}</span>
