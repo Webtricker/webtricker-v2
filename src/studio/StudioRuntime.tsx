@@ -386,7 +386,7 @@ export default function StudioRuntime() {
         progress: (sw: Swiper) => {
           sw.slides.forEach((sl: HTMLElement) => {
             const im = sl.querySelector("img") as HTMLElement | null;
-            if (im) im.style.transform = `translate3d(${((sl as any).progress * 12).toFixed(2)}%,0,0) scale(1.24)`;
+            if (im) im.style.transform = `translate3d(${((sl as any).progress * 4).toFixed(2)}%,0,0) scale(1.1)`;
           });
           const b = root.querySelector<HTMLElement>("#wkBar");
           if (b) b.style.transform = `scaleX(${Math.max(0.04, Math.min(1, sw.progress))})`;

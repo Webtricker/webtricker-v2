@@ -133,3 +133,9 @@ export const cld = (url?: string, w = 1000): string => {
   if (/\/upload\/[^/]*(f_auto|q_auto|w_\d+)/.test(url)) return url;
   return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${w},c_limit/`);
 };
+
+/** Project screenshots are tall full-page captures: crop to the top (nav + hero) at the card ratio. */
+export const cldTop = (url?: string, w = 900, h = 620): string => {
+  if (!url || !/^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//.test(url)) return url || "";
+  return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${w},h_${h},c_fill,g_north/`);
+};
