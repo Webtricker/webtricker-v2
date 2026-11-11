@@ -10,7 +10,7 @@ import {
   getTestimonialsData,
 } from "@/utils/pageData";
 import { getSiteConfig, getFooter } from "../data";
-import { cld, ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
+import { cld, cldTop, ArrowUp, Chars, FadeWords, Roll, fmtDate, orderServices, pad, stripHtml } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
@@ -255,7 +255,7 @@ export default async function HomeStudio() {
               <div className="swiper-slide" key={p._id || p.slug}>
                 <Link className="wk" href={`/portfolio/${p.slug}`}>
                   <div className="wk__img">
-                    <img decoding="async" src={cld(p.coverImage?.url || p.thumnail?.url, 700)} alt={p.title} loading="lazy" draggable={false} />
+                    <img decoding="async" src={cldTop(p.coverImage?.url || p.thumnail?.url, 900, 620)} alt={p.title} loading="lazy" draggable={false} />
                   </div>
                   <div className="wk__meta">
                     <h3>{p.title}</h3>
