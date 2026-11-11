@@ -139,3 +139,16 @@ export const cldTop = (url?: string, w = 900, h = 620): string => {
   if (!url || !/^https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\//.test(url)) return url || "";
   return url.replace("/image/upload/", `/image/upload/f_auto,q_auto,w_${w},h_${h},c_fill,g_north/`);
 };
+
+export type Stat = { p?: string; n: number; s: string; l: string };
+/** Agency snapshot numbers: projects + years come from the CMS; the last two are our Upwork record. */
+export const agencyStats = (an: any): Stat[] =>
+  an
+    ? [
+        { n: an.projectsCompleted, s: "+", l: an.projectsCompletedText },
+        { n: an.yearsOfExperience, s: "+", l: String(an.yearsOfExperienceText || "").replace(/expeirence/i, "Experience") },
+        { n: 4596, s: "", l: "Hours worked on Upwork" },
+        { p: "$", n: 100, s: "K+", l: "Earned from freelance marketplace" },
+      ]
+    : [];
+export const fmtNum = (n: number | string) => Number(n).toLocaleString("en-US");

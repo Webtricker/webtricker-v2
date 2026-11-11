@@ -609,7 +609,7 @@ export default function StudioRuntime() {
       );
       q("[data-count]").forEach((n) => {
         const end = Number(n.dataset.count), o = { v: 0 };
-        ScrollTrigger.create({ trigger: n, start: "top 88%", once: true, onEnter: () => gsap.fromTo(o, { v: 0 }, { v: end, duration: 2, ease: "power3.out", onUpdate: () => { n.textContent = String(Math.round(o.v)); }, onComplete: () => { n.textContent = String(end); } }) });
+        ScrollTrigger.create({ trigger: n, start: "top 88%", once: true, onEnter: () => gsap.fromTo(o, { v: 0 }, { v: end, duration: 2, ease: "power3.out", onUpdate: () => { n.textContent = Math.round(o.v).toLocaleString("en-US"); }, onComplete: () => { n.textContent = end.toLocaleString("en-US"); } }) });
       });
       if (!isHome && root.querySelector(".pagehead--video")) {
         ScrollTrigger.create({ trigger: ".stu .pagehead--video", start: "top top", end: "bottom 80px", toggleClass: { targets: root, className: "on-dark" } });
