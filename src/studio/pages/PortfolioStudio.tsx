@@ -27,7 +27,7 @@ export default async function PortfolioStudio() {
             {list.map((p) => (
               <Link className="case" href={`/portfolio/${p.slug}`} key={p._id || p.slug} data-cat={nameOf(p.technology)}>
                 <div className="media reveal-clip">
-                  <img decoding="async" src={cld(p.thumnail?.url || p.coverImage?.url, 1000)} alt={p.title} loading="lazy" />
+                  <img decoding="async" src={cld(p.thumnail?.url || p.coverImage?.url, 1000)} alt={p.thumbnailAlt || p.title} loading="lazy" />
                 </div>
                 <div className="case__row">
                   <div>

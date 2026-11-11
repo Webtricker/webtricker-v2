@@ -52,7 +52,7 @@ export default function CaseStudio({
           </div>
         </div>
       </section>
-      <Bleed src={p.coverImage?.url || p.thumnail?.url} alt={p.title} />
+      <Bleed src={p.coverImage?.url || p.thumnail?.url} alt={p.coverImageAlt || p.title} />
       <section className="chapter">
         <div className="wrap sticky2">
           <div className="sticky2__side">
