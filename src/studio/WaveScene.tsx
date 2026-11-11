@@ -47,7 +47,7 @@ export default function WaveScene() {
 
     const frame = (t: number) => {
       ctx.clearRect(0, 0, W, H);
-      const hz = H * 0.76;
+      const hz = H * 0.92;
       /* perspective grid floor */
       ctx.lineWidth = 1;
       ctx.strokeStyle = "rgba(125,211,252,.14)";
@@ -65,14 +65,14 @@ export default function WaveScene() {
       ctx.globalCompositeOperation = "lighter";
       for (let n = 0; n < N; n++) {
         const col = COLORS[n % COLORS.length];
-        const amp = H * (0.05 + (n % 4) * 0.02);
+        const amp = H * (0.022 + (n % 4) * 0.009);
         const ph = n * 0.8, sp = 0.00045 + n * 0.00004;
         const path = new Path2D();
         const step = small ? 12 : 8;
         for (let x = 0; x <= W + step; x += step) {
           const u = x / W;
           const env = 0.55 + 0.45 * Math.sin(u * Math.PI);
-          const y = H * 0.68 + Math.sin(u * 5.2 + t * sp + ph) * amp * env + Math.sin(u * 2.3 - t * sp * 0.7 + ph * 1.7) * amp * 0.6 + (n - N / 2) * H * 0.012;
+          const y = H * 0.87 + Math.sin(u * 5.2 + t * sp + ph) * amp * env + Math.sin(u * 2.3 - t * sp * 0.7 + ph * 1.7) * amp * 0.6 + (n - N / 2) * H * 0.006;
           if (x === 0) path.moveTo(x, y); else path.lineTo(x, y);
         }
         ctx.lineWidth = 7; ctx.strokeStyle = col + "1f"; ctx.stroke(path);
