@@ -227,3 +227,22 @@
 
 /* no splash loader on phones: it only delays the first paint */
 @media (max-width: 767px){ .stu .loader{ display: none !important; animation: none; } }
+
+/* ---- service illustrations ---- */
+.stu .sart{ display: block; overflow: hidden; width: 100%; height: 100%; background: radial-gradient(70% 80% at 30% 20%, color-mix(in srgb, var(--c, var(--amber)) 16%, #101012), #0e0e10 70%); transition: transform 1s var(--ease, ease); }
+.stu .panel:hover .sart, .stu .svc__media:hover .sart{ transform: scale(1.04); }
+.stu .sart .fl{ animation: sartFloat 6s ease-in-out infinite; transform-box: fill-box; }
+.stu .sart .fl2{ animation-delay: -2s; animation-duration: 7s; }
+.stu .sart .fl3{ animation-delay: -4s; animation-duration: 8s; }
+.stu .sart .dash{ stroke-dasharray: 6 9; animation: sartDash 1.6s linear infinite; }
+.stu .sart .grow{ transform-box: fill-box; transform-origin: 50% 100%; animation: sartGrow 2.6s ease-in-out infinite alternate; }
+.stu .sart .ring{ transform-box: fill-box; transform-origin: 50% 50%; animation: sartPulse 3.2s ease-in-out infinite; }
+.stu .sart .draw{ stroke-dasharray: 400; stroke-dashoffset: 400; animation: sartDraw 3s ease-out .3s forwards; }
+.stu .sart .caret{ animation: sartBlink 1s steps(1) infinite; }
+@keyframes sartFloat{ 0%,100%{ transform: translateY(0) } 50%{ transform: translateY(-8px) } }
+@keyframes sartDash{ to{ stroke-dashoffset: -30 } }
+@keyframes sartGrow{ from{ transform: scaleY(.82) } to{ transform: scaleY(1) } }
+@keyframes sartPulse{ 0%,100%{ transform: scale(.94); opacity: .2 } 50%{ transform: scale(1.06); opacity: .5 } }
+@keyframes sartDraw{ to{ stroke-dashoffset: 0 } }
+@keyframes sartBlink{ 50%{ opacity: 0 } }
+@media (prefers-reduced-motion: reduce){ .stu .sart *{ animation: none !important; } .stu .sart .draw{ stroke-dashoffset: 0; } }

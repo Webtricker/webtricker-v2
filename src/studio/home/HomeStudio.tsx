@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ServiceArt, { hasArt } from "../ServiceArt";
 import {
   getAboutPageData,
   getHomePageData,
@@ -192,7 +193,7 @@ export default async function HomeStudio() {
               return (
                 <Link className="panel glass" href={`/services/${s.slug}`} key={s._id || s.slug} style={{ ["--c" as any]: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>
                   <div className="media">
-                    <img decoding="async" src={cld(s.thumnail?.url || s.icon, 1000)} alt={s.thumbnailAlt || s.title} loading="lazy" />
+                    {hasArt(s.slug) ? <ServiceArt slug={s.slug} label={s.thumbnailAlt || s.title} /> : <img decoding="async" src={cld(s.thumnail?.url || s.icon, 1000)} alt={s.thumbnailAlt || s.title} loading="lazy" />}
                   </div>
                   <div className="panel__top">
                     <span className="mono mute">
