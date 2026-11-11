@@ -254,7 +254,7 @@
 .stu .wavescene__stage{ position: relative; height: clamp(440px, 74vh, 720px); overflow: hidden; background: radial-gradient(80% 90% at 50% 40%, #151228 0%, #0b0b10 70%); border-block: 1px solid var(--line); }
 .stu .wavescene canvas{ position: absolute; inset: 0; display: block; }
 .stu .wavescene__vignette{ position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 40%, rgba(8,8,12,.75) 100%), linear-gradient(180deg, rgba(14,14,16,.9), transparent 22%, transparent 78%, rgba(14,14,16,.9)); }
-.stu .wavescene__copy{ position: relative; z-index: 2; height: 100%; display: grid; align-content: center; justify-items: center; text-align: center; gap: 22px; }
+.stu .wavescene__copy{ position: relative; z-index: 2; height: 100%; padding-bottom: 7vh; display: grid; align-content: center; justify-items: center; text-align: center; gap: 22px; }
 .stu .wavescene__copy::before{ content: ""; position: absolute; inset: 8% 12% 28%; z-index: -1; background: radial-gradient(ellipse at center, rgba(8,8,12,.72), transparent 70%); pointer-events: none; }
 .stu .wavescene__title{ display: grid; justify-items: center; gap: 18px; animation: waveIn .9s var(--ease, ease) both; }
 .stu .wavescene__title h2{ margin: 0; font-size: clamp(38px, 6.4vw, 104px); line-height: .98; letter-spacing: -.05em; font-weight: 500; text-shadow: 0 0 40px color-mix(in srgb, var(--c, #7dd3fc) 55%, transparent); }
