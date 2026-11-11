@@ -248,7 +248,7 @@ export default async function HomeStudio() {
               <div className="swiper-slide" key={p._id || p.slug}>
                 <Link className="wk" href={`/portfolio/${p.slug}`}>
                   <div className="wk__img">
-                    <img decoding="async" src={cld(p.thumnail?.url || p.coverImage?.url, 900)} alt={p.title} loading="lazy" draggable={false} />
+                    <img decoding="async" src={cld(p.thumnail?.url || p.coverImage?.url, 900)} alt={p.thumbnailAlt || p.title} loading="lazy" draggable={false} />
                   </div>
                   <div className="wk__meta">
                     <h3>{p.title}</h3>
@@ -437,7 +437,7 @@ export default async function HomeStudio() {
                 <div className="swiper-slide" key={p._id || p.slug}>
                   <Link className="post" href={`/blog/${p.slug}`}>
                     <div className="media">
-                      <img decoding="async" src={cld(p.thumnail?.url, 1000)} alt={p.title} loading="lazy" />
+                      <img decoding="async" src={cld(p.thumnail?.url, 1000)} alt={p.thumbnailAlt || p.title} loading="lazy" />
                     </div>
                     <div className="post__meta">
                       <span className="mono" style={{ color: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>

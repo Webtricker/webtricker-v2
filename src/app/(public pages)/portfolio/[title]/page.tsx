@@ -84,14 +84,18 @@ export async function generateMetadata({
 
   const portfolio = result?.portfolio as TPortfolio;
 
-  const metaTitle = `${portfolio?.title} | Portfolios`;
+  const metaTitle = portfolio?.seoTitle || `${portfolio?.title} Case Study`;
   const rawDescription =
+    portfolio?.seoDescription ||
     portfolio?.description ||
     `Explore details about ${portfolio.title}, a project from Webtricker Studio.`;
   const plain = String(rawDescription).replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
   const metaDescription = plain.length > 160 ? plain.slice(0, plain.lastIndexOf(" ", 157)) + "..." : plain;
 
-  const ogImage = portfolio?.thumnail?.url;
+  const ogImage = portfolio?.ogImage || portfolio?.thumnail?.url;
+  const ogIsDedicated = !!portfolio?.ogImage;
+  const ogAlt = portfolio?.ogImageAlt || portfolio?.title;
+  const brandTitle = `${metaTitle} | Webtricker`;
 
   return {
     title: metaTitle,
@@ -100,15 +104,15 @@ export async function generateMetadata({
       type: "article",
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio/${portfolio.slug}`,
       siteName: "Webtricker",
-      title: metaTitle,
+      title: brandTitle,
       description: metaDescription,
       images: ogImage
         ? [
             {
               url: ogImage,
-              width: portfolio.thumnail?.width || 1200,
-              height: portfolio.thumnail?.height || 630,
-              alt: portfolio.title,
+              width: ogIsDedicated ? 1200 : portfolio.thumnail?.width || 1200,
+              height: ogIsDedicated ? 630 : portfolio.thumnail?.height || 630,
+              alt: ogAlt,
             },
           ]
         : [],
@@ -116,13 +120,14 @@ export async function generateMetadata({
     twitter: {
       card: "summary_large_image",
       site: "@webtricker",
-      title: metaTitle,
+      title: brandTitle,
       description: metaDescription,
       images: ogImage ? [ogImage] : [],
     },
     alternates: {
       canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/portfolio/${portfolio.slug}`,
     },
+    keywords: portfolio?.focusKeyword ? [portfolio.focusKeyword, "web design portfolio", "Webtricker"] : undefined,
     category: "technology",
   };
 }
@@ -144,11 +149,43 @@ export default async function PortfolioDetailsPage({
   const idx = all.findIndex((x) => x.slug === portfolio.slug);
   const nx = idx >= 0 ? all[(idx + 1) % all.length] : null;
   const pv = idx >= 0 ? all[(idx - 1 + all.length) % all.length] : null;
+  const base = process.env.NEXT_PUBLIC_BASE_URL || "https://webtricker.com";
+  const plain = String(portfolio.seoDescription || portfolio.description || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "CreativeWork",
+        "@id": `${base}/portfolio/${portfolio.slug}#project`,
+        name: portfolio.title,
+        headline: portfolio.seoTitle || portfolio.title,
+        description: plain,
+        url: `${base}/portfolio/${portfolio.slug}`,
+        image: portfolio.ogImage || portfolio.coverImage?.url || portfolio.thumnail?.url,
+        keywords: portfolio.focusKeyword || undefined,
+        dateCreated: portfolio.createdAt,
+        dateModified: portfolio.updatedAt || portfolio.createdAt,
+        creator: { "@type": "Organization", name: "Webtricker", url: base },
+        about: portfolio.liveLink ? { "@type": "WebSite", name: portfolio.title, url: portfolio.liveLink } : undefined,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: base },
+          { "@type": "ListItem", position: 2, name: "Portfolio", item: `${base}/portfolio` },
+          { "@type": "ListItem", position: 3, name: portfolio.title, item: `${base}/portfolio/${portfolio.slug}` },
+        ],
+      },
+    ],
+  };
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
     <CaseStudio
       p={portfolio}
       next={nx && nx.slug !== portfolio.slug ? { href: `/portfolio/${nx.slug}`, title: nx.title } : null}
       prev={pv && pv.slug !== portfolio.slug ? { href: `/portfolio/${pv.slug}`, title: pv.title } : null}
     />
+    </>
   );
 }
