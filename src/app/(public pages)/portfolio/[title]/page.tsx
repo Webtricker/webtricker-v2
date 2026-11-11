@@ -10,13 +10,15 @@ import Image from "next/image";
 import React from "react";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 60 * 60)
-const REVALIDATE_SECONDS = 86400;
+// Data refreshes every 5 minutes, and the cache key changes with each deploy so new images show immediately.
+const REVALIDATE_SECONDS = 300;
+const BUILD = (process.env.VERCEL_GIT_COMMIT_SHA || "dev").slice(0, 7);
 
 // ===== Helper: fetch a single portfolio by slug =====
 const getPortfolioData = async (slug: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios/${slug}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/portfolios/${slug}?b=${BUILD}`,
       {
         next: { revalidate: REVALIDATE_SECONDS },
       }
