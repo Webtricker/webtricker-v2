@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ServiceArt, { hasArt } from "../ServiceArt";
+import WaveScene from "../WaveScene";
 import {
   getAboutPageData,
   getHomePageData,
@@ -162,6 +163,8 @@ export default async function HomeStudio() {
           </p>
         </div>
       </section>
+
+      <WaveScene />
 
       {/* SERVICES STACK */}
       <section className="chapter v5svc" id="reel" style={{ paddingTop: 0 }}>
