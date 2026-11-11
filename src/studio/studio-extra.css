@@ -248,3 +248,24 @@
 @media (prefers-reduced-motion: reduce){ .stu .sart *{ animation: none !important; } .stu .sart .draw{ stroke-dashoffset: 0; } }
 
 .stu .v5stack .tag{ display: inline-block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---- wave scene (home) ---- */
+.stu .wavescene{ position: relative; padding: 0 0 clamp(40px, 6vw, 90px); }
+.stu .wavescene__stage{ position: relative; height: clamp(440px, 74vh, 720px); overflow: hidden; background: radial-gradient(80% 90% at 50% 40%, #151228 0%, #0b0b10 70%); border-block: 1px solid var(--line); }
+.stu .wavescene canvas{ position: absolute; inset: 0; display: block; }
+.stu .wavescene__vignette{ position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at center, transparent 40%, rgba(8,8,12,.75) 100%), linear-gradient(180deg, rgba(14,14,16,.9), transparent 22%, transparent 78%, rgba(14,14,16,.9)); }
+.stu .wavescene__copy{ position: relative; z-index: 2; height: 100%; display: grid; align-content: center; justify-items: center; text-align: center; gap: 22px; }
+.stu .wavescene__copy::before{ content: ""; position: absolute; inset: 8% 12% 28%; z-index: -1; background: radial-gradient(ellipse at center, rgba(8,8,12,.72), transparent 70%); pointer-events: none; }
+.stu .wavescene__title{ display: grid; justify-items: center; gap: 18px; animation: waveIn .9s var(--ease, ease) both; }
+.stu .wavescene__title h2{ margin: 0; font-size: clamp(38px, 6.4vw, 104px); line-height: .98; letter-spacing: -.05em; font-weight: 500; text-shadow: 0 0 40px color-mix(in srgb, var(--c, #7dd3fc) 55%, transparent); }
+.stu .wavescene__title p{ margin: 0; max-width: 34em; color: rgba(241,239,233,.78); font-size: clamp(15px, 1.4vw, 19px); }
+.stu .wavescene__title .pill{ border-color: color-mix(in srgb, var(--c, #7dd3fc) 70%, transparent); }
+.stu .wavescene__dots{ display: flex; gap: 10px; }
+.stu .wavescene__dots button{ width: 34px; height: 4px; border: 0; border-radius: 4px; padding: 0; cursor: pointer; background: rgba(255,255,255,.22); transition: background .3s, width .3s; }
+.stu .wavescene__dots button.is-on{ width: 64px; background: var(--c, #7dd3fc); box-shadow: 0 0 14px var(--c, #7dd3fc); }
+.stu .wavescene__list{ list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.stu .wavescene__list a{ display: grid; gap: 6px; text-decoration: none; }
+.stu .wavescene__list b{ font: 500 clamp(26px, 4vw, 48px)/1 var(--display); letter-spacing: -.04em; }
+.stu .wavescene__list span{ color: rgba(241,239,233,.7); }
+@keyframes waveIn{ from{ opacity: 0; transform: translateY(18px) scale(.98); filter: blur(8px); } to{ opacity: 1; transform: none; filter: none; } }
+@media (prefers-reduced-motion: reduce){ .stu .wavescene__title{ animation: none; } }

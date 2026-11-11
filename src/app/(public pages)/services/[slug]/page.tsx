@@ -13,13 +13,14 @@ import ParallaxBanner from "./components/ServiceBanner";
 
 // const REVALIDATE_SECONDS = 60 * 60;
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
-const REVALIDATE_SECONDS = 86400;
+const REVALIDATE_SECONDS = 300;
+const BUILD = (process.env.VERCEL_GIT_COMMIT_SHA || "dev").slice(0, 7);
 
 // Helper function to fetch a single service data
 const getServiceData = async (slug: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/services/${slug}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/services/${slug}?b=${BUILD}`,
       {
         next: { revalidate: REVALIDATE_SECONDS }, // ISG Revalidation for this specific service
       }

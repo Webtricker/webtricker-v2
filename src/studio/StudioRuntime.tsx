@@ -589,7 +589,7 @@ export default function StudioRuntime() {
     /* The below-the-fold choreography creates ~50 ScrollTriggers, each reading layout right after the
        previous one wrote styles (forced reflow). Build it after first paint, in idle time. */
     const build = () => {
-      if (reduce || !page) return;
+      if (reduce || !page || !root.isConnected) return;
       const q = (sel: string) => Array.from(root.querySelectorAll<HTMLElement>(sel));
       q(".media--par img").forEach((im) => gsap.fromTo(im, { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: im.parentElement, start: "top bottom", end: "bottom top", scrub: true } }));
       q(".reveal-clip").forEach((m) => gsap.from(m, { clipPath: "inset(18% 10% 18% 10% round 28px)", duration: 1.4, ease: "expo.out", scrollTrigger: { trigger: m, start: "top 88%" } }));

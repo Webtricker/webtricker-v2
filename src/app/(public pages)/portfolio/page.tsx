@@ -9,7 +9,7 @@ import { IPortfolioPage } from "@/types/pageTypes";
 import Link from "next/link";
 
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 120)
-export const revalidate = 86400;
+export const revalidate = 300;
 
 // dynamic metadata for the portfolio page
 export async function generateMetadata() {
