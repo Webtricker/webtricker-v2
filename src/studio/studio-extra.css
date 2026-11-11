@@ -246,3 +246,5 @@
 @keyframes sartDraw{ to{ stroke-dashoffset: 0 } }
 @keyframes sartBlink{ 50%{ opacity: 0 } }
 @media (prefers-reduced-motion: reduce){ .stu .sart *{ animation: none !important; } .stu .sart .draw{ stroke-dashoffset: 0; } }
+
+.stu .v5stack .tag{ display: inline-block; max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

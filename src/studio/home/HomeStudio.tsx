@@ -189,7 +189,7 @@ export default async function HomeStudio() {
           </div>
           <div className="v5stack" id="reelTrack">
             {svc.map((s, i) => {
-              const tags = [...(s.tags || []).map(nameOf), ...(s.subServices || []), ...(s.category ? [s.category] : [])].filter(Boolean).slice(0, 4);
+              const tags = [...(s.tags || []).map(nameOf), ...(s.subServices || []), ...(s.category ? [s.category] : [])].filter((t) => t && String(t).length <= 26).slice(0, 4); /* short labels only: long sentences from the CMS are not tags */
               return (
                 <Link className="panel glass" href={`/services/${s.slug}`} key={s._id || s.slug} style={{ ["--c" as any]: `var(${GEM_COLORS[i % GEM_COLORS.length]})` }}>
                   <div className="media">
