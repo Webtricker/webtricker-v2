@@ -66,7 +66,7 @@ export default async function HomeStudio() {
   const half = Math.ceil(techs.length / 2);
   const clients: string[] = h.clientsBanners || [];
   const an = about?.aboutUsAnalytics;
-  const leadersShown = ((leaders as any[]) || []).slice(0, 3);
+  const leadersShown = ((leaders as any[]) || []).slice(0, 4);
   const tList = (testimonials as any[]) || [];
 
   const catOf = (p: any) => nameOf(p.technology) || "Project";
