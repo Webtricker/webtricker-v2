@@ -413,29 +413,6 @@ export default function StudioRuntime() {
         },
       },
     });
-    /* about: team slider, auto-advances right to left and pauses on hover; the failure of this optional widget must never block the page */
-    const teamEl = root.querySelector<HTMLElement>("#teamSwiper");
-    if (teamEl) {
-      try {
-        const pad = parseFloat(getComputedStyle(teamEl.closest(".wrap") || teamEl).paddingLeft) || 24;
-        const ts = new Swiper(teamEl, {
-          modules: [Autoplay, Keyboard],
-          slidesPerView: "auto",
-          spaceBetween: 20,
-          grabCursor: true,
-          slidesOffsetBefore: pad,
-          slidesOffsetAfter: pad,
-          speed: 900,
-          loop: true,
-          loopAdditionalSlides: 3,
-          keyboard: { enabled: true, onlyInViewport: true },
-          autoplay: st.reduce ? false : { delay: 2400, disableOnInteraction: false, pauseOnMouseEnter: true },
-        });
-        swipers.push(ts);
-      } catch (err) {
-        console.error("team slider failed", err);
-      }
-    }
     const bind = (id: string, fn: () => void) => {
       const b = root.querySelector<HTMLElement>(id);
       if (b) { b.addEventListener("click", fn); cleanups.push(() => b.removeEventListener("click", fn)); }

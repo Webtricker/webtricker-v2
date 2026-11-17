@@ -90,11 +90,11 @@ export function Bleed({
   );
 }
 
-export function Person({ p }: { p: { name: string; role?: string; profile?: string } }) {
+export function Person({ p, w = 480 }: { p: { name: string; role?: string; profile?: string }; w?: number }) {
   return (
     <div className="person">
       <div className="person__card tilt">
-        {p.profile ? <img decoding="async" src={cld(p.profile, 240)} alt={p.name} loading="lazy" /> : null}
+        {p.profile ? <img decoding="async" src={cld(p.profile, w)} alt={p.name} loading="lazy" /> : null}
         {!p.profile ? <b>{initials(p.name)}</b> : null}
       </div>
       <h3>{p.name}</h3>
