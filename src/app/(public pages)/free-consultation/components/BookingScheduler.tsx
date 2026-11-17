@@ -15,7 +15,7 @@ type Availability = {
 };
 
 const inputClass =
-  "cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-400";
+  "bkctl cursor-hide block wt_fs-md w-full py-1.5 mt-1.5 px-4 rounded-[4px] outline-none duration-200 border border-slate-300 focus:border-slate-500 dark:focus:border-slate-300 dark:border-slate-400";
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -357,11 +357,11 @@ export default function BookingScheduler() {
             <label htmlFor="bkMessage">Tell us about your project</label>
             <textarea id="bkMessage" maxLength={2000} className={`${inputClass} min-h-[110px]`} value={form.message} onChange={set("message")} />
           </div>
-          <div className="md:col-span-2 relative">{bot.element}</div>
+          <div className="md:col-span-2 relative max-w-[360px]">{bot.element}</div>
           <div className="md:col-span-2">
             <button
               disabled={submitting}
-              className="w-full btn-reverse-bg py-2 wt_fs-md px-2 rounded-[4px]"
+              className="btn-reverse-bg py-2 wt_fs-md px-6 rounded-[4px] min-w-[220px]"
             >
               {submitting ? (
                 <LoadingSpinner className="w-6 h-6 mx-auto my-1" />

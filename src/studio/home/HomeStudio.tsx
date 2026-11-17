@@ -88,17 +88,17 @@ export default async function HomeStudio() {
           </button>
         ) : null}
         <div className="wrap">
-          <div className="hero__kicker mono">Web · Shopify · AI automation studio — since 2014</div>
-          <h1 className="v5h1" aria-label="Websites, stores & AI automation built to rank, convert and scale.">
+          <div className="hero__kicker mono">Web · Shopify · CMS · AI automation — since 2014</div>
+          <h1 className="v5h1" aria-label="We do web, stores, CMS and AI automation. Built to rank, convert and scale.">
             <span className="hl" aria-hidden="true">
-              <Chars text="Websites, stores" />
+              <Chars text="We do Web, Stores," />
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="& AI automation" />
+              <Chars text="CMS & AI automation." />
             </span>
             <span className="hl" aria-hidden="true">
               <em className="ital">
-                <Chars text="built to rank," />
+                <Chars text="Built to rank," />
               </em>
             </span>
             <span className="hl" aria-hidden="true">
@@ -106,7 +106,7 @@ export default async function HomeStudio() {
             </span>
           </h1>
           <div className="hero__foot">
-            <p className="lead">From first idea to launch day: strategy, design and fast, SEO- and AI-search-ready builds that work on every device, with automation that runs your business while you sleep.</p>
+            <p className="lead">A 2027-ready web studio. Strategy, design and lightning-fast builds that rank in Google and AI search, work on every device, and run on automation, from first idea to launch day.</p>
             <div className="clock">
               {offices.slice(0, 2).map((o: any, i: number) => (
                 <span key={o.label}>

@@ -405,3 +405,14 @@
 .stu .prose a, .stu a.textlink{ color: var(--amber); text-decoration: none; background-image: linear-gradient(currentColor, currentColor); background-repeat: no-repeat; background-position: 0 100%; background-size: 100% 1px; padding-bottom: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; transition: background-size .5s var(--ease), color .3s; }
 .stu .prose a:hover, .stu a.textlink:hover{ background-size: 0% 1px; }
 @media (prefers-reduced-motion: reduce){ .stu .pn a, .stu .pn a::before, .stu .neonlink, .stu .neonlink::after, .stu .prose a{ transition: none; animation: none !important; } }
+
+/* consultation form: uniform control height, readable select menus */
+.bkctl{ min-height: 46px; line-height: 1.3; }
+select.bkctl{ appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 40px; color: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23999' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 16px center; }
+select.bkctl option{ background: #17171c; color: #ececf1; }
+select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; color: #fff; }
+
+/* text links: underline only as wide as the text + arrow */
+.stu a.textlink{ width: fit-content; max-width: 100%; justify-self: start; align-self: flex-start; }
