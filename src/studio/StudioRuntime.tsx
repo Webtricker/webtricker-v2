@@ -351,6 +351,49 @@ export default function StudioRuntime() {
       if (on) a.setAttribute("aria-current", "page");
       else a.removeAttribute("aria-current");
     });
+    /* liquid nav: a water-like blob that stretches from tab to tab */
+    const navEl = root.querySelector<HTMLElement>(".top nav");
+    if (navEl) {
+      let blob = navEl.querySelector<HTMLElement>(".liq");
+      if (!blob) {
+        blob = document.createElement("span");
+        blob.className = "liq";
+        blob.setAttribute("aria-hidden", "true");
+        navEl.prepend(blob);
+      }
+      const b = blob;
+      const links = Array.from(navEl.querySelectorAll<HTMLElement>("a"));
+      let curL = -1, curR = -1;
+      const place = (a: HTMLElement | null) => {
+        links.forEach((l) => l.classList.toggle("liq-on", l === a));
+        if (!a) { b.style.opacity = "0"; return; }
+        const l = a.offsetLeft, r = navEl.clientWidth - (a.offsetLeft + a.offsetWidth);
+        const movingRight = curL >= 0 && l > curL;
+        const lead = reduce ? "0s" : ".28s", lag = reduce ? "0s" : ".52s";
+        b.style.transition = `left ${movingRight ? lag : lead} cubic-bezier(.3,1.4,.5,1), right ${movingRight ? lead : lag} cubic-bezier(.3,1.4,.5,1), opacity .25s`;
+        b.style.top = a.offsetTop + "px";
+        b.style.height = a.offsetHeight + "px";
+        b.style.left = l + "px";
+        b.style.right = r + "px";
+        b.style.opacity = "1";
+        curL = l; curR = r;
+      };
+      const rest = () => place(navEl.querySelector<HTMLElement>('a[aria-current="page"]'));
+      const enter = (e: Event) => place(e.currentTarget as HTMLElement);
+      links.forEach((a) => { a.addEventListener("mouseenter", enter); a.addEventListener("focus", enter); });
+      navEl.addEventListener("mouseleave", rest);
+      navEl.addEventListener("focusout", rest);
+      const ro = () => { curL = -1; rest(); };
+      addEventListener("resize", ro);
+      requestAnimationFrame(() => { curL = -1; rest(); });
+      void curR;
+      cleanups.push(() => {
+        links.forEach((a) => { a.removeEventListener("mouseenter", enter); a.removeEventListener("focus", enter); });
+        navEl.removeEventListener("mouseleave", rest);
+        navEl.removeEventListener("focusout", rest);
+        removeEventListener("resize", ro);
+      });
+    }
     const videoHead = !isHome && !!root.querySelector(".pagehead--video");
     root.classList.toggle("on-dark", isHome || videoHead);
     const bar = root.querySelector<HTMLElement>(".progress");
