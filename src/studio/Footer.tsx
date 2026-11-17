@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getFooter, getSiteConfig } from "./data";
 import StudioSubscribe from "./StudioSubscribe";
+import FooterAcc, { CopyrightYear } from "./FooterAcc";
 
 const Copy = ({ value, label }: { value: string; label?: string }) => (
   <button className="copy" type="button" data-copy={value}>
@@ -29,8 +30,7 @@ export default async function Footer() {
           <span>Talk</span>
         </Link>
         <div className="contacts">
-          <div>
-            <h4 className="mono mute">Email Address</h4>
+          <FooterAcc id="email" title="Email Address">
             <ul>
               {emails.map((m) => (
                 <li key={m}>
@@ -38,9 +38,8 @@ export default async function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <h4 className="mono mute">Phone · Hotline</h4>
+          </FooterAcc>
+          <FooterAcc id="phone" title="Phone · Hotline">
             <ul>
               {phones.map((p) => (
                 <li key={p}>
@@ -48,23 +47,22 @@ export default async function Footer() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div>
-            <h4 className="mono mute">Address</h4>
+          </FooterAcc>
+          <FooterAcc id="address" title="Address">
             {offices.map((o) => (
               <p key={o.label}>
                 <b>{o.label}</b>
                 {o.addressText}
               </p>
             ))}
-          </div>
-          <div>
-            <h4 className="mono mute">Subscribe to our newsletter</h4>
-            <StudioSubscribe />
-            <h4 className="mono mute" style={{ marginTop: 24 }}>
-              {footer?.pages?.title || "Our Pages"}
-            </h4>
-            <ul style={{ gridTemplateColumns: "1fr 1fr" }}>
+          </FooterAcc>
+          <div className="fcol">
+            <div className="fsub">
+              <h4 className="mono mute">Subscribe to our newsletter</h4>
+              <StudioSubscribe />
+            </div>
+            <FooterAcc id="pages" title={footer?.pages?.title || "Our Pages"}>
+            <ul className="fpages">
               {pages.map((l) => (
                 <li key={l.href}>
                   {l.isExternal || /^https?:/.test(l.href) ? (
@@ -77,6 +75,7 @@ export default async function Footer() {
                 </li>
               ))}
             </ul>
+            </FooterAcc>
           </div>
         </div>
         <p className="wordmark" aria-hidden="true">
@@ -93,7 +92,7 @@ export default async function Footer() {
       <div className="wrap">
         <div className="bar">
           <span>
-            © 2014 - {year} {brand} Web Design &amp; Development Agency. / {brand} LLC. All Rights Reserved.
+            © <CopyrightYear initial={year} /> {brand}
           </span>
           <span>
             <Link href="/privacy-policy">Privacy &amp; Policy</Link> ·{" "}
