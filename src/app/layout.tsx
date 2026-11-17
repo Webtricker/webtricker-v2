@@ -91,6 +91,7 @@ export const metadata: Metadata = {
   },
   category: "technology",
   metadataBase: new URL("https://webtricker.com"),
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
