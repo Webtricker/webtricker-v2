@@ -269,3 +269,12 @@
 .stu .wavescene__list span{ color: rgba(241,239,233,.7); }
 @keyframes waveIn{ from{ opacity: 0; transform: translateY(18px) scale(.98); filter: blur(8px); } to{ opacity: 1; transform: none; filter: none; } }
 @media (prefers-reduced-motion: reduce){ .stu .wavescene__title{ animation: none; } }
+
+/* ---- home leaders: four compact cards ---- */
+.stu #homeLeaders{ grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 22px); }
+.stu #homeLeaders .person{ gap: 10px; align-content: start; }
+.stu #homeLeaders .person__card{ border-radius: 20px; }
+.stu #homeLeaders .person h3{ font-size: clamp(18px, 1.7vw, 25px); }
+.stu #homeLeaders .person .mono{ font-size: 11px; line-height: 1.4; letter-spacing: .04em; }
+@media (max-width: 1023px){ .stu #homeLeaders{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 767px){ .stu #homeLeaders{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .stu #homeLeaders .person__card{ border-radius: 16px; } .stu #homeLeaders .person h3{ font-size: 17px; } .stu #homeLeaders .person .mono{ font-size: 10px; } }
