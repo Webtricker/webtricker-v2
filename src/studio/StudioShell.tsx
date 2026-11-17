@@ -34,6 +34,10 @@ export default function StudioShell({ children }: { children: React.ReactNode })
       <div className="wipe__label" aria-hidden="true" />
 
       <div className="loader" aria-hidden="true">
+        <div className="loader__p loader__p--t" />
+        <div className="loader__p loader__p--b" />
+        <span className="loader__ring" />
+        <span className="loader__ring" />
         <div className="loader__in">
           <div className="gems5">
             <i />
@@ -42,12 +46,23 @@ export default function StudioShell({ children }: { children: React.ReactNode })
             <i />
             <i />
           </div>
-          <div className="loader__count">0</div>
-          <div className="loader__bar">
-            <i />
+          <div className="loader__word">
+            {"WEBTRICKER".split("").map((c, i) => (
+              <span className="lw" key={i}>
+                <b>{c}</b>
+              </span>
+            ))}
           </div>
-          <div className="mono mute">Webtricker</div>
+          <div className="loader__sub mono">Design · Develop · Deliver</div>
         </div>
+        <div className="loader__count">
+          <b>000</b>
+          <small className="mono">%</small>
+        </div>
+        <div className="loader__bar">
+          <i />
+        </div>
+        <span className="loader__line" />
       </div>
 
       <Header />
