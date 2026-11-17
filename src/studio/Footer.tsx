@@ -24,7 +24,9 @@ export default async function Footer() {
       <div className="wrap">
         <div className="eyebrow mono mute">
           <span>Have a project in mind?</span>
-          <span>Contact Us</span>
+          <Link className="neonlink" href="/contact">
+            Contact Us <i aria-hidden="true">→</i>
+          </Link>
         </div>
         <Link className="finale__big" href="/contact">
           <span>Let&apos;s</span>

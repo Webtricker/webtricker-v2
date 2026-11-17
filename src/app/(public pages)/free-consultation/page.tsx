@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import Container from "@/sharedComponets/ui/wrapper/Container";
+import { PageHead } from "@/studio/parts";
 import BookingScheduler from "./components/BookingScheduler";
 
 const URL = "https://webtricker.com/free-consultation";
@@ -87,7 +87,7 @@ const schema = {
 
 export default function FreeConsultationPage() {
   return (
-    <main className="page legacy w-full z-0">
+    <main className="page" data-page="consult">
       <script
         type="application/ld+json"
         // "<" is escaped so no string in the data can close the script tag
@@ -95,53 +95,52 @@ export default function FreeConsultationPage() {
           __html: JSON.stringify(schema).replace(/</g, "\\u003c"),
         }}
       />
-      <div className="relative w-full mt-[130px] md:mt-[150px] lg:mt-[180px] 2xl:mt-[200px]">
-        <Container>
-          <div className="w-full max-w-[1120px] mx-auto">
-            <p className="bold flex items-center gap-1">
-              <span>Free consultation</span>
-              <span className="w-10 h-[1px] mt-1.5 bg-black dark:bg-white"></span>
-            </p>
-            <h1 className="heading xl:font-semibold !leading-[100%]">
-              Book a free 30-minute consultation
-            </h1>
-            <p className="mt-4 max-w-[720px]">
-              Tell us where you want to take your website or product. Pick a time
-              and speak with a Webtricker expert about design, development and SEO,
-              free and with no obligation.
-            </p>
-
-            <div className="w-full mt-10">
-              <BookingScheduler />
-            </div>
-
-            <section aria-labelledby="how-it-works" className="mt-16">
-              <h2 id="how-it-works" className="heading !text-2xl">How it works</h2>
-              <ol className="mt-5 grid gap-6 md:grid-cols-3">
-                {steps.map((s, i) => (
-                  <li key={s.title}>
-                    <span className="bold">Step {i + 1}</span>
-                    <h3 className="heading !text-lg mt-1">{s.title}</h3>
-                    <p className="mt-1">{s.text}</p>
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            <section aria-labelledby="faq" className="mt-16 mb-16">
-              <h2 id="faq" className="heading !text-2xl">Frequently asked questions</h2>
-              <div className="mt-5 flex flex-col gap-5">
-                {faqs.map((f) => (
-                  <div key={f.q}>
-                    <h3 className="bold">{f.q}</h3>
-                    <p className="mt-1">{f.a}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
+      <PageHead
+        video="consult"
+        crumb="Free consultation"
+        title="Book a free 30-minute consultation"
+        lead="Tell us where you want to take your website or product. Pick a time and speak with a Webtricker expert about design, development and SEO, free and with no obligation."
+      />
+      <section className="chapter" style={{ paddingTop: 0 }}>
+        <div className="wrap">
+          <div className="legacy consult__sched">
+            <BookingScheduler />
           </div>
-        </Container>
-      </div>
+        </div>
+      </section>
+      <section className="chapter" style={{ paddingTop: 0 }} aria-labelledby="how-it-works">
+        <div className="wrap">
+          <div className="eyebrow mono mute">
+            <span id="how-it-works">How it works</span>
+            <span>3 simple steps</span>
+          </div>
+          <ol className="cstep">
+            {steps.map((st, i) => (
+              <li key={st.title}>
+                <span className="mono mute">Step {i + 1}</span>
+                <h3>{st.title}</h3>
+                <p>{st.text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+      <section className="chapter" style={{ paddingTop: 0 }} aria-labelledby="faq">
+        <div className="wrap">
+          <div className="eyebrow mono mute">
+            <span id="faq">Frequently asked questions</span>
+            <span>{faqs.length} answers</span>
+          </div>
+          <div className="cfaq">
+            {faqs.map((f) => (
+              <div key={f.q} className="cfaq__item">
+                <h3>{f.q}</h3>
+                <p>{f.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
