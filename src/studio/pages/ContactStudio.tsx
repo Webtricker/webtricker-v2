@@ -70,8 +70,8 @@ export default async function ContactStudio() {
         <div className="wrap">
           <div className="eyebrow mono mute">
             <span>{pg.contactInformationTitle || "Contact Information"}</span>
-            <a className="mono" href={BRAND.mapsUrl} target="_blank" rel="noopener noreferrer">
-              Open in Google Maps ↗
+            <a className="mono neonlink" href={BRAND.mapsUrl} target="_blank" rel="noopener noreferrer">
+              Open in Google Maps <i aria-hidden="true">↗</i>
             </a>
           </div>
           <div className="offices">
