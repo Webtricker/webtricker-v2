@@ -367,3 +367,7 @@
 @media (min-width: 1180px){ .stu .top__tel{ display: inline-flex; } }
 .stu .flinks{ display: grid; gap: 6px; margin-top: 14px !important; }
 .stu .flinks a{ color: var(--paper); text-underline-offset: 3px; }
+
+/* ---- service and article covers: 75% of the content width, centred (full width on phones) ---- */
+.stu .bleed--169{ width: 75%; margin-inline: auto; }
+@media (max-width: 767px){ .stu .bleed--169{ width: 100%; } }
