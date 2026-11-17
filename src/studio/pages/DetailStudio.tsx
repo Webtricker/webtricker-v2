@@ -60,7 +60,7 @@ export default function DetailStudio({
         </div>
       </section>
       <div className="wrap">
-        <div className="bleed--box">
+        <div className="bleed--box bleed--169">
           <Bleed src={cover} alt={title} height="clamp(260px, 46vw, 620px)" />
         </div>
       </div>

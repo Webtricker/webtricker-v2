@@ -645,17 +645,26 @@ export default function StudioRuntime() {
       } else {
         loader.style.animation = "none";
         // failsafe: never let the loader outlive the animation if frames are throttled (background tab)
-        const failsafe = setTimeout(() => { loader.style.display = "none"; }, 4500);
+        const failsafe = setTimeout(() => { loader.style.display = "none"; }, 6500);
         cleanups.push(() => clearTimeout(failsafe));
         const count = { v: 0 };
-        const cEl = loader.querySelector<HTMLElement>(".loader__count");
+        const cEl = loader.querySelector<HTMLElement>(".loader__count b");
         const lb = loader.querySelector<HTMLElement>(".loader__bar i");
+        const gems = ".stu .loader .gems5 i";
         gsap.timeline()
-          .from(".stu .loader .gems5 i", { scale: 0, rotate: 90, duration: 0.6, ease: "back.out(2)", stagger: 0.07 })
-          .to(count, { v: 100, duration: 1.3, ease: "power2.inOut", onUpdate: () => { if (cEl) cEl.textContent = String(Math.round(count.v)); if (lb) lb.style.width = count.v + "%"; } }, "<")
-          .to(loader, { clipPath: "inset(0 0 100% 0)", duration: 0.9, ease: "expo.inOut" })
+          .from(gems, { x: () => gsap.utils.random(-520, 520), y: () => gsap.utils.random(-340, 340), rotate: () => gsap.utils.random(-220, 220), scale: 0, opacity: 0, duration: 1.0, ease: "expo.out", stagger: 0.09 })
+          .from(".stu .loader .lw b", { yPercent: 115, duration: 0.8, ease: "expo.out", stagger: 0.045 }, 0.45)
+          .from(".stu .loader__sub", { opacity: 0, y: 12, duration: 0.7, ease: "power3.out" }, 1.1)
+          .to(count, { v: 100, duration: 2.1, ease: "power2.inOut", onUpdate: () => { if (cEl) cEl.textContent = String(Math.round(count.v)).padStart(3, "0"); if (lb) lb.style.width = count.v + "%"; } }, 0.2)
+          .fromTo(".stu .loader__ring", { scale: 0.2, opacity: 0.7 }, { scale: 7, opacity: 0, duration: 1.1, ease: "power2.out", stagger: 0.18 }, 1.5)
+          .to(gems, { scale: 1.18, duration: 0.28, ease: "power2.out", stagger: 0.04, yoyo: true, repeat: 1 }, 1.55)
+          .fromTo(".stu .loader__line", { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.5, ease: "expo.inOut" }, 2.35)
+          .to(".stu .loader__in, .stu .loader__count, .stu .loader__bar", { opacity: 0, scale: 1.06, duration: 0.45, ease: "power2.in" }, 2.55)
+          .to(".stu .loader__p--t", { yPercent: -100, duration: 1.0, ease: "expo.inOut" }, 2.85)
+          .to(".stu .loader__p--b", { yPercent: 100, duration: 1.0, ease: "expo.inOut" }, 2.85)
+          .to(".stu .loader__line", { opacity: 0, duration: 0.4 }, 2.9)
           .set(loader, { display: "none" })
-          .add(intro, "-=.45")
+          .add(intro, "-=.6")
           .from(".stu .top .wrap > *", { y: -20, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.08 }, "<");
       }
     } else if (!reduce) {

@@ -337,3 +337,26 @@
   .stu .fpages{ grid-template-columns: 1fr 1fr; }
 }
 @media (prefers-reduced-motion: reduce){ .stu .facc__panel, .stu .facc__btn i::before, .stu .facc__btn i::after{ transition: none; } }
+
+/* ---- loader v3: gems fly in, wordmark rises, split-screen reveal ---- */
+.stu .loader{ display: block; background: transparent; overflow: hidden; animation: loaderOut .01s 6.5s forwards; }
+.stu .loader__p{ position: absolute; left: 0; right: 0; z-index: 0; }
+.stu .loader__p--t{ top: 0; height: 50.4%; background: radial-gradient(70% 130% at 50% 100%, rgba(96, 70, 220, .26), transparent 70%), var(--ink-0); }
+.stu .loader__p--b{ bottom: 0; height: 50.4%; background: radial-gradient(70% 130% at 50% 0%, rgba(30, 160, 220, .2), transparent 70%), var(--ink-0); }
+.stu .loader__in{ position: absolute; inset: 0; z-index: 2; display: grid; place-content: center; justify-items: center; gap: clamp(18px, 3vh, 32px); }
+.stu .loader .gems5{ transform: scale(1.7); margin-bottom: 12px; }
+.stu .loader__word{ display: flex; font: 700 clamp(34px, 6.4vw, 92px)/1 var(--display); letter-spacing: -.01em; }
+.stu .loader__word .lw{ display: block; overflow: hidden; padding-bottom: .08em; }
+.stu .loader__word .lw b{ display: block; font-weight: 700; }
+.stu .loader__sub{ letter-spacing: .42em; text-transform: uppercase; font-size: 11px; color: var(--mute); }
+.stu .loader__count{ position: absolute; z-index: 2; left: clamp(20px, 3vw, 48px); bottom: clamp(26px, 6vh, 64px); display: flex; align-items: baseline; gap: .15em; font: 700 clamp(56px, 9vw, 140px)/.9 var(--display); font-variant-numeric: tabular-nums; }
+.stu .loader__count b{ font: inherit; color: transparent; -webkit-text-stroke: 1.2px rgba(242, 240, 235, .55); }
+.stu .loader__count small{ font-size: 14px; color: var(--mute); letter-spacing: .2em; }
+.stu .loader__bar{ position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; width: auto; height: 3px; background: rgba(255, 255, 255, .08); }
+.stu .loader__bar i{ background: linear-gradient(90deg, var(--blue), var(--green), var(--sky), var(--crimson), var(--amber)); }
+.stu .loader__ring{ position: absolute; z-index: 1; left: 50%; top: 50%; width: 150px; height: 150px; margin: -75px 0 0 -75px; border-radius: 50%; border: 1.5px solid rgba(160, 210, 255, .55); opacity: 0; }
+.stu .loader__line{ position: absolute; z-index: 3; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; transform: scaleX(0); opacity: 0; background: linear-gradient(90deg, transparent, #7dd3fc, #fff, #a78bfa, transparent); box-shadow: 0 0 26px 5px rgba(125, 211, 252, .45); }
+
+/* ---- case study / service / article covers: show the whole 16:9 image, never trim the top or bottom ---- */
+.stu .bleed--169 .bleed{ height: auto !important; aspect-ratio: 16 / 9; }
+@media (max-width: 767px){ .stu .bleed--169 .bleed{ aspect-ratio: 16 / 10; } }
