@@ -47,9 +47,6 @@ export default async function HomeStudio() {
     ]);
 
   const h: any = home || {};
-  const kicker = [h.greeting?.top, h.greeting?.bottom].filter(Boolean).join(" ");
-  const bt = h.bannerText || {};
-  const kickerFull = `${kicker} a ${[bt.top, bt.left, bt.right].filter(Boolean).join(" ")}`.trim();
   const offices: any[] = site?.offices ?? [];
   /* hero background: the supplied design hero video (public/videos/hero.mp4) */
   const media = { src: "/videos/hero.mp4", type: "video" };
@@ -91,25 +88,25 @@ export default async function HomeStudio() {
           </button>
         ) : null}
         <div className="wrap">
-          <div className="hero__kicker mono">{kickerFull}</div>
-          <h1 className="v5h1" aria-label="We design, develop & deliver pixel-perfect websites.">
+          <div className="hero__kicker mono">Web · Shopify · AI automation studio — since 2014</div>
+          <h1 className="v5h1" aria-label="Websites, stores & AI automation built to rank, convert and scale.">
             <span className="hl" aria-hidden="true">
-              <Chars text="We design, develop" />
+              <Chars text="Websites, stores" />
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="& deliver" />
+              <Chars text="& AI automation" />
             </span>
             <span className="hl" aria-hidden="true">
               <em className="ital">
-                <Chars text="pixel-perfect" />
+                <Chars text="built to rank," />
               </em>
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="websites." />
+              <Chars text="convert & scale." />
             </span>
           </h1>
           <div className="hero__foot">
-            <p className="lead">{h.bannerDescription}</p>
+            <p className="lead">From first idea to launch day: strategy, design and fast, SEO- and AI-search-ready builds that work on every device, with automation that runs your business while you sleep.</p>
             <div className="clock">
               {offices.slice(0, 2).map((o: any, i: number) => (
                 <span key={o.label}>
@@ -121,7 +118,7 @@ export default async function HomeStudio() {
               ))}
             </div>
             <div style={{ display: "grid", gap: 18, justifyItems: "start" }}>
-              <Link className="pill pill--solid magnetic" href="/contact">
+              <Link className="pill pill--solid magnetic" href="/free-consultation">
                 <i />
                 <Roll>Have a project in mind?</Roll>
               </Link>
