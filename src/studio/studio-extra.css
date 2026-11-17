@@ -423,3 +423,33 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 .stu .tslider__dots{ min-width: 0; flex: 1 1 auto; }
 .stu .tslider__count{ flex: 0 0 auto; white-space: nowrap; }
 @media (max-width: 640px){ .stu .tsb{ width: 44px; height: 44px; min-width: 44px; } .stu .tslider__nav{ gap: 10px; } }
+
+/* ===== liquid nav + iOS-style liquid glass buttons ===== */
+.stu .top nav{ position: relative; }
+.stu .top nav a{ position: relative; z-index: 1; background: transparent !important; transition: color .25s; }
+.stu .top nav a[aria-current="page"]{ background: transparent !important; }
+.stu .top nav a.liq-on{ color: #0b0b0c; }
+.stu .top nav a[aria-current="page"]:not(.liq-on){ color: var(--paper); }
+.stu .top nav .liq{ position: absolute; z-index: 0; left: 0; right: 0; top: 6px; height: 36px; border-radius: 999px; pointer-events: none; opacity: 0;
+  background: radial-gradient(120% 140% at 30% 0%, rgba(255,255,255,.98), rgba(214,236,255,.9) 55%, rgba(190,200,255,.85));
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.95), inset 0 -6px 12px rgba(120,170,255,.28), 0 6px 18px rgba(90,150,255,.35), 0 0 0 1px rgba(255,255,255,.35);
+  animation: liqWobble 4.5s ease-in-out infinite; }
+@keyframes liqWobble{ 0%,100%{ filter: saturate(1) } 50%{ filter: saturate(1.35) hue-rotate(8deg) } }
+
+.stu .pill{ background: linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.05)); border: 1px solid rgba(255,255,255,.28);
+  -webkit-backdrop-filter: blur(14px) saturate(1.7); backdrop-filter: blur(14px) saturate(1.7);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55), inset 0 -10px 18px rgba(255,255,255,.05), 0 10px 28px rgba(0,0,0,.35);
+  transition: color .3s, box-shadow .4s, transform .3s var(--ease); }
+.stu .pill::after{ content: ""; position: absolute; left: 10%; right: 10%; top: 3px; height: 42%; border-radius: 999px; z-index: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.5), rgba(255,255,255,0)); opacity: .55; }
+.stu .pill::before{ inset: auto -15% -15% -15%; height: 190%; background: radial-gradient(90% 90% at 30% 25%, #e8fbff, #9fe3ff 45%, #b9a4ff 100%);
+  border-radius: 46% 54% 50% 50% / 55% 48% 52% 45%; transform: translateY(105%); transition: transform .7s cubic-bezier(.3,1.25,.5,1); animation: liqMorph 5s ease-in-out infinite; opacity: .96; }
+.stu .pill:hover::before{ transform: translateY(8%); }
+.stu .pill:hover{ color: #0b0b0c; border-color: rgba(255,255,255,.7); box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 12px 34px rgba(120,160,255,.45); transform: translateY(-1px); }
+.stu .pill > *{ position: relative; z-index: 1; }
+@keyframes liqMorph{ 0%,100%{ border-radius: 46% 54% 50% 50% / 55% 48% 52% 45% } 33%{ border-radius: 56% 44% 42% 58% / 46% 56% 44% 54% } 66%{ border-radius: 42% 58% 56% 44% / 52% 42% 58% 48% } }
+.stu .pill--solid{ background: linear-gradient(180deg, rgba(255,255,255,.96), rgba(226,236,255,.82)); border-color: rgba(255,255,255,.9); color: #111;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -10px 16px rgba(120,160,255,.22), 0 12px 30px rgba(90,130,255,.3); }
+.stu .pill--solid::after{ opacity: .8; }
+.stu .pill--solid::before{ background: radial-gradient(90% 90% at 30% 25%, #fff3c4, #ffc2e0 55%, #b9a4ff); }
+@media (prefers-reduced-motion: reduce){ .stu .pill::before, .stu .top nav .liq{ animation: none; } }
