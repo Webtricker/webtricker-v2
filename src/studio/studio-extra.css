@@ -416,3 +416,10 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 
 /* text links: underline only as wide as the text + arrow */
 .stu a.textlink{ width: fit-content; max-width: 100%; justify-self: start; align-self: flex-start; }
+
+/* slider arrows: always a true circle (never squeezed by the flex row on phones) */
+.stu .tsb{ flex: 0 0 auto; width: 52px; height: 52px; min-width: 52px; aspect-ratio: 1 / 1; padding: 0; display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.stu .tslider__nav{ flex-wrap: nowrap; }
+.stu .tslider__dots{ min-width: 0; flex: 1 1 auto; }
+.stu .tslider__count{ flex: 0 0 auto; white-space: nowrap; }
+@media (max-width: 640px){ .stu .tsb{ width: 44px; height: 44px; min-width: 44px; } .stu .tslider__nav{ gap: 10px; } }
