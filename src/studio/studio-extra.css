@@ -360,3 +360,10 @@
 /* ---- case study / service / article covers: show the whole 16:9 image, never trim the top or bottom ---- */
 .stu .bleed--169 .bleed{ height: auto !important; aspect-ratio: 16 / 9; }
 @media (max-width: 767px){ .stu .bleed--169 .bleed{ aspect-ratio: 16 / 10; } }
+
+/* ---- header phone + footer Google links (W-SEO-1) ---- */
+.stu .top__tel{ display: none; align-items: center; gap: 8px; margin-right: 6px; font-size: 13px; letter-spacing: .04em; color: var(--paper); text-decoration: none; white-space: nowrap; }
+.stu .top__tel small{ font-size: 10px; color: var(--mute); border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 7px; }
+@media (min-width: 1180px){ .stu .top__tel{ display: inline-flex; } }
+.stu .flinks{ display: grid; gap: 6px; margin-top: 14px !important; }
+.stu .flinks a{ color: var(--paper); text-underline-offset: 3px; }

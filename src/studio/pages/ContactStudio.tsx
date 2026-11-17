@@ -1,3 +1,4 @@
+import { BRAND, PHONES } from "../brand";
 import { getContactPageData } from "@/utils/pageData";
 import { getSiteConfig } from "../data";
 import StudioContactForm from "../StudioContactForm";
@@ -15,7 +16,7 @@ export default async function ContactStudio() {
   const [page, site] = await Promise.all([getContactPageData(), getSiteConfig()]);
   const pg: any = page || {};
   const emails = site?.contact?.emails ?? [];
-  const phones = site?.contact?.phones ?? [];
+  const phones = [PHONES.us, PHONES.bd];
   const offices: any[] = pg.address?.addresses?.length
     ? pg.address.addresses.map((a: any) => ({ label: a.office, addressText: a.location }))
     : site?.offices ?? [];
@@ -43,7 +44,7 @@ export default async function ContactStudio() {
               </div>
               <div style={{ display: "grid", gap: 4, justifyItems: "start" }}>
                 {phones.map((n) => (
-                  <Copy key={n} value={n.replace(/[^\d+]/g, "")} label={n} />
+                  <Copy key={n.tel} value={n.tel} label={`${n.label} · ${n.display}`} />
                 ))}
               </div>
             </div>
@@ -69,7 +70,7 @@ export default async function ContactStudio() {
         <div className="wrap">
           <div className="eyebrow mono mute">
             <span>{pg.contactInformationTitle || "Contact Information"}</span>
-            <a className="mono" href="https://maps.google.com/?q=Webtricker+Web+and+Design+Solutions+Jamalpur" target="_blank" rel="noopener noreferrer">
+            <a className="mono" href={BRAND.mapsUrl} target="_blank" rel="noopener noreferrer">
               Open in Google Maps ↗
             </a>
           </div>

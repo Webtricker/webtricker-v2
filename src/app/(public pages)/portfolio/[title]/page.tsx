@@ -165,7 +165,7 @@ export default async function PortfolioDetailsPage({
         keywords: portfolio.focusKeyword || undefined,
         dateCreated: portfolio.createdAt,
         dateModified: portfolio.updatedAt || portfolio.createdAt,
-        creator: { "@type": "Organization", name: "Webtricker", url: base },
+        creator: { "@id": `${base}/#org` },
         about: portfolio.liveLink ? { "@type": "WebSite", name: portfolio.title, url: portfolio.liveLink } : undefined,
       },
       {

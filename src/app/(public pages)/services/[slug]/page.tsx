@@ -1,15 +1,10 @@
 import DetailStudio from "@/studio/pages/DetailStudio";
+import { extractFaqs } from "@/studio/faq";
+import { BRAND, SITE } from "@/studio/brand";
 import { fmtDate as studioFmtDate } from "@/studio/ui";
 import React from "react";
-import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
-import { formatDateToShortString } from "@/utils/date";
-import BlogPageContainer from "@/sharedComponets/ui/wrapper/BlogPageContainer";
 import { IService } from "@/types/post";
-import Image from "next/image";
-import Link from "next/link";
-import Button from "@/sharedComponets/ui/buttons/Button";
 import NoBlogFoundMsg from "../../blog/[slug]/components/NoBlogFoundMsg";
-import ParallaxBanner from "./components/ServiceBanner";
 
 // const REVALIDATE_SECONDS = 60 * 60;
 // TEMP: revalidate=0 for active dev — RESET before launch (was: 10 * 60)
@@ -86,9 +81,10 @@ export async function generateMetadata({
   const service = data.service as IService;
 
   const metaTitle = `${service.title} | Services`;
-  const metaDescription =
+  const metaDescription = (
     service.description ||
-    `Learn more about our ${service.title} service at Webtricker.`;
+    `Learn more about our ${service.title} service at Webtricker.`
+  ).trim();
 
   return {
     title: metaTitle,
@@ -151,8 +147,45 @@ export default async function SingleServicePage({
   const prevService = data.prevService;
   const service = data.service as IService;
 
+  const url = `${SITE}/services/${service.slug}`;
+  const plainText = (h?: string) => String(h || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+  const faqs = extractFaqs(service.content);
+  const schema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        "@id": `${url}#service`,
+        name: service.title,
+        serviceType: service.title,
+        description: plainText(service.description).slice(0, 300),
+        url,
+        provider: { "@id": BRAND.orgId },
+        image: service.thumnail?.url,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: SITE },
+          { "@type": "ListItem", position: 2, name: "Services", item: `${SITE}/services` },
+          { "@type": "ListItem", position: 3, name: service.title, item: url },
+        ],
+      },
+      ...(faqs.length
+        ? [
+            {
+              "@type": "FAQPage",
+              "@id": `${url}#faq`,
+              mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+            },
+          ]
+        : []),
+    ],
+  };
+
   return (
     <DetailStudio
+      schema={schema}
       kind="Service"
       listHref="/services"
       title={service.title}
