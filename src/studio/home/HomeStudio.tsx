@@ -402,7 +402,7 @@ export default async function HomeStudio() {
                 {leadersShown.map((p: any) => (
                   <div className="person" key={p._id || p.name}>
                     <div className="person__card tilt">
-                      {p.profile ? <img decoding="async" src={cld(p.profile, 240)} alt={p.name} loading="lazy" /> : null}
+                      {p.profile ? <img decoding="async" src={cld(p.profile, 480)} alt={p.name} loading="lazy" /> : null}
                       {!p.profile ? <b>{initials(p.name)}</b> : null}
                     </div>
                     <h3>{p.name}</h3>

@@ -1,11 +1,16 @@
-import { getAboutPageData, getTeamData, getTestimonialsData } from "@/utils/pageData";
+import { getAboutPageData, getLeaderData, getTeamData, getTestimonialsData } from "@/utils/pageData";
 import { PageHead, Person, Stats, Testimonials } from "../parts";
 import { cld, FadeWords } from "../ui";
 
 /* eslint-disable @next/next/no-img-element */
 
 export default async function AboutStudio() {
-  const [a, team, testimonials] = await Promise.all([getAboutPageData(), getTeamData(), getTestimonialsData()]);
+  const [a, teamRaw, leaders, testimonials] = await Promise.all([getAboutPageData(), getTeamData(), getLeaderData(), getTestimonialsData()]);
+  /* one team list: the leaders first (same photo and role as the home page), then everyone else; a person in both lists appears once */
+  const norm = (s: string) => String(s || "").toLowerCase().replace(/\bmd\b\.?/g, "").replace(/[^a-z]/g, "");
+  const lead = ((leaders as any[]) || []).map((l) => ({ _id: l._id, name: l.name, role: l.role, profile: l.profile }));
+  const seen = new Set(lead.map((l) => norm(l.name)));
+  const team: any[] = [...lead, ...((teamRaw as any[]) || []).filter((m) => !seen.has(norm(m.name)))];
   const p: any = a || {};
   const intro: string = p.introText || "";
   const em = intro.match(/high-quality design and branding solutions/i)?.[0];
@@ -81,12 +86,17 @@ export default async function AboutStudio() {
             <span>{p.teamInfoTitle || "Our Team"}</span>
             <span>{(team as any[]).length} people</span>
           </div>
-          <div className="swiper v5team" id="teamSwiper" data-cursor="Drag" data-people={(team as any[]).length}>
-            <div className="swiper-wrapper">
-              {/* listed twice so the slider can loop seamlessly with few people; the second set is hidden from assistive tech */}
-              {[...(team as any[]), ...(team as any[])].map((m, i) => (
-                <div className="swiper-slide" key={`${m._id || m.name}-${i}`} aria-hidden={i >= (team as any[]).length ? "true" : undefined}>
-                  <Person p={m} />
+          <div className="teamrun" style={{ ["--n" as any]: team.length }} role="list" aria-label="Our team">
+            <div className="teamrun__track">
+              {[0, 1].map((g) => (
+                <div className="teamrun__group" key={g}>
+                  {[0, 1].map((c) =>
+                    team.map((m: any) => (
+                      <div className="teamrun__item" role="listitem" key={`${g}-${c}-${m._id || m.name}`} aria-hidden={g || c ? "true" : undefined}>
+                        <Person p={m} w={560} />
+                      </div>
+                    ))
+                  )}
                 </div>
               ))}
             </div>
