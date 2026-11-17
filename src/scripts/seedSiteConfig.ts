@@ -125,8 +125,8 @@ const openingHoursForCountry = (country: string) => {
   return [
     {
       days: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
-      opens: "09:00",
-      closes: "18:00",
+      opens: "10:00",
+      closes: "19:00",
       timezone: "Asia/Dhaka",
     },
   ];
