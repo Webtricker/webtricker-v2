@@ -10,7 +10,7 @@ import BodyScrollController from "@/sharedComponets/DOM/BodyScrollController";
 // import { Suspense } from "react";
 // import LiveChat from "@/sharedComponets/DOM/LiveChat";
 import DelayedWidgets from "@/sharedComponets/DOM/DelayedWidgets";
-import BusinessSchema from "@/sharedComponets/DOM/BusinessSchema";
+import SiteSchema from "@/studio/SiteSchema";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import DeferredAnalytics from "@/sharedComponets/DOM/DeferredAnalytics";
 
@@ -103,44 +103,7 @@ export default function RootLayout({
 
       <head>
 
-        <BusinessSchema />
-
-        {/* Server-rendered so search and AI crawlers that skip JavaScript still see it.
-            The logo is served from /logo.png (public folder). */}
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify([
-              {
-                "@context": "https://schema.org",
-                "@type": "Organization",
-                "@id": "https://webtricker.com/#organization",
-                name: "Webtricker",
-                legalName: "Webtricker LLC",
-                url: "https://webtricker.com",
-                logo: "https://webtricker.com/logo.png",
-                description:
-                  "Webtricker is a web design and development agency offering professional websites, apps, and digital solutions.",
-                sameAs: [
-                  "https://www.facebook.com/webtricker",
-                  "https://x.com/webtricker",
-                  "https://www.linkedin.com/company/webtricker",
-                  "https://www.pinterest.com/webtricker",
-                  "https://www.instagram.com/webtricker",
-                ],
-              },
-              {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "@id": "https://webtricker.com/#website",
-                name: "Webtricker",
-                url: "https://webtricker.com",
-                publisher: { "@id": "https://webtricker.com/#organization" },
-                inLanguage: "en-US",
-              },
-            ]),
-          }}
-        />
+        <SiteSchema />
       </head>
 
       <body

@@ -149,8 +149,8 @@ export default async function SingleBlogPage({
         dateModified: new Date((post as IBlog & { updatedAt?: Date }).updatedAt ?? post.createdAt).toISOString(),
         articleSection: post.category?.name,
         inLanguage: "en-US",
-        author: { "@type": "Organization", name: "Webtricker", url: siteUrl },
-        publisher: { "@id": `${siteUrl}/#organization` },
+        author: { "@id": `${siteUrl}/#org` },
+        publisher: { "@id": `${siteUrl}/#org` },
       },
       {
         "@type": "BreadcrumbList",

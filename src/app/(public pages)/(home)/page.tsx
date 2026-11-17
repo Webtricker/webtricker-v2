@@ -5,9 +5,9 @@ import HomeStudio from "@/studio/home/HomeStudio";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Expert Web Design & Digital Services",
+  title: { absolute: "Webtricker | Web Design & Development Agency – WordPress, Shopify, Next.js" },
   description:
-    "Webtricker - Web Design and Development Agency offering professional websites, apps, and digital solutions.",
+    "Since 2014, 17+ years building fast, secure WordPress, WooCommerce, Shopify, Next.js and Laravel websites. 5,000+ projects. Book a free consultation.",
   keywords: [
     "web design",
     "web development",
@@ -25,9 +25,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://webtricker.com",
-    title: "Webtricker - Web Design and Development Agency",
+    title: "Webtricker | Web Design & Development Agency – WordPress, Shopify, Next.js",
     description:
-      "We create fast, modern, and SEO-friendly websites & applications.",
+      "Since 2014, 17+ years building fast, secure WordPress, WooCommerce, Shopify, Next.js and Laravel websites. 5,000+ projects. Book a free consultation.",
     siteName: "Webtricker",
     images: [
       {
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@webtricker",
-    title: "Webtricker - Web Design and Development Agency",
+    title: "Webtricker | Web Design & Development Agency – WordPress, Shopify, Next.js",
     description:
-      "We build websites, apps, and digital experiences that grow your business.",
+      "Since 2014, 17+ years building fast, secure WordPress, WooCommerce, Shopify, Next.js and Laravel websites. 5,000+ projects. Book a free consultation.",
     images: ["/opengraph-image.png"],
   },
 

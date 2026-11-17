@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getFooter, getSiteConfig } from "./data";
 import StudioSubscribe from "./StudioSubscribe";
 import FooterAcc, { CopyrightYear } from "./FooterAcc";
+import { BRAND, PHONES } from "./brand";
 
 const Copy = ({ value, label }: { value: string; label?: string }) => (
   <button className="copy" type="button" data-copy={value}>
@@ -12,7 +13,7 @@ const Copy = ({ value, label }: { value: string; label?: string }) => (
 export default async function Footer() {
   const [site, footer] = await Promise.all([getSiteConfig(), getFooter()]);
   const emails = site?.contact?.emails ?? (site?.contact?.primaryEmail ? [site.contact.primaryEmail] : []);
-  const phones = site?.contact?.phones ?? (site?.contact?.primaryPhone ? [site.contact.primaryPhone] : []);
+  const phones = [PHONES.us, PHONES.bd];
   const offices = site?.offices ?? [];
   const pages = footer?.pages?.links ?? [];
   const brand = site?.brand?.name || "Webtricker";
@@ -42,8 +43,8 @@ export default async function Footer() {
           <FooterAcc id="phone" title="Phone · Hotline">
             <ul>
               {phones.map((p) => (
-                <li key={p}>
-                  <Copy value={p.replace(/[^\d+]/g, "")} label={p} />
+                <li key={p.tel}>
+                  <Copy value={p.tel} label={`${p.label} · ${p.display}`} />
                 </li>
               ))}
             </ul>
@@ -55,6 +56,14 @@ export default async function Footer() {
                 {o.addressText}
               </p>
             ))}
+            <p className="flinks">
+              <a href={BRAND.mapsUrl} target="_blank" rel="noopener noreferrer">
+                Find us on Google Maps ↗
+              </a>
+              <a href={BRAND.reviewUrl} target="_blank" rel="noopener noreferrer">
+                Review us on Google ↗
+              </a>
+            </p>
           </FooterAcc>
           <div className="fcol">
             <div className="fsub">
@@ -92,7 +101,7 @@ export default async function Footer() {
       <div className="wrap">
         <div className="bar">
           <span>
-            © <CopyrightYear initial={year} /> {brand}
+            © 2014–<CopyrightYear initial={year} /> {BRAND.legalName} · {BRAND.bdName} (Bangladesh)
           </span>
           <span>
             <Link href="/privacy-policy">Privacy &amp; Policy</Link> ·{" "}

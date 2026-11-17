@@ -50,6 +50,9 @@ ${blogLines.join("\n") || "- See " + BASE + "/blog"}
 
 ## Contact
 
+- Brands: Webtricker LLC (United States) and Webtricker Web Design & Development Agency (Bangladesh)
+- Phone, United States: +1 (908) 597-4947
+- Phone, Bangladesh: +880 1712-377577
 - Book a call: ${BASE}/free-consultation
 - Message us: ${BASE}/contact
 `;

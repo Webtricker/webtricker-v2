@@ -70,7 +70,7 @@ const schema = {
       url: URL,
       name: TITLE,
       description: DESCRIPTION,
-      isPartOf: { "@type": "WebSite", name: "Webtricker", url: "https://webtricker.com" },
+      isPartOf: { "@id": "https://webtricker.com/#website" },
       potentialAction: { "@type": "ReserveAction", target: URL, name: "Book a free consultation" },
     },
     {
