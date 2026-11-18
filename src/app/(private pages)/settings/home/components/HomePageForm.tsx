@@ -111,6 +111,19 @@ const getFields = (section: HomePageBlock): FieldConfig[] => {
   switch (section.type) {
     case "hero":
       return [
+        // Studio theme hero (what visitors see on the home page)
+        { name: "studioHero.kicker", label: "Hero small line (above the title)", type: "text" },
+        { name: "studioHero.intro", label: "Hero lead-in word(s), shown in neon blue", type: "text" },
+        { name: "studioHero.line1", label: "Hero title line 1", type: "text" },
+        { name: "studioHero.line2", label: "Hero title line 2", type: "text" },
+        { name: "studioHero.line3", label: "Hero title line 3 (italic)", type: "text" },
+        { name: "studioHero.line4", label: "Hero title line 4", type: "text" },
+        { name: "studioHero.lead", label: "Hero paragraph", type: "textarea" },
+        { name: "studioHero.ctaLabel", label: "Hero button label", type: "text" },
+        { name: "studioHero.ctaHref", label: "Hero button link (a page on this site, e.g. /free-consultation)", type: "text" },
+        { name: "studioHero.videoSrc", label: "Hero background video URL", type: "url" },
+        { name: "studioHero.posterSrc", label: "Hero video poster image URL", type: "url" },
+        // Legacy banner fields (older theme)
         { name: "greeting.top", label: "Greeting top", type: "text", required: true },
         { name: "greeting.bottom", label: "Greeting bottom", type: "text", required: true },
         { name: "bannerText.top", label: "Large text top", type: "text", required: true },

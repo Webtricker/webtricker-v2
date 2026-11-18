@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getFooter, getSiteConfig } from "./data";
 import StudioSubscribe from "./StudioSubscribe";
 import FooterAcc, { CopyrightYear } from "./FooterAcc";
-import { BRAND, PHONES } from "./brand";
+import { BRAND, resolvePhones } from "./brand";
 
 const Copy = ({ value, label }: { value: string; label?: string }) => (
   <button className="copy" type="button" data-copy={value}>
@@ -13,7 +13,8 @@ const Copy = ({ value, label }: { value: string; label?: string }) => (
 export default async function Footer() {
   const [site, footer] = await Promise.all([getSiteConfig(), getFooter()]);
   const emails = site?.contact?.emails ?? (site?.contact?.primaryEmail ? [site.contact.primaryEmail] : []);
-  const phones = [PHONES.us, PHONES.bd];
+  const resolved = resolvePhones(site);
+  const phones = [resolved.us, resolved.bd];
   const offices = site?.offices ?? [];
   const pages = footer?.pages?.links ?? [];
   const brand = site?.brand?.name || "Webtricker";

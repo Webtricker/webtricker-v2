@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getNavLinks, getSiteConfig, getSiteLogos } from "./data";
 import { Roll, pad } from "./ui";
-import { PHONES } from "./brand";
+import { resolvePhones } from "./brand";
 
 export default async function Header() {
   const [links, logos, site] = await Promise.all([
@@ -13,7 +13,8 @@ export default async function Header() {
   const brand = site?.brand?.name || "Webtricker";
   const nav = links.filter((l) => l.href !== "/contact");
   const email = site?.contact?.primaryEmail;
-  const phone = PHONES.us.display;
+  const phones = resolvePhones(site);
+  const phone = phones.us.display;
   const offices = (site?.offices ?? [])
     .map((o) => o.locality)
     .filter(Boolean)
@@ -38,9 +39,9 @@ export default async function Header() {
             ))}
           </nav>
           <div className="top__right">
-            <a className="top__tel mono" href={`tel:${PHONES.us.tel}`} aria-label={`Call us in the United States: ${PHONES.us.display}`}>
+            <a className="top__tel mono" href={`tel:${phones.us.tel}`} aria-label={`Call us in the United States: ${phones.us.display}`}>
               <small>US</small>
-              {PHONES.us.display}
+              {phones.us.display}
             </a>
             <Link className="pill pill--solid pill--consult magnetic" href="/free-consultation" data-nav="/free-consultation">
               <Roll>Free consultation</Roll>

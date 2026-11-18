@@ -108,6 +108,17 @@ export async function POST(req: NextRequest) {
             )
         }
 
+        // Size guard: 25 MB per image, 100 MB per video (checked before anything is read into memory)
+        const tooLarge = files.some(
+            (file) => file.size > (file.type.startsWith('video/') ? 100 : 25) * 1024 * 1024
+        );
+        if (tooLarge) {
+            return NextResponse.json(
+                { success: false, message: 'File too large. Images up to 25 MB, videos up to 100 MB.' },
+                { status: 413 }
+            );
+        }
+
         // Upload all files and save to DB
         const uploadedResults = await Promise.all(
             files.map(async (file, i) => {

@@ -49,7 +49,24 @@ export default async function HomeStudio() {
   const h: any = home || {};
   const offices: any[] = site?.offices ?? [];
   /* hero background: the supplied design hero video (public/videos/hero.mp4) */
-  const media = { src: "/videos/hero.mp4", type: "video" };
+  /* hero copy, video and CTA come from Settings > Home > Hero (studioHero); the text below is only a fallback */
+  const heroData = (h.sections as any[] | undefined)?.find((s) => s?.type === "hero")?.data?.studioHero || {};
+  const sh = {
+    kicker: heroData.kicker || "Web · Shopify · CMS · AI automation — since 2014",
+    intro: heroData.intro || "We do",
+    line1: heroData.line1 || "Web, Stores,",
+    line2: heroData.line2 || "CMS & AI Automation.",
+    line3: heroData.line3 || "Built to Rank,",
+    line4: heroData.line4 || "Convert & Scale.",
+    lead:
+      heroData.lead ||
+      "A 2027-ready web studio. Strategy, design and lightning-fast builds that rank in Google and AI search, work on every device, and run on automation, from first idea to launch day.",
+    ctaLabel: heroData.ctaLabel || "Have a project in mind?",
+    ctaHref: /^\/(?!\/)/.test(heroData.ctaHref || "") ? heroData.ctaHref : "/free-consultation",
+    videoSrc: heroData.videoSrc || "/videos/hero.mp4",
+    posterSrc: heroData.posterSrc || "/videos/hero-poster.webp",
+  };
+  const media = { src: sh.videoSrc, type: "video" };
 
   /* manifesto: the "we are here to assist" sentence from the footer copy + the closing lines of the banner copy */
   const assist = (footer?.description || "").match(/We are here to assist you with .*?SEO/)?.[0];
@@ -75,7 +92,7 @@ export default async function HomeStudio() {
       <section className="hero v5hero v5hero--video">
         <div className="hero__video" aria-hidden="true">
           {media?.type === "video" ? (
-            <video id="heroVid" src={media.src} poster="/videos/hero-poster.webp" muted loop playsInline autoPlay preload="metadata" />
+            <video id="heroVid" src={media.src} poster={sh.posterSrc} muted loop playsInline autoPlay preload="metadata" />
           ) : media?.src ? (
             <img src={media.src} alt="" />
           ) : null}
@@ -88,28 +105,28 @@ export default async function HomeStudio() {
           </button>
         ) : null}
         <div className="wrap">
-          <div className="hero__kicker mono">Web · Shopify · CMS · AI automation — since 2014</div>
-          <h1 className="v5h1" aria-label="We do web, stores, CMS and AI automation. Built to rank, convert and scale.">
+          <div className="hero__kicker mono">{sh.kicker}</div>
+          <h1 className="v5h1" aria-label={`${sh.intro} ${sh.line1} ${sh.line2} ${sh.line3} ${sh.line4}`}>
             <span className="hl hl--wedo" aria-hidden="true">
-              <Chars text="We do" />
+              <Chars text={sh.intro} />
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="Web, Stores," />
+              <Chars text={sh.line1} />
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="CMS & AI Automation." />
+              <Chars text={sh.line2} />
             </span>
             <span className="hl" aria-hidden="true">
               <em className="ital">
-                <Chars text="Built to Rank," />
+                <Chars text={sh.line3} />
               </em>
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="Convert & Scale." />
+              <Chars text={sh.line4} />
             </span>
           </h1>
           <div className="hero__foot">
-            <p className="lead">A 2027-ready web studio. Strategy, design and lightning-fast builds that rank in Google and AI search, work on every device, and run on automation, from first idea to launch day.</p>
+            <p className="lead">{sh.lead}</p>
             <div className="clock">
               {offices.slice(0, 2).map((o: any, i: number) => (
                 <span key={o.label}>
@@ -121,9 +138,9 @@ export default async function HomeStudio() {
               ))}
             </div>
             <div style={{ display: "grid", gap: 18, justifyItems: "start" }}>
-              <Link className="pill pill--solid magnetic" href="/free-consultation">
+              <Link className="pill pill--solid magnetic" href={sh.ctaHref}>
                 <i />
-                <Roll>Have a project in mind?</Roll>
+                <Roll>{sh.ctaLabel}</Roll>
               </Link>
               <a className="scrollcue mono" href="#manifesto" data-scroll="#manifesto">
                 <i />
