@@ -292,7 +292,7 @@
 @media (prefers-reduced-motion: reduce){ .stu .teamrun{ overflow-x: auto; } .stu .teamrun__track{ animation: none; } .stu .teamrun__group:nth-child(2), .stu .teamrun__group > .teamrun__item[aria-hidden="true"]{ display: none; } }
 
 /* ---- about: life gallery (GSAP marquee, full window width, faded edges) ---- */
-.stu .lifeg{ position: relative; overflow: hidden; width: 100vw; margin-left: calc(50% - 50vw); padding: clamp(28px, 3.4vw, 56px) 0; cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; --fade: max(calc((100vw - min(100vw, 1440px)) / 2 + var(--gl)), clamp(56px, 9vw, 180px)); }
+.stu .lifeg{ position: relative; overflow: hidden; width: 100vw; margin-left: calc(50% - 50vw); padding: clamp(28px, 3.4vw, 56px) 0; touch-action: pan-y; user-select: none; -webkit-user-select: none; --fade: max(calc((100vw - min(100vw, 1440px)) / 2 + var(--gl)), clamp(56px, 9vw, 180px)); }
 .stu .lifeg.is-drag{ cursor: grabbing; }
 .stu .lifeg::before, .stu .lifeg::after{ content: ""; position: absolute; top: 0; bottom: 0; width: var(--fade); z-index: 3; pointer-events: none; }
 .stu .lifeg::before{ left: 0; background: linear-gradient(90deg, var(--ink-0) 8%, rgba(11, 11, 12, 0)); }

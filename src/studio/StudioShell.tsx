@@ -14,7 +14,6 @@ export default function StudioShell({ children }: { children: React.ReactNode })
   return (
     <div className={`stu ${studioFontClass}`} data-stu-root>
       <div className="grain" aria-hidden="true" />
-      <div className="cursor" aria-hidden="true" />
       <div className="cursor-ring" aria-hidden="true">
         <span>View</span>
       </div>

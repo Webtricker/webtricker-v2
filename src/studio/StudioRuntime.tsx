@@ -153,61 +153,66 @@ export default function StudioRuntime() {
 
     /* cursor, preview, magnetic, tilt */
     const ring = root.querySelector<HTMLElement>(".cursor-ring");
-    const dot = root.querySelector<HTMLElement>(".cursor");
     const preview = root.querySelector<HTMLElement>(".preview");
     const pImg = preview?.querySelector("img");
-    if (st.fine && ring && dot && preview && pImg) {
-      const dx = gsap.quickTo(dot, "x", { duration: 0.12 });
-      const dy = gsap.quickTo(dot, "y", { duration: 0.12 });
-      const rx = gsap.quickTo(ring, "x", { duration: 0.45, ease: "power3" });
-      const ry = gsap.quickTo(ring, "y", { duration: 0.45, ease: "power3" });
+    if (st.fine && ring && preview && pImg) {
+      /* The normal cursor is used everywhere. The ring only shows a small label ("Drag", "View", "Move") while the
+         pointer is really over an element that asks for it, and the project image preview works the same way.
+         What is under the pointer is re-checked on every move AND on every scroll, so nothing can stay stuck when
+         content scrolls past a still pointer, the pointer leaves the window, or the page changes. */
       const px = gsap.quickTo(preview, "x", { duration: 0.6, ease: "power3" });
       const py = gsap.quickTo(preview, "y", { duration: 0.6, ease: "power3" });
-      on(window, "pointermove", (e: PointerEvent) => {
-        dx(e.clientX); dy(e.clientY); rx(e.clientX); ry(e.clientY); px(e.clientX); py(e.clientY);
-      });
+      const rx = gsap.quickTo(ring, "x", { duration: 0.35, ease: "power3" });
+      const ry = gsap.quickTo(ring, "y", { duration: 0.35, ease: "power3" });
       const label = ring.querySelector("span") as HTMLElement;
-      on(document, "pointerover", (e: PointerEvent) => {
-        const t = e.target as HTMLElement;
-        const pv = t.closest<HTMLElement>("[data-preview]");
-        const link = t.closest("a, button");
-        const cu = t.closest<HTMLElement>("[data-cursor]");
+      let mx = -1, my = -1;
+      let curEl: HTMLElement | null = null;
+
+      const previewOff = () => {
+        if (preview.classList.contains("is-on")) {
+          preview.classList.remove("is-on");
+          gsap.to(preview, { scale: 0.7, duration: 0.25 });
+        }
+      };
+      const hideAll = () => {
+        ring.classList.remove("is-view");
+        previewOff();
+        curEl = null;
+      };
+      const evaluate = () => {
+        if (mx < 0) { if (curEl) hideAll(); return; }
+        const el = document.elementFromPoint(mx, my) as HTMLElement | null;
+        const pv = el?.closest<HTMLElement>("[data-preview]") || null;
+        const cu = pv ? null : el?.closest<HTMLElement>("[data-cursor]") || null;
+        const target = pv || cu;
+        if (!target) { if (curEl) hideAll(); return; }
+        if (target === curEl) return;
+        curEl = target;
         if (pv) {
           label.textContent = "View";
           (pImg as HTMLImageElement).src = pv.dataset.preview || "";
           preview.classList.add("is-on");
           ring.classList.add("is-view");
-          ring.classList.remove("is-link");
           gsap.to(preview, { scale: 1, rotate: gsap.utils.random(-5, 5), duration: 0.5, ease: "power3" });
         } else if (cu) {
-          if (preview.classList.contains("is-on")) { preview.classList.remove("is-on"); gsap.to(preview, { scale: 0.7, duration: 0.2 }); }
+          previewOff();
           label.textContent = cu.dataset.cursor || "View";
           ring.classList.add("is-view");
-        } else {
-          /* the hovered row can be removed by a page change without a pointerout, so always drop a stale preview */
-          if (preview.classList.contains("is-on")) { preview.classList.remove("is-on"); ring.classList.remove("is-view"); gsap.to(preview, { scale: 0.7, duration: 0.2 }); }
-          if (link) ring.classList.add("is-link");
         }
+      };
+
+      on(window, "pointermove", (e: PointerEvent) => {
+        mx = e.clientX; my = e.clientY;
+        rx(mx); ry(my); px(mx); py(my);
+        evaluate();
       });
+      on(window, "scroll", () => requestAnimationFrame(evaluate), { passive: true });
+      on(document, "mouseout", (e: MouseEvent) => { if (!e.relatedTarget) { mx = -1; hideAll(); } }); /* pointer left the window */
+      on(window, "blur", () => { mx = -1; hideAll(); });
       on(document, "click", (e: MouseEvent) => {
-        if ((e.target as HTMLElement).closest("[data-preview]") && preview.classList.contains("is-on")) {
-          preview.classList.remove("is-on"); ring.classList.remove("is-view");
-        }
+        if ((e.target as HTMLElement).closest("[data-preview]")) hideAll();
       });
-      on(document, "pointerout", (e: PointerEvent) => {
-        const t = e.target as HTMLElement;
-        const rel = e.relatedTarget as Node | null;
-        const pv = t.closest<HTMLElement>("[data-preview]");
-        const link = t.closest("a, button");
-        if (pv && !pv.contains(rel)) {
-          preview.classList.remove("is-on");
-          ring.classList.remove("is-view");
-          gsap.to(preview, { scale: 0.7, duration: 0.4 });
-        }
-        if (link && !link.contains(rel)) ring.classList.remove("is-link");
-        const cu = t.closest("[data-cursor]");
-        if (cu && !cu.contains(rel) && !pv) ring.classList.remove("is-view");
-      });
+      cleanups.push(hideAll);
       on(document, "pointermove", (e: PointerEvent) => {
         const t = (e.target as HTMLElement).closest<HTMLElement>(".tilt");
         if (!t) return;
