@@ -121,6 +121,9 @@ const getFields = (section: HomePageBlock): FieldConfig[] => {
         { name: "studioHero.lead", label: "Hero paragraph", type: "textarea" },
         { name: "studioHero.ctaLabel", label: "Hero button label", type: "text" },
         { name: "studioHero.ctaHref", label: "Hero button link (a page on this site, e.g. /free-consultation)", type: "text" },
+        { name: "studioHero.cta2Label", label: "Hero second button label (leave empty to hide)", type: "text" },
+        { name: "studioHero.cta2Href", label: "Hero second button link (a page on this site, e.g. /portfolio)", type: "text" },
+        { name: "studioHero.italic", label: "Which title line is italic (1 to 4)", type: "text" },
         { name: "studioHero.videoSrc", label: "Hero background video URL", type: "url" },
         { name: "studioHero.posterSrc", label: "Hero video poster image URL", type: "url" },
         // Legacy banner fields (older theme)

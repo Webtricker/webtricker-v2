@@ -51,6 +51,16 @@ const SATISFACTION_OPTIONS: [string, string][] = [
   ['very_happy', 'Very Happy'],
 ];
 
+/** Parses a fetch response as JSON, returning null for an empty or invalid body (an offline API must not crash the page). */
+const readJsonSafely = async (res: Response) => {
+  try {
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
+  } catch {
+    return null;
+  }
+};
+
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [sessionId, setSessionId] = useState('');
@@ -100,8 +110,9 @@ export default function ChatWidget() {
     setSessionId(sid);
 
     fetch(`/api/chat/messages?sessionId=${sid}`)
-      .then(res => res.json())
+      .then(readJsonSafely)
       .then(data => {
+        if (!data) return;
         if (data.session?.status === 'ESCALATED') {
           setMode('ESCALATED');
           setHumanMessages(data.session.messages);
@@ -109,7 +120,8 @@ export default function ChatWidget() {
           setIsResolved(true);
           setReviewSubmitted(true);
         }
-      });
+      })
+      .catch(() => {});
   }, []);
 
   // Real-time updates need Pusher, but only while the chat panel is open. Loading it lazily
@@ -121,9 +133,9 @@ export default function ChatWidget() {
 
     // Catch up on anything an agent sent while the panel was closed.
     fetch(`/api/chat/messages?sessionId=${sessionId}`)
-      .then(res => res.json())
+      .then(readJsonSafely)
       .then(data => {
-        if (cancelled) return;
+        if (cancelled || !data) return;
         if (data.session?.status === 'ESCALATED') {
           setMode('ESCALATED');
           setHumanMessages(data.session.messages);
