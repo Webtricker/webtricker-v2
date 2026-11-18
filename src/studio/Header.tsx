@@ -43,10 +43,7 @@ export default async function Header() {
               <small>US</small>
               {phones.us.display}
             </a>
-            <Link className="pill pill--solid pill--consult magnetic" href="/free-consultation" data-nav="/free-consultation">
-              <Roll>Free consultation</Roll>
-            </Link>
-            <Link className="pill pill--talk magnetic" href="/contact" data-nav="/contact">
+            <Link className="pill magnetic" href="/contact" data-nav="/contact">
               <i />
               <Roll>Let&apos;s talk</Roll>
             </Link>
