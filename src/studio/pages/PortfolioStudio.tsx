@@ -33,6 +33,15 @@ export default async function PortfolioStudio() {
                   <div>
                     <span className="mono mute">{nameOf(p.technology)}</span>
                     <h3>{p.title}</h3>
+                    {p.stack?.length ? (
+                      <div className="tags stackrow stackrow--card" aria-label="Tech stack">
+                        {p.stack.slice(0, 4).map((s: string) => (
+                          <span className="tag" key={s}>
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
                   </div>
                   <ArrowUp />
                 </div>

@@ -24,6 +24,15 @@ export default function CaseStudio({
           <h1 className="h-xl page-title" aria-label={p.title}>
             <MaskWords text={p.title} />
           </h1>
+          {p.stack?.length ? (
+            <div className="tags stackrow" aria-label="Tech stack">
+              {p.stack.map((s: string) => (
+                <span className="tag" key={s}>
+                  {s}
+                </span>
+              ))}
+            </div>
+          ) : null}
           <div className="meta4">
             <div>
               <span className="mono mute">Client</span>

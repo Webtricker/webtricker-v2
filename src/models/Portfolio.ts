@@ -26,6 +26,8 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tag' }],
     default: [],
   },
+  /** Short tech-stack labels shown as pills on cards and the case study header. */
+  stack: { type: [String], default: [] },
   content: { type: String, required: true },
   liveLink: { type: String, required: true },
   seoTitle: { type: String },
