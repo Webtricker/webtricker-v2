@@ -453,3 +453,7 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 .stu .pill--solid::after{ opacity: .8; }
 .stu .pill--solid::before{ background: radial-gradient(90% 90% at 30% 25%, #fff3c4, #ffc2e0 55%, #b9a4ff); }
 @media (prefers-reduced-motion: reduce){ .stu .pill::before, .stu .top nav .liq{ animation: none; } }
+
+/* hero: "We do" radiant neon-blue lead-in, smaller than the main lines */
+.stu .v5h1 .hl--wedo{ font-size: .5em; line-height: 1.1; margin-bottom: .1em; }
+.stu .v5h1 .hl--wedo .ch, .stu .v5h1 .hl--wedo{ color: #5fd8ff; text-shadow: 0 0 18px rgba(80,210,255,.75), 0 0 46px rgba(60,160,255,.5); }

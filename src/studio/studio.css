@@ -564,7 +564,7 @@ html.lenis, html.lenis body{ height: auto; }
 .stu .lmask{ padding-bottom: .18em; margin-bottom: -.12em; }
 
 /* V5 type scale: sized by width AND height so big headings fit the window on large screens */
-.stu .hero h1.v5h1{ font-size: clamp(40px, min(7.2vw, 13svh), 150px); line-height: 1; }
+.stu .hero h1.v5h1{ font-size: clamp(38px, min(6.4vw, 11.5svh), 132px); line-height: 1; }
 .stu .v5hero--video{ padding-block: clamp(120px, 14svh, 170px) 40px; }
 .stu .h-xl{ font-size: clamp(42px, min(7.6vw, 14svh), 128px); line-height: 1; }
 .stu .h-lg{ font-size: clamp(34px, 5.2vw, 80px); line-height: 1.04; }

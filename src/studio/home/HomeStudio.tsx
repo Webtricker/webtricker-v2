@@ -90,8 +90,11 @@ export default async function HomeStudio() {
         <div className="wrap">
           <div className="hero__kicker mono">Web · Shopify · CMS · AI automation — since 2014</div>
           <h1 className="v5h1" aria-label="We do web, stores, CMS and AI automation. Built to rank, convert and scale.">
+            <span className="hl hl--wedo" aria-hidden="true">
+              <Chars text="We do" />
+            </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="We do Web, Stores," />
+              <Chars text="Web, Stores," />
             </span>
             <span className="hl" aria-hidden="true">
               <Chars text="CMS & AI automation." />
@@ -102,7 +105,7 @@ export default async function HomeStudio() {
               </em>
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="convert & scale." />
+              <Chars text="Convert & Scale." />
             </span>
           </h1>
           <div className="hero__foot">
