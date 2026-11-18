@@ -97,11 +97,11 @@ export default async function HomeStudio() {
               <Chars text="Web, Stores," />
             </span>
             <span className="hl" aria-hidden="true">
-              <Chars text="CMS & AI automation." />
+              <Chars text="CMS & AI Automation." />
             </span>
             <span className="hl" aria-hidden="true">
               <em className="ital">
-                <Chars text="Built to rank," />
+                <Chars text="Built to Rank," />
               </em>
             </span>
             <span className="hl" aria-hidden="true">
