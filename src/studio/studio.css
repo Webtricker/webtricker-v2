@@ -11,7 +11,7 @@
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
   --brand: "Gotu", "Syne", sans-serif;
   --gl: max(24px, env(safe-area-inset-left, 0px)); --gr: max(24px, env(safe-area-inset-right, 0px));
-  --ease: cubic-bezier(.7, 0, .2, 1);
+  --ease: cubic-bezier(.32, .72, 0, 1);
   color-scheme: dark;
 }
 

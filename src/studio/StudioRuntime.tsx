@@ -78,7 +78,7 @@ export default function StudioRuntime() {
 
     /* smooth scroll */
     if (!st.reduce) {
-      const lenis = new Lenis({ duration: 1.15, smoothWheel: true });
+      const lenis = new Lenis({ duration: 1.2, smoothWheel: true, easing: (t: number) => 1 - Math.pow(1 - t, 4) });
       st.lenis = lenis;
       lenis.on("scroll", (e: any) => {
         st.vel = e.velocity || 0;
@@ -250,7 +250,7 @@ export default function StudioRuntime() {
       on(window, "scroll", upd, { passive: true });
       upd();
       const up = () => {
-        if (st.lenis) st.lenis.scrollTo(0, { duration: 1.6 });
+        if (st.lenis) st.lenis.scrollTo(0, { duration: 1.5, easing: (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2) });
         else window.scrollTo({ top: 0, behavior: st.reduce ? "auto" : "smooth" });
       };
       toTop.addEventListener("click", up);
@@ -369,8 +369,8 @@ export default function StudioRuntime() {
         if (!a) { b.style.opacity = "0"; return; }
         const l = a.offsetLeft, r = navEl.clientWidth - (a.offsetLeft + a.offsetWidth);
         const movingRight = curL >= 0 && l > curL;
-        const lead = reduce ? "0s" : ".28s", lag = reduce ? "0s" : ".52s";
-        b.style.transition = `left ${movingRight ? lag : lead} cubic-bezier(.3,1.4,.5,1), right ${movingRight ? lead : lag} cubic-bezier(.3,1.4,.5,1), opacity .25s`;
+        const lead = reduce ? "0s" : ".4s", lag = reduce ? "0s" : ".62s";
+        b.style.transition = `left ${movingRight ? lag : lead} cubic-bezier(.22,1,.36,1), right ${movingRight ? lead : lag} cubic-bezier(.22,1,.36,1), opacity .25s`;
         b.style.top = a.offsetTop + "px";
         b.style.height = a.offsetHeight + "px";
         b.style.left = l + "px";
