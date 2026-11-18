@@ -364,7 +364,7 @@
 /* ---- header phone + footer Google links (W-SEO-1) ---- */
 .stu .top__tel{ display: none; align-items: center; gap: 8px; margin-right: 6px; font-size: 13px; letter-spacing: .04em; color: var(--paper); text-decoration: none; white-space: nowrap; }
 .stu .top__tel small{ font-size: 10px; color: var(--mute); border: 1px solid var(--line-2); border-radius: 999px; padding: 2px 7px; }
-@media (min-width: 1180px){ .stu .top__tel{ display: inline-flex; } }
+@media (min-width: 1420px){ .stu .top__tel{ display: inline-flex; } }
 .stu .flinks{ display: grid; gap: 6px; margin-top: 14px !important; }
 .stu .flinks a{ color: var(--paper); text-underline-offset: 3px; }
 
@@ -546,3 +546,11 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
   .stu .cs-grid{ grid-template-columns: 1fr; }
   .stu .cs-side{ position: static; }
 }
+
+/* header: free-consultation button (also shown on phones, where the other header pill is hidden) */
+.stu .top .pill--consult{ white-space: nowrap; }
+@media (max-width: 600px){
+  .stu .top .pill.pill--consult{ display: inline-flex; padding: 10px 14px; font-size: 12px; }
+}
+@media (max-width: 1100px) and (min-width: 601px){ .stu .top .pill--talk{ display: none; } }
+.stu .menu__cta{ margin-top: 32px; }
