@@ -58,6 +58,7 @@ export default function EditPortfolio({
   const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
   const [selectedTechnology, setSelectedTechnology] =
     useState<ITechnology | null>(portfolio.technology || null);
+  const [orderText, setOrderText] = useState(String(portfolio.showcaseOrder ?? 0));
   const [stackText, setStackText] = useState((portfolio.stack || []).join(", "));
   const [caseJson, setCaseJson] = useState(
     portfolio.caseStudy ? JSON.stringify(portfolio.caseStudy, null, 2) : ""
@@ -118,6 +119,7 @@ export default function EditPortfolio({
     const portfolioData = {
       title: portfolio.title,
       stack,
+      showcaseOrder: Number(orderText) || 0,
       caseStudy,
       slug: portfolio.slug,
       description: des,
@@ -195,6 +197,14 @@ export default function EditPortfolio({
           selectedTechnology={selectedTechnology}
           setSelectedTechnology={setSelectedTechnology}
         />
+        <DynamicInput
+          key="Order_input"
+          value={orderText}
+          setValue={setOrderText}
+          label="Showcase position (lower number shows first on the home page and portfolio; 0 = newest)"
+          placeholder="10"
+        />
+
         <DynamicInput
           key="Stack_input"
           value={stackText}

@@ -29,6 +29,10 @@ const cleanStackAndCaseStudy = (body: Record<string, any>) => {
             ? body.stack.map((t: unknown) => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 16)
             : [];
     }
+    if ("showcaseOrder" in body) {
+        const n = Number(body.showcaseOrder);
+        out.showcaseOrder = Number.isFinite(n) ? Math.max(0, Math.min(100000, Math.round(n))) : 0;
+    }
     if ("caseStudy" in body) {
         const cs = body.caseStudy;
         out.caseStudy =

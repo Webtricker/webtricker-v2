@@ -11,7 +11,8 @@ const enforcedCsp = [
   "form-action 'self'",
   "frame-ancestors 'self'",
   "manifest-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://scripts.clarity.ms https://va.vercel-scripts.com",
+  // 'unsafe-eval' is only allowed in development: React's dev build needs eval() for debugging features, and production never uses it.
+  `script-src 'self' 'unsafe-inline' ${isProd ? "" : "'unsafe-eval' "}https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms https://scripts.clarity.ms https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob: https://res.cloudinary.com",
