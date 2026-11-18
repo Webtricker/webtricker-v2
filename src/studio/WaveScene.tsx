@@ -17,7 +17,6 @@ export default function WaveScene() {
   const [still, setStill] = useState(false);
   const [typed, setTyped] = useState(0); // characters of the title typed so far
   const [phase, setPhase] = useState<"typing" | "hold" | "out">("typing");
-  const [hover, setHover] = useState(false); // pointer or keyboard focus is on the section
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
@@ -29,20 +28,21 @@ export default function WaveScene() {
   useEffect(() => {
     const host = wrap.current;
     if (!host) return;
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.08 }); // starts as soon as the section appears on screen
     io.observe(host);
     return () => io.disconnect();
   }, []);
 
-  /* typewriter, then hold, then fade out, then the next service. Pauses while the section is hovered or focused. */
+  /* typewriter, then hold 4 s with the paragraph and button showing, then fade out, then the next service.
+     The first title starts typing the moment the section comes into view. */
   useEffect(() => {
-    if (still || hover || !inView) return;
+    if (still || !inView) return;
     const title = SLIDES[i].t;
     let id: number;
     if (phase === "typing") {
-      id = typed < title.length ? window.setTimeout(() => setTyped(typed + 1), typed === 0 ? 350 : 48) : window.setTimeout(() => setPhase("hold"), 120);
+      id = typed < title.length ? window.setTimeout(() => setTyped(typed + 1), typed === 0 ? 0 : 48) : window.setTimeout(() => setPhase("hold"), 120);
     } else if (phase === "hold") {
-      id = window.setTimeout(() => setPhase("out"), 3800);
+      id = window.setTimeout(() => setPhase("out"), 4000);
     } else {
       id = window.setTimeout(() => {
         setI((v) => (v + 1) % SLIDES.length);
@@ -51,7 +51,7 @@ export default function WaveScene() {
       }, 750);
     }
     return () => window.clearTimeout(id);
-  }, [still, hover, inView, phase, typed, i]);
+  }, [still, inView, phase, typed, i]);
 
   const go = (k: number) => {
     setI(k);
@@ -145,14 +145,7 @@ export default function WaveScene() {
 
   const s = SLIDES[i];
   return (
-    <section
-      className="wavescene"
-      aria-label="What we do"
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onFocus={() => setHover(true)}
-      onBlur={() => setHover(false)}
-    >
+    <section className="wavescene" aria-label="What we do">
       <div className="wavescene__stage" ref={wrap}>
         <canvas ref={cv} aria-hidden="true" />
         <div className="wavescene__vignette" aria-hidden="true" />
