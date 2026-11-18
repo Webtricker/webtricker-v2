@@ -496,3 +496,53 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 .stu .stackrow--card{ margin: 12px 0 0; gap: 6px; }
 .stu .stackrow--card .tag{ padding: 6px 10px; font-size: 10px; }
 .stu .case__row > div{ min-width: 0; }
+
+/* ===== structured case study (CaseStudyRich) ===== */
+.stu .cs{ padding-bottom: 40px; }
+.stu .cs-sum{ padding-block: clamp(36px, 6vw, 72px) 0; }
+.stu .cs-sum__box{ display: grid; gap: 14px; max-width: 980px; padding: clamp(22px, 3vw, 36px); border: 1px solid rgba(95,216,255,.35); border-radius: 22px; background: linear-gradient(160deg, rgba(95,216,255,.08), rgba(95,216,255,.015)); box-shadow: 0 0 60px -30px rgba(80,200,255,.6); }
+.stu .cs-summary{ margin: 0; font: 500 clamp(19px, 2.1vw, 27px)/1.45 var(--display); letter-spacing: -.01em; }
+.stu .cs-facts{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; margin: 28px 0 0; border-top: 1px solid var(--line); }
+.stu .cs-facts > div{ padding: 18px 20px 18px 0; border-bottom: 1px solid var(--line); }
+.stu .cs-facts dt{ margin: 0 0 6px; }
+.stu .cs-facts dd{ margin: 0; font-weight: 600; line-height: 1.4; }
+.stu .cs-metrics{ padding-block: clamp(34px, 5vw, 64px) 0; }
+.stu .cs-metrics ul{ list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; }
+.stu .cs-metrics li{ display: grid; gap: 6px; align-content: start; padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255,255,255,.02); }
+.stu .cs-metrics b{ font: 700 clamp(34px, 4vw, 54px)/1 var(--display); letter-spacing: -.03em; color: #8fe3ff; font-variant-numeric: tabular-nums; }
+.stu .cs-metrics span{ color: var(--paper); font-size: 15px; line-height: 1.4; }
+.stu .cs-metrics em{ font-style: normal; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+.stu .cs-sec{ padding-block: clamp(48px, 7vw, 96px) 0; }
+.stu .cs-grid{ display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 80px); align-items: start; }
+.stu .cs-side{ position: sticky; top: 110px; display: grid; gap: 14px; }
+.stu .cs-side .h-lg{ margin: 0; }
+.stu .cs-side .lead{ margin: 0; color: var(--mute); }
+.stu .cs-points{ list-style: none; margin: 0; padding: 0; display: grid; }
+.stu .cs-points li{ display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; padding: 26px 0; border-top: 1px solid var(--line); }
+.stu .cs-points li:last-child{ border-bottom: 1px solid var(--line); }
+.stu .cs-points__n{ color: #8fe3ff; font-size: 13px; padding-top: 4px; }
+.stu .cs-points h3{ margin: 0 0 8px; font: 600 clamp(18px, 1.6vw, 22px)/1.3 var(--display); letter-spacing: -.01em; }
+.stu .cs-points p{ margin: 0; color: var(--mute); line-height: 1.7; max-width: 64ch; }
+.stu .cs-ticks{ list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.stu .cs-ticks li{ position: relative; padding: 18px 0 18px 36px; border-top: 1px solid var(--line); line-height: 1.6; }
+.stu .cs-ticks li:last-child{ border-bottom: 1px solid var(--line); }
+.stu .cs-ticks li::before{ content: ""; position: absolute; left: 4px; top: 24px; width: 14px; height: 8px; border-left: 2px solid #5fd8ff; border-bottom: 2px solid #5fd8ff; transform: rotate(-45deg); }
+.stu .cs-table{ margin-top: 26px; overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; }
+.stu .cs-table table{ width: 100%; min-width: 560px; border-collapse: collapse; font-size: 15px; }
+.stu .cs-table th, .stu .cs-table td{ text-align: left; padding: 16px 20px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.stu .cs-table thead th{ font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+.stu .cs-table tbody th{ font-weight: 600; width: 28%; }
+.stu .cs-table tbody tr:last-child th, .stu .cs-table tbody tr:last-child td{ border-bottom: 0; }
+.stu .cs-table td b{ color: #8fe3ff; }
+.stu .cs-faq{ display: grid; }
+.stu .cs-faq > div{ padding: 26px 0; border-top: 1px solid var(--line); }
+.stu .cs-faq > div:last-child{ border-bottom: 1px solid var(--line); }
+.stu .cs-faq h3{ margin: 0 0 10px; font: 600 clamp(18px, 1.6vw, 22px)/1.35 var(--display); letter-spacing: -.01em; }
+.stu .cs-faq p{ margin: 0; color: var(--mute); line-height: 1.75; max-width: 66ch; }
+.stu .cs-cta{ padding-block: clamp(64px, 9vw, 120px) 0; text-align: left; }
+.stu .cs-cta .lead{ margin: 14px 0 0; color: var(--mute); max-width: 54ch; }
+.stu .cs-cta__row{ display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+@media (max-width: 900px){
+  .stu .cs-grid{ grid-template-columns: 1fr; }
+  .stu .cs-side{ position: static; }
+}
