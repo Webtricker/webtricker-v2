@@ -52,20 +52,26 @@ export default async function HomeStudio() {
   /* hero background: the supplied design hero video (public/videos/hero.mp4) */
   /* hero copy, video and CTA come from Settings > Home > Hero (studioHero); the text below is only a fallback */
   const heroData = (h.sections as any[] | undefined)?.find((s) => s?.type === "hero")?.data?.studioHero || {};
+  /* a saved empty string means "leave this blank"; only a missing field falls back to the default */
+  const pick = (v: unknown, d: string) => (typeof v === "string" ? v : d);
+  const localHref = (v: unknown, d: string) => (typeof v === "string" && /^\/(?!\/)/.test(v) ? v : d);
   const sh = {
-    kicker: heroData.kicker || "Web · Shopify · CMS · AI automation — since 2014",
-    intro: heroData.intro || "We do",
-    line1: heroData.line1 || "Web, Stores,",
-    line2: heroData.line2 || "CMS & AI Automation.",
-    line3: heroData.line3 || "Built to Rank,",
-    line4: heroData.line4 || "Convert & Scale.",
-    lead:
-      heroData.lead ||
-      "A 2027-ready web studio. Strategy, design and lightning-fast builds that rank in Google and AI search, work on every device, and run on automation, from first idea to launch day.",
-    ctaLabel: heroData.ctaLabel || "Have a project in mind?",
-    ctaHref: /^\/(?!\/)/.test(heroData.ctaHref || "") ? heroData.ctaHref : "/free-consultation",
-    videoSrc: heroData.videoSrc || "/videos/hero.mp4",
-    posterSrc: heroData.posterSrc || "/videos/hero-poster.webp",
+    kicker: pick(heroData.kicker, "Web · Shopify · CMS · AI automation — since 2014"),
+    intro: pick(heroData.intro, ""),
+    lines: [heroData.line1, heroData.line2, heroData.line3, heroData.line4]
+      .map((v, i) => ({ n: i + 1, t: pick(v, ["Found on Google.", "Cited by AI.", "Chosen by customers.", ""][i]) }))
+      .filter((l) => l.t.trim()),
+    italic: Number(heroData.italic) >= 1 && Number(heroData.italic) <= 4 ? Number(heroData.italic) : 2, // which of the 4 title lines is italic (1-based)
+    lead: pick(
+      heroData.lead,
+      "Webtricker is a web design and development studio, in business since 2014, building fast websites, Shopify stores and CMS platforms with technical SEO and structured data, so people and AI search can find and understand your business."
+    ),
+    ctaLabel: pick(heroData.ctaLabel, "Get a free consultation"),
+    ctaHref: localHref(heroData.ctaHref, "/free-consultation"),
+    cta2Label: pick(heroData.cta2Label, "See our work"),
+    cta2Href: localHref(heroData.cta2Href, "/portfolio"),
+    videoSrc: pick(heroData.videoSrc, "/videos/hero.mp4") || "/videos/hero.mp4",
+    posterSrc: pick(heroData.posterSrc, "/videos/hero-poster.webp") || "/videos/hero-poster.webp",
   };
   const media = { src: sh.videoSrc, type: "video" };
 
@@ -108,25 +114,35 @@ export default async function HomeStudio() {
         ) : null}
         <div className="wrap">
           <div className="hero__kicker mono">{sh.kicker}</div>
-          <h1 className="v5h1" aria-label={`${sh.intro} ${sh.line1} ${sh.line2} ${sh.line3} ${sh.line4}`}>
-            <span className="hl hl--wedo" aria-hidden="true">
-              <Chars text={sh.intro} />
-            </span>
-            <span className="hl" aria-hidden="true">
-              <Chars text={sh.line1} />
-            </span>
-            <span className="hl" aria-hidden="true">
-              <Chars text={sh.line2} />
-            </span>
-            <span className="hl" aria-hidden="true">
-              <em className="ital">
-                <Chars text={sh.line3} />
-              </em>
-            </span>
-            <span className="hl" aria-hidden="true">
-              <Chars text={sh.line4} />
-            </span>
+          <h1 className="v5h1" aria-label={[sh.intro, ...sh.lines.map((l) => l.t)].filter(Boolean).join(" ")}>
+            {sh.intro.trim() ? (
+              <span className="hl hl--wedo" aria-hidden="true">
+                <Chars text={sh.intro} />
+              </span>
+            ) : null}
+            {sh.lines.map((l) => (
+              <span className="hl" aria-hidden="true" key={l.n}>
+                {l.n === sh.italic ? (
+                  <em className="ital">
+                    <Chars text={l.t} />
+                  </em>
+                ) : (
+                  <Chars text={l.t} />
+                )}
+              </span>
+            ))}
           </h1>
+          <div className="hero__cta">
+            <Link className="pill pill--solid magnetic" href={sh.ctaHref}>
+              <i />
+              <Roll>{sh.ctaLabel}</Roll>
+            </Link>
+            {sh.cta2Label.trim() ? (
+              <Link className="pill magnetic" href={sh.cta2Href}>
+                <Roll>{sh.cta2Label}</Roll>
+              </Link>
+            ) : null}
+          </div>
           <div className="hero__foot">
             <p className="lead">{sh.lead}</p>
             <div className="clock">
@@ -140,10 +156,6 @@ export default async function HomeStudio() {
               ))}
             </div>
             <div style={{ display: "grid", gap: 18, justifyItems: "start" }}>
-              <Link className="pill pill--solid magnetic" href={sh.ctaHref}>
-                <i />
-                <Roll>{sh.ctaLabel}</Roll>
-              </Link>
               <a className="scrollcue mono" href="#manifesto" data-scroll="#manifesto">
                 <i />
                 Scroll to explore
