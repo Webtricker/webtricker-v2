@@ -15,14 +15,49 @@ export default function WaveScene() {
   const cv = useRef<HTMLCanvasElement>(null);
   const [i, setI] = useState(0);
   const [still, setStill] = useState(false);
+  const [typed, setTyped] = useState(0); // characters of the title typed so far
+  const [phase, setPhase] = useState<"typing" | "hold" | "out">("typing");
+  const [hover, setHover] = useState(false); // pointer or keyboard focus is on the section
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     setStill(reduce);
-    if (reduce) return;
-    const id = window.setInterval(() => setI((v) => (v + 1) % SLIDES.length), 3600);
-    return () => window.clearInterval(id);
   }, []);
+
+  /* only run while the section is on screen */
+  useEffect(() => {
+    const host = wrap.current;
+    if (!host) return;
+    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting), { threshold: 0.35 });
+    io.observe(host);
+    return () => io.disconnect();
+  }, []);
+
+  /* typewriter, then hold, then fade out, then the next service. Pauses while the section is hovered or focused. */
+  useEffect(() => {
+    if (still || hover || !inView) return;
+    const title = SLIDES[i].t;
+    let id: number;
+    if (phase === "typing") {
+      id = typed < title.length ? window.setTimeout(() => setTyped(typed + 1), typed === 0 ? 350 : 48) : window.setTimeout(() => setPhase("hold"), 120);
+    } else if (phase === "hold") {
+      id = window.setTimeout(() => setPhase("out"), 3800);
+    } else {
+      id = window.setTimeout(() => {
+        setI((v) => (v + 1) % SLIDES.length);
+        setTyped(0);
+        setPhase("typing");
+      }, 750);
+    }
+    return () => window.clearTimeout(id);
+  }, [still, hover, inView, phase, typed, i]);
+
+  const go = (k: number) => {
+    setI(k);
+    setTyped(0);
+    setPhase("typing");
+  };
 
   useEffect(() => {
     const canvas = cv.current, host = wrap.current;
@@ -110,7 +145,14 @@ export default function WaveScene() {
 
   const s = SLIDES[i];
   return (
-    <section className="wavescene" aria-label="What we do">
+    <section
+      className="wavescene"
+      aria-label="What we do"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setHover(true)}
+      onBlur={() => setHover(false)}
+    >
       <div className="wavescene__stage" ref={wrap}>
         <canvas ref={cv} aria-hidden="true" />
         <div className="wavescene__vignette" aria-hidden="true" />
@@ -124,14 +166,26 @@ export default function WaveScene() {
             </ul>
           ) : (
             <>
-              <div className="wavescene__title" key={i} style={{ ["--c" as any]: s.c }}>
-                <h2 className="h-xl">{s.t}</h2>
-                <p>{s.d}</p>
-                <Link className="pill" href={s.href}>Explore {s.t}</Link>
+              <div className={`wavescene__title tw-${phase}${typed >= s.t.length ? " is-typed" : ""}`} style={{ ["--c" as any]: s.c }}>
+                <h2 className="h-xl tw" aria-label={s.t}>
+                  <span className="tw__ghost" aria-hidden="true">{s.t}</span>
+                  <span className="tw__live" aria-hidden="true">
+                    {s.t.slice(0, typed)}
+                    <i className="tw__caret" />
+                  </span>
+                </h2>
+                <p className="tw__desc" key={`d${i}`}>
+                  {s.d.split(" ").map((w, k) => (
+                    <React.Fragment key={k}>
+                      <span style={{ ["--k" as any]: k }}>{w}</span>{" "}
+                    </React.Fragment>
+                  ))}
+                </p>
+                <Link className="pill tw__cta" href={s.href}>Explore {s.t}</Link>
               </div>
               <div className="wavescene__dots" role="tablist" aria-label="Services">
                 {SLIDES.map((x, k) => (
-                  <button key={x.t} type="button" role="tab" aria-selected={k === i} aria-label={x.t} className={k === i ? "is-on" : ""} onClick={() => setI(k)} style={{ ["--c" as any]: x.c }} />
+                  <button key={x.t} type="button" role="tab" aria-selected={k === i} aria-label={x.t} className={k === i ? "is-on" : ""} onClick={() => go(k)} style={{ ["--c" as any]: x.c }} />
                 ))}
               </div>
             </>

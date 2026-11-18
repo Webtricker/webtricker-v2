@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ServiceArt, { hasArt } from "../ServiceArt";
 import WaveScene from "../WaveScene";
+import HeroBubbles from "./HeroBubbles";
 import {
   getAboutPageData,
   getHomePageData,
@@ -96,6 +97,7 @@ export default async function HomeStudio() {
           ) : media?.src ? (
             <img src={media.src} alt="" />
           ) : null}
+          <HeroBubbles />
           <div className="hero__shade" />
         </div>
         {media?.type === "video" ? (
