@@ -123,6 +123,35 @@ const createInitialStatState = () =>
     ])
   ) as Record<string, StatValue>;
 
+/** Clears the cached public pages so edited content shows on the live site right away. */
+function RefreshLiveSite() {
+  const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
+  const run = async () => {
+    setState("busy");
+    try {
+      const res = await fetch("/api/revalidate", { method: "POST", credentials: "include" });
+      setState(res.ok ? "done" : "error");
+    } catch {
+      setState("error");
+    }
+    setTimeout(() => setState("idle"), 4000);
+  };
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-3">
+      <Button type="button" onClick={run} disabled={state === "busy"}>
+        {state === "busy" ? "Refreshing…" : "Refresh live site now"}
+      </Button>
+      <span className="text-sm text-zinc-500 dark:text-zinc-400" role="status">
+        {state === "done"
+          ? "Done. Public pages will show your latest content."
+          : state === "error"
+            ? "Could not refresh. Please sign in again and retry."
+            : "Use after editing content if the live site still shows the old version."}
+      </span>
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   const [statState, setStatState] = useState<Record<string, StatValue>>(
     createInitialStatState
@@ -214,6 +243,7 @@ export default function SettingsPage() {
           Manage Webtricker content, media, settings, and future SEO tools from
           one clean workspace.
         </p>
+        <RefreshLiveSite />
       </section>
 
       <section className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 lg:grid-cols-5">
