@@ -1,5 +1,5 @@
 import { getSiteConfig } from "./data";
-import { BRAND, OFFICES, PHONES, SITE } from "./brand";
+import { BRAND, SITE, resolveOffice, resolvePhones, resolveSameAs } from "./brand";
 
 /* One @graph for the whole site: Organization, WebSite and three ProfessionalService nodes (US, Jamalpur, Dhaka).
    No aggregateRating: self-serving review markup is not eligible for rich results. */
@@ -27,6 +27,7 @@ const hoursFor = (offices: any[] | undefined, country: string, locality: string)
 export default async function SiteSchema() {
   const site = await getSiteConfig().catch(() => null);
   const offices = (site as any)?.offices as any[] | undefined;
+  const PHONES = resolvePhones(site);
   const node = (id: string, name: string, phone: string, a: any, extra: Record<string, unknown>, hours: any[]) => ({
     "@type": "ProfessionalService",
     "@id": `${SITE}/#${id}`,
@@ -53,7 +54,7 @@ export default async function SiteSchema() {
         logo: BRAND.logo,
         foundingDate: BRAND.foundingDate,
         description: "Web design and development agency building WordPress, WooCommerce, Shopify, Next.js and Laravel websites since 2014.",
-        sameAs: BRAND.sameAs,
+        sameAs: resolveSameAs(site),
         contactPoint: [
           { "@type": "ContactPoint", telephone: PHONES.us.schema, contactType: "customer service", areaServed: "US", availableLanguage: ["English"] },
           { "@type": "ContactPoint", telephone: PHONES.bd.schema, contactType: "customer service", areaServed: "BD", availableLanguage: ["English", "Bengali"] },
@@ -67,13 +68,13 @@ export default async function SiteSchema() {
         publisher: { "@id": BRAND.orgId },
         inLanguage: "en-US",
       },
-      node("us", BRAND.legalName, PHONES.us.schema, OFFICES.us, { description: "Webtricker LLC, United States office in Branchburg, New Jersey." }, hoursFor(offices, "US", "Branchburg")),
-      node("bd", BRAND.bdName, PHONES.bd.schema, OFFICES.bd, { description: "Webtricker Web Design & Development Agency, Bangladesh office in Jamalpur." }, hoursFor(offices, "BD", "Jamalpur")),
+      node("us", BRAND.legalName, PHONES.us.schema, resolveOffice(site, "us"), { description: "Webtricker LLC, United States office in Branchburg, New Jersey." }, hoursFor(offices, "US", "Branchburg")),
+      node("bd", BRAND.bdName, PHONES.bd.schema, resolveOffice(site, "bd"), { description: "Webtricker Web Design & Development Agency, Bangladesh office in Jamalpur." }, hoursFor(offices, "BD", "Jamalpur")),
       node(
         "dhaka",
         `${BRAND.bdName} (Dhaka office)`,
         PHONES.bd.schema,
-        OFFICES.dhaka,
+        resolveOffice(site, "dhaka"),
         { description: "Meet our Dhaka support team and representative by appointment. Beside Rupayon Trade Center, Bashundhara." },
         hoursFor(offices, "BD", "Dhaka")
       ),

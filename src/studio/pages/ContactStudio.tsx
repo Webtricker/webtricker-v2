@@ -1,4 +1,4 @@
-import { BRAND, PHONES } from "../brand";
+import { BRAND, resolvePhones } from "../brand";
 import { getContactPageData } from "@/utils/pageData";
 import { getSiteConfig } from "../data";
 import StudioContactForm from "../StudioContactForm";
@@ -16,7 +16,8 @@ export default async function ContactStudio() {
   const [page, site] = await Promise.all([getContactPageData(), getSiteConfig()]);
   const pg: any = page || {};
   const emails = site?.contact?.emails ?? [];
-  const phones = [PHONES.us, PHONES.bd];
+  const resolved = resolvePhones(site);
+  const phones = [resolved.us, resolved.bd];
   const offices: any[] = pg.address?.addresses?.length
     ? pg.address.addresses.map((a: any) => ({ label: a.office, addressText: a.location }))
     : site?.offices ?? [];

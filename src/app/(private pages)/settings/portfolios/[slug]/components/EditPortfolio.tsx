@@ -58,6 +58,10 @@ export default function EditPortfolio({
   const [thumnail, setThumnail] = useState<TMedia | null>(tempThumnail || null);
   const [selectedTechnology, setSelectedTechnology] =
     useState<ITechnology | null>(portfolio.technology || null);
+  const [stackText, setStackText] = useState((portfolio.stack || []).join(", "));
+  const [caseJson, setCaseJson] = useState(
+    portfolio.caseStudy ? JSON.stringify(portfolio.caseStudy, null, 2) : ""
+  );
   const [updatePortfolio, { isLoading }] = useUpdatePortfolioMutation();
 
   const handleSave = async () => {
@@ -91,8 +95,30 @@ export default function EditPortfolio({
       return;
     }
 
+    // Tech stack pills: comma separated, max 16 short labels
+    const stack = stackText
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .slice(0, 16);
+
+    // Structured case study (optional JSON). Empty clears it and the page falls back to the plain layout.
+    let caseStudy: Record<string, unknown> | null = null;
+    if (caseJson.trim()) {
+      try {
+        const parsed = JSON.parse(caseJson);
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("not an object");
+        caseStudy = parsed;
+      } catch {
+        toast.error("Case study JSON is not valid. Fix it or clear the box.");
+        return;
+      }
+    }
+
     const portfolioData = {
       title: portfolio.title,
+      stack,
+      caseStudy,
       slug: portfolio.slug,
       description: des,
       excerp,
@@ -169,6 +195,29 @@ export default function EditPortfolio({
           selectedTechnology={selectedTechnology}
           setSelectedTechnology={setSelectedTechnology}
         />
+        <DynamicInput
+          key="Stack_input"
+          value={stackText}
+          setValue={setStackText}
+          label="Tech stack pills (comma separated, shown on cards and the case study header)"
+          placeholder="WordPress, WooCommerce, Cloudflare CDN"
+        />
+
+        <div className="mt-6 md:mt-8">
+          <label htmlFor="caseStudyJson" className="block text-sm font-medium text-slate-700 mb-2">
+            Structured case study (JSON: summary, facts, metrics, challenge, solution, comparison, results, stackTable,
+            takeaways, faq). Leave empty to use the plain content below.
+          </label>
+          <textarea
+            id="caseStudyJson"
+            value={caseJson}
+            onChange={(e) => setCaseJson(e.target.value)}
+            spellCheck={false}
+            rows={14}
+            className="w-full rounded-[4px] border border-slate-300 p-3 font-mono text-xs"
+          />
+        </div>
+
         <EditorContainer content={portfolio.content} editorRef={editorRef} />
         {isLoading ? (
           <div className="w-[50px] lg:hidden mt-6 md:mt-8">

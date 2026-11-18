@@ -21,6 +21,22 @@ const normalizeImage = (value: unknown) => {
     return value;
 };
 
+/** Tech-stack labels and structured case study are optional; keep them bounded so a bad save cannot bloat a document. */
+const cleanStackAndCaseStudy = (body: Record<string, any>) => {
+    const out: Record<string, unknown> = {};
+    if ("stack" in body) {
+        out.stack = Array.isArray(body.stack)
+            ? body.stack.map((t: unknown) => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 16)
+            : [];
+    }
+    if ("caseStudy" in body) {
+        const cs = body.caseStudy;
+        out.caseStudy =
+            cs && typeof cs === "object" && !Array.isArray(cs) && JSON.stringify(cs).length <= 80000 ? cs : null;
+    }
+    return out;
+};
+
 const normalizePortfolioPayload = (body: Record<string, any>) => {
     const plainContent = stripHtml(body.content || "");
     const description = body.description || body.seoDescription || body.excerp || plainContent.slice(0, 160);
@@ -35,6 +51,7 @@ const normalizePortfolioPayload = (body: Record<string, any>) => {
         thumnail: normalizeImage(body.thumnail),
         coverImage: normalizeImage(body.coverImage),
         featured: Boolean(body.featured),
+        ...cleanStackAndCaseStudy(body),
     };
 };
 

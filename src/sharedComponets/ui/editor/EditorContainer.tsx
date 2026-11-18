@@ -24,7 +24,8 @@ const plugins = [
   "insertdatetime",
   "link",
   "lists",
-  "media",
+  // "media" is intentionally off: tinymce 7.9.3 has an XSS in its media plugin (GHSA-mf2p-h6hf-fcwm) and the
+  // only fixed release is the 8.x major. Embed video through the "code" (source) view instead.
   "nonbreaking",
   "pagebreak",
   "preview",
@@ -41,7 +42,7 @@ const toolbar =
   "bold italic underline strikethrough | forecolor backcolor | " +
   "alignleft aligncenter alignright alignjustify | " +
   "bullist numlist outdent indent | " +
-  "link image media table | " +
+  "link image table | " +
   "charmap emoticons | " +
   "fullscreen preview | " +
   "a11ycheck addcomment showcomments | " +

@@ -2,13 +2,17 @@ export type StudioOffice = {
   label: string;
   country?: string;
   locality?: string;
+  streetAddress?: string;
+  region?: string;
+  postalCode?: string;
   addressText: string;
 };
 
 export type StudioSiteConfig = {
-  brand?: { name?: string };
+  brand?: { name?: string; sameAs?: string[] };
   contact?: { primaryEmail?: string; primaryPhone?: string; emails?: string[]; phones?: string[] };
   offices?: StudioOffice[];
+  socialLinks?: { platform?: string; href?: string }[];
 };
 
 const base = () => process.env.NEXT_PUBLIC_BASE_URL;
