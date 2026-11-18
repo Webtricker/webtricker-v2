@@ -5,6 +5,7 @@ export interface IPortfolio {
   technology: { _id: string; name: string };
   tags?: { id?: string; _id?: string; name: string; slug?: string; color?: string }[];
   excerp: string;
+  stack?: string[];
   thumnail: {
     width?: number;
     height?: number;
