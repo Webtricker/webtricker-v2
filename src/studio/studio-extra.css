@@ -482,3 +482,10 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 @keyframes bkSpin{ to{ --ea: 360deg; } }
 @keyframes bkFlicker{ 0%,100%{ filter: none } 7%{ filter: brightness(1.25) } 9%{ filter: none } 52%{ filter: brightness(1.15) } 54%{ filter: none } 80%{ filter: brightness(1.3) } 82%{ filter: none } }
 @media (prefers-reduced-motion: reduce){ .bkgo::before, .bkgo:hover{ animation: none; } }
+
+/* tech-stack pills: top of case study, and under the title on portfolio cards */
+.stu .stackrow{ margin: 22px 0 0; }
+.stu .stackrow .tag{ border-color: rgba(95,216,255,.45); color: #bfeaff; background: rgba(95,216,255,.07); }
+.stu .stackrow--card{ margin: 12px 0 0; gap: 6px; }
+.stu .stackrow--card .tag{ padding: 6px 10px; font-size: 10px; }
+.stu .case__row > div{ min-width: 0; }
