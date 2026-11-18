@@ -548,8 +548,8 @@ select.bkctl option:checked, select.bkctl option:hover{ background: #2a3350; col
 }
 
 /* menu: the consultation button is a normal-sized button, not a huge menu link */
-.stu .menu__cta{ margin-top: 44px; }
-.stu .menu .menu__cta a.pill{ display: flex; align-items: center; justify-content: center; width: 100%; height: 54px; padding: 0 24px; gap: 0; font: 600 15px/1 var(--body); letter-spacing: 0; text-align: center; }
+.stu .menu__cta{ margin-top: 44px; display: flex; justify-content: center; }
+.stu .menu .menu__cta a.pill{ display: flex; align-items: center; justify-content: center; width: 100%; max-width: 342px; height: 54px; padding: 0 24px; gap: 0; font: 600 15px/1 var(--body); letter-spacing: 0; text-align: center; }
 .stu .menu .menu__cta a.pill:hover{ padding-left: 24px; color: #0b0b0c; }
 
 /* hero bubbles: live canvas above the background video (sharp at any size), below the dark shade */
