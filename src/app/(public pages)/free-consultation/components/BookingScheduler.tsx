@@ -361,7 +361,7 @@ export default function BookingScheduler() {
           <div className="md:col-span-2">
             <button
               disabled={submitting}
-              className="btn-reverse-bg py-2 wt_fs-md px-6 rounded-[4px] min-w-[220px]"
+              className="bkgo py-2 wt_fs-md px-6 rounded-[4px] min-w-[220px]"
             >
               {submitting ? (
                 <LoadingSpinner className="w-6 h-6 mx-auto my-1" />
