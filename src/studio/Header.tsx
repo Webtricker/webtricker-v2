@@ -42,7 +42,10 @@ export default async function Header() {
               <small>US</small>
               {PHONES.us.display}
             </a>
-            <Link className="pill magnetic" href="/contact" data-nav="/contact">
+            <Link className="pill pill--solid pill--consult magnetic" href="/free-consultation" data-nav="/free-consultation">
+              <Roll>Free consultation</Roll>
+            </Link>
+            <Link className="pill pill--talk magnetic" href="/contact" data-nav="/contact">
               <i />
               <Roll>Let&apos;s talk</Roll>
             </Link>
@@ -72,6 +75,11 @@ export default async function Header() {
               </li>
             ))}
           </ul>
+          <div className="menu__cta">
+            <Link className="pill pill--solid" href="/free-consultation" data-nav="/free-consultation">
+              Book a free consultation
+            </Link>
+          </div>
           <div className="menu__foot mono mute">
             {email ? <span>{email}</span> : null}
             {phone ? <span>{phone}</span> : null}
