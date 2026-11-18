@@ -176,6 +176,40 @@ export default async function PortfolioDetailsPage({
           { "@type": "ListItem", position: 3, name: portfolio.title, item: `${base}/portfolio/${portfolio.slug}` },
         ],
       },
+      // Structured case studies also publish an Article (with speakable summary) and a FAQPage.
+      ...(portfolio.caseStudy
+        ? [
+            {
+              "@type": "Article",
+              "@id": `${base}/portfolio/${portfolio.slug}#article`,
+              headline: portfolio.seoTitle || `${portfolio.title} case study`,
+              description: portfolio.caseStudy.summary || plain,
+              image: portfolio.ogImage || portfolio.coverImage?.url || portfolio.thumnail?.url,
+              datePublished: portfolio.createdAt,
+              dateModified: portfolio.updatedAt || portfolio.createdAt,
+              author: { "@id": `${base}/#org` },
+              publisher: { "@id": `${base}/#org` },
+              mainEntityOfPage: `${base}/portfolio/${portfolio.slug}`,
+              isPartOf: { "@id": `${base}/portfolio/${portfolio.slug}#project` },
+              keywords: (portfolio.stack || []).join(", ") || undefined,
+              about: (portfolio.stack || []).map((name: string) => ({ "@type": "Thing", name })),
+              speakable: { "@type": "SpeakableSpecification", cssSelector: [".cs-summary", ".page-title"] },
+            },
+            ...(portfolio.caseStudy.faq?.length
+              ? [
+                  {
+                    "@type": "FAQPage",
+                    "@id": `${base}/portfolio/${portfolio.slug}#faq`,
+                    mainEntity: portfolio.caseStudy.faq.map((f: { q: string; a: string }) => ({
+                      "@type": "Question",
+                      name: f.q,
+                      acceptedAnswer: { "@type": "Answer", text: f.a },
+                    })),
+                  },
+                ]
+              : []),
+          ]
+        : []),
     ],
   };
   return (

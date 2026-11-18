@@ -2,6 +2,7 @@ import Link from "next/link";
 import HtmlContentParser from "@/sharedComponets/ui/editor/HtmlContentParser";
 import { MaskWords } from "../ui";
 import { Bleed, PrevNext, nameOf } from "../parts";
+import CaseStudyRich from "./CaseStudyRich";
 
 /** Single portfolio project. */
 export default function CaseStudio({
@@ -62,21 +63,32 @@ export default function CaseStudio({
         </div>
       </section>
       <Bleed src={p.coverImage?.url || p.thumnail?.url} alt={p.coverImageAlt || p.title} />
-      <section className="chapter">
-        <div className="wrap sticky2">
-          <div className="sticky2__side">
-            <div className="mono mute">Overview</div>
-            <h2 className="h-lg">The brief</h2>
-            <p className="lead">{p.description}</p>
+      {p.caseStudy ? (
+        <>
+          <CaseStudyRich cs={p.caseStudy} title={p.title} liveLink={p.liveLink} />
+          <section className="chapter">
+            <div className="wrap">
+              <PrevNext prev={prev} next={next} label="project" listHref="/portfolio" />
+            </div>
+          </section>
+        </>
+      ) : (
+        <section className="chapter">
+          <div className="wrap sticky2">
+            <div className="sticky2__side">
+              <div className="mono mute">Overview</div>
+              <h2 className="h-lg">The brief</h2>
+              <p className="lead">{p.description}</p>
+            </div>
+            <div className="prose">
+              <HtmlContentParser htmlContent={p.content || ""} />
+            </div>
           </div>
-          <div className="prose">
-            <HtmlContentParser htmlContent={p.content || ""} />
+          <div className="wrap">
+            <PrevNext prev={prev} next={next} label="project" listHref="/portfolio" />
           </div>
-        </div>
-        <div className="wrap">
-          <PrevNext prev={prev} next={next} label="project" listHref="/portfolio" />
-        </div>
-      </section>
+        </section>
+      )}
     </main>
   );
 }

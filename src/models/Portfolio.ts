@@ -28,6 +28,8 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
   },
   /** Short tech-stack labels shown as pills on cards and the case study header. */
   stack: { type: [String], default: [] },
+  /** Structured case study (summary, facts, metrics, challenge/solution, FAQ...). See CaseStudyData. */
+  caseStudy: { type: mongoose.Schema.Types.Mixed },
   content: { type: String, required: true },
   liveLink: { type: String, required: true },
   seoTitle: { type: String },
