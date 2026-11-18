@@ -7,7 +7,7 @@ export const GET = async () => {
     try {
         await connectToDatabase();
 
-        const blogs = await Posts.find({postType:'blog'}).select('slug -_id')
+        const blogs = await Posts.find({postType:'blog'}).select('slug updatedAt -_id')
 
         return NextResponse.json(
             {

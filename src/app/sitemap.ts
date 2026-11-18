@@ -45,8 +45,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ==== Dynamic: Services ====
     const servicesData = (await getServicesData()) || [];
     const servicePages: MetadataRoute.Sitemap = servicesData.map(
-      (service: { slug: string }) => ({
+      (service: { slug: string; updatedAt?: string }) => ({
         url: `${baseUrl}/services/${encodeURIComponent(service.slug)}`,
+        ...(service.updatedAt && { lastModified: new Date(service.updatedAt) }),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
@@ -55,8 +56,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ==== Dynamic: Portfolios ====
     const portfolioData = (await getPortfoliosData(999)) || [];
     const portfolioPages: MetadataRoute.Sitemap = portfolioData.map(
-      (portfolio: { slug: string }) => ({
+      (portfolio: { slug: string; updatedAt?: string }) => ({
         url: `${baseUrl}/portfolio/${encodeURIComponent(portfolio.slug)}`,
+        ...(portfolio.updatedAt && { lastModified: new Date(portfolio.updatedAt) }),
         changeFrequency: "monthly" as const,
         priority: 0.7,
       })
@@ -73,8 +75,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // ==== Dynamic: Blog posts ====
     const blogs = (await getAllBlogSlugs()) || [];
     const blogPages: MetadataRoute.Sitemap = blogs.map(
-      (blog: { slug: string }) => ({
+      (blog: { slug: string; updatedAt?: string }) => ({
         url: `${baseUrl}/blog/${encodeURIComponent(blog.slug)}`,
+        ...(blog.updatedAt && { lastModified: new Date(blog.updatedAt) }),
         changeFrequency: "weekly" as const,
         priority: 0.8,
       })

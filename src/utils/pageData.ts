@@ -46,7 +46,7 @@ export const getAllBlogSlugs = async () => {
       return [];
     }
     const { blogs } = await res.json();
-    return blogs.map((blog: { slug: string }) => ({ slug: blog.slug }));
+    return blogs.map((blog: { slug: string; updatedAt?: string }) => ({ slug: blog.slug, updatedAt: blog.updatedAt }));
   } catch (error) {
     console.error("Error fetching all blog slugs:", error);
     return [];

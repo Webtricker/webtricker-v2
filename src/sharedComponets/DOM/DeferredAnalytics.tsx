@@ -15,12 +15,11 @@ export default function DeferredAnalytics() {
     let done = false;
     const events = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
 
-    const load = () => {
-      if (done) return;
-      done = true;
-      events.forEach((e) => window.removeEventListener(e, load));
-      clearTimeout(timer);
-
+    /* GA4 loads as soon as the browser is idle so quick visits (and bounces) are counted. */
+    let gaDone = false;
+    const loadGa = () => {
+      if (gaDone) return;
+      gaDone = true;
       const w = window as any;
       w.dataLayer = w.dataLayer || [];
       w.gtag = function () {
@@ -32,6 +31,23 @@ export default function DeferredAnalytics() {
       ga.async = true;
       ga.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
       document.head.appendChild(ga);
+    };
+    const idle = (window as any).requestIdleCallback as undefined | ((cb: () => void, o?: { timeout: number }) => number);
+    if (idle) idle(loadGa, { timeout: 3000 });
+    else setTimeout(loadGa, 2000);
+
+    const load = () => {
+      if (done) return;
+      done = true;
+      events.forEach((e) => window.removeEventListener(e, load));
+      clearTimeout(timer);
+
+      const w = window as any;
+      w.dataLayer = w.dataLayer || [];
+      w.gtag = function () {
+        w.dataLayer.push(arguments);
+      };
+      loadGa();
 
       w.clarity =
         w.clarity ||
