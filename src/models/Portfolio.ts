@@ -28,6 +28,8 @@ const PortfolioSchema = new mongoose.Schema<IPortfolio>({
   },
   /** Short tech-stack labels shown as pills on cards and the case study header. */
   stack: { type: [String], default: [] },
+  /** Showcase position on the home page and portfolio list: lower shows first. New entries default to 0 (newest first). */
+  showcaseOrder: { type: Number, default: 0, index: true },
   /** Structured case study (summary, facts, metrics, challenge/solution, FAQ...). See CaseStudyData. */
   caseStudy: { type: mongoose.Schema.Types.Mixed },
   content: { type: String, required: true },
